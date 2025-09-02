@@ -1,0 +1,201 @@
+{
+  "firmantes": {
+    "firmanteConforme": "----------------------------",
+    "cargoConforme": "--------------------------",
+    "firmantePropone": "PABLO MARTÍN FERNÁNDEZ",
+    "cargoPropone": "Cuadro Técnico de Mantenimiento",
+    "firmanteAprueba": "MARÍA CRUZ NIETO TORTUERO",
+    "cargoAprueba": "Gerente del Área de Patrimonio y Urbanismo Centro",
+    "cargoResponsable": "Tecnico de adminitracion y control",
+    "representanteFirma": "ANTONIO MARTIN RUIZ",
+    "directorFacultativo": "",
+    "representanteAdif": "PABLO MARTÍN FERNÁNDEZ",
+    "nombreAsistenteAdif": "",
+    "cargoResponsable1": "Cuadro Técnico de Mantenimiento"
+  },
+  "obras": [
+    {
+      "nombreObra": "OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES",
+      "fechaCreacion": "2025-08-07 12:40:02",
+      "tipoActuacion": "Mantenimiento",
+      "plazoEjecucion": "12",
+      "fechaModificacion": "2025-08-27 17:40:51",
+      "organoContratacion": "",
+      "organoContratacion2": "DG de Negocio y Operaciones Comerciales",
+      "OrganoSolicitaOfertas": "DEPARTAMENTO DE ADMINISTRACIÓN DE LA GERENCIA DE PATRIMONIO Y URBANISMO CENTRO",
+      "ivaPresupuestoBase": "5466.28",
+      "totalPresupuestoBase": "31496.17",
+      "justificacionLimites": "El contrato de la obra es por importe de 26,029.89 euros, no superando por tanto el límite de 40.000 € establecido.",
+      "basePresupuesto": "26029.89",
+      "cargoConforme": "--------------------------",
+      "cargoAprueba": "Gerente del Área de Patrimonio y Urbanismo Centro",
+      "firmanteAprueba": "MARÍA CRUZ NIETO TORTUERO",
+      "firmanteConforme": "----------------------------",
+      "fechaAdjudicacion": "2000-01-01",
+      "diaApertura": "2023-09-04",
+      "fechaRecepcion": "2000-01-01",
+      "fechaInforme": "2000-01-01",
+      "fechaProyecto": "2025-02-01",
+      "fechaReplanteo": "2026-01-01",
+      "fechaLegalFin": "2000-01-01",
+      "fechaFinal": "2000-01-01",
+      "fechaRecepcion1": "2000-01-01",
+      "precioAdjudicacion": "122.00",
+      "precioAdjudicacionIva": "25.62",
+      "precioAdjudicacionTotal": "147.62",
+      "adicionalBaseLiquidacion": "1111.00",
+      "adicionalIvaLiquidacion": "233.31",
+      "adicionalTotalLiquidacion_2": "0.0",
+      "saldoBaseLiquidacion": "1111.00",
+      "saldoIvaLiquidacion": "233.31",
+      "adicionalTotalLiquidacion": "1344.31",
+      "empresaBaseAFavor": "1111.00",
+      "empresaIvaAFavor": "233.31",
+      "empresaTotalAFavor": "1344.31",
+      "liquidacionAFavorAdifBase": "0.00",
+      "adifIvaAFavor": "0.00",
+      "adifTotalAFavor": "0.00",
+      "certBase": "0.0",
+      "certIva": "0.00",
+      "certTotal": "0.00",
+      "licitacion07": "85.40",
+      "licitacion15": "183.00",
+      "comboBox": "OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES",
+      "empresas": [
+        {
+          "nombre": "PAL ELECTRICIDAD , S.L.",
+          "nif": "B83066456",
+          "email": "luisgallardo@palelectricidad.es",
+          "contacto": "LUIS GALLARDO URDDALLO",
+          "ofertas": "1.222,00"
+        },
+        {
+          "nombre": "GRUPO  TESEIN , S.L.U",
+          "nif": "B84385657",
+          "email": "sara@grupotesein.com",
+          "contacto": "Sara Palomar Latorre",
+          "ofertas": "122,00"
+        },
+        {
+          "nombre": "FCC Industria INFRAESTRUCTURAS ENERGETICAS, S.A.U.",
+          "nif": "A28482024",
+          "email": "JMCristobals@fcc.es",
+          "contacto": "Juan Mª Cristóbal Sanz",
+          "ofertas": ""
+        },
+        {
+          "nombre": "MAHERCON AVILA",
+          "nif": "B05173901",
+          "email": "mahercon.avila@gmail.com",
+          "contacto": "Mónica Fernández Inglés",
+          "ofertas": ""
+        }
+      ],
+      "objeto": "El objeto de este contrato es la realización de las obras necesarias para impedir las filtraciones de agua por la cubierta que hace inhabitable la vivienda.",
+      "justificacion": "Se necesita la contratación de estas obras por ser indispensable para asegurar la habitabilidad  y estabilidad de los inmuebles.",
+      "insuficiencia": "La necesidad surge de las propias labores de gestión de esta Gerencia y cubre las necesidades de los inmuebles, no necesitándose por tanto más contratos semejantes en el mismo.",
+      "regimenPagos": "Pago por actuacion",
+      "numEmpresasPresentadas": "1",
+      "cargoResponsable": "Tecnico de adminitracion y control",
+      "cargoResponsable1": "Cuadro Técnico de Mantenimiento",
+      "representanteFirma": "ANTONIO MARTIN RUIZ",
+      "representanteAdif": "PABLO MARTÍN FERNÁNDEZ",
+      "firmantePropone": "PABLO MARTÍN FERNÁNDEZ",
+      "cargoPropone": "Cuadro Técnico de Mantenimiento",
+      "nombreCarpeta": "OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES",
+      "fechaCreacionCarpeta": "2025-08-20 20:33:46",
+      "gestorVersion": "1.0-archivos",
+      "numEmpresasSolicitadas": "4",
+      "numeroExpediente": "",
+      "ubicacion_proyecto": "H:/generador_actas/dist/generador_actas/obras/OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES/01-proyecto/PLIEGO TÉCNICO_mantenimiento_Madrid_25.pdf",
+      "pdf_path_relativa": "dist\\generador_actas\\obras\\OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES\\01-proyecto\\PLIEGO TÉCNICO_mantenimiento_Madrid_25.pdf",
+      "pdf_path": "H:/generador_actas/dist/generador_actas/obras/OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES/01-proyecto/PLIEGO TÉCNICO_mantenimiento_Madrid_25.pdf",
+      "pdf_filename": "PLIEGO TÉCNICO_mantenimiento_Madrid_25.pdf",
+      "pdf_saved_at": "2025-08-20 21:47:37",
+      "consultasAdministrativas": "amartin@adif.es",
+      "consultasTecnicas": "pmartin@adif.es",
+      "lugarCartas": "Madrid",
+      "empresaAdjudicada": "GRUPO  TESEIN , S.L.U",
+      "contratistaAdjudicado": "LUIS GALLARDO URDDALLO",
+      "mailDeRecepcion": "",
+      "horaDeApertura": "12:00",
+      "diaDeApertura": "2023-01-02",
+      "fechaContrato": "2025-08-20",
+      "BaseAnualidad1": "50.83",
+      "IvaAnualidad1": "10.67",
+      "TotalAnualidad1": "61.51",
+      "BaseAnualidad2": "71.17",
+      "IvaAnualidad2": "14.94",
+      "TotalAnualidad2": "86.11",
+      "Contrato_Por_Adif": "Maria Cruz Nieto Tortuero",
+      "Contrato_Por_Empresa": "jose",
+      "Lugar_Contrato": "Madrid",
+      "CIf_Contrato": "23234234E",
+      "contratistaCIF": "B84385657",
+      "lugarReplanteo": "madrid",
+      "nombreAsistenteAdjudicatario": "pablo",
+      "nombreAsistenteAdif": "pabloaa",
+      "representanteFirmaReplanteo": "pablo aaaa",
+      "page_spinbox": "2",
+      "fases_documentos": {
+        "creacion": {
+          "generado": "2025-08-20",
+          "firmado": null
+        }
+      },
+      "texto_visualizacion_resumen": "📊 RESUMEN - OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES \n🚀 PROGRESO DEL PROYECTO \n7/9 \n📄 Documentos Generados \n0/9 \n✍️ Documentos Firmados \n📋 Próxima fase: 📧 Cartas \n📋 Datos Principales \n📝 Tipo: Mantenimiento\n💰 Importe Total: 31,496.17 €\n🏆 Adjudicataria: GRUPO TESEIN , S.L.U\n📅 Fecha Creación: 2025-08-07 12:40:02 \n📄 Archivo Proyecto: PLIEGO TÉCNICO_mantenimiento_Madrid_25.pdf \n📋 Actividad Reciente \n2025-08-20 \n📅 Documento \"📋 Creación Proyecto\" generado \n2025-08-20 \n📅 Documento \"🚀 Inicio\" generado \n2025-08-20 \n📅 Documento \"🏆 Adjudicación\" generado \n2025-08-20 \n📅 Documento \"✍️ Firma Contrato\" generado \n2025-08-20 \n📅 Documento \"📐 Replanteo\" generado \n📄 \n36 \nTotal Docs \n📅 \n18 \nHoy \n💾 \n1089.8 KB \nTamaño \n❌ \n0 \nErrores",
+      "actuaciones": [
+        {
+          "actuacion": "ewew",
+          "localidad": "werwer",
+          "gped": "werwer",
+          "archivos_pdf": [],
+          "fecha_creacion": "2025-08-27T17:28:28.405409",
+          "facturas_asociadas": [
+            "20250827_172845"
+          ],
+          "id": "20250827_172828"
+        }
+      ],
+      "facturas": [
+        {
+          "nombre": "123234",
+          "importe": 2323.0,
+          "actuaciones_asociadas": [
+            "20250827_172828"
+          ],
+          "archivos_pdf": [],
+          "fecha_creacion": "2025-08-27T17:28:45.407748",
+          "id": "20250827_172845"
+        }
+      ]
+    },
+    {
+      "nombreObra": "2332",
+      "fechaCreacion": "2025-08-26 23:42:21",
+      "tipoActuacion": "Servicios",
+      "comboBox": "2332",
+      "fechaModificacion": "2025-08-27 17:29:07",
+      "empresas": [],
+      "justificacionLimites": "El contrato de la obra es por importe de 0.00 euros, no superando por tanto el límite de 40.000 € establecido.",
+      "ivaPresupuestoBase": "254.52",
+      "totalPresupuestoBase": "1466.52",
+      "basePresupuesto": "1212.0",
+      "objeto": "12e123",
+      "justificacion": "werwer234",
+      "insuficiencia": "wr23423re",
+      "pdf_path": "H:/antiguo/Alex Muñoz Álvarez_signed.pdf",
+      "pdf_filename": "Alex Muñoz Álvarez_signed.pdf",
+      "pdf_saved_at": "2025-08-27 17:29:07",
+      "ubicacion_proyecto": "H:/antiguo/Alex Muñoz Álvarez_signed.pdf",
+      "pdf_path_relativa": "..\\antiguo\\Alex Muñoz Álvarez_signed.pdf",
+      "fases_documentos": {
+        "creacion": {
+          "generado": "2025-04-22",
+          "firmado": null
+        }
+      },
+      "fechaContrato": "2025-04-22"
+    }
+  ]
+}

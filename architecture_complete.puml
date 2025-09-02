@@ -1,0 +1,1105 @@
+@startuml GeneradorActasADIF_CompleteArchitecture
+!theme plain
+' Ultra Modern UI Theme 2025 - Matching actas.ui
+skinparam backgroundColor #F8FAFF
+skinparam classBackgroundColor rgba(255,255,255,0.95)
+skinparam classBorderColor #00C853
+skinparam classHeaderBackgroundColor #00C853
+skinparam classHeaderFontColor #FFFFFF
+skinparam classFontColor #1A1D23
+skinparam packageBackgroundColor rgba(0,200,83,0.1)
+skinparam packageBorderColor #00C853
+skinparam packageFontColor #00701A
+skinparam stereotypeCBackgroundColor #69F0AE
+skinparam stereotypeCBorderColor #00C853
+skinparam arrowColor #4A5568
+skinparam arrowFontColor #1A1D23
+skinparam noteBackgroundColor #FFF3E0
+skinparam noteBorderColor #FF8C42
+skinparam titleFontSize 20
+skinparam titleFontColor #00701A
+skinparam classFontName "Inter, Segoe UI, SF Pro Display, Roboto"
+skinparam packageFontName "Inter, Segoe UI, SF Pro Display, Roboto"
+skinparam titleFontName "Inter, Segoe UI, SF Pro Display, Roboto"
+skinparam shadowing true
+skinparam classAttributeIconSize 0
+skinparam wrapWidth 200
+skinparam maxMessageSize 100
+
+!define PRIVATE_COLOR #FFEBEE
+!define PROTECTED_COLOR #E3F2FD
+!define PUBLIC_COLOR #E8F5E8
+
+title ADIF Document Generator - Complete Architecture UML
+subtitle Comprehensive analysis of all Python classes and relationships
+
+'============= MAIN APPLICATION =============
+package "Main Application" {
+    class MainPy {
+        {static} +main(): int
+        -app: QApplication
+        -splash: FastSplash
+        --
+        +__init__()
+        -check_dependencies(): bool
+        -show_splash(): void
+        -init_application(): ControladorGrafica
+    }
+    
+    class FastSplash {
+        -pixmap: QPixmap
+        -timer: QTimer
+        -progress: int
+        --
+        +__init__(pixmap: QPixmap)
+        +show_message(message: str): void
+        +update_progress(value: int): void
+        +finish_splash(): void
+        -paint_event(event: QPaintEvent): void
+    }
+}
+
+'============= CORE DATA MODELS =============
+package "Data Models" {
+    enum TipoContrato {
+        SERVICIO
+        OBRA
+        MANTENIMIENTO
+        FACTURAS
+    }
+    
+    enum EstadoOferta {
+        NO_PRESENTADA
+        PRESENTADA
+        ADJUDICADA
+        RECHAZADA
+        EN_REVISION
+    }
+    
+    class Proyecto {
+        +nombre: str
+        +ruta: str
+        +archivo_json: str
+        +contrato: DatosContrato
+        +empresas: List[Empresa]
+        +ofertas: List[Oferta]
+        +liquidacion: DatosLiquidacion
+        +fecha_creacion: datetime
+        +ultima_modificacion: datetime
+        +version: str
+        +estado: str
+        +observaciones: str
+        +configuracion: ConfiguracionUI
+        --
+        +__init__(nombre: str, ruta: str)
+        +obtener_empresa_adjudicataria(): Optional[Empresa]
+        +obtener_oferta_minima(): Optional[Oferta]
+        +contar_ofertas_validas(): int
+        +hay_ofertas_duplicadas(): bool
+        +sincronizar_ofertas_con_empresas(): void
+        +actualizar_metadatos(): void
+        +es_valido(): bool
+        +obtener_progreso(): float
+        +calcular_estadisticas(): Dict[str, Any]
+        +exportar_resumen(): Dict[str, Any]
+        +to_dict(): Dict[str, Any]
+        +from_dict(data: Dict[str, Any]): Proyecto
+        +clonar(nuevo_nombre: str): Proyecto
+        +validar_integridad(): tuple[bool, List[str]]
+    }
+    
+    class DatosContrato {
+        +numero_expediente: str
+        +objeto_contrato: str
+        +tipo_contrato: TipoContrato
+        +importe_licitacion: float
+        +importe_iva: float
+        +importe_total: float
+        +duracion: str
+        +plazo_ejecucion: str
+        +fecha_limite_presentacion: Optional[date]
+        +fecha_apertura: Optional[date]
+        +fecha_adjudicacion: Optional[date]
+        +fecha_inicio: Optional[date]
+        +fecha_fin_prevista: Optional[date]
+        +fecha_recepcion: Optional[date]
+        +responsable_contrato: str
+        +director_obra: str
+        +organo_contratacion: str
+        +criterios_adjudicacion: str
+        +garantias_exigidas: float
+        +penalizaciones: str
+        +clausulas_especiales: str
+        +justificacion: str
+        --
+        +__init__(numero_expediente: str, objeto_contrato: str)
+        +calcular_iva(porcentaje: float = 21.0): float
+        +calcular_total(porcentaje_iva: float = 21.0): float
+        +es_obra(): bool
+        +es_servicio(): bool
+        +es_mantenimiento(): bool
+        +obtener_limite_contratacion(): float
+        +cumple_limite_contratacion(): bool
+        +calcular_duracion_dias(): int
+        +obtener_plazo_restante(): int
+        +esta_vencido(): bool
+        +obtener_fase_actual(): str
+        +validar_fechas(): tuple[bool, List[str]]
+        +to_dict(): Dict[str, Any]
+        +from_dict(data: Dict[str, Any]): DatosContrato
+        +actualizar_campos(datos: Dict[str, Any]): bool
+    }
+    
+    class Empresa {
+        +nombre: str
+        +nif: str
+        +email: str
+        +contacto: str
+        +telefono: str
+        +direccion: str
+        +codigo_postal: str
+        +municipio: str
+        +provincia: str
+        +representante_legal: str
+        +cargo_representante: str
+        +oferta: Optional[float]
+        +presenta_oferta: bool
+        +fecha_registro: datetime
+        +observaciones: str
+        +documentos_adjuntos: List[str]
+        +clasificacion: str
+        +solvencia_economica: float
+        +solvencia_tecnica: str
+        --
+        +__init__(nombre: str, nif: str)
+        +validar_email_basico(email: str): bool
+        +validar_nif(): bool
+        +tiene_oferta(): bool
+        +es_valida(): bool
+        +limpiar_datos(): void
+        +calcular_oferta_con_iva(porcentaje: float): float
+        +obtener_resumen(): str
+        +es_adjudicataria(): bool
+        +cumple_requisitos_minimos(): bool
+        +obtener_puntuacion(): float
+        +comparar_con(otra_empresa: Empresa): int
+        +actualizar_datos(datos: Dict[str, Any]): bool
+        +to_dict(): Dict[str, Any]
+        +from_dict(data: Dict[str, Any]): Empresa
+        +exportar_para_documento(): Dict[str, str]
+    }
+    
+    class Oferta {
+        +empresa: str
+        +importe: float
+        +importe_iva: float
+        +importe_total: float
+        +orden_clasificatorio: int
+        +presenta_oferta: bool
+        +estado: EstadoOferta
+        +fecha_presentacion: Optional[date]
+        +fecha_limite: Optional[date]
+        +observaciones: str
+        +documentacion_tecnica: List[str]
+        +garantia_definitiva: float
+        +plazo_ejecucion_ofertado: int
+        +mejoras_propuestas: str
+        +criterios_evaluacion: Dict[str, float]
+        +puntuacion_total: float
+        +es_baja_temeraria: bool
+        +justificacion_precio: str
+        --
+        +__init__(empresa: str, importe: float)
+        +es_valida(): bool
+        +calcular_iva(porcentaje: float = 21.0): float
+        +calcular_total_con_iva(porcentaje: float = 21.0): float
+        +actualizar_totales(): void
+        +esta_en_plazo(): bool
+        +calcular_puntuacion(): float
+        +es_mejor_que(otra_oferta: Oferta): bool
+        +marcar_como_adjudicada(): void
+        +rechazar_oferta(motivo: str): void
+        +validar_documentacion(): tuple[bool, List[str]]
+        +obtener_resumen(): Dict[str, Any]
+        +comparar_precios(otras_ofertas: List[Oferta]): Dict[str, Any]
+        +to_dict(): Dict[str, Any]
+        +from_dict(data: Dict[str, Any]): Oferta
+        +clonar(): Oferta
+    }
+    
+    class DatosLiquidacion {
+        +importe_licitado: float
+        +importe_adjudicado: float
+        +importe_facturado: float
+        +importe_certificado: float
+        +importe_penalizaciones: float
+        +importe_revisiones: float
+        +diferencia: float
+        +porcentaje_ejecutado: float
+        +empresa_ejecutora: str
+        +saldo_favor_adif: float
+        +saldo_favor_empresa: float
+        +fecha_liquidacion: Optional[date]
+        +fecha_recepcion: Optional[date]
+        +observaciones_liquidacion: str
+        +certificaciones: List[Dict[str, Any]]
+        +facturas: List[Dict[str, Any]]
+        +revisiones_precio: List[Dict[str, Any]]
+        +garantias_ejecutadas: float
+        +intereses_demora: float
+        --
+        +__init__(importe_licitado: float)
+        +calcular_diferencia(): float
+        +calcular_porcentaje_ejecutado(): float
+        +calcular_saldos(): tuple[float, float]
+        +actualizar_calculos(): void
+        +agregar_certificacion(datos: Dict[str, Any]): void
+        +agregar_factura(datos: Dict[str, Any]): void
+        +calcular_totales(): Dict[str, float]
+        +obtener_resumen_financiero(): Dict[str, Any]
+        +validar_liquidacion(): tuple[bool, List[str]]
+        +esta_liquidada(): bool
+        +requiere_devolucion(): bool
+        +calcular_intereses(): float
+        +to_dict(): Dict[str, Any]
+        +from_dict(data: Dict[str, Any]): DatosLiquidacion
+        +generar_informe(): str
+    }
+    
+    class ConfiguracionUI {
+        +ventana_ancho: int
+        +ventana_alto: int
+        +mostrar_tooltips: bool
+        +validacion_tiempo_real: bool
+        +autoguardar_intervalo: int
+        +tema: str
+        +idioma: str
+        +fuente_principal: str
+        +tamaño_fuente: int
+        +mostrar_barras_herramientas: bool
+        +recordar_posicion_ventana: bool
+        +nivel_logging: str
+        +backup_automatico: bool
+        +formato_numeros: str
+        +formato_fechas: str
+        --
+        +__init__()
+        +cargar_configuracion(): bool
+        +guardar_configuracion(): bool
+        +restaurar_defaults(): void
+        +validar_configuracion(): bool
+        +aplicar_tema(): void
+        +to_dict(): Dict[str, Any]
+        +from_dict(data: Dict[str, Any]): ConfiguracionUI
+        +exportar_configuracion(): str
+    }
+    
+    class Constantes {
+        +LIMITE_OBRA: float = 15000.0
+        +LIMITE_SERVICIO: float = 40000.0
+        +IVA_GENERAL: float = 21.0
+        +EXTENSION_PROYECTO: str = ".PROJPMF"
+        +CARPETAS_PROYECTO: List[str]
+        +PLANTILLAS: Dict[str, str]
+        +MENSAJES_ERROR: Dict[str, str]
+        +FORMATOS_FECHA: Dict[str, str]
+        +TIPOS_DOCUMENTO: Dict[str, str]
+        +ESTADOS_PROYECTO: List[str]
+        +NIVELES_LOG: Dict[str, int]
+        +CONFIGURACION_DEFAULT: Dict[str, Any]
+        --
+        +obtener_limite_por_tipo(tipo: TipoContrato): float
+        +validar_limite(importe: float, tipo: TipoContrato): bool
+        +obtener_plantilla(tipo_documento: str): Optional[str]
+        +obtener_mensaje_error(codigo: str): str
+        +formatear_importe(importe: float): str
+    }
+}
+
+'============= MAIN CONTROLLER =============
+package "Main Controller" {
+    class ControladorGrafica extends QMainWindow {
+        -proyecto_actual: Optional[str]
+        -datos_cargados: bool
+        -drag_position: Optional[QPoint]
+        -is_dragging: bool
+        -estructura_verificada: bool
+        -cargando_widgets: bool
+        
+        'Controladores especializados
+        -controlador_json: GestorJsonUnificado
+        -controlador_tablas: ControladorTablas
+        -controlador_documentos: ControladorDocumentos
+        -controlador_autosave: ControladorAutoGuardado
+        -controlador_calculos: ControladorCalculos
+        -controlador_eventos_ui: ControladorEventosUI
+        -gestor_archivos_unificado: GestorArchivos
+        -controlador_actuaciones_facturas: ControladorActuacionesFacturas
+        -contract_manager: ContractManagerQt5
+        -pdf_viewer: PDFViewer
+        -integrador_resumen: Optional[Any]
+        -controlador_fases: Optional[Any]
+        
+        'UI Components
+        +tabWidget: QTabWidget
+        +comboBox: QComboBox
+        +TwEmpresas: QTableWidget
+        +TwOfertas: QTableWidget
+        +Tipo: QLabel
+        --
+        +__init__(archivo_proyecto: Optional[str] = None)
+        
+        'Setup Methods
+        -_setup_ui_fast(): void
+        -_configure_tables(): void
+        -_setup_connections(): void
+        -_load_data(): void
+        -_init_controllers(): void
+        -_setup_contract_manager(): void
+        -_configurar_gestor_archivos_en_controladores(): void
+        -_setup_pdf_viewer(): void
+        -_setup_resumen_integrado(): void
+        
+        'Event Handlers
+        +mousePressEvent(event: QMouseEvent): void
+        +mouseMoveEvent(event: QMouseEvent): void
+        +mouseReleaseEvent(event: QMouseEvent): void
+        +closeEvent(event: QCloseEvent): void
+        +on_tab_changed(index: int): void
+        -_on_combo_index_changed(index: int): void
+        
+        'Contract Management
+        +on_contract_loaded(contract_data: Dict[str, Any]): void
+        +on_contract_cleared(): void
+        +on_contract_type_changed(tipo_contrato: str): void
+        +mostrar_dialogo_crear_contrato(): void
+        +mostrar_dialogo_clonar_contrato(): void
+        +mostrar_dialogo_borrar_contrato(): void
+        
+        'Data Loading
+        -_cargar_datos_en_interfaz(contract_data: Dict[str, Any]): void
+        -_cargar_todos_los_widgets(contract_data: Dict[str, Any]): void
+        -_cargar_tablas_especiales(contract_data: Dict[str, Any]): void
+        -_cargar_tabla_empresas(contract_data: Dict[str, Any]): void
+        -_cargar_tabla_ofertas_optimizada(contract_data: Dict[str, Any]): void
+        -_limpiar_todos_los_widgets(): void
+        -_inicializar_widgets_vacios(): void
+        
+        'Widget Loading Methods
+        -_cargar_lineedit(widget: QLineEdit, contract_data: Dict): void
+        -_cargar_textedit(widget: QTextEdit, contract_data: Dict): void
+        -_cargar_doublespinbox(widget: QDoubleSpinBox, contract_data: Dict): void
+        -_cargar_dateedit(widget: QDateEdit, contract_data: Dict): void
+        -_cargar_timeedit(widget: QTimeEdit, contract_data: Dict): bool
+        -_cargar_combobox(widget: QComboBox, contract_data: Dict): bool
+        
+        'Type Management
+        -_cambiar_tipo_contrato(): void
+        -_aplicar_nuevo_tipo_contrato(nuevo_tipo: str): void
+        -_actualizar_pestanas_por_tipo(tipo: str): void
+        -_configurar_por_tipo_contrato(tipo: str): void
+        -_actualizar_radio_buttons_por_tipo(tipo: str): void
+        
+        'Table Management  
+        -_agregar_empresa(): void
+        -_quitar_empresa(): void
+        
+        'Project Management
+        -_guardar_proyecto(): void
+        -_crear_carpeta_con_controlador_archivos(): void
+        -_crear_copia_respaldo(): void
+        
+        'UI Management
+        -_create_custom_title_bar(): void
+        +toggle_maximize(): void
+        -_setup_tooltips(): void
+        -_initialize_ui(): void
+        -_configurar_auto_guardado(): void
+        
+        'Public Interface
+        +get_current_contract_manager(): ContractManagerQt5
+        +get_current_contract_data(): Optional[Dict]
+        +reload_contracts_list(): void
+        +get_datos_proyecto_completo(): Dict
+        +get_current_pdf_path(): str
+        +has_pdf_loaded(): bool
+        +update_pdf_for_current_contract(): bool
+        +arreglar_botones_ahora(): bool
+        +mostrar_actuaciones_especiales(): void
+    }
+}
+
+'============= BUSINESS CONTROLLERS =============
+package "Business Controllers" {
+    class GestorJsonUnificado {
+        -main_window: Optional[QMainWindow]
+        -ruta_archivo: str
+        -datos: Dict[str, Any]
+        -_datos_cache: Dict[str, Any]
+        -_ultima_modificacion: float
+        -_guardando: bool
+        --
+        +__init__(ruta_archivo: str = "BaseDatos.json", main_window: Optional[QMainWindow] = None)
+        -_buscar_archivo_base_datos(): str
+        -_cargar_datos_iniciales(): Dict[str, Any]
+        -_crear_estructura_inicial(): Dict[str, Any]
+        -_validar_estructura_datos(datos: Dict): bool
+        -_migrar_datos_si_necesario(datos: Dict): Dict
+        -_crear_backup(): bool
+        
+        'CRUD Operations
+        +guardar_datos(): bool
+        +recargar_datos(): bool
+        +buscar_contrato_por_nombre(nombre_contrato: str): Optional[Dict]
+        +buscar_contrato_por_expediente(numero_expediente: str): Optional[Dict]
+        +buscar_contrato_inteligente(identificador: str): Optional[Dict]
+        +listar_contratos(): List[Dict[str, str]]
+        +obtener_nombres_obras(): List[str]
+        
+        'Data Management
+        +guardar_campo_en_json(nombre_contrato: str, nombre_campo: str, valor: Any): bool
+        +actualizar_contrato(nombre_contrato: str, datos_actualizados: Dict): bool
+        +leer_contrato_completo(nombre_contrato: str): Optional[Dict]
+        +guardar_contrato(datos_contrato: Dict): bool
+        +eliminar_contrato(nombre_contrato: str): bool
+        
+        'Contract Lifecycle
+        +crear_contrato_nuevo(datos_contrato: Dict): bool
+        +crear_contrato_con_carpetas(datos_contrato: Dict): tuple[bool, str]
+        +clonar_contrato(origen: str, nuevo_nombre: str, opciones: Optional[Dict] = None): bool
+        +borrar_contrato_con_carpetas(nombre_contrato: str): tuple[bool, str]
+        
+        'Configuration Management
+        +obtener_firmantes(): Dict[str, str]
+        +guardar_firmantes(firmantes: Dict[str, str]): bool
+        +obtener_configuracion(): Dict[str, Any]
+        +guardar_configuracion(config: Dict[str, Any]): bool
+        
+        'Utilities
+        +validar_integridad_datos(): tuple[bool, List[str]]
+        +obtener_estadisticas(): Dict[str, Any]
+        +exportar_datos(): str
+        +importar_datos(datos_json: str): bool
+    }
+    
+    class ControladorCalculos {
+        -_calculando: bool
+        -_campos_pendientes: Set[str]
+        -_valores_cache: Dict[str, Any]
+        -_precision_decimal: int
+        --
+        +__init__(precision_decimal: int = 2)
+        
+        'Main Calculation Methods
+        +calcular_iva_base_presupuesto(window: QMainWindow): bool
+        +calcular_iva_adjudicacion(window: QMainWindow): bool
+        +calcular_certificacion_completa(window: QMainWindow): bool
+        +calcular_liquidacion(window: QMainWindow): bool
+        +calcular_ofertas_completo(window: QMainWindow): bool
+        +calcular_anualidades(window: QMainWindow): bool
+        
+        'Validation and Business Rules
+        +actualizar_justificacion_limites(window: QMainWindow): bool
+        +validar_limites_contratacion(tipo_contrato: str, importe: float): bool
+        +calcular_porcentaje_ejecutado(facturado: float, licitado: float): float
+        
+        'Synchronization
+        +sincronizar_empresas_ofertas(main_window: QMainWindow): void
+        +sincronizar_totales(window: QMainWindow): void
+        +recalcular_todo(window: QMainWindow): bool
+        
+        'State Management
+        +pausar_calculos(): void
+        +reanudar_calculos(): void
+        +limpiar_cache(): void
+        +esta_calculando(): bool
+        +obtener_campos_pendientes(): List[str]
+        
+        'Utility Methods
+        -_guardar_lote_completo(window: QMainWindow): bool
+        -_establecer_valor_widget(widget: QWidget, valor: Any): bool
+        -_obtener_valor_widget(widget: QWidget): Optional[float]
+        -_formatear_numero(numero: float): str
+        -_validar_numero(valor: Any): tuple[bool, float]
+        -_aplicar_precision(numero: float): float
+    }
+    
+    class ControladorTablas {
+        -tabla_empresas: Optional[QTableWidget]
+        -tabla_ofertas: Optional[QTableWidget]
+        -sincronizacion_activa: bool
+        -main_window: Optional[QMainWindow]
+        -validacion_tiempo_real: bool
+        -datos_empresas: List[Empresa]
+        -datos_ofertas: List[Oferta]
+        --
+        +__init__(main_window: Optional[QMainWindow] = None)
+        
+        'Table Setup
+        +setup_tabla_empresas(tabla: QTableWidget): void
+        +setup_tabla_ofertas(tabla: QTableWidget): void
+        +configurar_validacion_tiempo_real(activar: bool): void
+        
+        'Row Management
+        +agregar_fila(tabla: QTableWidget): void
+        +quitar_fila(tabla: QTableWidget): void
+        +duplicar_fila(tabla: QTableWidget): void
+        +mover_fila_arriba(tabla: QTableWidget): void
+        +mover_fila_abajo(tabla: QTableWidget): void
+        
+        'Data Management
+        +obtener_empresas(): List[Empresa]
+        +obtener_ofertas(): List[Oferta]
+        +cargar_empresas(empresas: List[Empresa]): void
+        +cargar_ofertas(ofertas: List[Oferta]): void
+        +sincronizar_tablas(): void
+        +limpiar_tablas(): void
+        +exportar_datos_tabla(tabla: QTableWidget): List[Dict[str, Any]]
+        
+        'Validation
+        +validar_datos_tablas(): tuple[bool, List[str]]
+        +validar_empresa(fila: int): tuple[bool, List[str]]
+        +validar_oferta(fila: int): tuple[bool, List[str]]
+        
+        'Statistics and Analysis
+        +obtener_estadisticas(): Dict[str, Any]
+        +obtener_resumen_ofertas(): Dict[str, Any]
+        +detectar_ofertas_duplicadas(): List[tuple[int, int]]
+        
+        'Event Handlers
+        -_on_empresa_item_changed(item: QTableWidgetItem): void
+        -_on_oferta_item_changed(item: QTableWidgetItem): void
+        -_on_empresa_selection_changed(): void
+        -_on_oferta_selection_changed(): void
+        
+        'Utility Methods
+        -_guardar_tablas_automaticamente(): void
+        -_aplicar_formato_celda(item: QTableWidgetItem, tipo: str): void
+        -_validar_celda(item: QTableWidgetItem): bool
+    }
+    
+    class ControladorDocumentos {
+        -main_window: QMainWindow
+        -gestor_archivos: Optional[GestorArchivos]
+        -plantillas_path: str
+        -documentos_generados: List[str]
+        --
+        +__init__(main_window: QMainWindow)
+        
+        'Document Generation Methods
+        +comprobar_generar_acta_inicio(): void
+        +comprobar_generar_cartas_invitacion(): void
+        +comprobar_generar_acta_adjudicacion(): void
+        +comprobar_generar_carta_adj(): void
+        +comprobar_generar_acta_liq(): void
+        +comprobar_generar_replanteo(): void
+        +comprobar_generar_recepcion(): void
+        +comprobar_generar_director(): void
+        +generar_contrato_firmado(): void
+        
+        'Template Processing
+        -_generar_documento_word(plantilla: str, datos: Dict, nombre_archivo: str): bool
+        -_procesar_plantilla(ruta_plantilla: str, variables: Dict): str
+        -_reemplazar_variables(contenido: str, variables: Dict): str
+        -_validar_plantilla(ruta_plantilla: str): bool
+        
+        'Data Preparation
+        -_obtener_empresas_lista(contract_data: Dict): List[Dict]
+        -_preparar_datos_documento(contract_data: Dict, tipo_documento: str): Dict
+        -_obtener_variables_sistema(): Dict
+        -_formatear_datos_para_documento(datos: Any): str
+        
+        'File Management
+        +obtener_ruta_salida(nombre_contrato: str, tipo_documento: str): str
+        +verificar_plantillas_disponibles(): Dict[str, bool]
+        +obtener_documentos_generados(): List[str]
+        +limpiar_documentos_temporales(): void
+        
+        'Validation
+        -_validar_datos_minimos(contract_data: Dict): tuple[bool, List[str]]
+        -_validar_empresas_participantes(contract_data: Dict): bool
+        -_validar_datos_financieros(contract_data: Dict): bool
+    }
+    
+    class ControladorEventosUI {
+        -main_window: QMainWindow
+        -controlador_calculos: Optional[ControladorCalculos]
+        -eventos_configurados: Set[str]
+        -widgets_monitoreados: Dict[str, QWidget]
+        --
+        +__init__(main_window: QMainWindow)
+        
+        'Setup Methods
+        +setup_event_handlers(): void
+        +set_controlador_calculos(controlador: ControladorCalculos): void
+        +configurar_eventos_perdida_foco(): void
+        +configurar_eventos_cambio_valor(): void
+        
+        'Event Connection
+        -_conectar_evento_widget(widget: QWidget, callback: Callable): bool
+        -_conectar_eventos_tabla(tabla: QTableWidget): void
+        -_conectar_eventos_formulario(): void
+        
+        'Event Handlers
+        +on_widget_value_changed(widget: QWidget): void
+        +on_widget_focus_lost(widget: QWidget): void
+        +on_table_item_changed(item: QTableWidgetItem): void
+        +on_combo_selection_changed(widget: QComboBox): void
+        
+        'Specialized Handlers
+        +conectar_boton_excel(): void
+        +mostrar_ventana_doble_tabla(): void
+        +on_tw_empresas_changed(item: QTableWidgetItem): void
+        +obtener_empresas_actuales(): List[Dict[str, Any]]
+        
+        'Utility Methods
+        -_identificar_tipo_widget(widget: QWidget): str
+        -_debe_recalcular(widget_name: str): bool
+        -_programar_guardado_automatico(): void
+    }
+    
+    class ControladorAutoGuardado {
+        -main_window: QMainWindow
+        -timer: QTimer
+        -controlador_json: Optional[GestorJsonUnificado]
+        -contract_manager: Optional[ContractManagerQt5]
+        -cargando_datos: bool
+        -ultimo_guardado: float
+        -cambios_pendientes: Set[str]
+        -intervalo_guardado: int
+        -max_intentos: int
+        --
+        +__init__(main_window: QMainWindow, intervalo: int = 30000)
+        
+        'Configuration
+        +configurar_auto_guardado_completo(): void
+        +set_dependencies(controlador_json: GestorJsonUnificado, contract_manager: ContractManagerQt5): void
+        +configurar_intervalo(segundos: int): void
+        
+        'State Management
+        +iniciar_carga_datos(): void
+        +finalizar_carga_datos(): void
+        +pausar_auto_guardado(): void
+        +reanudar_auto_guardado(): void
+        +esta_guardando(): bool
+        
+        'Save Operations
+        +forzar_guardado_completo(): void
+        +marcar_cambio_pendiente(campo: str): void
+        +limpiar_cambios_pendientes(): void
+        
+        'Internal Methods
+        -_auto_guardar_completo(): void
+        -_debe_guardar(): bool
+        -_realizar_guardado(): bool
+        -_manejar_error_guardado(error: Exception): void
+        
+        'Statistics
+        +obtener_estadisticas_guardado(): Dict[str, Any]
+        +obtener_ultimo_guardado(): Optional[datetime]
+    }
+    
+    class ContractManagerQt5 {
+        -combo_box: QComboBox
+        -label_tipo: QLabel
+        -label_expediente: Optional[QLabel]
+        -gestor_json: GestorJsonUnificado
+        -current_contract: Optional[str]
+        -contratos_cache: Dict[str, Dict]
+        
+        'Signals
+        contract_loaded: pyqtSignal[Dict]
+        contract_type_changed: pyqtSignal[str]
+        contract_cleared: pyqtSignal
+        --
+        +__init__(combo_box: QComboBox, label_tipo: QLabel, label_expediente: Optional[QLabel] = None)
+        
+        'Contract Loading
+        +load_contracts_from_json(): void
+        +reload_contracts(): void
+        +refresh_current_contract(): void
+        
+        'Contract Access
+        +get_current_contract(): Optional[str]
+        +get_current_contract_data(): Optional[Dict]
+        +get_all_contracts(): List[str]
+        
+        'Contract Operations
+        +select_contract(nombre: str): bool
+        +clear_selection(): void
+        +crear_carpeta_para_contrato_actual(): bool
+        
+        'Internal Methods
+        -_process_contract_selection(contract_text: str): void
+        -_update_labels(tipo: str, expediente: str): void
+        -_clear_contract_info(): void
+        -_emit_contract_signals(contract_data: Dict): void
+        
+        'Validation
+        -_validar_contrato(contract_data: Dict): bool
+        -_normalizar_nombre_contrato(nombre: str): str
+    }
+    
+    class GestorArchivos {
+        -main_window: QMainWindow
+        -ruta_base: str
+        -estructura_carpetas: List[str]
+        --
+        +__init__(main_window: QMainWindow)
+        
+        'Folder Management
+        +verificar_o_crear_carpeta(contract_data: Dict, modo: str = "auto"): tuple[str, bool, str]
+        +crear_estructura_carpetas(nombre_obra: str): bool
+        +obtener_ruta_carpeta_proyecto(nombre_obra: str): str
+        +verificar_estructura_completa(ruta_proyecto: str): bool
+        
+        'File Operations
+        +copiar_plantillas_proyecto(ruta_proyecto: str): bool
+        +mover_archivo_a_proyecto(archivo_origen: str, nombre_obra: str, subcarpeta: str): str
+        +obtener_archivos_proyecto(nombre_obra: str): List[str]
+        +limpiar_archivos_temporales(nombre_obra: str): void
+        
+        'Path Utilities
+        +normalizar_nombre_carpeta(nombre: str): str
+        +obtener_ruta_relativa(ruta_absoluta: str): str
+        +verificar_permisos_escritura(ruta: str): bool
+        
+        'Validation
+        -_validar_nombre_proyecto(nombre: str): bool
+        -_crear_carpeta_segura(ruta: str): bool
+        -_verificar_espacio_disco(ruta: str, tamaño_mb: int): bool
+    }
+    
+    class ControladorActuacionesFacturas {
+        -main_window: QMainWindow
+        -proyecto_actual: Optional[str]
+        -datos_actuales: Optional[Dict]
+        -actuaciones: List[Dict]
+        -facturas: List[Dict]
+        -table_actuaciones: Optional[QTableWidget]
+        -table_facturas: Optional[QTableWidget]
+        -gestor_archivos: Optional[GestorArchivos]
+        --
+        +__init__(main_window: QMainWindow)
+        
+        'Project Management
+        +set_proyecto_actual(nombre: str, datos: Dict): void
+        +limpiar_proyecto_actual(): void
+        +recargar_datos_proyecto(): void
+        
+        'Actuaciones Management
+        +agregar_actuacion(): void
+        +editar_actuacion(indice: int): void
+        +borrar_actuacion(): void
+        +obtener_actuaciones(): List[Dict]
+        +cargar_actuaciones(actuaciones: List[Dict]): void
+        
+        'Facturas Management
+        +agregar_factura(): void
+        +editar_factura(indice: int): void
+        +borrar_factura(): void
+        +obtener_facturas(): List[Dict]
+        +cargar_facturas(facturas: List[Dict]): void
+        
+        'Table Management
+        +actualizar_tabla_actuaciones(): void
+        +actualizar_tabla_facturas(): void
+        -_configurar_tablas(): void
+        
+        'Calculations
+        +calcular_totales(): Dict[str, float]
+        +actualizar_presupuestos(): void
+        +validar_presupuesto_disponible(importe: float): bool
+        
+        'Internal Methods
+        -_crear_actuacion_desde_dialogo(): Optional[Dict]
+        -_crear_factura_desde_dialogo(): Optional[Dict]
+        -_guardar_datos(): bool
+        -_validar_datos(): tuple[bool, List[str]]
+    }
+}
+
+'============= UTILITIES AND HELPERS =============
+package "Utils and Helpers" {
+    class HelpersModule {
+        {static} +es_numero_valido(valor_str: str): bool
+        {static} +validar_nif_basico(nif: str): bool
+        {static} +validar_email_basico(email: str): bool
+        {static} +validar_datos_empresa(datos_empresa: Dict): tuple[bool, List[str]]
+        {static} +validar_oferta_economica(valor_str: str): tuple[bool, Optional[float], str]
+        {static} +resource_path(relative_path: str): str
+        {static} +get_ui_file_path(): Optional[str]
+        {static} +setup_ui_with_new_structure(main_window_instance: QMainWindow): bool
+        {static} +abrir_archivo(ruta_archivo: str): bool
+        {static} +abrir_carpeta(ruta_carpeta: str): bool
+        {static} +crear_carpeta_si_no_existe(ruta_carpeta: str): bool
+        {static} +limpiar_nombre_archivo(nombre: str): str
+        {static} +formatear_numero_espanol(numero: float, decimales: int = 2): str
+        {static} +parsear_numero_espanol(texto: str): Optional[float]
+        {static} +convertir_numero_espanol_a_float(texto: str): float
+        {static} +crear_copia_respaldo_proyecto(ruta_proyecto: str): str
+        {static} +verificar_integridad_archivo_json(ruta_archivo: str): tuple[bool, List[str]]
+    }
+    
+    package "Utils Package" {
+        class UtilsFinanciero {
+            {static} +calcular_iva(importe: float, porcentaje: float = 21.0): float
+            {static} +calcular_total_con_iva(importe: float, porcentaje: float = 21.0): float
+            {static} +formatear_euro_espanol(importe: float, incluir_simbolo: bool = True): str
+            {static} +parsear_euro_espanol(texto: str): float
+            {static} +redondear_financiero(importe: float, decimales: int = 2): float
+            {static} +calcular_porcentaje(parte: float, total: float): float
+            {static} +aplicar_porcentaje(cantidad: float, porcentaje: float): float
+            {static} +validar_importe(importe: Any): tuple[bool, float]
+        }
+        
+        class UtilsValidaciones {
+            {static} +validar_nif_basico(nif: str): bool
+            {static} +validar_cif(cif: str): bool
+            {static} +validar_email_basico(email: str): bool
+            {static} +validar_telefono_espanol(telefono: str): bool
+            {static} +validar_codigo_postal_espanol(cp: str): bool
+            {static} +es_numero_valido(valor_str: str): bool
+            {static} +validar_datos_empresa(datos_empresa: Dict): tuple[bool, List[str]]
+            {static} +validar_fecha(fecha_str: str): bool
+            {static} +validar_rango_fechas(fecha_inicio: str, fecha_fin: str): bool
+        }
+        
+        class UtilsFechas {
+            {static} +formatear_fecha_espanol(fecha: date, formato: str = "%d/%m/%Y"): str
+            {static} +parsear_fecha_espanol(fecha_str: str): Optional[date]
+            {static} +convertir_qdate_a_python(qdate: QDate): Optional[date]
+            {static} +convertir_python_a_qdate(fecha: date): Optional[QDate]
+            {static} +calcular_dias_entre_fechas(fecha1: date, fecha2: date): int
+            {static} +obtener_fecha_actual(): date
+            {static} +formatear_datetime_espanol(dt: datetime): str
+            {static} +es_fecha_valida(año: int, mes: int, dia: int): bool
+        }
+        
+        class UtilsArchivos {
+            {static} +crear_copia_respaldo(ruta_archivo: str, sufijo: str = "_backup"): str
+            {static} +verificar_estructura_proyecto(ruta: str): bool
+            {static} +limpiar_nombre_archivo(nombre: str): str
+            {static} +obtener_extension_archivo(ruta: str): str
+            {static} +es_archivo_valido(ruta: str): bool
+            {static} +obtener_tamaño_archivo(ruta: str): int
+            {static} +crear_directorio_recursivo(ruta: str): bool
+            {static} +copiar_archivo_seguro(origen: str, destino: str): bool
+            {static} +obtener_archivos_por_extension(directorio: str, extension: str): List[str]
+        }
+    }
+    
+    class ImportsComunes {
+        -OPENPYXL_DISPONIBLE: bool
+        -DOCX2PDF_DISPONIBLE: bool
+        -LXML_DISPONIBLE: bool
+        -MODELOS_DISPONIBLE: bool
+        -HELPERS_DISPONIBLE: bool
+        -UTILS_DISPONIBLE: bool
+        -dependencias_estado: Dict[str, bool]
+        --
+        +__init__()
+        +verificar_dependencias(): Dict[str, bool]
+        +mostrar_estado_dependencias(): void
+        +es_dependencia_disponible(nombre: str): bool
+        +obtener_version_dependencia(nombre: str): Optional[str]
+        +instalar_dependencia_faltante(nombre: str): bool
+        {static} +requerir_dependencia(nombre: str): void
+        -_verificar_modulo(nombre: str): bool
+        -_obtener_mensaje_error(dependencia: str): str
+    }
+}
+
+'============= UI INTEGRATION =============
+package "UI Integration" {
+    class PyQt5Framework <<external>> {
+        +QMainWindow
+        +QWidget
+        +QTableWidget
+        +QComboBox
+        +QLabel
+        +QLineEdit
+        +QDoubleSpinBox
+        +QDateEdit
+        +QTextEdit
+        +QDialog
+        +QPushButton
+        +QTimer
+        +pyqtSignal
+    }
+    
+    package "Custom Dialogs" {
+        class DialogoCrearContrato extends QDialog {
+            -datos_contrato: Dict[str, Any]
+            +result: Optional[Dict[str, Any]]
+            --
+            +__init__(parent: QWidget)
+            +obtener_datos(): Dict[str, Any]
+            +validar_datos(): tuple[bool, List[str]]
+            -_configurar_ui(): void
+            -_conectar_eventos(): void
+        }
+        
+        class DialogoClonarContrato extends QDialog {
+            -contrato_origen: str
+            -datos_origen: Dict[str, Any]
+            +result: Optional[Dict[str, Any]]
+            --
+            +__init__(parent: QWidget, contrato_origen: str, datos_origen: Dict)
+            +obtener_opciones_clonacion(): Dict[str, bool]
+            -_mostrar_datos_origen(): void
+            -_configurar_opciones(): void
+        }
+        
+        class DialogoBorrarContrato extends QDialog {
+            -nombre_contrato: str
+            -datos_contrato: Dict[str, Any]
+            +confirmado: bool
+            --
+            +__init__(parent: QWidget, nombre_contrato: str, datos_contrato: Dict)
+            +mostrar_confirmacion(): bool
+            -_mostrar_informacion_contrato(): void
+            -_configurar_advertencias(): void
+        }
+        
+        class VentanaDobleTabla extends QDialog {
+            -empresas_aplicacion: List[Dict[str, Any]]
+            -tabla_izquierda: QTableWidget
+            -tabla_derecha: QTableWidget
+            -empresas_seleccionadas: List[Dict[str, Any]]
+            --
+            +__init__(empresas: List[Dict[str, Any]], parent: Optional[QWidget] = None)
+            +llenar_tabla(tabla: QTableWidget, empresas: List[Dict]): void
+            +mover_a_derecha(): void
+            +mover_a_izquierda(): void
+            +obtener_empresas_seleccionadas(): List[Dict[str, Any]]
+            -_configurar_tablas(): void
+            -_conectar_botones(): void
+        }
+    }
+}
+
+'============= EXTERNAL DEPENDENCIES =============
+package "External Libraries" {
+    class ExternalLibs <<external>> {
+        +openpyxl: "Excel file manipulation"
+        +lxml: "XML processing for documents"
+        +docx2pdf: "Word to PDF conversion"
+        +json: "JSON serialization/deserialization"
+        +datetime: "Date and time handling"
+        +pathlib: "Modern path handling"
+        +logging: "Application logging"
+        +os: "Operating system interface"
+        +sys: "System-specific parameters"
+        +subprocess: "Process management"
+    }
+}
+
+'============= RELATIONSHIPS =============
+
+' Main Application Relations
+MainPy --> ControladorGrafica : creates/launches
+MainPy *-- FastSplash : contains
+FastSplash --> PyQt5Framework : uses
+
+' Core Model Relations
+Proyecto *-- DatosContrato : contains
+Proyecto *-- "1..*" Empresa : contains
+Proyecto *-- "1..*" Oferta : contains  
+Proyecto *-- DatosLiquidacion : contains
+Proyecto *-- ConfiguracionUI : contains
+Oferta --> EstadoOferta : uses
+DatosContrato --> TipoContrato : uses
+Empresa --> Constantes : uses
+DatosContrato --> Constantes : uses
+DatosLiquidacion --> UtilsFinanciero : uses
+
+' Main Controller Relations (Composition - ControladorGrafica owns these)
+ControladorGrafica *-- GestorJsonUnificado : manages
+ControladorGrafica *-- ControladorCalculos : contains
+ControladorGrafica *-- ControladorTablas : contains
+ControladorGrafica *-- ControladorDocumentos : contains
+ControladorGrafica *-- ControladorEventosUI : contains
+ControladorGrafica *-- ControladorAutoGuardado : contains
+ControladorGrafica *-- ContractManagerQt5 : contains
+ControladorGrafica *-- GestorArchivos : contains
+ControladorGrafica *-- ControladorActuacionesFacturas : contains
+
+' Business Controller Interactions
+GestorJsonUnificado --> Proyecto : serializes/deserializes
+GestorJsonUnificado --> UtilsArchivos : uses for file operations
+ControladorTablas --> Empresa : manages
+ControladorTablas --> Oferta : manages
+ControladorTablas --> UtilsValidaciones : uses for validation
+ControladorCalculos --> ControladorTablas : triggers updates on
+ControladorCalculos --> UtilsFinanciero : uses for calculations
+ControladorEventosUI --> ControladorCalculos : triggers calculations
+ControladorEventosUI --> UtilsFechas : uses for date handling
+ContractManagerQt5 --> GestorJsonUnificado : reads data from
+ControladorAutoGuardado --> GestorJsonUnificado : saves data through
+ControladorDocumentos --> GestorArchivos : uses for file operations
+ControladorActuacionesFacturas --> GestorArchivos : uses for file operations
+
+' Utility Relations
+ControladorGrafica --> HelpersModule : uses utilities
+HelpersModule --> UtilsFinanciero : uses
+HelpersModule --> UtilsValidaciones : uses
+HelpersModule --> UtilsFechas : uses
+HelpersModule --> UtilsArchivos : uses
+ImportsComunes --> ExternalLibs : manages imports
+
+' External Relations
+ControladorGrafica --|> PyQt5Framework : extends QMainWindow
+ControladorTablas --> PyQt5Framework : uses widgets
+DialogoCrearContrato --|> PyQt5Framework : extends QDialog
+DialogoClonarContrato --|> PyQt5Framework : extends QDialog
+DialogoBorrarContrato --|> PyQt5Framework : extends QDialog
+VentanaDobleTabla --|> PyQt5Framework : extends QDialog
+GestorJsonUnificado --> ExternalLibs : uses json
+ControladorDocumentos --> ExternalLibs : uses openpyxl, docx2pdf
+UtilsArchivos --> ExternalLibs : uses pathlib, os
+UtilsFechas --> ExternalLibs : uses datetime
+
+' Signal/Event Relations (PyQt5 signals - dashed for event flow)
+ControladorTablas ..> ControladorCalculos : item_changed signals
+ControladorEventosUI ..> ControladorAutoGuardado : change signals
+ContractManagerQt5 ..> ControladorGrafica : contract_loaded signal
+ControladorActuacionesFacturas ..> ControladorCalculos : data_changed signals
+
+'============= NOTES AND STYLING =============
+
+note top of MainPy : **Application Entry Point**\nLaunches PyQt5 GUI with splash screen\nChecks dependencies and initializes main controller
+
+note right of ControladorGrafica : **Main Window Controller (1900+ lines)**\nOrchestrates all subsystems\nManages complete UI lifecycle\nHandles contract loading/management\nCoordinates all business controllers
+
+note bottom of GestorJsonUnificado : **Unified JSON Data Controller**\nCentralized data persistence\nHandles complete contract CRUD operations\nManages data validation and backups\nSupports data migration and integrity checks
+
+note left of ControladorCalculos : **Financial Calculation Engine**\nHandles all mathematical operations\nIVA (VAT) calculations at 21%\nReal-time calculation updates\nFinancial validation and business rules
+
+note top of Proyecto : **Central Data Model**\nComplete contract information container\nSupports full serialization/deserialization\nContains all business entities\nManages contract lifecycle state
+
+note bottom of ControladorTablas : **Table Management Controller**\nManages company and offer tables\nReal-time validation and synchronization\nHandles table operations (CRUD)\nProvides data export capabilities
+
+note right of ControladorDocumentos : **Document Generation Engine**\nCreates official Spanish administrative documents\nTemplate-based Word document generation\nVariable substitution system\nSupports multiple document types
+
+note top of UtilsFinanciero : **Spanish Financial Utilities**\n21% VAT calculations\nEuro formatting (Spanish locale)\nFinancial validation\nRounding and precision handling
+
+skinparam class {
+    BackgroundColor<<external>> lightblue
+    BorderColor<<external>> blue
+    BackgroundColor<<dialog>> lightyellow
+    BorderColor<<dialog>> orange
+}
+
+skinparam package {
+    BackgroundColor lightgray
+    BorderColor black
+    FontStyle bold
+}
+
+skinparam note {
+    BackgroundColor lightyellow
+    BorderColor orange
+}
+
+@enduml

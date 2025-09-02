@@ -1,0 +1,4901 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1586</width>
+    <height>990</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>ADIF - Generador de Actas</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+/* ===== ADIF Ultra Modern UI Theme 2025 =====
+   Premium Design Palette:
+   - Primary Green: #00C853 (Material Design)
+   - Dark Green:    #00701A
+   - Accent Green:  #69F0AE
+   - Background:    #F8FAFF (Premium white-blue)
+   - Surface:       #FFFFFF
+   - Text Primary:  #1A1D23
+   - Text Secondary:#4A5568
+   - Border:        #E2E8F0
+   - Shadow:        rgba(0, 0, 0, 0.08)
+*/
+
+/* Base window - Premium look */
+QMainWindow, QWidget {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #F8FAFF, stop:1 #F0F4F8);
+    color: #1A1D23;
+    font-family: &quot;Inter&quot;, &quot;Segoe UI&quot;, &quot;SF Pro Display&quot;, &quot;Roboto&quot;, sans-serif;
+    font-size: 9pt;
+    font-weight: 400;
+}
+
+/* Modern Glass-morphism Tabs */
+QTabWidget::pane {
+    border: 1px solid #E2E8F0;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    margin-top: 8px;
+}
+
+QTabBar::tab {
+    background: rgba(255, 255, 255, 0.7);
+    color: #4A5568;
+    padding: 12px 20px;
+    margin-right: 2px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-bottom: none;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    min-width: 120px;
+    font-weight: 500;
+}
+
+QTabBar::tab:selected {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #00C853, stop:1 #00A843);
+    color: #FFFFFF;
+    border: 1px solid #00C853;
+    border-bottom: none;
+    font-weight: 600;
+}
+
+QTabBar::tab:hover:!selected {
+    background: rgba(0, 200, 83, 0.1);
+    color: #00C853;
+    border-color: rgba(0, 200, 83, 0.3);
+}
+
+/* Headings */
+QLabel[heading=&quot;true&quot;] {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+        stop:0 #0b7a44, stop:1 #006633);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 16pt;
+    font-weight: 700;
+}
+
+/* Labels general */
+QLabel {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 9pt;
+    background: transparent;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+/* Labels específicos para formularios */
+QLabel:hover {
+    background: rgba(236, 240, 241, 0.5);
+}
+
+/* Labels de encabezados importantes */
+QLabel[heading=&quot;true&quot;] {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+        stop:0 #0b7a44, stop:1 #006633);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 16pt;
+    font-weight: 700;
+}
+
+/* Labels para títulos de secciones */
+QGroupBox::title {
+    color: #2c3e50;
+    font-weight: 700;
+    font-size: 11pt;
+    padding: 4px 12px;
+    background: rgba(236, 240, 241, 0.8);
+    border-radius: 8px;
+    margin-left: 10px;
+}
+
+/* Estilos mejorados para QGroupBox */
+QGroupBox {
+    font-weight: 600;
+    border: 2px solid #bdc3c7;
+    border-radius: 12px;
+    margin-top: 10px;
+    padding-top: 15px;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 15px;
+    padding: 6px 15px;
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, 
+        stop:0 #ecf0f1, stop:1 #d5dbde);
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
+    border-radius: 8px;
+    font-size: 10pt;
+    font-weight: 700;
+}
+
+/* Labels especiales con indicadores */
+QLabel[money=&quot;true&quot;] {
+    background: rgba(76, 175, 80, 0.1);
+    color: #2E7D32;
+    border-left: 4px solid #4CAF50;
+    padding: 6px 12px;
+    font-weight: 700;
+}
+
+QLabel[percentage=&quot;true&quot;] {
+    background: rgba(33, 150, 243, 0.1);
+    color: #1565C0;
+    border-left: 4px solid #2196F3;
+    padding: 6px 12px;
+    font-weight: 700;
+}
+
+QLabel[info=&quot;true&quot;] {
+    background: rgba(158, 158, 158, 0.1);
+    color: #424242;
+    border-left: 4px solid #757575;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+
+/* Ultra Modern Input Fields */
+QLineEdit, QTextEdit, QPlainTextEdit,
+QSpinBox, QDoubleSpinBox, QDateEdit, QTimeEdit, QComboBox {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 9pt;
+    color: #1A1D23;
+    selection-background-color: rgba(0, 200, 83, 0.2);
+    selection-color: #1A1D23;
+}
+
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus,
+QSpinBox:focus, QDoubleSpinBox:focus, QDateEdit:focus, QTimeEdit:focus, QComboBox:focus {
+    border: 2px solid #00C853;
+    background: #FFFFFF;
+    outline: none;
+}
+
+QLineEdit:hover, QTextEdit:hover, QPlainTextEdit:hover,
+QSpinBox:hover, QDoubleSpinBox:hover, QDateEdit:hover, QTimeEdit:hover, QComboBox:hover {
+    border-color: #CBD5E0;
+}
+
+/* Spin arrows */
+QSpinBox::up-button, QDoubleSpinBox::up-button,
+QSpinBox::down-button, QDoubleSpinBox::down-button {
+    background: #e7f4ee;
+    border: 1px solid #d5dbde;
+    border-radius: 6px;
+    width: 22px;
+    height: 18px;
+    margin: 2px;
+}
+QSpinBox::up-button:hover, QDoubleSpinBox::up-button:hover,
+QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover {
+    background: #d7efe5;
+}
+
+/* Read-only look */
+QLineEdit[readOnly=&quot;true&quot;], QTextEdit[readOnly=&quot;true&quot;],
+QDoubleSpinBox[readOnly=&quot;true&quot;], QSpinBox[readOnly=&quot;true&quot;] {
+    background: #f4f6f8;
+    color: #55636a;
+}
+
+/* Ultra Modern Buttons with Micro-interactions */
+QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #00C853, stop:1 #00A843);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-weight: 600;
+    font-size: 9pt;
+}
+
+QPushButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #00E676, stop:1 #00C853);
+}
+
+QPushButton:pressed {
+    background: #004225;
+}
+QPushButton[destructive=&quot;true&quot;] {
+    background: #b00020;
+    border-color: #b00020;
+}
+QPushButton[secondary=&quot;true&quot;] {
+    background: #ffffff;
+    color: #0b7a44;
+    border: 2px solid #0b7a44;
+}
+
+/* Tables */
+QTableWidget, QTableView {
+    background: #ffffff;
+    alternate-background-color: #f8faf9;
+    border: 1px solid #d5dbde;
+    border-radius: 12px;
+    gridline-color: #e3e7ea;
+}
+QHeaderView::section {
+    background: #e7f4ee;
+    color: #004225;
+    padding: 8px;
+    border: 1px solid #d5dbde;
+    font-weight: 700;
+}
+QTableWidget::item:selected, QTableView::item:selected {
+    background: #cfe9dd;
+    color: #1f2a2e;
+}
+
+/* GroupBoxes */
+QGroupBox {
+    background: #ffffff;
+    border: 1px solid #d5dbde;
+    border-radius: 14px;
+    margin-top: 16px;
+    padding-top: 24px;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 16px;
+    padding: 6px 12px;
+    background: #006633;
+    color: #ffffff;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+/* Checkbox &amp; Radio */
+QRadioButton, QCheckBox {
+    spacing: 8px;
+    font-weight: 600;
+}
+QRadioButton::indicator, QCheckBox::indicator {
+    width: 20px; height: 20px;
+}
+QRadioButton::indicator:unchecked, QCheckBox::indicator:unchecked {
+    border: 2px solid #0b7a44;
+    border-radius: 4px;
+    background: #ffffff;
+}
+QRadioButton::indicator:checked, QCheckBox::indicator:checked {
+    border: 2px solid #006633;
+    background: #0b7a44;
+}
+
+/* MDI area or containers */
+QMdiArea {
+    background: #f4f6f8;
+    border: 1px solid #d5dbde;
+    border-radius: 12px;
+}
+
+/* Subtle shadows on focusable containers (Qt style engines may ignore) */
+
+/* ===== Ajustes extra para más viveza ===== */
+
+/* Botones secundarios con degradado y azul suave */
+QPushButton[secondary=&quot;true&quot;] {
+    background: qlineargradient(x1:0,y1:0,x2:0,y2:1,
+        stop:0 #ffffff, stop:1 #3a7ca5);
+    color: #ffffff;
+    border: 1px solid #3a7ca5;
+}
+QPushButton[secondary=&quot;true&quot;]:hover {
+    background: qlineargradient(x1:0,y1:0,x2:0,y2:1,
+        stop:0 #3a7ca5, stop:1 #0b7a44);
+}
+
+/* Tabs seleccionadas con acento azul */
+QTabBar::tab:selected {
+    background: #e7f4ee;
+    color: #3a7ca5;
+    border: 1px solid #3a7ca5;
+    border-bottom: 2px solid #3a7ca5;
+}
+
+/* Encabezados de tabla con azul */
+QHeaderView::section {
+    background: #3a7ca5;
+    color: #ffffff;
+}
+
+/* Bordes de inputs con azul al enfocar */
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus,
+QSpinBox:focus, QDoubleSpinBox:focus, QDateEdit:focus, QTimeEdit:focus, QComboBox:focus {
+    border: 2px solid #3a7ca5;
+}
+
+/* ===== Ajustes para más color ===== */
+
+/* Botones principales con degradado azul-naranja */
+QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:1,
+        stop:0 #3a7ca5, stop:1 #ff8c42);
+    color: #ffffff;
+    border: 1px solid #3a7ca5;
+    border-radius: 10px;
+    padding: 8px 14px;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:1,
+        stop:0 #ff8c42, stop:1 #3a7ca5);
+}
+
+/* Encabezados con violeta */
+QLabel[heading=&quot;true&quot;] {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+        stop:0 #8e44ad, stop:1 #3a7ca5);
+    color: #ffffff;
+    padding: 10px 16px;
+    font-size: 12pt;
+    border-radius: 8px;
+}
+
+/* Tabs con colores múltiples */
+QTabBar::tab:selected {
+    background: #7ed957;
+    color: #000000;
+    border: 1px solid #7ed957;
+    border-bottom: 2px solid #ff8c42;
+}
+QTabBar::tab:hover:!selected {
+    background: #ff8c42;
+    color: #ffffff;
+}
+
+/* Inputs con borde naranja al enfocar */
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus,
+QSpinBox:focus, QDoubleSpinBox:focus, QDateEdit:focus, QTimeEdit:focus, QComboBox:focus {
+    border: 2px solid #ff8c42;
+}
+
+/* Encabezados de tabla con violeta */
+QHeaderView::section {
+    background: #8e44ad;
+    color: #ffffff;
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>70</y>
+      <width>1526</width>
+      <height>881</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="cursor">
+     <cursorShape>ArrowCursor</cursorShape>
+    </property>
+    <property name="tabShape">
+     <enum>QTabWidget::Rounded</enum>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="Proyecto">
+     <attribute name="title">
+      <string>Proyecto</string>
+     </attribute>
+     <widget class="QWidget" name="contenedor_pdf" native="true">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>30</y>
+        <width>1341</width>
+        <height>841</height>
+       </rect>
+      </property>
+      <widget class="QPushButton" name="btn_select_pdf">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>20</y>
+         <width>156</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #2196F3, stop:1 #1976D2);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #42A5F5, stop:1 #2196F3);
+}
+QPushButton:pressed {
+    background: #1565C0;
+}</string>
+       </property>
+       <property name="text">
+        <string>Seleccionar PDF</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_open_external">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>20</y>
+         <width>126</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #FF9800, stop:1 #F57C00);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #FFB74D, stop:1 #FF9800);
+}
+QPushButton:pressed {
+    background: #E65100;
+}</string>
+       </property>
+       <property name="text">
+        <string>Abrir Externa</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_clear_pdf">
+       <property name="geometry">
+        <rect>
+         <x>325</x>
+         <y>20</y>
+         <width>80</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #f44336, stop:1 #d32f2f);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #ef5350, stop:1 #f44336);
+}
+QPushButton:pressed {
+    background: #c62828;
+}</string>
+       </property>
+       <property name="text">
+        <string>Limpiar</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_prev">
+       <property name="geometry">
+        <rect>
+         <x>1150</x>
+         <y>10</y>
+         <width>106</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #9C27B0, stop:1 #7B1FA2);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #BA68C8, stop:1 #9C27B0);
+}
+QPushButton:pressed {
+    background: #6A1B9A;
+}</string>
+       </property>
+       <property name="text">
+        <string>Anterior</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_next">
+       <property name="geometry">
+        <rect>
+         <x>1030</x>
+         <y>10</y>
+         <width>106</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #9C27B0, stop:1 #7B1FA2);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #BA68C8, stop:1 #9C27B0);
+}
+QPushButton:pressed {
+    background: #6A1B9A;
+}</string>
+       </property>
+       <property name="text">
+        <string>Siguiente</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_fit">
+       <property name="geometry">
+        <rect>
+         <x>520</x>
+         <y>10</y>
+         <width>80</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #4CAF50, stop:1 #388E3C);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #66BB6A, stop:1 #4CAF50);
+}
+QPushButton:pressed {
+    background: #2E7D32;
+}</string>
+       </property>
+       <property name="text">
+        <string>Ajustar</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="page_info">
+       <property name="geometry">
+        <rect>
+         <x>600</x>
+         <y>10</y>
+         <width>120</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Página 0 de 0</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="page_spinbox">
+       <property name="geometry">
+        <rect>
+         <x>729</x>
+         <y>-1</y>
+         <width>81</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+      </widget>
+      <widget class="QSlider" name="zoom_slider">
+       <property name="geometry">
+        <rect>
+         <x>825</x>
+         <y>15</y>
+         <width>120</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="minimum">
+        <number>25</number>
+       </property>
+       <property name="maximum">
+        <number>300</number>
+       </property>
+       <property name="value">
+        <number>100</number>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+      <widget class="QLabel" name="zoom_label">
+       <property name="geometry">
+        <rect>
+         <x>955</x>
+         <y>15</y>
+         <width>61</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>100%</string>
+       </property>
+      </widget>
+      <widget class="QScrollArea" name="scroll_area">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>60</y>
+         <width>1300</width>
+         <height>760</height>
+        </rect>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>1298</width>
+          <height>758</height>
+         </rect>
+        </property>
+        <widget class="QLabel" name="pdf_label">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>1298</width>
+           <height>758</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+           <pointsize>9</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Visor PDF</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Inicio">
+     <attribute name="title">
+      <string>Inicio</string>
+     </attribute>
+     <widget class="QLabel" name="label_14">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>9</y>
+        <width>1471</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+        <pointsize>9</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>🏢 ADIF - Generador de Actas de Inicio</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>40</y>
+        <width>1476</width>
+        <height>296</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QGroupBox {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(33, 150, 243, 0.3);
+    border-radius: 16px;
+    margin-top: 12px;
+    padding-top: 8px;
+    font-weight: 600;
+    font-size: 10pt;
+    color: #1565C0;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 4px 12px;
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #2196F3, stop:1 #1976D2);
+    color: white;
+    border-radius: 8px;
+    margin-left: 16px;
+}</string>
+      </property>
+      <property name="title">
+       <string>INFORMACION DEL CONTRATO</string>
+      </property>
+      <widget class="QPushButton" name="Abrir_carpeta">
+       <property name="geometry">
+        <rect>
+         <x>1310</x>
+         <y>90</y>
+         <width>146</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #FF9800, stop:1 #F57C00);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 9pt;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #FFB74D, stop:1 #FF9800);
+}
+QPushButton:pressed {
+    background: #E65100;
+}</string>
+       </property>
+       <property name="text">
+        <string>📁 Carpeta Salida</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Abrir_portafirmas">
+       <property name="geometry">
+        <rect>
+         <x>1310</x>
+         <y>140</y>
+         <width>136</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #9C27B0, stop:1 #7B1FA2);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 9pt;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #BA68C8, stop:1 #9C27B0);
+}
+QPushButton:pressed {
+    background: #6A1B9A;
+}</string>
+       </property>
+       <property name="text">
+        <string>📝 Portafirmas</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Generar_Acta_Inicio">
+       <property name="geometry">
+        <rect>
+         <x>1250</x>
+         <y>36</y>
+         <width>211</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #4CAF50, stop:1 #388E3C);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 9pt;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #66BB6A, stop:1 #4CAF50);
+}
+QPushButton:pressed {
+    background: #2E7D32;
+}</string>
+       </property>
+       <property name="text">
+        <string>🏁 Generar Acta de Inicio</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>145</y>
+         <width>1176</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_19">
+        <item>
+         <widget class="QLabel" name="Lb9">
+          <property name="text">
+           <string>Órgano solicitante de ofertas:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="OrganoSolicitaOfertas">
+          <property name="text">
+           <string>ÓRGANO GESTOR -DEPARTAMENTO DE ADMINISTRACIÓN DE LA GERENCIA DE PATRIMONIO Y URBANISMO </string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>1181</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_20">
+        <item>
+         <widget class="QLabel" name="Lb2">
+          <property name="text">
+           <string>Órgano de Contratación:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="organoContratacion">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb3">
+          <property name="text">
+           <string>Órgano de Contratación:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="organoContratacion2">
+          <property name="text">
+           <string>DG de Negocio y Operaciones Comerciales</string>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>35</y>
+         <width>921</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_21">
+        <item>
+         <widget class="QLabel" name="Lb1">
+          <property name="text">
+           <string>Nombre del contrato:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="nombreObra">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>945</x>
+         <y>35</y>
+         <width>246</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_22">
+        <item>
+         <widget class="QLabel" name="Lb4">
+          <property name="text">
+           <string>Plazo de ejecución del contrato en meses :</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="plazoEjecucion">
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>205</y>
+         <width>1301</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_24">
+        <item>
+         <widget class="QLabel" name="Lb5">
+          <property name="text">
+           <string>Base Imponible:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="basePresupuesto">
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb6">
+          <property name="text">
+           <string>Base + IVA:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="ivaPresupuestoBase">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb7">
+          <property name="text">
+           <string>Total:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="totalPresupuestoBase">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>1205</x>
+         <y>90</y>
+         <width>96</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QRadioButton" name="Rb1">
+          <property name="text">
+           <string>Obras</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="Rb2">
+          <property name="text">
+           <string>Servicios</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QPushButton" name="actuaciones_especiales">
+       <property name="geometry">
+        <rect>
+         <x>1320</x>
+         <y>190</y>
+         <width>131</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #9C2000, stop:1 #7B1FA2);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #BA68C8, stop:1 #9C27B0);
+}
+QPushButton:pressed {
+    background: #6A1B9A;
+}</string>
+       </property>
+       <property name="text">
+        <string>act especiales</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="geometry">
+       <rect>
+        <x>25</x>
+        <y>345</y>
+        <width>701</width>
+        <height>486</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QGroupBox {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(76, 175, 80, 0.3);
+    border-radius: 16px;
+    margin-top: 12px;
+    padding-top: 8px;
+    font-weight: 600;
+    font-size: 10pt;
+    color: #388E3C;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 4px 12px;
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #4CAF50, stop:1 #388E3C);
+    color: white;
+    border-radius: 8px;
+    margin-left: 16px;
+}</string>
+      </property>
+      <property name="title">
+       <string>DESCRIPCION Y JUSTIFICACION</string>
+      </property>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>40</y>
+         <width>671</width>
+         <height>578</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="leftMargin">
+         <number>8</number>
+        </property>
+        <property name="topMargin">
+         <number>8</number>
+        </property>
+        <property name="rightMargin">
+         <number>8</number>
+        </property>
+        <property name="bottomMargin">
+         <number>8</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_30">
+          <item>
+           <widget class="QLabel" name="Lb_1">
+            <property name="text">
+             <string>Objeto del contrato:</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="objeto"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_29">
+          <item>
+           <widget class="QLabel" name="Lb_2">
+            <property name="text">
+             <string>Justificación de la necesidad:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="justificacion"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_28">
+          <item>
+           <widget class="QLabel" name="Lb_3">
+            <property name="text">
+             <string>Justificación de la insuficiencia de medios:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="insuficiencia"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_27">
+          <item>
+           <widget class="QLabel" name="Lb_4">
+            <property name="text">
+             <string>Justificación de no alteración:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTextEdit" name="justificacionLimites">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_26">
+          <item>
+           <widget class="QLabel" name="Lb8">
+            <property name="text">
+             <string>Régimen de pagos:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="regimenPagos"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_4">
+      <property name="geometry">
+       <rect>
+        <x>735</x>
+        <y>345</y>
+        <width>771</width>
+        <height>486</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>EMPRESAS PARTICIPANTES</string>
+      </property>
+      <widget class="QTableWidget" name="TwEmpresas">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>45</y>
+         <width>726</width>
+         <height>361</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>80</number>
+       </attribute>
+       <attribute name="verticalHeaderDefaultSectionSize">
+        <number>60</number>
+       </attribute>
+       <attribute name="verticalHeaderMinimumSectionSize">
+        <number>60</number>
+       </attribute>
+      </widget>
+      <widget class="QPushButton" name="Pb_add">
+       <property name="geometry">
+        <rect>
+         <x>15</x>
+         <y>420</y>
+         <width>80</width>
+         <height>52</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>52</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #4CAF50, stop:1 #388E3C);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 9pt;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #66BB6A, stop:1 #4CAF50);
+}
+QPushButton:pressed {
+    background: #2E7D32;
+}</string>
+       </property>
+       <property name="text">
+        <string>➕ Añadir</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Pb_remove">
+       <property name="geometry">
+        <rect>
+         <x>115</x>
+         <y>420</y>
+         <width>80</width>
+         <height>52</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>52</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #f44336, stop:1 #d32f2f);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 9pt;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #ef5350, stop:1 #f44336);
+}
+QPushButton:pressed {
+    background: #c62828;
+}</string>
+       </property>
+       <property name="text">
+        <string>➖ Eliminar</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Pb_Imp_Exp_excel">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>420</y>
+         <width>177</width>
+         <height>52</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>52</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #4CAF50, stop:1 #388E3C);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+    font-size: 9pt;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #66BB6A, stop:1 #4CAF50);
+}
+QPushButton:pressed {
+    background: #2E7D32;
+}</string>
+       </property>
+       <property name="text">
+        <string>📊 Excel  impor export</string>
+       </property>
+      </widget>
+     </widget>
+     <zorder>groupBox_4</zorder>
+     <zorder>groupBox_3</zorder>
+     <zorder>groupBox_2</zorder>
+     <zorder>label_14</zorder>
+    </widget>
+    <widget class="QWidget" name="ActasGenerales">
+     <attribute name="title">
+      <string>Actas generales</string>
+     </attribute>
+     <widget class="QLabel" name="section_header_general">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>5</y>
+        <width>1431</width>
+        <height>36</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>📋 GESTIÓN DE ACTAS GENERALES</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>65</x>
+        <y>590</y>
+        <width>1436</width>
+        <height>246</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>💰 Acta de liquidación</string>
+      </property>
+      <widget class="QPushButton" name="Generar_acta_liq">
+       <property name="geometry">
+        <rect>
+         <x>1170</x>
+         <y>40</y>
+         <width>246</width>
+         <height>46</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #4CAF50, stop:1 #388E3C);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #66BB6A, stop:1 #4CAF50);
+}
+QPushButton:pressed {
+    background: #2E7D32;
+}</string>
+       </property>
+       <property name="text">
+        <string>💰 Crear acta de liquidación</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_121">
+       <property name="geometry">
+        <rect>
+         <x>1010</x>
+         <y>105</y>
+         <width>36</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>%:</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="TantoPorCiento">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>1060</x>
+         <y>100</y>
+         <width>41</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>195</y>
+         <width>798</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_129">
+          <property name="text">
+           <string>Adicional Liq:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="adicionalBaseLiquidacion">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_130">
+          <property name="text">
+           <string>Adic + IVA:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="adicionalIvaLiquidacion">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_128">
+          <property name="text">
+           <string>Total:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="adicionalTotalLiquidacion_2">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>25</x>
+         <y>145</y>
+         <width>790</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_113">
+          <property name="text">
+           <string>Liquidación:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="saldoBaseLiquidacion">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_112">
+          <property name="text">
+           <string>Base + IVA:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="saldoIvaLiquidacion">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_111">
+          <property name="text">
+           <string>Total:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="adicionalTotalLiquidacion">
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>815</x>
+         <y>195</y>
+         <width>770</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_125">
+          <property name="text">
+           <string>Empresa:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="empresaBaseAFavor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_127">
+          <property name="text">
+           <string>Base + IVA:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="empresaIvaAFavor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_126">
+          <property name="text">
+           <string>Total:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="empresaTotalAFavor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>815</x>
+         <y>145</y>
+         <width>745</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_123">
+          <property name="text">
+           <string>ADIF:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="liquidacionAFavorAdifBase">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>false</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_124">
+          <property name="text">
+           <string>Base + IVA:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="adifIvaAFavor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_122">
+          <property name="text">
+           <string>Total:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="adifTotalAFavor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>25</x>
+         <y>95</y>
+         <width>815</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_109">
+          <property name="text">
+           <string>Base facturado:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="certBase">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_108">
+          <property name="text">
+           <string>Base + IVA:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="certIva">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_110">
+          <property name="text">
+           <string>Total:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="certTotal">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>815</x>
+         <y>95</y>
+         <width>191</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="label_120">
+          <property name="text">
+           <string>A favor de:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="AfavorDe">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>650</x>
+         <y>40</y>
+         <width>456</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QLabel" name="label_180">
+          <property name="text">
+           <string>Lugar de la firma:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lugarFirma"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>25</x>
+         <y>40</y>
+         <width>616</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QLabel" name="label_144">
+          <property name="text">
+           <string>Firmante por empresa:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="representanteContratista"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_179">
+          <property name="text">
+           <string>Día de recepción:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDateEdit" name="fechaRecepcion">
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_9">
+      <property name="geometry">
+       <rect>
+        <x>65</x>
+        <y>35</y>
+        <width>1431</width>
+        <height>146</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Cartas de invitacion</string>
+      </property>
+      <widget class="QPushButton" name="Generar_Cartas_inv">
+       <property name="geometry">
+        <rect>
+         <x>1170</x>
+         <y>30</y>
+         <width>236</width>
+         <height>46</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #00BCD4, stop:1 #0097A7);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #26C6DA, stop:1 #00BCD4);
+}
+QPushButton:pressed {
+    background: #006064;
+}</string>
+       </property>
+       <property name="text">
+        <string>📧 Crear cartas</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>85</y>
+         <width>1391</width>
+         <height>52</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_15">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_16">
+          <item>
+           <widget class="QLabel" name="Lb22">
+            <property name="text">
+             <string>mail recepción:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="mailDeRecepcion"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb20">
+          <property name="text">
+           <string>Consultas administrativas:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="consultasAdministrativas"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb21">
+          <property name="text">
+           <string>Consultas técnicas:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="consultasTecnicas"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>620</x>
+         <y>30</y>
+         <width>533</width>
+         <height>52</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_38">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_17">
+          <item>
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Hora de apertura:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTimeEdit" name="horaDeApertura">
+            <property name="dateTime">
+             <datetime>
+              <hour>12</hour>
+              <minute>0</minute>
+              <second>0</second>
+              <year>2000</year>
+              <month>1</month>
+              <day>1</day>
+             </datetime>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_18">
+          <item>
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Día de apertura:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDateEdit" name="diaDeApertura">
+            <property name="dateTime">
+             <datetime>
+              <hour>0</hour>
+              <minute>0</minute>
+              <second>0</second>
+              <year>2023</year>
+              <month>1</month>
+              <day>1</day>
+             </datetime>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_10">
+      <property name="geometry">
+       <rect>
+        <x>65</x>
+        <y>185</y>
+        <width>1436</width>
+        <height>251</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>🏆 Acta y cartas de adjudicación</string>
+      </property>
+      <widget class="QTableWidget" name="TwOfertas">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>361</width>
+         <height>191</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <attribute name="verticalHeaderDefaultSectionSize">
+        <number>40</number>
+       </attribute>
+       <attribute name="verticalHeaderMinimumSectionSize">
+        <number>40</number>
+       </attribute>
+      </widget>
+      <widget class="QPushButton" name="Generar_acta_adj">
+       <property name="geometry">
+        <rect>
+         <x>880</x>
+         <y>200</y>
+         <width>241</width>
+         <height>38</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #FF6F00, stop:1 #E65100);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #FF8F00, stop:1 #FF6F00);
+}
+QPushButton:pressed {
+    background: #BF360C;
+}</string>
+       </property>
+       <property name="text">
+        <string>🏆 Crear acta de adjudicación</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Generar_carta_adj">
+       <property name="geometry">
+        <rect>
+         <x>1130</x>
+         <y>200</y>
+         <width>261</width>
+         <height>38</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #673AB7, stop:1 #512DA8);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #7986CB, stop:1 #673AB7);
+}
+QPushButton:pressed {
+    background: #4527A0;
+}</string>
+       </property>
+       <property name="text">
+        <string>📄 Crear cartas de adjudicación</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>750</x>
+         <y>95</y>
+         <width>788</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="Lb26">
+          <property name="text">
+           <string>adjudicación:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="precioAdjudicacion">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb25">
+          <property name="text">
+           <string>adj iva </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="precioAdjudicacionIva">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb25_2">
+          <property name="text">
+           <string>adj total </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="precioAdjudicacionTotal">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>750</x>
+         <y>40</y>
+         <width>666</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <widget class="QLabel" name="Lb24">
+          <property name="text">
+           <string>Empresa adjudicada:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="empresaAdjudicada"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb24_4">
+          <property name="text">
+           <string>CIF adjudicacion</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="contratistaCIF"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>195</y>
+         <width>456</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="QLabel" name="label_74">
+          <property name="text">
+           <string>Número ofertas:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="numEmpresasPresentadas">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_73">
+          <property name="text">
+           <string>Empresas totales:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="numEmpresasSolicitadas"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>385</x>
+         <y>40</y>
+         <width>256</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <item>
+         <widget class="QLabel" name="Lb23">
+          <property name="text">
+           <string>Número</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="numeroExpediente"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>380</x>
+         <y>115</y>
+         <width>304</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <item>
+         <widget class="QLabel" name="label_47">
+          <property name="text">
+           <string>Día de adjudicación:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDateEdit" name="fechaAdjudicacion">
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QPushButton" name="btn_cambio_exp">
+       <property name="geometry">
+        <rect>
+         <x>660</x>
+         <y>35</y>
+         <width>74</width>
+         <height>52</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #FF9800, stop:1 #F57C00);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #FFB74D, stop:1 #FF9800);
+}
+QPushButton:pressed {
+    background: #E65100;
+}</string>
+       </property>
+       <property name="text">
+        <string>EXP</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>750</x>
+         <y>145</y>
+         <width>666</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_39">
+        <item>
+         <widget class="QLabel" name="Lb_27">
+          <property name="text">
+           <string>Vez y media Imp Min:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="licitacion15">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb_28">
+          <property name="text">
+           <string>70% Imp min:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="licitacion07">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_11">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>435</y>
+        <width>1441</width>
+        <height>146</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Contrato</string>
+      </property>
+      <widget class="QWidget" name="layoutWidget_2">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>778</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_23">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetNoConstraint</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="Lb26_2">
+          <property name="text">
+           <string>Anualidad 1</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="BaseAnualidad1">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb25_3">
+          <property name="text">
+           <string>IVA A1</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="IvaAnualidad1">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb25_4">
+          <property name="text">
+           <string>Total A1</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="TotalAnualidad1">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget_3">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>90</y>
+         <width>778</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_25">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetNoConstraint</enum>
+        </property>
+        <item>
+         <widget class="QLabel" name="Lb26_3">
+          <property name="text">
+           <string>Anualidad 2</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="BaseAnualidad2">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb25_5">
+          <property name="text">
+           <string>IVA A2</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="IvaAnualidad2">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb25_6">
+          <property name="text">
+           <string>Total A2</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="TotalAnualidad2">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="decimals">
+           <number>2</number>
+          </property>
+          <property name="minimum">
+           <double>0.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>100000000.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget_4">
+       <property name="geometry">
+        <rect>
+         <x>935</x>
+         <y>90</y>
+         <width>276</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_41">
+        <item>
+         <widget class="QLabel" name="Lb21_3">
+          <property name="text">
+           <string>CIF/NIF</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="CIf_Contrato"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QPushButton" name="Generar_Contrato">
+       <property name="geometry">
+        <rect>
+         <x>1230</x>
+         <y>40</y>
+         <width>181</width>
+         <height>38</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #8BC34A, stop:1 #689F38);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #9CCC65, stop:1 #8BC34A);
+}
+QPushButton:pressed {
+    background: #558B2F;
+}</string>
+       </property>
+       <property name="text">
+        <string>📄 Crear contrato</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget_5">
+       <property name="geometry">
+        <rect>
+         <x>935</x>
+         <y>40</y>
+         <width>276</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_42">
+        <item>
+         <widget class="QLabel" name="Lb21_4">
+          <property name="text">
+           <string>Lugar</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="Lugar_Contrato"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget_6">
+       <property name="geometry">
+        <rect>
+         <x>1220</x>
+         <y>90</y>
+         <width>204</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_43">
+        <item>
+         <widget class="QLabel" name="label_48">
+          <property name="text">
+           <string>Mes aprox</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDateEdit" name="fechaContrato">
+          <property name="displayFormat">
+           <string>MM</string>
+          </property>
+          <property name="calendarPopup">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>665</x>
+         <y>90</y>
+         <width>256</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_40">
+        <item>
+         <widget class="QLabel" name="Lb21_2">
+          <property name="text">
+           <string>Empresa</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="Contrato_Por_Empresa"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>665</x>
+         <y>40</y>
+         <width>256</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_37">
+        <item>
+         <widget class="QLabel" name="Lb20_2">
+          <property name="text">
+           <string>Adif</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="Contrato_Por_Adif"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <zorder>groupBox_10</zorder>
+     <zorder>groupBox_9</zorder>
+     <zorder>groupBox</zorder>
+     <zorder>section_header_general</zorder>
+     <zorder>groupBox_11</zorder>
+    </widget>
+    <widget class="QWidget" name="ActasObra">
+     <attribute name="title">
+      <string>Actas obras</string>
+     </attribute>
+     <widget class="QLabel" name="section_header_obras">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>1501</width>
+        <height>36</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>🏗️ GESTIÓN DE ACTAS PARA OBRAS</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_5">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>85</y>
+        <width>1511</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Acta de replanteo</string>
+      </property>
+      <widget class="QPushButton" name="Generar_replanteo">
+       <property name="geometry">
+        <rect>
+         <x>1320</x>
+         <y>40</y>
+         <width>171</width>
+         <height>81</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #3F51B5, stop:1 #303F9F);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #5C6BC0, stop:1 #3F51B5);
+}
+QPushButton:pressed {
+    background: #283593;
+}</string>
+       </property>
+       <property name="text">
+        <string>📐 Acta de Replanteo</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>961</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_31">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Fecha informe de supervision:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDateEdit" name="fechaInforme">
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Fecha de proyecto:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDateEdit" name="fechaProyecto">
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Fecha replanteo:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDateEdit" name="fechaReplanteo">
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>1161</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_32">
+        <item>
+         <widget class="QLabel" name="Lb33">
+          <property name="text">
+           <string>Por adjudicatario:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="nombreAsistenteAdjudicatario"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb34">
+          <property name="text">
+           <string>Por ADIF:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="nombreAsistenteAdif"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="Lb37">
+          <property name="text">
+           <string>Firmante por adjudicatario:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="representanteFirmaReplanteo"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>965</x>
+         <y>40</y>
+         <width>311</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_33">
+        <item>
+         <widget class="QLabel" name="Lb36">
+          <property name="text">
+           <string>Lugar de la firma:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lugarReplanteo"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_6">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>240</y>
+        <width>1511</width>
+        <height>191</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>✅ Acta de recepción</string>
+      </property>
+      <widget class="QPushButton" name="Generar_recepcion">
+       <property name="geometry">
+        <rect>
+         <x>1325</x>
+         <y>45</y>
+         <width>161</width>
+         <height>101</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #4CAF50, stop:1 #388E3C);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #66BB6A, stop:1 #4CAF50);
+}
+QPushButton:pressed {
+    background: #2E7D32;
+}</string>
+       </property>
+       <property name="text">
+        <string>✅ Acta de recepción</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>25</y>
+         <width>1291</width>
+         <height>166</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_34">
+          <item>
+           <widget class="QLabel" name="Lb36_2">
+            <property name="text">
+             <string>Lugar de la firma:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="localizacion"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="Lb36_3">
+            <property name="text">
+             <string>Provincia:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="provincia"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="Lb34_2">
+            <property name="text">
+             <string>Responsable contrato ADIF:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="responsableContratoRecepcion"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_35">
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Por adjudicatario:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="representanteContratistaRecepcion"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="Lb34_3">
+            <property name="text">
+             <string>Responsable facultativo ADIF:</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="directorFacultativo"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="Lb33_2">
+            <property name="text">
+             <string>Tipo de liquidación:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="tipoContrato">
+            <property name="readOnly">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_36">
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Fecha real de finalización:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDateEdit" name="fechaLegalFin">
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="Lb37_2">
+            <property name="text">
+             <string>Fecha de fin legal de contrato:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDateEdit" name="fechaFinal">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="Lb37_3">
+            <property name="text">
+             <string>Fecha de recepción:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QDateEdit" name="fechaRecepcion">
+            <property name="calendarPopup">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_7">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>440</y>
+        <width>1511</width>
+        <height>96</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>👨‍💼 Acta de Director de contrato</string>
+      </property>
+      <widget class="QPushButton" name="Generar_Director">
+       <property name="geometry">
+        <rect>
+         <x>1300</x>
+         <y>30</y>
+         <width>181</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #795548, stop:1 #5D4037);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #8D6E63, stop:1 #795548);
+}
+QPushButton:pressed {
+    background: #4E342E;
+}</string>
+       </property>
+       <property name="text">
+        <string>👨‍💼 Acta de director contrato</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>285</x>
+         <y>25</y>
+         <width>936</width>
+         <height>65</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QCheckBox" name="Ckb1">
+          <property name="text">
+           <string>Director de contrato firma documentación(usa para todos los campos ) --&gt;firmas--&gt; responsable</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="Ckb2">
+          <property name="text">
+           <string>Representante firma documentación (usa para todos los campos)  --&gt;actas generales--&gt;contato Empresa</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_8">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>545</y>
+        <width>1501</width>
+        <height>276</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>✍️ GESTIÓN DE FIRMAS Y RESPONSABLES</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="3" column="2">
+        <widget class="QLineEdit" name="cargoResponsable">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="Lb11">
+         <property name="text">
+          <string>Aprueba:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QLineEdit" name="cargoResponsable">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLineEdit" name="cargoConforme">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="cargoAprueba">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="Lb13">
+         <property name="text">
+          <string>Contratación:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="representanteFirma">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="firmanteAprueba">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="representanteAdif">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="Lb13_3">
+         <property name="text">
+          <string>RepresentanteAdif:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="Lb10">
+         <property name="text">
+          <string>Propone:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="firmantePropone">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLineEdit" name="cargoPropone">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="Lb12">
+         <property name="text">
+          <string>Conforme:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="firmanteConforme">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <zorder>groupBox_8</zorder>
+     <zorder>groupBox_5</zorder>
+     <zorder>section_header_obras</zorder>
+     <zorder>groupBox_6</zorder>
+     <zorder>groupBox_7</zorder>
+    </widget>
+    <widget class="QWidget" name="Actuaciones">
+     <attribute name="title">
+      <string>Actuaciones</string>
+     </attribute>
+     <widget class="QTableWidget" name="tableActuaciones">
+      <property name="geometry">
+       <rect>
+        <x>25</x>
+        <y>85</y>
+        <width>1476</width>
+        <height>756</height>
+       </rect>
+      </property>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>70</number>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>70</number>
+      </attribute>
+      <attribute name="verticalHeaderMinimumSectionSize">
+       <number>70</number>
+      </attribute>
+     </widget>
+     <widget class="QPushButton" name="add_actuacion">
+      <property name="geometry">
+       <rect>
+        <x>1355</x>
+        <y>20</y>
+        <width>141</width>
+        <height>52</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #4CAF50, stop:1 #388E3C);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #66BB6A, stop:1 #4CAF50);
+}
+QPushButton:pressed {
+    background: #2E7D32;
+}</string>
+      </property>
+      <property name="text">
+       <string>borrar actuacion</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="borrar_actuacion">
+      <property name="geometry">
+       <rect>
+        <x>1190</x>
+        <y>20</y>
+        <width>141</width>
+        <height>52</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #f44336, stop:1 #d32f2f);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #ef5350, stop:1 #f44336);
+}
+QPushButton:pressed {
+    background: #c62828;
+}</string>
+      </property>
+      <property name="text">
+       <string>crear actuacion</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="crear_actuacion_mail">
+      <property name="geometry">
+       <rect>
+        <x>950</x>
+        <y>20</y>
+        <width>211</width>
+        <height>52</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #2196F3, stop:1 #1976D2);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #42A5F5, stop:1 #2196F3);
+}
+QPushButton:pressed {
+    background: #1565C0;
+}</string>
+      </property>
+      <property name="text">
+       <string>crear Email y actuacion</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Facturas">
+     <attribute name="title">
+      <string>facturas</string>
+     </attribute>
+     <widget class="QPushButton" name="add_factura">
+      <property name="geometry">
+       <rect>
+        <x>1260</x>
+        <y>35</y>
+        <width>111</width>
+        <height>56</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #4CAF50, stop:1 #388E3C);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #66BB6A, stop:1 #4CAF50);
+}
+QPushButton:pressed {
+    background: #2E7D32;
+}</string>
+      </property>
+      <property name="text">
+       <string>crea factura</string>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="tableFactura">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>100</y>
+        <width>1216</width>
+        <height>706</height>
+       </rect>
+      </property>
+      <property name="midLineWidth">
+       <number>2</number>
+      </property>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>100</number>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>100</number>
+      </attribute>
+      <attribute name="verticalHeaderMinimumSectionSize">
+       <number>100</number>
+      </attribute>
+     </widget>
+     <widget class="QPushButton" name="borrar_factura">
+      <property name="geometry">
+       <rect>
+        <x>1390</x>
+        <y>36</y>
+        <width>121</width>
+        <height>56</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #f44336, stop:1 #d32f2f);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #ef5350, stop:1 #f44336);
+}
+QPushButton:pressed {
+    background: #c62828;
+}</string>
+      </property>
+      <property name="text">
+       <string>Borrar factura</string>
+      </property>
+     </widget>
+     <widget class="QGraphicsView" name="graphicsView">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>105</y>
+        <width>271</width>
+        <height>236</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="presupuesto_gastado">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>400</y>
+        <width>116</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="presupuesto_total">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>355</y>
+        <width>116</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="presupuesto_disponible">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>445</y>
+        <width>116</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="Resumen">
+     <attribute name="title">
+      <string>Resumen</string>
+     </attribute>
+     <widget class="QPushButton" name="btn_generar_fichero_resumen">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>20</y>
+        <width>250</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Genera un documento Word (.docx) con el resumen completo del contrato, anomalías detectadas e historial de documentos</string>
+      </property>
+      <property name="styleSheet">
+       <string>QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #4CAF50, stop:1 #45A049);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #45A049, stop:1 #3E8E41);
+}
+QPushButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3E8E41, stop:1 #357A37);
+}</string>
+      </property>
+      <property name="text">
+       <string>📄 Generar Resumen Word</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_actualizar_resumen">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>20</y>
+        <width>150</width>
+        <height>50</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Actualiza la visualización del resumen con los datos más recientes</string>
+      </property>
+      <property name="styleSheet">
+       <string>QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2196F3, stop:1 #1976D2);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #1976D2, stop:1 #1565C0);
+}
+QPushButton:pressed {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #1565C0, stop:1 #0D47A1);
+}</string>
+      </property>
+      <property name="text">
+       <string>🔄 Actualizar</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_titulo_fases">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>90</y>
+        <width>300</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string>font-weight: bold; font-size: 14pt; color: #1976D2;</string>
+      </property>
+      <property name="text">
+       <string>📋 SEGUIMIENTO DE FASES</string>
+      </property>
+     </widget>
+     <widget class="QGraphicsView" name="cronograma_fases_timeline">
+      <property name="geometry">
+       <rect>
+        <x>800</x>
+        <y>130</y>
+        <width>691</width>
+        <height>451</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Cronograma visual del estado de las fases del proyecto</string>
+      </property>
+      <property name="styleSheet">
+       <string>QGraphicsView {
+    background-color: white;
+    border: 2px solid #E3F2FD;
+    border-radius: 8px;
+}
+QGraphicsView:focus {
+    border-color: #2196F3;
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="renderHints">
+       <set>QPainter::Antialiasing|QPainter::HighQualityAntialiasing|QPainter::SmoothPixmapTransform|QPainter::TextAntialiasing</set>
+      </property>
+     </widget>
+     <widget class="QFrame" name="separador_fases">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>440</y>
+        <width>540</width>
+        <height>2</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::HLine</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="texto_visualizacion_resumen">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>594</y>
+        <width>1460</width>
+        <height>256</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Área de visualización del resumen completo del contrato seleccionado</string>
+      </property>
+      <property name="styleSheet">
+       <string>QTextEdit {
+    background-color: white;
+    border: 2px solid #E3F2FD;
+    border-radius: 8px;
+    padding: 15px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    selection-background-color: #BBDEFB;
+}
+QTextEdit:focus {
+    border-color: #2196F3;
+}</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Arial,sans-serif'; font-size:12px; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:16pt; font-weight:600; color:#1976d2;&quot;&gt;📊 RESUMEN DEL CONTRATO&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:12pt; color:#666666;&quot;&gt;Selecciona un contrato y haz clic en &amp;quot;Actualizar&amp;quot; para ver el resumen completo&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Arial'; font-size:12pt; color:#666666;&quot;&gt;Incluye: datos principales, métricas, anomalías detectadas e historial de documentos&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_estado_resumen">
+      <property name="geometry">
+       <rect>
+        <x>470</x>
+        <y>25</y>
+        <width>500</width>
+        <height>40</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string>QLabel {
+    color: #666666;
+    font-size: 11px;
+    font-style: italic;
+    padding: 8px;
+    background-color: #F5F5F5;
+    border-radius: 5px;
+    border: 1px solid #E0E0E0;
+}</string>
+      </property>
+      <property name="text">
+       <string>💡 Tip: Usa &quot;Generar Resumen Word&quot; para exportar todos los datos a un documento Word (.docx)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>130</y>
+        <width>721</width>
+        <height>529</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_header_fase">
+         <property name="styleSheet">
+          <string>background: #E3F2FD; font-weight: bold; padding: 5px; border: 1px solid #BBDEFB; text-align: center;</string>
+         </property>
+         <property name="text">
+          <string>FASE</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_header_generado">
+         <property name="styleSheet">
+          <string>background: #E3F2FD; font-weight: bold; padding: 5px; border: 1px solid #BBDEFB; text-align: center;</string>
+         </property>
+         <property name="text">
+          <string>GENERADO</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="label_header_firmado">
+         <property name="styleSheet">
+          <string>background: #E3F2FD; font-weight: bold; padding: 5px; border: 1px solid #BBDEFB; text-align: center;</string>
+         </property>
+         <property name="text">
+          <string>FIRMADO</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_fase_creacion">
+         <property name="styleSheet">
+          <string>padding: 5px; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="text">
+          <string>📋 Creación Proyecto</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDateEdit" name="dateEdit_gen_creacion">
+         <property name="styleSheet">
+          <string>background: #F5F5F5; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QDateEdit" name="dateEdit_fir_creacion">
+         <property name="styleSheet">
+          <string>border: 1px solid #E0E0E0;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_fase_inicio">
+         <property name="styleSheet">
+          <string>padding: 5px; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="text">
+          <string>🚀 Inicio</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QDateEdit" name="dateEdit_gen_inicio">
+         <property name="styleSheet">
+          <string>background: #F5F5F5; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QDateEdit" name="dateEdit_fir_inicio">
+         <property name="styleSheet">
+          <string>border: 1px solid #E0E0E0;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_fase_cartas">
+         <property name="styleSheet">
+          <string>padding: 5px; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="text">
+          <string>📧 Cartas</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDateEdit" name="dateEdit_gen_cartas">
+         <property name="styleSheet">
+          <string>background: #F5F5F5; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QDateEdit" name="dateEdit_fir_cartas">
+         <property name="styleSheet">
+          <string>border: 1px solid #E0E0E0;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_fase_adjudicacion">
+         <property name="styleSheet">
+          <string>padding: 5px; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="text">
+          <string>🏆 Adjudicación</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QDateEdit" name="dateEdit_gen_adjudicacion">
+         <property name="styleSheet">
+          <string>background: #F5F5F5; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <widget class="QDateEdit" name="dateEdit_fir_adjudicacion">
+         <property name="styleSheet">
+          <string>border: 1px solid #E0E0E0;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_fase_firma_contrato">
+         <property name="styleSheet">
+          <string>padding: 5px; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="text">
+          <string>✍️ Firma Contrato</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QDateEdit" name="dateEdit_gen_firma_contrato">
+         <property name="styleSheet">
+          <string>background: #F5F5F5; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2">
+        <widget class="QDateEdit" name="dateEdit_fir_firma_contrato">
+         <property name="styleSheet">
+          <string>border: 1px solid #E0E0E0;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_fase_replanteo">
+         <property name="styleSheet">
+          <string>padding: 5px; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="text">
+          <string>📐 Replanteo</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QDateEdit" name="dateEdit_gen_replanteo">
+         <property name="styleSheet">
+          <string>background: #F5F5F5; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <widget class="QDateEdit" name="dateEdit_fir_replanteo">
+         <property name="styleSheet">
+          <string>border: 1px solid #E0E0E0;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_fase_actuacion">
+         <property name="styleSheet">
+          <string>padding: 5px; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="text">
+          <string>⚡ Actuación</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QDateEdit" name="dateEdit_gen_actuacion">
+         <property name="styleSheet">
+          <string>background: #F5F5F5; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2">
+        <widget class="QDateEdit" name="dateEdit_fir_actuacion">
+         <property name="styleSheet">
+          <string>border: 1px solid #E0E0E0;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_fase_recepcion">
+         <property name="styleSheet">
+          <string>padding: 5px; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="text">
+          <string>✅ Recepción</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QDateEdit" name="dateEdit_gen_recepcion">
+         <property name="styleSheet">
+          <string>background: #F5F5F5; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="2">
+        <widget class="QDateEdit" name="dateEdit_fir_recepcion">
+         <property name="styleSheet">
+          <string>border: 1px solid #E0E0E0;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_fase_finalizacion">
+         <property name="styleSheet">
+          <string>padding: 5px; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="text">
+          <string>🏁 Finalización</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QDateEdit" name="dateEdit_gen_finalizacion">
+         <property name="styleSheet">
+          <string>background: #F5F5F5; border: 1px solid #E0E0E0;</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="2">
+        <widget class="QDateEdit" name="dateEdit_fir_finalizacion">
+         <property name="styleSheet">
+          <string>border: 1px solid #E0E0E0;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>85</x>
+      <y>15</y>
+      <width>471</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>20</y>
+      <width>106</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>expediente </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="expediente">
+    <property name="geometry">
+     <rect>
+      <x>665</x>
+      <y>20</y>
+      <width>201</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Tipo">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>20</y>
+      <width>201</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>870</x>
+      <y>20</y>
+      <width>51</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Tipo</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>15</x>
+      <y>20</y>
+      <width>66</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>contrato </string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>1150</x>
+      <y>10</y>
+      <width>361</width>
+      <height>54</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <item>
+      <widget class="QPushButton" name="Cambiar_tipo">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #9C27B0, stop:1 #7B1FA2);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #BA68C8, stop:1 #9C27B0);
+}
+QPushButton:pressed {
+    background: #6A1B9A;
+}</string>
+       </property>
+       <property name="text">
+        <string>Cambiar Tipo</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_crear_contrato">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #4CAF50, stop:1 #388E3C);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #66BB6A, stop:1 #4CAF50);
+}
+QPushButton:pressed {
+    background: #2E7D32;
+}</string>
+       </property>
+       <property name="text">
+        <string>Crear</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_Clonar_contrato">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #2196F3, stop:1 #1976D2);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #42A5F5, stop:1 #2196F3);
+}
+QPushButton:pressed {
+    background: #1565C0;
+}</string>
+       </property>
+       <property name="text">
+        <string>Clonar</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_borrar_contrato">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #f44336, stop:1 #d32f2f);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0,y1:0,x2:1,y2:0, stop:0 #ef5350, stop:1 #f44336);
+}
+QPushButton:pressed {
+    background: #c62828;
+}</string>
+       </property>
+       <property name="text">
+        <string>Borrar</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>1520</x>
+      <y>10</y>
+      <width>57</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_44">
+     <item>
+      <widget class="QPushButton" name="minimizar_app">
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+   background: #2196F3;
+   color: white;
+   border: none;
+   border-radius: 1px;
+   padding: 1px 2px;
+   font-weight: bold;
+   font-size: 10px;
+   min-width: 20px;
+   max-width: 20px;
+   min-height: 18px;
+   max-height: 18px;
+}
+QPushButton:hover {
+   background: #1976D2;
+}
+QPushButton:pressed {
+   background: #1565C0;
+}</string>
+       </property>
+       <property name="text">
+        <string>-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cerrar_app">
+       <property name="font">
+        <font>
+         <family>Inter,Segoe UI,SF Pro Display,Roboto,sans-serif</family>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+   background: #FF7043;
+   color: white;
+   border: none;
+   border-radius: 1px;
+   padding: 1px 2px;
+   font-weight: bold;
+   font-size: 10px;
+   min-width: 20px;
+   max-width: 20px;
+   min-height: 18px;
+   max-height: 18px;
+}
+QPushButton:hover {
+   background: #F4511E;
+}
+QPushButton:pressed {
+   background: #E64A19;
+}</string>
+       </property>
+       <property name="text">
+        <string>X</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionAbrir_archivo">
+   <property name="text">
+    <string>Abrir archivo</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>Nuevo</string>
+   </property>
+  </action>
+  <action name="actionGuardar">
+   <property name="text">
+    <string>Guardar</string>
+   </property>
+  </action>
+  <action name="actionGuardar_como">
+   <property name="text">
+    <string>Guardar como</string>
+   </property>
+  </action>
+  <action name="actionAyuda_con_contratos">
+   <property name="text">
+    <string>Ayuda con contratos</string>
+   </property>
+  </action>
+  <action name="actionAutores">
+   <property name="text">
+    <string>Autor</string>
+   </property>
+  </action>
+  <action name="actionEsquema_contratos">
+   <property name="text">
+    <string>Esquema contratos</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

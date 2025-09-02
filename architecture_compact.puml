@@ -1,0 +1,133 @@
+@startuml GeneradorActasADIF_CompactArchitecture
+!theme plain
+
+' Ultra Modern UI Theme 2025 - Matching actas.ui
+skinparam backgroundColor #F8FAFF
+skinparam classBackgroundColor #FFFFFF
+skinparam classBorderColor #00C853
+skinparam classHeaderBackgroundColor #00C853
+skinparam classHeaderFontColor #FFFFFF
+skinparam classFontColor #1A1D23
+skinparam packageBackgroundColor #E8F5E8
+skinparam packageBorderColor #00C853
+skinparam packageFontColor #00701A
+skinparam arrowColor #4A5568
+skinparam titleFontSize 18
+skinparam titleFontColor #00701A
+skinparam shadowing true
+
+title ADIF Document Generator - Compact Architecture
+
+'============= MAIN APPLICATION =============
+package "Main Application" <<Rectangle>> {
+    class MainPy {
+        +main(): int
+        +check_dependencies(): bool
+        +init_application(): ControladorGrafica
+    }
+    
+    class FastSplash {
+        +show_message(str): void
+        +update_progress(int): void
+    }
+}
+
+'============= CORE MODELS =============
+package "Data Models" <<Rectangle>> {
+    enum TipoContrato {
+        SERVICIO, OBRA
+        MANTENIMIENTO, FACTURAS
+    }
+    
+    class Proyecto {
+        +nombre: str
+        +contrato: DatosContrato
+        +empresas: List[Empresa]
+        +ofertas: List[Oferta]
+        +obtener_empresa_adjudicataria(): Empresa
+        +contar_ofertas_validas(): int
+    }
+    
+    class DatosContrato {
+        +tipo: TipoContrato
+        +importe_base: float
+        +plazo_ejecucion: int
+        +calcular_totales(): void
+    }
+    
+    class Empresa {
+        +nombre: str
+        +nif: str
+        +email: str
+        +validar_datos(): bool
+    }
+}
+
+'============= CONTROLLERS =============
+package "Controllers" <<Rectangle>> {
+    class ControladorGrafica {
+        +main_window: QMainWindow
+        +inicializar_ui(): void
+        +conectar_senales(): void
+        +actualizar_pestanas(): void
+    }
+    
+    class GestorJsonUnificado {
+        +cargar_proyecto(str): Proyecto
+        +guardar_proyecto(Proyecto): bool
+        +crear_backup(): void
+    }
+    
+    class ControladorContratos {
+        +contract_manager: ContractManager
+        +activar_modo_obras(): void
+        +activar_modo_servicios(): void
+    }
+    
+    class ControladorDocumentos {
+        +generar_documento(str, dict): bool
+        +procesar_plantilla(): str
+    }
+}
+
+'============= UTILITIES =============
+package "Utilities" <<Rectangle>> {
+    class ContractManager {
+        +contracts_list: List[str]
+        +current_contract: str
+        +load_contracts(): void
+        +get_contract_data(): dict
+    }
+    
+    class ValidacionUtils {
+        +validar_nif(str): bool
+        +validar_email(str): bool
+        +validar_importe(float): bool
+    }
+}
+
+'============= RELATIONSHIPS =============
+MainPy --> ControladorGrafica : creates
+MainPy --> FastSplash : uses
+ControladorGrafica --> ControladorContratos : manages
+ControladorGrafica --> GestorJsonUnificado : uses
+ControladorContratos --> ContractManager : uses
+Proyecto --> DatosContrato : contains
+Proyecto --> Empresa : contains
+DatosContrato --> TipoContrato : uses
+GestorJsonUnificado --> Proyecto : loads/saves
+ControladorDocumentos --> ValidacionUtils : uses
+
+note right of Proyecto
+  Central data model
+  containing all project
+  information
+end note
+
+note left of ControladorGrafica
+  Main UI controller
+  coordinates all
+  other controllers
+end note
+
+@enduml
