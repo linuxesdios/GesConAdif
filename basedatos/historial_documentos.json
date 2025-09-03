@@ -157,6 +157,28 @@
       "tamano_kb": 70.4150390625,
       "observaciones": "Generado exitosamente usando plantilla_acta_inicio_obra.docx",
       "plantilla_usada": "plantilla_acta_inicio_obra.docx"
+    },
+    {
+      "id": "46fa8513",
+      "tipo": "acta_inicio",
+      "nombre": "Acta de Inicio",
+      "ruta_archivo": "F:\\GesConAdif\\obras\\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\\04-documentos-sin-firmar\\Acta_Inicio.docx",
+      "fecha_generacion": "2025-09-03T02:22:59.006721",
+      "estado": "generado",
+      "tamano_kb": 70.4150390625,
+      "observaciones": "Generado exitosamente usando plantilla_acta_inicio_obra.docx",
+      "plantilla_usada": "plantilla_acta_inicio_obra.docx"
+    },
+    {
+      "id": "79e1a019",
+      "tipo": "acta_inicio",
+      "nombre": "Acta de Inicio",
+      "ruta_archivo": "F:\\GesConAdif\\obras\\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\\04-documentos-sin-firmar\\Acta_Inicio.docx",
+      "fecha_generacion": "2025-09-03T02:23:23.395276",
+      "estado": "generado",
+      "tamano_kb": 70.4150390625,
+      "observaciones": "Generado exitosamente usando plantilla_acta_inicio_obra.docx",
+      "plantilla_usada": "plantilla_acta_inicio_obra.docx"
     }
   ]
 }

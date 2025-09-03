@@ -93,6 +93,12 @@ class ControladorRutas:
         os.makedirs(ruta, exist_ok=True)
         return ruta
     
+    def get_ruta_carpeta_informes(self) -> str:
+        """Ruta de la carpeta informes - Compatible con EXE y desarrollo"""
+        ruta = os.path.join(self._base_path, "informes")
+        os.makedirs(ruta, exist_ok=True)
+        return ruta
+    
     def get_ruta_facturas_directas(self) -> str:
         """Ruta del archivo facturas_directas.json - EN CARPETA basedatos"""
         if self._es_ejecutable:

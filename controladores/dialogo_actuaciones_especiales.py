@@ -159,7 +159,7 @@ class DialogoActuacionesEspeciales(QDialog):
         try:
             if hasattr(self.parent, 'controlador_json') and self.parent.controlador_json:
                 # Obtener ruta del archivo JSON actual
-                ruta_json = self.parent.controlador_json.obtener_ruta_archivo()
+                ruta_json = self.parent.controlador_json.ruta_archivo
                 
                 if ruta_json and os.path.exists(ruta_json):
                     self.json_actual = ruta_json
