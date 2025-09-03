@@ -987,9 +987,6 @@ class ControladorEventosUI:
             
             # Usar guardado diferido
             self._cambios_pendientes['empresas'] = empresas_data
-            if self._timer_guardado:
-                self._timer_guardado.stop()
-                self._timer_guardado.start(300)
                 
         except Exception as e:
             print(f"[ControladorEventosUI] Error guardando empresas: {e}")

@@ -1,0 +1,21 @@
+============================================================
+CARPETA: 08-actuaciones
+============================================================
+
+Descripción: Registros de actuaciones y trabajos
+
+INFORMACIÓN DEL PROYECTO:
+  • Nombre: Sin nombre
+  • Expediente: Sin expediente
+  • Tipo: No especificado
+  • Creado: 2025-09-03 18:20:03
+
+CONTENIDO ESPERADO:
+  Registros de actuaciones y trabajos
+
+INSTRUCCIONES:
+  • Mantener organizado por fechas
+  • Usar nombres descriptivos para archivos
+  • Verificar antes de eliminar documentos
+
+Generado automáticamente por Gestor de Archivos 

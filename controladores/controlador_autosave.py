@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Controlador especializado OPTIMIZADO para auto-guardado automático
-Reduce guardados innecesarios y mejora rendimiento
+Controlador especializado para auto-guardado en pérdida de foco
 """
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QTimer
 from typing import Optional
 
 
 class ControladorAutoGuardado:
-    """Controlador especializado OPTIMIZADO para auto-guardado automático"""
+    """Controlador especializado para auto-guardado en pérdida de foco"""
     
     def __init__(self, main_window):
         self.main_window = main_window
@@ -18,13 +16,7 @@ class ControladorAutoGuardado:
         self.controlador_json = None
         self.contract_manager = None
         self.guardando_en_proceso = False
-        
-        # 🆕 OPTIMIZACIONES ANTI-SPAM
-        self.ultimo_guardado = {}  # Cache de últimos valores guardados
-        self.timer_guardado = QTimer()  # Timer para agrupar guardados
-        self.timer_guardado.setSingleShot(True)
-        self.timer_guardado.timeout.connect(self._ejecutar_guardado_agrupado)
-        self.campos_pendientes = set()  # Campos que necesitan guardado
+        self.ultimo_guardado = {}
         
 
 
@@ -37,13 +29,11 @@ class ControladorAutoGuardado:
     def iniciar_carga_datos(self):
         """Pausar auto-guardado durante carga de datos"""
         self.cargando_datos = True
-        self.timer_guardado.stop()  # 🆕 Cancelar guardados pendientes
         
     def finalizar_carga_datos(self):
         """Reactivar auto-guardado después de carga"""
         self.cargando_datos = False
-        self.ultimo_guardado.clear()  # 🆕 Limpiar cache al cambiar contrato
-        self.campos_pendientes.clear()  # 🔧 Limpiar campos pendientes también
+        self.ultimo_guardado.clear()
 
 
     def configurar_auto_guardado_completo(self):
@@ -56,178 +46,31 @@ class ControladorAutoGuardado:
             print(f"[ControladorAutoGuardado] ❌ Error configurando auto-guardado: {e}")
 
     def configurar_auto_guardado_campos(self):
-        """Configurar auto-guardado para campos editables - OPTIMIZADO"""
+        """Configurar auto-guardado para campos editables en pérdida de foco"""
         try:
             tipos_soportados = (QtWidgets.QLineEdit, QtWidgets.QTextEdit, QtWidgets.QDateEdit, 
                               QtWidgets.QTimeEdit, QtWidgets.QDoubleSpinBox, QtWidgets.QSpinBox, QtWidgets.QComboBox)
             
             widgets = self.main_window.findChildren(tipos_soportados)
-            widgets_configurados = 0
 
             for widget in widgets:
                 nombre = widget.objectName()
                 if not nombre or nombre.startswith('qt_'):
                     continue
-                
-                # EXCLUIR campos con handlers especiales para evitar conflictos
-                campos_con_handlers_especiales = ['plazoEjecucion', 'numEmpresasPresentadas', 'numEmpresasSolicitadas']
-                if nombre in campos_con_handlers_especiales:
-                    print(f"[ControladorAutoGuardado] ⚠️ Omitiendo {nombre} - tiene handler especializado")
-                    continue
 
-                # USAR GUARDADO INMEDIATO AL PERDER FOCO
                 if isinstance(widget, QtWidgets.QLineEdit):
-                    # NUEVO: Guardar inmediatamente al perder foco
                     self._configurar_lineedit_con_focusout(widget, nombre)
-                    widgets_configurados += 1
-                    
                 elif isinstance(widget, QtWidgets.QTextEdit):
                     self._configurar_textedit_con_focusout(widget, nombre)
-                    widgets_configurados += 1
-                    
-                elif isinstance(widget, QtWidgets.QDateEdit):
-                    widget.dateChanged.connect(self._crear_callback_agrupado(nombre, widget))
-                    widgets_configurados += 1
-                    
-                elif isinstance(widget, QtWidgets.QTimeEdit):
-                    widget.timeChanged.connect(self._crear_callback_agrupado(nombre, widget))
-                    widgets_configurados += 1
-                    
-                elif isinstance(widget, QtWidgets.QDoubleSpinBox):
-                    widget.editingFinished.connect(self._crear_callback_agrupado(nombre, widget))
-                    widgets_configurados += 1
-                    
-                elif isinstance(widget, QtWidgets.QSpinBox):
-                    widget.editingFinished.connect(self._crear_callback_agrupado(nombre, widget))
-                    widgets_configurados += 1
-                    
+                elif isinstance(widget, (QtWidgets.QDateEdit, QtWidgets.QTimeEdit, 
+                                        QtWidgets.QDoubleSpinBox, QtWidgets.QSpinBox)):
+                    widget.editingFinished.connect(lambda w=widget, n=nombre: self._guardar_campo_inmediato(n, w))
                 elif isinstance(widget, QtWidgets.QComboBox):
-                    widget.activated.connect(self._crear_callback_agrupado(nombre, widget))
-                    widgets_configurados += 1
-
-
+                    widget.activated.connect(lambda _, w=widget, n=nombre: self._guardar_campo_inmediato(n, w))
             
         except Exception as e:
             print(f"[ControladorAutoGuardado] ❌ Error configurando campos: {e}")
 
-    def _crear_callback_agrupado(self, nombre_campo, widget):
-        """Crear callback que agrupa guardados en lugar de ejecutar inmediatamente"""
-        def callback(*args):
-            self._agendar_guardado_campo(nombre_campo, widget)
-        return callback
-    
-    def _crear_callback_inmediato_plazo(self, nombre_campo, widget):
-        """Crear callback especial para plazoEjecucion que guarda inmediatamente"""
-        def callback(valor):
-            if not self.cargando_datos:
-                self._guardar_plazo_inmediato(nombre_campo, widget, valor)
-        return callback
-
-    def _guardar_plazo_inmediato(self, nombre_campo: str, widget, valor):
-        """Guardar plazoEjecucion inmediatamente sin delay"""
-        try:
-            if not self._verificar_dependencias():
-                return False
-
-            contrato = self.contract_manager.get_current_contract()
-            if not contrato:
-                return False
-
-            # Convertir a string para consistencia
-            valor_str = str(int(valor))
-            
-            # Verificar si realmente cambió
-            cache_key = f"{contrato}_{nombre_campo}"
-            if cache_key in self.ultimo_guardado and self.ultimo_guardado[cache_key] == valor_str:
-                return True
-
-            # Guardar inmediatamente
-            resultado = self.controlador_json.guardar_campo_en_json(contrato, nombre_campo, valor_str)
-            
-            if resultado:
-                self.ultimo_guardado[cache_key] = valor_str
-                return True
-            else:
-                print(f"[ControladorAutoGuardado] ❌ Error guardando {nombre_campo}")
-                return False
-                
-        except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error en guardado inmediato plazo: {e}")
-            return False
-    
-    def _agendar_guardado_campo(self, nombre_campo: str, widget):
-        """Agendar guardado de campo para ejecución agrupada"""
-        # SILENCIAR LOGS EXCESIVOS - solo errores importantes
-        
-        try:
-            # Verificar si estamos cargando datos
-            if self.cargando_datos:
-                return
-            
-            # Verificar si el valor realmente cambió
-            valor = self._extraer_valor_widget(widget)
-            
-            if valor is None:
-                return
-
-            # 🔧 CACHE MEJORADO: Incluir contrato actual en la clave
-            contrato_actual = self.contract_manager.get_current_contract() if self.contract_manager else ""
-            cache_key = f"{contrato_actual}_{nombre_campo}"
-            
-            if cache_key in self.ultimo_guardado and self.ultimo_guardado[cache_key] == valor:
-                return  # Valor no cambió, no guardar
-
-            # 🔧 PREVENIR DUPLICADOS: Remover campo existente antes de agregar
-            self.campos_pendientes = {(campo, w, v) for campo, w, v in self.campos_pendientes if campo != nombre_campo}
-            
-            # Agendar para guardado agrupado
-            self.campos_pendientes.add((nombre_campo, widget, valor))
-            
-            # Reiniciar timer (esperar 1 segundo sin cambios)
-            self.timer_guardado.stop()
-            self.timer_guardado.start(1000)  # 1 segundo de delay
-            
-        except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error agendando guardado: {e}")
-
-    def _ejecutar_guardado_agrupado(self):
-        """Ejecutar guardado agrupado de todos los campos pendientes"""
-        if self.cargando_datos or not self.campos_pendientes:
-            return
-
-        try:
-            # Verificar dependencias
-            if not self._verificar_dependencias():
-                self.campos_pendientes.clear()
-                return
-
-            contrato = self.contract_manager.get_current_contract()
-            if not contrato:
-                self.campos_pendientes.clear()
-                return
-
-            # Procesar todos los campos pendientes de una vez
-            guardados_exitosos = 0
-            
-            for nombre_campo, widget, valor in self.campos_pendientes:
-                try:
-                    exito = self._guardar_campo_obra(nombre_campo, valor, widget)
-                    
-                    if exito:
-                        # Actualizar cache con clave mejorada
-                        cache_key = f"{contrato}_{nombre_campo}"
-                        self.ultimo_guardado[cache_key] = valor
-                        guardados_exitosos += 1
-                        
-                except Exception as e:
-                    print(f"[ControladorAutoGuardado] ❌ Error guardando {nombre_campo}: {e}")
-
-
-            
-        except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error en guardado agrupado: {e}")
-        finally:
-            self.campos_pendientes.clear()
 
 
 
@@ -262,41 +105,18 @@ class ControladorAutoGuardado:
         widget.focusOutEvent = custom_focus_out
 
     def configurar_auto_guardado_tablas(self):
-        """Configurar auto-guardado para tablas específicas - OPTIMIZADO"""
+        """Configurar auto-guardado para tablas en pérdida de foco"""
         try:
-            tablas_configuradas = 0
-            
-            # Configurar tabla de empresas con delay
             if hasattr(self.main_window, 'TwEmpresas'):
-                self._configurar_tabla_con_delay('TwEmpresas', self._auto_guardar_tabla_empresas)
-                tablas_configuradas += 1
+                tabla = self.main_window.TwEmpresas
+                tabla.itemChanged.connect(lambda item: self._auto_guardar_tabla_empresas() if not self.cargando_datos else None)
             
-            # Configurar tabla de ofertas con delay
             if hasattr(self.main_window, 'TwOfertas'):
-                self._configurar_tabla_con_delay('TwOfertas', self._auto_guardar_tabla_ofertas)
-                tablas_configuradas += 1
-            
-
+                tabla = self.main_window.TwOfertas
+                tabla.itemChanged.connect(lambda item: self._auto_guardar_tabla_ofertas() if not self.cargando_datos else None)
             
         except Exception as e:
             print(f"[ControladorAutoGuardado] ❌ Error configurando tablas: {e}")
-
-    def _configurar_tabla_con_delay(self, nombre_tabla, callback):
-        """Configurar tabla con delay para evitar guardados excesivos"""
-        tabla = getattr(self.main_window, nombre_tabla)
-        
-        # Timer específico para esta tabla
-        timer = QTimer()
-        timer.setSingleShot(True)
-        timer.timeout.connect(callback)
-        
-        def on_item_changed(item):
-            if not self.cargando_datos:
-                timer.stop()
-                timer.start(2000)  # 2 segundos de delay para tablas
-        
-        tabla.itemChanged.connect(on_item_changed)
-        setattr(tabla, '_autosave_timer', timer)
 
 
     def _guardar_campo_inmediato(self, nombre_campo: str, widget) -> bool:
@@ -386,19 +206,12 @@ class ControladorAutoGuardado:
         pass
 
     def forzar_guardado_completo(self):
-        """Forzar guardado completo - OPTIMIZADO"""
+        """Forzar guardado completo"""
         try:
             if self.guardando_en_proceso or self.cargando_datos:
                 return False
             
             self.guardando_en_proceso = True
-            
-            # 🆕 EJECUTAR GUARDADO AGRUPADO PENDIENTE PRIMERO
-            if self.campos_pendientes:
-                self.timer_guardado.stop()
-                self._ejecutar_guardado_agrupado()
-            
-            # Solo guardar tablas (los campos ya se guardaron en tiempo real)
             self._forzar_guardado_tablas()
             return True
            
@@ -537,20 +350,100 @@ class ControladorAutoGuardado:
         except Exception as e:
             print(f"[ControladorAutoGuardado] ❌ Error guardado forzado tablas: {e}")
 
+    def actualizar(self, nombre_contrato: str):
+        """Actualizar todos los campos y tablas desde el JSON para el contrato especificado"""
+        try:
+            if not self._verificar_dependencias():
+                print(f"[ControladorAutoGuardado] ❌ Dependencias no disponibles")
+                return False
+
+            self.iniciar_carga_datos()
+            
+            # Leer datos del contrato
+            contract_data = self.controlador_json.leer_contrato_completo(nombre_contrato)
+            if not contract_data:
+                print(f"[ControladorAutoGuardado] ❌ No se encontró el contrato: {nombre_contrato}")
+                self.finalizar_carga_datos()
+                return False
+
+            # Actualizar campos de texto
+            self._actualizar_campos_desde_json(contract_data)
+            
+            # Actualizar tablas
+            self._actualizar_tablas_desde_json(contract_data)
+            
+            self.finalizar_carga_datos()
+            return True
+            
+        except Exception as e:
+            print(f"[ControladorAutoGuardado] ❌ Error actualizando: {e}")
+            self.finalizar_carga_datos()
+            return False
+
+    def _actualizar_campos_desde_json(self, contract_data):
+        """Actualizar campos desde JSON"""
+        tipos_soportados = (QtWidgets.QLineEdit, QtWidgets.QTextEdit, QtWidgets.QDateEdit, 
+                          QtWidgets.QTimeEdit, QtWidgets.QDoubleSpinBox, QtWidgets.QSpinBox, QtWidgets.QComboBox)
+        
+        widgets = self.main_window.findChildren(tipos_soportados)
+        
+        for widget in widgets:
+            nombre = widget.objectName()
+            if not nombre or nombre.startswith('qt_'):
+                continue
+                
+            valor = contract_data.get(nombre, "")
+            if valor:
+                self._establecer_valor_widget(widget, str(valor))
+
+    def _actualizar_tablas_desde_json(self, contract_data):
+        """Actualizar tablas desde JSON"""
+        # Actualizar tabla empresas
+        if hasattr(self.main_window, 'TwEmpresas') and 'empresas' in contract_data:
+            self._actualizar_tabla_empresas(contract_data['empresas'])
+            
+        # Actualizar tabla ofertas
+        if hasattr(self.main_window, 'TwOfertas') and 'empresas' in contract_data:
+            self._actualizar_tabla_ofertas(contract_data['empresas'])
+
+    def _actualizar_tabla_empresas(self, empresas_data):
+        """Actualizar tabla de empresas"""
+        tabla = self.main_window.TwEmpresas
+        tabla.setRowCount(len(empresas_data))
+        
+        for row, empresa in enumerate(empresas_data):
+            tabla.setItem(row, 0, QtWidgets.QTableWidgetItem(empresa.get('nombre', '')))
+            tabla.setItem(row, 1, QtWidgets.QTableWidgetItem(empresa.get('nif', '')))
+            tabla.setItem(row, 2, QtWidgets.QTableWidgetItem(empresa.get('email', '')))
+            tabla.setItem(row, 3, QtWidgets.QTableWidgetItem(empresa.get('contacto', '')))
+
+    def _actualizar_tabla_ofertas(self, empresas_data):
+        """Actualizar tabla de ofertas"""
+        tabla = self.main_window.TwOfertas
+        tabla.setRowCount(len(empresas_data))
+        
+        for row, empresa in enumerate(empresas_data):
+            tabla.setItem(row, 0, QtWidgets.QTableWidgetItem(empresa.get('nombre', '')))
+            tabla.setItem(row, 1, QtWidgets.QTableWidgetItem(empresa.get('ofertas', '')))
+
+    def _establecer_valor_widget(self, widget, valor):
+        """Establecer valor en widget según su tipo"""
+        try:
+            if isinstance(widget, QtWidgets.QLineEdit):
+                widget.setText(valor)
+            elif isinstance(widget, QtWidgets.QTextEdit):
+                widget.setPlainText(valor)
+            elif isinstance(widget, QtWidgets.QComboBox):
+                index = widget.findText(valor)
+                if index >= 0:
+                    widget.setCurrentIndex(index)
+        except Exception as e:
+            print(f"[ControladorAutoGuardado] ❌ Error estableciendo valor: {e}")
+
     def esta_pausado(self) -> bool:
         """Verificar si el auto-guardado está pausado"""
         return self.cargando_datos
-    def _obtener_nombre_contrato_actual(self) -> str:
-        """Obtener nombre del contrato usando el selector"""
-        try:
-            if (hasattr(self.main_window, 'contract_manager') and 
-                self.main_window.contract_manager):
-                # USAR EL MÉTODO CORRECTO
-                return self.main_window.contract_manager.get_current_contract() or ""
-            return ""
-        except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error obteniendo nombre contrato: {e}")
-            return ""
+    
     def guardar_tabla_ofertas_en_json(self):
         """Guardar tabla TwOfertas en la estructura empresas unificada"""
         try:

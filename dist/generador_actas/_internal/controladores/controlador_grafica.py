@@ -1818,6 +1818,12 @@ class ControladorGrafica(QMainWindow):
                                     # Forzar procesamiento de la selección
                                     QApplication.processEvents()
                                     
+                                    # 🆕 ACTUALIZAR CAMPOS PARA CONTRATO NUEVO
+                                    if (hasattr(self, 'controlador_autosave') and 
+                                        self.controlador_autosave):
+                                        self.controlador_autosave.actualizar(nombre_creado)
+                                        print(f"[ControladorGrafica] 🔄 Campos actualizados para contrato nuevo: {nombre_creado}")
+                                    
                                     # Activar tabWidget si estaba oculto
                                     if hasattr(self, 'tabWidget'):
                                         self.tabWidget.setVisible(True)
@@ -1903,6 +1909,9 @@ class ControladorGrafica(QMainWindow):
                                 index = self.comboBox.findText(nombre_clonado)
                                 if index >= 0:
                                     self.comboBox.setCurrentIndex(index)
+                                    # Forzar la carga de datos en la UI usando el evento existente
+                                    if hasattr(self, 'controlador_eventos') and self.controlador_eventos:
+                                        self.controlador_eventos._on_combo_changed(nombre_clonado)
                         
                         QMessageBox.information(self, "Contrato Clonado", f"Contrato clonado exitosamente: {dialogo.result['nuevo_nombre']}")
                 
@@ -1950,13 +1959,20 @@ class ControladorGrafica(QMainWindow):
                         QMessageBox.critical(self, "Error", "Controlador JSON no disponible")
                         return
                     
+                    # Obtener información del borrado de carpeta
+                    borrar_carpeta = hasattr(dialogo, 'borrar_carpeta') and dialogo.borrar_carpeta
+                    
                     
                     if hasattr(self.controlador_json, 'borrar_contrato_con_carpetas'):
-                        exito, mensaje = self.controlador_json.borrar_contrato_con_carpetas(contrato_seleccionado)
+                        exito, mensaje = self.controlador_json.borrar_contrato_con_carpetas(contrato_seleccionado, borrar_carpeta)
                     elif hasattr(self.controlador_json, 'eliminar_contrato'):
                         # print(f"[ControladorGrafica] ⚠️ Usando eliminar_contrato en su lugar")
                         exito = self.controlador_json.eliminar_contrato(contrato_seleccionado)
                         mensaje = "Contrato eliminado" if exito else "Error eliminando contrato"
+                        
+                        # Si se eligió borrar carpeta, intentar borrarla manualmente
+                        if exito and borrar_carpeta:
+                            self._borrar_carpeta_obra(contrato_seleccionado, datos_contrato)
                     else:
                         # print(f"[ControladorGrafica] ❌ No existe método de eliminación")
                         QMessageBox.critical(self, "Error", "Método de eliminación no encontrado")
@@ -2534,24 +2550,637 @@ class ControladorGrafica(QMainWindow):
             QMessageBox.critical(self, "Error", f"Error mostrando información del autor: {str(e)}")
 
     def generar_informe_obras(self):
-        """Generar informe de obras"""
+        """Generar informe completo de todas las obras"""
         try:
-            if hasattr(self, 'gestor_archivos_unificado') and self.gestor_archivos_unificado:
-                self.gestor_archivos_unificado.generar_informe_carpetas()
+            print("[ControladorGrafica] Generando informe completo de obras...")
+            resultado = self._generar_informe_obras_completo()
+            if resultado:
+                QMessageBox.information(self, "Informe Generado", f"✅ Informe generado correctamente:\n{resultado}")
             else:
-                QMessageBox.information(self, "Información", "Funcionalidad de informes de obras en desarrollo.")
+                QMessageBox.warning(self, "Error", "❌ No se pudo generar el informe")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error generando informe de obras: {str(e)}")
+            print(f"[ControladorGrafica] Error generando informe: {e}")
+            import traceback
+            traceback.print_exc()
 
     def generar_informe_facturas_directas(self):
-        """Generar informe de facturas directas"""
+        """Generar informe completo de facturas directas"""
         try:
-            if hasattr(self, 'controlador_facturas_directas') and self.controlador_facturas_directas:
-                self.controlador_facturas_directas.informe_facturacion()
+            print("[ControladorGrafica] Generando informe completo de facturas directas...")
+            resultado = self._generar_informe_facturas_completo()
+            if resultado:
+                QMessageBox.information(self, "Informe Generado", f"✅ Informe de facturas generado correctamente:\n{resultado}")
             else:
-                QMessageBox.information(self, "Información", "Funcionalidad de informes de facturas directas en desarrollo.")
+                QMessageBox.warning(self, "Error", "❌ No se pudo generar el informe de facturas")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error generando informe de facturas: {str(e)}")
+            print(f"[ControladorGrafica] Error generando informe facturas: {e}")
+            import traceback
+            traceback.print_exc()
+
+    def _borrar_carpeta_obra(self, nombre_contrato, datos_contrato=None):
+        """Borrar carpeta física de la obra buscando por nombre de obra o expediente"""
+        try:
+            import os
+            import shutil
+            
+            print(f"[DEBUG] Intentando borrar carpeta para: {nombre_contrato}")
+            print(f"[DEBUG] Datos contrato: {datos_contrato}")
+            
+            carpetas_a_buscar = [nombre_contrato]
+            
+            if datos_contrato and 'numeroExpediente' in datos_contrato:
+                expediente = datos_contrato['numeroExpediente']
+                if expediente and expediente.strip():
+                    carpetas_a_buscar.append(expediente.strip())
+            
+            print(f"[DEBUG] Carpetas a buscar: {carpetas_a_buscar}")
+            
+            carpeta_obras = os.path.join(os.getcwd(), "obras")
+            print(f"[DEBUG] Buscando en: {carpeta_obras}")
+            
+            if not os.path.exists(carpeta_obras):
+                print(f"[DEBUG] No existe la carpeta obras: {carpeta_obras}")
+                return
+            
+            # Listar todas las carpetas disponibles
+            carpetas_disponibles = [d for d in os.listdir(carpeta_obras) if os.path.isdir(os.path.join(carpeta_obras, d))]
+            print(f"[DEBUG] Carpetas disponibles: {carpetas_disponibles}")
+            
+            for nombre_carpeta in carpetas_a_buscar:
+                ruta_carpeta = os.path.join(carpeta_obras, nombre_carpeta)
+                print(f"[DEBUG] Verificando: {ruta_carpeta}")
+                if os.path.exists(ruta_carpeta):
+                    shutil.rmtree(ruta_carpeta)
+                    print(f"[DEBUG] OK - Carpeta borrada: {ruta_carpeta}")
+                    return
+            
+            print(f"[DEBUG] ERROR - No se encontró carpeta para: {carpetas_a_buscar}")
+            
+        except Exception as e:
+            print(f"[DEBUG] Error borrando carpeta: {e}")
+            QMessageBox.critical(None, "Error", f"Error borrando carpeta: {e}")
+
+    def _generar_informe_obras_completo(self):
+        """Generar informe completo de todas las obras en formato Word"""
+        try:
+            from docx import Document
+            from docx.shared import Inches, Pt, RGBColor
+            from docx.enum.text import WD_ALIGN_PARAGRAPH
+            from docx.enum.section import WD_SECTION_START, WD_ORIENTATION
+            from docx.oxml.shared import OxmlElement, qn
+            import os
+            from datetime import datetime
+            
+            # Obtener datos del JSON
+            if not hasattr(self, 'controlador_json') or not self.controlador_json:
+                print("[Informe] Error: Controlador JSON no disponible")
+                return None
+                
+            datos_obras = self.controlador_json.datos.get('obras', [])
+            if not datos_obras:
+                print("[Informe] Error: No hay obras en el JSON")
+                return None
+            
+            print(f"[Informe] Procesando {len(datos_obras)} obras...")
+            
+            # Crear documento Word
+            doc = Document()
+            
+            # Configurar orientación apaisada para obras
+            section = doc.sections[0]
+            section.orientation = WD_ORIENTATION.LANDSCAPE
+            section.page_width = Inches(11.7)  # A4 apaisada ancho
+            section.page_height = Inches(8.3)  # A4 apaisada alto
+            
+            # Configurar estilo del documento
+            style = doc.styles['Normal']
+            style.font.name = 'Arial'
+            style.font.size = Pt(10)
+            
+            # Encabezado con logo y título
+            header_para = doc.add_paragraph()
+            header_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            
+            # Intentar añadir logo de ADIF
+            logo_agregado = False
+            rutas_logo = [
+                os.path.join(os.getcwd(), "images", "icono.ico"),
+                os.path.join(os.getcwd(), "images", "logo.png"), 
+                os.path.join(os.getcwd(), "plantillas", "logo.png"),
+                os.path.join(os.getcwd(), "dist", "generador_actas", "_internal", "images", "icono.ico")
+            ]
+            
+            for logo_path in rutas_logo:
+                try:
+                    if os.path.exists(logo_path):
+                        # Convertir .ico a formato compatible si es necesario
+                        if logo_path.endswith('.ico'):
+                            # Crear un logo simple en ASCII si .ico no funciona
+                            logo_run = header_para.add_run("📋 ADIF 📋\n")
+                            logo_run.font.size = Pt(24)
+                            logo_run.font.color.rgb = RGBColor(0, 150, 70)  # Verde ADIF
+                            logo_run.bold = True
+                        else:
+                            logo_run = header_para.add_run()
+                            logo_run.add_picture(logo_path, width=Inches(1.2))
+                            header_para.add_run("\n")
+                        logo_agregado = True
+                        print(f"[Informe] Logo añadido desde: {logo_path}")
+                        break
+                except Exception as e:
+                    continue
+            
+            if not logo_agregado:
+                # Fallback: Logo ASCII/texto
+                logo_run = header_para.add_run("📋 ADIF 📋\n")
+                logo_run.font.size = Pt(24)
+                logo_run.font.color.rgb = RGBColor(0, 150, 70)  # Verde ADIF
+                logo_run.bold = True
+                print("[Informe] Usando logo de texto como fallback")
+            
+            # Título principal con color verde ADIF
+            titulo = doc.add_heading('INFORME RESUMEN DE OBRAS', 0)
+            titulo.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            
+            # Aplicar color verde ADIF al título
+            for run in titulo.runs:
+                run.font.color.rgb = RGBColor(0, 150, 70)  # Verde ADIF
+                run.font.name = 'Arial'
+                run.font.size = Pt(18)
+                run.bold = True
+            
+            # Información del informe
+            info = doc.add_paragraph()
+            info.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+            info.add_run(f"Generado: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n")
+            info.add_run(f"Total de obras: {len(datos_obras)}")
+            
+            doc.add_paragraph()  # Espacio
+            
+            # Crear tabla
+            table = doc.add_table(rows=1, cols=8)
+            table.style = 'Table Grid'
+            
+            # Encabezados
+            headers = ['Nº', 'Nombre de la Obra', 'Tipo', 'Estado', 'Importe Total (€)', 'Empresa Adjudicada', 'Fecha Creación', 'Fecha Modificación']
+            header_row = table.rows[0]
+            for i, header in enumerate(headers):
+                cell = header_row.cells[i]
+                cell.text = header
+                # Formato bold para headers
+                for paragraph in cell.paragraphs:
+                    for run in paragraph.runs:
+                        run.bold = True
+                        run.font.size = Pt(9)
+            
+            # Datos de obras
+            for idx, obra in enumerate(datos_obras, 1):
+                row = table.add_row()
+                
+                # Extraer datos críticos
+                nombre = obra.get('nombreObra', 'Sin nombre')[:50]  # Limitar longitud
+                tipo = self._obtener_tipo_obra_legible(obra.get('tipoActuacion', ''))
+                estado = self._determinar_estado_obra(obra)
+                importe = self._formatear_importe(obra.get('precioAdjudicacionTotal', '0'))
+                empresa = obra.get('empresaAdjudicada', 'Sin adjudicar')[:30]
+                fecha_creacion = self._formatear_fecha(obra.get('fechaCreacion', ''))
+                fecha_modificacion = self._formatear_fecha(obra.get('fechaModificacion', ''))
+                
+                # Llenar celdas
+                celdas_data = [str(idx), nombre, tipo, estado, importe, empresa, fecha_creacion, fecha_modificacion]
+                for i, data in enumerate(celdas_data):
+                    cell = row.cells[i]
+                    cell.text = data
+                    for paragraph in cell.paragraphs:
+                        for run in paragraph.runs:
+                            run.font.size = Pt(8)
+            
+            # Ajustar anchos de columna para formato apaisado (más espacio disponible)
+            table.autofit = False
+            col_widths = [Inches(0.5), Inches(2.5), Inches(1.2), Inches(1.0), Inches(1.2), Inches(2.0), Inches(1.2), Inches(1.2)]
+            for i, width in enumerate(col_widths):
+                for cell in table.columns[i].cells:
+                    cell.width = width
+            
+            # Añadir resumen estadístico
+            doc.add_paragraph()
+            doc.add_heading('Resumen Estadístico', 2)
+            
+            # Calcular estadísticas
+            stats = self._calcular_estadisticas_obras(datos_obras)
+            
+            stats_para = doc.add_paragraph()
+            stats_para.add_run(f"• Total de obras: {stats['total']}\n")
+            stats_para.add_run(f"• Obras adjudicadas: {stats['adjudicadas']}\n")
+            stats_para.add_run(f"• Importe total adjudicado: {stats['importe_total']} €\n")
+            stats_para.add_run(f"• Promedio por obra: {stats['promedio']} €\n")
+            stats_para.add_run(f"• Tipos de actuación:\n")
+            for tipo, cantidad in stats['tipos'].items():
+                stats_para.add_run(f"  - {tipo}: {cantidad}\n")
+            
+            # Guardar archivo en carpeta informes
+            nombre_archivo = f"Informe_Obras_ADIF_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx"
+            
+            # Obtener ruta de la carpeta informes usando el sistema de rutas
+            try:
+                from .controlador_routes import ControladorRutas
+                rutas = ControladorRutas()
+                carpeta_informes = rutas.get_ruta_carpeta_informes()
+                ruta_archivo = os.path.join(carpeta_informes, nombre_archivo)
+            except Exception as e:
+                print(f"[Informe] Error obteniendo carpeta informes: {e}")
+                # Fallback a la raíz
+                ruta_archivo = os.path.join(os.getcwd(), nombre_archivo)
+            
+            doc.save(ruta_archivo)
+            print(f"[Informe] ✅ Documento guardado: {ruta_archivo}")
+            
+            # Abrir automáticamente el documento
+            import subprocess
+            try:
+                subprocess.run([ruta_archivo], shell=True, check=True)
+                print(f"[Informe] ✅ Documento abierto automáticamente")
+            except Exception as e:
+                print(f"[Informe] ⚠️ Error abriendo documento: {e}")
+            
+            return ruta_archivo
+            
+        except ImportError as e:
+            print(f"[Informe] Error: Módulo python-docx no disponible: {e}")
+            QMessageBox.critical(None, "Error", "El módulo python-docx no está instalado.\nEjecute: pip install python-docx")
+            return None
+        except Exception as e:
+            print(f"[Informe] Error generando informe: {e}")
+            import traceback
+            traceback.print_exc()
+            return None
+    
+    def _obtener_tipo_obra_legible(self, tipo_actuacion):
+        """Convertir tipo de actuación a texto legible"""
+        tipos = {
+            'obras': 'Obras',
+            'servicios': 'Servicios',
+            'serv_mantenimiento': 'Serv. Mantenimiento',
+            'obra_mantenimiento': 'Obra Mantenimiento'
+        }
+        return tipos.get(tipo_actuacion, tipo_actuacion.title())
+    
+    def _determinar_estado_obra(self, obra):
+        """Determinar estado de la obra basado en datos disponibles"""
+        if obra.get('empresaAdjudicada') and obra.get('precioAdjudicacionTotal'):
+            if obra.get('fechaRecepcion') and obra.get('fechaRecepcion') != '2000-01-01':
+                return 'Recepcionada'
+            elif obra.get('fechaReplanteo') and obra.get('fechaReplanteo') != '2000-01-01':
+                return 'En Ejecución'
+            else:
+                return 'Adjudicada'
+        elif obra.get('ofertas') and any(o.get('presenta_oferta') for o in obra.get('ofertas', [])):
+            return 'En Licitación'
+        else:
+            return 'Iniciada'
+    
+    def _formatear_importe(self, importe):
+        """Formatear importe como moneda"""
+        try:
+            if isinstance(importe, str):
+                importe = importe.replace(',', '.')
+            num = float(importe or 0)
+            return f"{num:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+        except:
+            return '0,00'
+    
+    def _formatear_fecha(self, fecha):
+        """Formatear fecha para mostrar"""
+        if not fecha or fecha in ['2000-01-01', '']:
+            return '-'
+        try:
+            if ' ' in fecha:
+                fecha = fecha.split(' ')[0]
+            return datetime.strptime(fecha, '%Y-%m-%d').strftime('%d/%m/%Y')
+        except:
+            return fecha
+    
+    def _calcular_estadisticas_obras(self, obras):
+        """Calcular estadísticas de las obras"""
+        total = len(obras)
+        adjudicadas = sum(1 for obra in obras if obra.get('empresaAdjudicada'))
+        
+        # Calcular importe total
+        importe_total = 0
+        for obra in obras:
+            try:
+                importe = obra.get('precioAdjudicacionTotal', '0')
+                if isinstance(importe, str):
+                    importe = importe.replace(',', '.')
+                importe_total += float(importe or 0)
+            except:
+                pass
+        
+        promedio = importe_total / max(adjudicadas, 1)
+        
+        # Contar tipos
+        tipos = {}
+        for obra in obras:
+            tipo = self._obtener_tipo_obra_legible(obra.get('tipoActuacion', 'Sin tipo'))
+            tipos[tipo] = tipos.get(tipo, 0) + 1
+        
+        return {
+            'total': total,
+            'adjudicadas': adjudicadas,
+            'importe_total': self._formatear_importe(str(importe_total)),
+            'promedio': self._formatear_importe(str(promedio)),
+            'tipos': tipos
+        }
+
+    def _generar_informe_facturas_completo(self):
+        """Generar informe completo de facturas directas en formato Word"""
+        try:
+            from docx import Document
+            from docx.shared import Inches, Pt, RGBColor
+            from docx.enum.text import WD_ALIGN_PARAGRAPH
+            from docx.enum.section import WD_SECTION_START, WD_ORIENTATION
+            import os
+            from datetime import datetime
+            import json
+            
+            # Obtener ruta del archivo de facturas directas
+            archivo_facturas = None
+            rutas_posibles = [
+                os.path.join(os.getcwd(), "basedatos", "facturas_directas.json"),
+                os.path.join(os.getcwd(), "facturas_directas.json"),
+                os.path.join(os.getcwd(), "dist", "generador_actas", "_internal", "facturas_directas.json")
+            ]
+            
+            for ruta in rutas_posibles:
+                if os.path.exists(ruta):
+                    archivo_facturas = ruta
+                    break
+            
+            if not archivo_facturas:
+                print("[Informe Facturas] Error: No se encontró archivo de facturas directas")
+                return None
+            
+            # Cargar datos de facturas
+            try:
+                with open(archivo_facturas, 'r', encoding='utf-8') as f:
+                    datos_facturas = json.load(f)
+            except Exception as e:
+                print(f"[Informe Facturas] Error leyendo archivo: {e}")
+                return None
+            
+            facturas = datos_facturas.get('facturas', [])
+            if not facturas:
+                print("[Informe Facturas] Error: No hay facturas en el archivo")
+                return None
+            
+            print(f"[Informe Facturas] Procesando {len(facturas)} facturas...")
+            
+            # Crear documento Word
+            doc = Document()
+            
+            # Configurar orientación apaisada para facturas
+            section = doc.sections[0]
+            section.orientation = WD_ORIENTATION.LANDSCAPE
+            section.page_width = Inches(11.7)  # A4 apaisada ancho
+            section.page_height = Inches(8.3)  # A4 apaisada alto
+            
+            # Configurar estilo del documento
+            style = doc.styles['Normal']
+            style.font.name = 'Arial'
+            style.font.size = Pt(10)
+            
+            # Encabezado con logo y título
+            header_para = doc.add_paragraph()
+            header_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            
+            # Logo ADIF (mismo que en obras)
+            logo_agregado = False
+            rutas_logo = [
+                os.path.join(os.getcwd(), "images", "icono.ico"),
+                os.path.join(os.getcwd(), "images", "logo.png"), 
+                os.path.join(os.getcwd(), "plantillas", "logo.png"),
+                os.path.join(os.getcwd(), "dist", "generador_actas", "_internal", "images", "icono.ico")
+            ]
+            
+            for logo_path in rutas_logo:
+                try:
+                    if os.path.exists(logo_path):
+                        if logo_path.endswith('.ico'):
+                            logo_run = header_para.add_run("📊 ADIF 📊\n")
+                            logo_run.font.size = Pt(24)
+                            logo_run.font.color.rgb = RGBColor(0, 150, 70)  # Verde ADIF
+                            logo_run.bold = True
+                        else:
+                            logo_run = header_para.add_run()
+                            logo_run.add_picture(logo_path, width=Inches(1.2))
+                            header_para.add_run("\n")
+                        logo_agregado = True
+                        print(f"[Informe Facturas] Logo añadido desde: {logo_path}")
+                        break
+                except Exception as e:
+                    continue
+            
+            if not logo_agregado:
+                logo_run = header_para.add_run("📊 ADIF 📊\n")
+                logo_run.font.size = Pt(24)
+                logo_run.font.color.rgb = RGBColor(0, 150, 70)  # Verde ADIF
+                logo_run.bold = True
+                print("[Informe Facturas] Usando logo de texto como fallback")
+            
+            # Título principal con color verde ADIF
+            titulo = doc.add_heading('INFORME FACTURAS DIRECTAS', 0)
+            titulo.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            
+            # Aplicar color verde ADIF al título
+            for run in titulo.runs:
+                run.font.color.rgb = RGBColor(0, 150, 70)  # Verde ADIF
+                run.font.name = 'Arial'
+                run.font.size = Pt(18)
+                run.bold = True
+            
+            # Información del informe
+            info = doc.add_paragraph()
+            info.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+            info.add_run(f"Generado: {datetime.now().strftime('%d/%m/%Y %H:%M')}\n")
+            info.add_run(f"Total de facturas: {len(facturas)}")
+            
+            doc.add_paragraph()  # Espacio
+            
+            # Crear tabla
+            table = doc.add_table(rows=1, cols=9)
+            table.style = 'Table Grid'
+            
+            # Encabezados
+            headers = ['ID', 'Fecha Creación', 'Empresa', 'CIF', 'Importe (€)', 'Categoría', 'Localidad', 'Estado', 'Archivo PDF']
+            header_row = table.rows[0]
+            for i, header in enumerate(headers):
+                cell = header_row.cells[i]
+                cell.text = header
+                # Formato bold para headers
+                for paragraph in cell.paragraphs:
+                    for run in paragraph.runs:
+                        run.bold = True
+                        run.font.size = Pt(9)
+            
+            # Datos de facturas
+            for factura in facturas:
+                row = table.add_row()
+                
+                # Extraer datos críticos
+                id_factura = str(factura.get('id', ''))
+                fecha_creacion = self._formatear_fecha_facturas(factura.get('fecha_creacion', ''))
+                empresa = factura.get('empresa', 'Sin empresa')[:25]
+                cif = factura.get('cif', 'Sin CIF')
+                importe = self._formatear_importe(str(factura.get('importe', '0')))
+                categoria = factura.get('categoria', 'Sin categoría')
+                localidad = factura.get('localidad', 'Sin localidad')
+                estado = self._determinar_estado_factura(factura)
+                archivo_pdf = 'Sí' if factura.get('archivo_pdf') else 'No'
+                
+                # Llenar celdas
+                celdas_data = [id_factura, fecha_creacion, empresa, cif, importe, categoria, localidad, estado, archivo_pdf]
+                for i, data in enumerate(celdas_data):
+                    cell = row.cells[i]
+                    cell.text = data
+                    for paragraph in cell.paragraphs:
+                        for run in paragraph.runs:
+                            run.font.size = Pt(8)
+            
+            # Ajustar anchos de columna para formato apaisado (más espacio disponible)
+            table.autofit = False
+            col_widths = [Inches(0.5), Inches(1.4), Inches(1.8), Inches(1.2), Inches(1.0), Inches(1.2), Inches(1.2), Inches(1.2), Inches(0.8)]
+            for i, width in enumerate(col_widths):
+                for cell in table.columns[i].cells:
+                    cell.width = width
+            
+            # Añadir resumen estadístico
+            doc.add_paragraph()
+            doc.add_heading('Resumen Estadístico', 2)
+            
+            # Calcular estadísticas
+            stats = self._calcular_estadisticas_facturas(facturas)
+            
+            stats_para = doc.add_paragraph()
+            stats_para.add_run(f"• Total de facturas: {stats['total']}\n")
+            stats_para.add_run(f"• Facturas activas: {stats['activas']}\n")
+            stats_para.add_run(f"• Importe total: {stats['importe_total']} €\n")
+            stats_para.add_run(f"• Promedio por factura: {stats['promedio']} €\n")
+            stats_para.add_run(f"• Facturas con PDF: {stats['con_pdf']}\n")
+            stats_para.add_run(f"• Categorías:\n")
+            for categoria, cantidad in stats['categorias'].items():
+                stats_para.add_run(f"  - {categoria}: {cantidad}\n")
+            stats_para.add_run(f"• Estados:\n")
+            for estado, cantidad in stats['estados'].items():
+                stats_para.add_run(f"  - {estado}: {cantidad}\n")
+            
+            # Guardar archivo en carpeta informes
+            nombre_archivo = f"Informe_Facturas_ADIF_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx"
+            
+            # Obtener ruta de la carpeta informes usando el sistema de rutas
+            try:
+                from .controlador_routes import ControladorRutas
+                rutas = ControladorRutas()
+                carpeta_informes = rutas.get_ruta_carpeta_informes()
+                ruta_archivo = os.path.join(carpeta_informes, nombre_archivo)
+            except Exception as e:
+                print(f"[Informe Facturas] Error obteniendo carpeta informes: {e}")
+                # Fallback a la raíz
+                ruta_archivo = os.path.join(os.getcwd(), nombre_archivo)
+            
+            doc.save(ruta_archivo)
+            print(f"[Informe Facturas] ✅ Documento guardado: {ruta_archivo}")
+            
+            # Abrir automáticamente el documento
+            import subprocess
+            try:
+                subprocess.run([ruta_archivo], shell=True, check=True)
+                print(f"[Informe Facturas] ✅ Documento abierto automáticamente")
+            except Exception as e:
+                print(f"[Informe Facturas] ⚠️ Error abriendo documento: {e}")
+            
+            return ruta_archivo
+            
+        except ImportError as e:
+            print(f"[Informe Facturas] Error: Módulo python-docx no disponible: {e}")
+            QMessageBox.critical(None, "Error", "El módulo python-docx no está instalado.\nEjecute: pip install python-docx")
+            return None
+        except Exception as e:
+            print(f"[Informe Facturas] Error generando informe: {e}")
+            import traceback
+            traceback.print_exc()
+            return None
+    
+    def _formatear_fecha_facturas(self, fecha_str):
+        """Formatear fecha de facturas (viene en formato ISO)"""
+        if not fecha_str:
+            return '-'
+        try:
+            # Formato ISO: 2025-08-31T06:39:30.291672
+            from datetime import datetime
+            if 'T' in fecha_str:
+                fecha_str = fecha_str.split('T')[0]
+            fecha_obj = datetime.strptime(fecha_str, '%Y-%m-%d')
+            return fecha_obj.strftime('%d/%m/%Y')
+        except:
+            return fecha_str
+    
+    def _determinar_estado_factura(self, factura):
+        """Determinar estado de la factura"""
+        if not factura.get('activa', True):
+            return 'Eliminada'
+        
+        estado = factura.get('estado', '')
+        if estado:
+            return estado
+        
+        # Si no tiene estado explícito
+        if factura.get('archivo_pdf'):
+            return 'Con PDF'
+        else:
+            return 'Pendiente'
+    
+    def _calcular_estadisticas_facturas(self, facturas):
+        """Calcular estadísticas de las facturas"""
+        total = len(facturas)
+        activas = sum(1 for f in facturas if f.get('activa', True))
+        con_pdf = sum(1 for f in facturas if f.get('archivo_pdf'))
+        
+        # Calcular importe total
+        importe_total = 0
+        for factura in facturas:
+            if factura.get('activa', True):  # Solo facturas activas
+                try:
+                    importe = factura.get('importe', 0)
+                    importe_total += float(importe or 0)
+                except:
+                    pass
+        
+        promedio = importe_total / max(activas, 1)
+        
+        # Contar categorías
+        categorias = {}
+        for factura in facturas:
+            if factura.get('activa', True):
+                cat = factura.get('categoria', 'Sin categoría')
+                categorias[cat] = categorias.get(cat, 0) + 1
+        
+        # Contar estados
+        estados = {}
+        for factura in facturas:
+            estado = self._determinar_estado_factura(factura)
+            estados[estado] = estados.get(estado, 0) + 1
+        
+        return {
+            'total': total,
+            'activas': activas,
+            'importe_total': self._formatear_importe(str(importe_total)),
+            'promedio': self._formatear_importe(str(promedio)),
+            'con_pdf': con_pdf,
+            'categorias': categorias,
+            'estados': estados
+        }
 
 def main():
     app = QApplication.instance() or QApplication(sys.argv)

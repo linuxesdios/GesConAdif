@@ -12,6 +12,14 @@ import shutil
 import tempfile
 from unittest.mock import Mock, patch, MagicMock, call
 from datetime import datetime, date
+
+# Mock PyQt5 modules before importing
+sys.modules['PyQt5'] = MagicMock()
+sys.modules['PyQt5.QtWidgets'] = MagicMock()
+sys.modules['PyQt5.QtCore'] = MagicMock()
+sys.modules['PyQt5.QtTest'] = MagicMock()
+sys.modules['PyQt5.uic'] = MagicMock()
+
 from PyQt5.QtWidgets import QApplication, QDialog, QMessageBox
 from PyQt5.QtCore import QDate
 from PyQt5.QtTest import QTest

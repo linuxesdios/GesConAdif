@@ -19,7 +19,8 @@
       "Bash(C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe -m pytest tests/controladores/test_controlador_facturas_directas.py -v --tb=short)",
       "Bash(\"C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe\" -m pytest tests/controladores/test_controlador_facturas_directas.py::TestControladorFacturasDirectas::test_init_controlador -v)",
       "Bash(\"C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe\" main_py.py)",
-      "Bash(\"C:\\Users\\pablo\\entorno\\Scripts\\python.exe\" main_py.py)"
+      "Bash(\"C:\\Users\\pablo\\entorno\\Scripts\\python.exe\" main_py.py)",
+      "Bash(pytest:*)"
     ],
     "deny": [],
     "ask": [],

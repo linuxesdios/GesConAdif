@@ -1,0 +1,3609 @@
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\compilar_mejorado.py 
+================================== 
+ 
+18:def activar_entorno_virtual(): 
+36:def verificar_basedatos_json(): 
+112:def preservar_archivos_criticos(): 
+147:def compilar_con_mejoras(python_exe): 
+243:def reorganizar_estructura_mejorada(backups): 
+347:def crear_script_validacion(dist_dir): 
+360:def validar_entorno(): 
+513:def crear_validador_exe(script_path, internal_dir): 
+555:def crear_version_consola(): 
+591:def verificar_estructura_final_mejorada(): 
+637:def limpiar_temporales(): 
+669:def main(): 
+15:from pathlib import Path 
+10:import os 
+11:import sys 
+12:import subprocess 
+13:import shutil 
+14:import json 
+15:from pathlib import Path 
+16:import time 
+180:        "--hidden-import=PyQt5.QtCore", 
+181:        "--hidden-import=PyQt5.QtWidgets", 
+182:        "--hidden-import=PyQt5.QtGui",  
+183:        "--hidden-import=PyQt5.uic", 
+184:        "--hidden-import=PyQt5.QtGraphicsView", 
+185:        "--hidden-import=openpyxl", 
+186:        "--hidden-import=lxml", 
+187:        "--hidden-import=docx2pdf", 
+188:        "--hidden-import=PyPDF2", 
+189:        "--hidden-import=platform", 
+190:        "--hidden-import=subprocess", 
+191:        "--hidden-import=controladores.controlador_grafica", 
+192:        "--hidden-import=controladores.controlador_json", 
+193:        "--hidden-import=controladores.controlador_documentos",  
+194:        "--hidden-import=controladores.controlador_pdf_unificado", 
+195:        "--hidden-import=controladores.controlador_backup", 
+196:        "--hidden-import=controladores.controlador_routes", 
+197:        "--hidden-import=controladores.Controlador_selector", 
+198:        "--hidden-import=controladores.controlador_actuaciones_facturas", 
+199:        "--hidden-import=controladores.controlador_facturas_directas", 
+200:        "--hidden-import=controladores.controlador_resumen", 
+201:        "--hidden-import=controladores.controlador_contratos", 
+202:        "--hidden-import=controladores.controlador_tablas", 
+203:        "--hidden-import=controladores.controlador_calculos", 
+204:        "--hidden-import=controladores.controlador_eventos_ui", 
+205:        "--hidden-import=controladores.controlador_autosave", 
+206:        "--hidden-import=controladores.controlador_fases_documentos", 
+207:        "--hidden-import=controladores.controlador_archivos_unificado", 
+208:        "--hidden-import=controladores.ventana_doble_tabla", 
+209:        "--hidden-import=controladores.dialogo_actuaciones_especiales", 
+210:        "--hidden-import=controladores.dialogo_gestionar_contratos", 
+211:        "--hidden-import=modelos_py", 
+212:        "--hidden-import=helpers_py", 
+213:        "--hidden-import=firmas", 
+311:                        import json 
+356:import os 
+357:import sys 
+358:import platform 
+434:        import subprocess 
+455:            __import__(lib) 
+457:        except ImportError: 
+467:            import json 
+648:            import glob 
+732:        import traceback 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\firmas.py 
+================================== 
+ 
+5:def obtener_firmas_pdf(pdf_path): 
+17:    def parse_pdf_date(pdf_date): 
+35:    def extract_name_from_cert(contents): 
+3:from datetime import datetime 
+35:    def extract_name_from_cert(contents): 
+38:            from cryptography.hazmat.primitives.serialization import pkcs7 
+39:            from cryptography import x509 
+123:                            firmante = extract_name_from_cert(contents) 
+2:import PyPDF2 
+3:from datetime import datetime 
+38:            from cryptography.hazmat.primitives.serialization import pkcs7 
+39:            from cryptography import x509 
+40:            import warnings 
+41:            import binascii 
+76:                import re 
+138:    import sys 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\helpers_py.py 
+================================== 
+ 
+196:def abrir_archivo(ruta_archivo: str) -> bool: 
+201:        ruta_archivo: Ruta del archivo a abrir 
+221:        print(f"[helpers_py] ❌ Error abriendo archivo: {e}") 
+463:def validar_extension_archivo(ruta_archivo: str, extensiones_validas: List[str]) -> bool: 
+468:        ruta_archivo: Ruta del archivo 
+511:def obtener_tamano_archivo_legible(ruta_archivo: str) -> str: 
+516:        ruta_archivo: Ruta del archivo 
+537:def es_archivo_reciente(ruta_archivo: str, dias: int = 7) -> bool: 
+542:        ruta_archivo: Ruta del archivo 
+621:def crear_copia_respaldo_proyecto(ruta_archivo: str, directorio_respaldos: str = None) -> str: 
+626:        ruta_archivo: Ruta del archivo de proyecto 
+759:def cargar_json_seguro(ruta_archivo: str) -> Optional[Dict[str, Any]]: 
+764:        ruta_archivo: Ruta del archivo JSON 
+788:def guardar_json_seguro(datos: Dict[str, Any], ruta_archivo: str, crear_backup: bool = True) -> bool: 
+794:        ruta_archivo: Ruta del archivo JSON 
+21:def es_numero_valido(valor_str: str) -> bool: 
+55:def validar_nif_basico(nif: str) -> bool: 
+66:def validar_email_basico(email: str) -> bool: 
+85:def validar_datos_empresa(datos_empresa: Dict[str, str]) -> Tuple[bool, List[str]]: 
+113:def validar_oferta_economica(valor_str: str) -> Tuple[bool, Optional[float], str]: 
+138:def resource_path(relative_path: str) -> str: 
+159:def get_ui_file_path() -> Optional[str]: 
+168:def setup_ui_with_new_structure(main_window_instance) -> bool: 
+196:def abrir_archivo(ruta_archivo: str) -> bool: 
+225:def abrir_carpeta(ruta_carpeta: str) -> bool: 
+254:def abrir_url(url: str) -> bool: 
+272:def crear_carpeta_si_no_existe(ruta_carpeta: str) -> bool: 
+296:def limpiar_nombre_archivo(nombre: str) -> str: 
+326:def truncar_texto(texto: str, longitud_maxima: int, sufijo: str = "...") -> str: 
+344:def limpiar_texto_para_json(texto: str) -> str: 
+363:def extraer_numeros_de_texto(texto: str) -> str: 
+378:def formatear_numero_espanol(numero: float, decimales: int = 2) -> str: 
+398:def parsear_numero_espanol(texto: str) -> Optional[float]: 
+422:def convertir_numero_espanol_a_float(texto: str) -> float: 
+463:def validar_extension_archivo(ruta_archivo: str, extensiones_validas: List[str]) -> bool: 
+478:def es_ruta_valida(ruta: str) -> bool: 
+511:def obtener_tamano_archivo_legible(ruta_archivo: str) -> str: 
+537:def es_archivo_reciente(ruta_archivo: str, dias: int = 7) -> bool: 
+567:def generar_nombre_archivo_unico(directorio: str, nombre_base: str, extension: str) -> str: 
+591:def limpiar_respaldos_antiguos(directorio: str, nombre_base: str, extension: str, max_respaldos: int = 5): 
+621:def crear_copia_respaldo_proyecto(ruta_archivo: str, directorio_respaldos: str = None) -> str: 
+671:def convertir_docx_a_pdf(ruta_docx: str, cerrar_word: bool = True) -> Optional[str]: 
+727:def formatear_fecha_espanol(fecha: datetime, formato: str = "completo") -> str: 
+759:def cargar_json_seguro(ruta_archivo: str) -> Optional[Dict[str, Any]]: 
+788:def guardar_json_seguro(datos: Dict[str, Any], ruta_archivo: str, crear_backup: bool = True) -> bool: 
+824:def normalizar_ruta(ruta: str) -> str: 
+837:def ruta_relativa_a_absoluta(ruta_relativa: str, base: str = None) -> str: 
+843:        base: Directorio base (por defecto el actual) 
+15:from typing import Optional, List, Dict, Any, Tuple 
+16:from pathlib import Path 
+17:from datetime import datetime 
+181:            from PyQt5 import uic 
+704:        from docx2pdf import convert 
+716:            from docx2pdf import convert 
+6:import os 
+7:import sys 
+8:import webbrowser 
+9:import subprocess 
+10:import shutil 
+11:import json 
+12:import time 
+13:import glob 
+14:import re 
+15:from typing import Optional, List, Dict, Any, Tuple 
+16:from pathlib import Path 
+17:from datetime import datetime 
+181:            from PyQt5 import uic 
+704:        from docx2pdf import convert 
+716:            from docx2pdf import convert 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\main_py.py 
+================================== 
+ 
+16:class PantallaCarga(QSplashScreen): 
+17:    def __init__(self): 
+22:    def mostrar_mensaje(self, mensaje): 
+25:def principal(): 
+7:from PyQt5.QtWidgets import QApplication, QSplashScreen, QMessageBox 
+8:from PyQt5.QtCore import Qt 
+9:from PyQt5.QtGui import QPixmap, QColor 
+10:from PyQt5 import uic 
+31:        from controladores.controlador_grafica import ControladorGrafica 
+2:import sys, os, time 
+7:from PyQt5.QtWidgets import QApplication, QSplashScreen, QMessageBox 
+8:from PyQt5.QtCore import Qt 
+9:from PyQt5.QtGui import QPixmap, QColor 
+10:from PyQt5 import uic 
+30:        # Import when needed 
+31:        from controladores.controlador_grafica import ControladorGrafica 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\modelos_py.py 
+================================== 
+ 
+6:from dataclasses import dataclass, field 
+12:class TipoContrato(Enum): 
+18:class EstadoOferta(Enum): 
+26:@dataclass 
+27:class Empresa: 
+90:    @classmethod 
+101:    @classmethod 
+108:@dataclass 
+109:class Oferta: 
+159:    @classmethod 
+164:    @classmethod 
+183:@dataclass 
+184:class DatosContrato: 
+302:    @classmethod 
+329:@dataclass 
+330:class DatosLiquidacion: 
+416:    @classmethod 
+436:@dataclass 
+437:class Proyecto: 
+487:    @classmethod 
+606:    @classmethod 
+644:@dataclass 
+645:class ConfiguracionUI: 
+667:    @classmethod 
+681:@dataclass 
+685:class Constantes: 
+35:    def __init__(self, nombre="", nif="", email="", contacto="", oferta=None, ofertas=None, **kwargs): 
+54:    def validar_correo_basico(correo: str) -> bool: 
+61:    def tiene_oferta(self) -> bool: 
+65:    def es_valida(self) -> bool: 
+69:    def limpiar_datos(self): 
+76:    def a_diccionario(self) -> Dict[str, Any]: 
+86:    def to_dict(self) -> Dict[str, Any]: 
+91:    def desde_diccionario(cls, datos: Dict[str, Any]) -> 'Empresa': 
+102:    def from_dict(cls, datos: Dict[str, Any]) -> 'Empresa': 
+119:    def __post_init__(self): 
+127:    def es_valida(self) -> bool: 
+135:    def calcular_iva(self, porcentaje: float = 0.21) -> float: 
+139:    def calcular_total_con_iva(self, porcentaje: float = 0.21) -> float: 
+143:    def a_diccionario(self) -> Dict[str, Any]: 
+155:    def to_dict(self) -> Dict[str, Any]: 
+160:    def from_dict(cls, datos: Dict[str, Any]) -> 'Oferta': 
+165:    def desde_diccionario(cls, datos: Dict[str, Any]) -> 'Oferta': 
+195:    def __init__(self, numero_expediente="", objeto_contrato="", tipo_contrato=None,  
+224:        # Inicializar fechas y campos adicionales con valores por defecto 
+248:    def calcular_iva(self, porcentaje: float = 0.21) -> float: 
+254:    def calcular_total(self, porcentaje: float = 0.21) -> float: 
+260:    def es_obra(self) -> bool: 
+264:    def es_servicio(self) -> bool: 
+268:    def obtener_limite_contratacion(self) -> float: 
+275:    def cumple_limite_contratacion(self) -> bool: 
+279:    def to_dict(self) -> Dict[str, Any]: 
+303:    def from_dict(cls, data: Dict[str, Any]) -> 'DatosContrato': 
+343:    def __init__(self, importe_licitado=None, importe_adjudicado=None, importe_facturado=0.0,  
+366:    def calcular_diferencia(self) -> float: 
+371:    def calcular_porcentaje_ejecutado(self) -> float: 
+379:    def calcular_saldos(self) -> tuple[float, float]: 
+395:    def actualizar_calculos(self): 
+401:    def to_dict(self) -> Dict[str, Any]: 
+417:    def from_dict(cls, data: Dict[str, Any]) -> 'DatosLiquidacion': 
+444:    contrato: DatosContrato = field(default_factory=DatosContrato) 
+447:    empresas: List[Empresa] = field(default_factory=list) 
+448:    ofertas: List[Oferta] = field(default_factory=list) 
+451:    liquidacion: DatosLiquidacion = field(default_factory=DatosLiquidacion) 
+454:    fecha_creacion: datetime = field(default_factory=datetime.now) 
+455:    ultima_modificacion: datetime = field(default_factory=datetime.now) 
+459:    def datos_contrato(self) -> DatosContrato: 
+463:    def obtener_oferta_ganadora(self) -> Optional[Oferta]: 
+467:    def agregar_empresa(self, empresa: Empresa): 
+472:    def exportar_json(self) -> Dict[str, Any]: 
+488:    def importar_json(cls, data: Dict[str, Any]) -> 'Proyecto': 
+514:    def obtener_empresa_adjudicataria(self) -> Optional[Empresa]: 
+530:    def obtener_oferta_minima(self) -> Optional[Oferta]: 
+537:    def contar_ofertas_validas(self) -> int: 
+541:    def hay_ofertas_duplicadas(self) -> bool: 
+554:    def sincronizar_ofertas_con_empresas(self): 
+578:    def actualizar_metadatos(self): 
+582:    def es_valido(self) -> bool: 
+591:    def to_dict(self) -> Dict[str, Any]: 
+607:    def from_dict(cls, data: Dict[str, Any]) -> 'Proyecto': 
+655:    def to_dict(self) -> Dict[str, Any]: 
+668:    def from_dict(cls, data: Dict[str, Any]) -> 'ConfiguracionUI': 
+757:def crear_proyecto_vacio(nombre: str, ruta: str) -> Proyecto: 
+758:    """Crea un proyecto vacío con valores por defecto""" 
+765:    # Agregar una empresa vacía por defecto 
+6:from dataclasses import dataclass, field 
+7:from typing import List, Optional, Dict, Any 
+8:from datetime import datetime, date, time 
+9:from enum import Enum 
+102:    def from_dict(cls, datos: Dict[str, Any]) -> 'Empresa': 
+160:    def from_dict(cls, datos: Dict[str, Any]) -> 'Oferta': 
+170:            fecha_presentacion = date.fromisoformat(fecha_str) 
+303:    def from_dict(cls, data: Dict[str, Any]) -> 'DatosContrato': 
+310:            fechas[campo] = date.fromisoformat(fecha_str) if fecha_str else None 
+417:    def from_dict(cls, data: Dict[str, Any]) -> 'DatosLiquidacion': 
+420:        fecha_liquidacion = date.fromisoformat(fecha_str) if fecha_str else None 
+498:            proyecto.contrato = DatosContrato.from_dict(data['contrato']) 
+502:            proyecto.empresas = [Empresa.from_dict(emp) for emp in data['empresas']] 
+510:            proyecto.liquidacion = DatosLiquidacion.from_dict(data['liquidacion']) 
+607:    def from_dict(cls, data: Dict[str, Any]) -> 'Proyecto': 
+619:            proyecto.fecha_creacion = datetime.fromisoformat(fecha_creacion_str) 
+623:            proyecto.ultima_modificacion = datetime.fromisoformat(fecha_modificacion_str) 
+627:        proyecto.contrato = DatosContrato.from_dict(contrato_data) 
+631:        proyecto.empresas = [Empresa.from_dict(e) for e in empresas_data] 
+635:        proyecto.ofertas = [Oferta.from_dict(o) for o in ofertas_data] 
+639:        proyecto.liquidacion = DatosLiquidacion.from_dict(liquidacion_data) 
+668:    def from_dict(cls, data: Dict[str, Any]) -> 'ConfiguracionUI': 
+5:import os 
+6:from dataclasses import dataclass, field 
+7:from typing import List, Optional, Dict, Any 
+8:from datetime import datetime, date, time 
+9:from enum import Enum 
+56:        import re 
+112:    importe: float 
+121:        if self.importe < 0: 
+122:            raise ValueError("El importe no puede ser negativo") 
+131:            self.importe > 0 and  
+137:        return self.importe * porcentaje 
+141:        return self.importe * (1 + porcentaje) 
+147:            'importe': self.importe, 
+174:            importe=datos.get('importe', 0.0), 
+189:    importe_licitacion: float = 0.0 
+190:    importe_iva: float = 0.0 
+191:    importe_total: float = 0.0 
+196:                 tipo=None, presupuesto_base=None, importe_licitacion=None,  
+197:                 importe_iva=0.0, importe_total=0.0, duracion="", plazo_ejecucion="", **kwargs): 
+213:            self.importe_licitacion = float(presupuesto_base) 
+214:        elif importe_licitacion is not None: 
+215:            self.importe_licitacion = float(importe_licitacion) 
+217:            self.importe_licitacion = 0.0 
+219:        self.importe_iva = float(importe_iva) 
+220:        self.importe_total = float(importe_total) 
+232:    # Fechas importantes 
+249:        """Calcula el IVA del importe de licitación""" 
+250:        iva = self.importe_licitacion * porcentaje 
+251:        self.importe_iva = iva 
+256:        total = self.importe_licitacion * (1 + porcentaje) 
+257:        self.importe_total = total 
+277:        return self.importe_licitacion <= self.obtener_limite_contratacion() 
+285:            'importe_licitacion': self.importe_licitacion, 
+286:            'importe_iva': self.importe_iva, 
+287:            'importe_total': self.importe_total, 
+316:            importe_licitacion=data.get('importe_licitacion', 0.0), 
+317:            importe_iva=data.get('importe_iva', 0.0), 
+318:            importe_total=data.get('importe_total', 0.0), 
+332:    importe_licitado: float = 0.0 
+333:    importe_facturado: float = 0.0 
+334:    importe_penalizaciones: float = 0.0 
+343:    def __init__(self, importe_licitado=None, importe_adjudicado=None, importe_facturado=0.0,  
+344:                 importe_penalizaciones=0.0, diferencia=0.0, porcentaje_ejecutado=0.0, 
+348:        # Compatibilidad con 'importe_adjudicado' 
+349:        if importe_adjudicado is not None: 
+350:            self.importe_licitado = float(importe_adjudicado) 
+351:        elif importe_licitado is not None: 
+352:            self.importe_licitado = float(importe_licitado) 
+354:            self.importe_licitado = 0.0 
+356:        self.importe_facturado = float(importe_facturado) 
+357:        self.importe_penalizaciones = float(importe_penalizaciones) 
+368:        self.diferencia = abs(self.importe_licitado - self.importe_facturado - self.importe_penalizaciones) 
+373:        if self.importe_licitado > 0: 
+374:            self.porcentaje_ejecutado = (self.importe_facturado / self.importe_licitado) * 100 
+381:        diferencia = self.importe_licitado - self.importe_facturado + self.importe_penalizaciones 
+404:            'importe_licitado': self.importe_licitado, 
+405:            'importe_facturado': self.importe_facturado, 
+406:            'importe_penalizaciones': self.importe_penalizaciones, 
+423:            importe_licitado=data.get('importe_licitado', 0.0), 
+424:            importe_facturado=data.get('importe_facturado', 0.0), 
+425:            importe_penalizaciones=data.get('importe_penalizaciones', 0.0), 
+488:    def importar_json(cls, data: Dict[str, Any]) -> 'Proyecto': 
+489:        """Importar proyecto desde diccionario""" 
+523:        oferta_minima = min(ofertas_validas, key=lambda x: x.importe) 
+531:        """Obtiene la oferta con menor importe""" 
+535:        return min(ofertas_validas, key=lambda x: x.importe) 
+542:        """Verifica si hay múltiples ofertas con el mismo importe mínimo""" 
+549:            if o.es_valida() and abs(o.importe - oferta_minima.importe) < 0.01 
+563:                    importe=empresa.oferta or 0.0, 
+572:        # Actualizar importes en empresas 
+576:                    empresa.oferta = oferta.importe 
+741:        'ofertas_duplicadas': 'Hay múltiples ofertas con el mismo importe mínimo', 
+746:        'limite_excedido': 'El importe excede el límite de contratación' 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\test_borrar_carpeta.py 
+================================== 
+ 
+4:def test_borrar_carpeta_obra(nombre_contrato, datos_contrato=None): 
+1:import os 
+2:import shutil 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\test_borrar_real.py 
+================================== 
+ 
+5:def borrar_carpeta_obra(nombre_contrato, datos_contrato=None): 
+1:import os 
+2:import shutil 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\py.py 
+================================== 
+ 
+4:from __future__ import annotations 
+4:from __future__ import annotations 
+6:import sys 
+8:import _pytest._py.error as error 
+9:import _pytest._py.path as path 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\typing_extensions.py 
+================================== 
+ 
+24:    'ClassVar', 
+72:    'dataclass_transform', 
+161:_FORWARD_REF_HAS_CLASS = "__forward_is_class__" in typing.ForwardRef.__slots__ 
+167:class _Sentinel: 
+202:    class _AnyMeta(type): 
+213:    class Any(metaclass=_AnyMeta): 
+228:ClassVar = typing.ClassVar 
+231:# Having a separate class means that instances will not be rejected by 
+233:class _SpecialForm(typing._Final, _root=True): 
+248:        raise TypeError(f"Cannot subclass {selfr}") 
+268:    def __subclasscheck__(self, cls): 
+269:        raise TypeError(f"{self} cannot be used with issubclass()") 
+276:# Note that inheriting from this class means that the object will be 
+279:class _ExtensionsSpecialForm(typing._SpecialForm, _root=True): 
+295:        the decorated method cannot be overridden, and decorated class 
+296:        cannot be subclassed. For example: 
+298:            class Base: 
+302:            class Sub(Base): 
+306:            class Leaf: 
+308:            class Other(Leaf):  # Error reported by type checker 
+320:            # read-only property, TypeError if it's a builtin class. 
+329:        """This decorator marks a class as a disjoint base. 
+331:        Child classes of a disjoint base cannot inherit from other disjoint bases that are 
+332:        not parent classes of the disjoint base. 
+337:            class Disjoint1: pass 
+340:            class Disjoint2: pass 
+342:            class Disjoint3(Disjoint1, Disjoint2): pass  # Type checker error 
+375:    class _LiteralGenericAlias(typing._GenericAlias, _root=True): 
+386:    class _LiteralForm(_ExtensionsSpecialForm, _root=True): 
+426:                           Literal[...] cannot be subclassed. There is no runtime 
+473:        # classmethod and staticmethod 
+486:        # classmethod and staticmethod 
+500:# This is not a real generic class.  Don't use outside annotations. 
+526:    class _SpecialGenericAlias(typing._SpecialGenericAlias, _root=True): 
+558:                    raise TypeError(f"{self} is not a generic class") 
+633:    def _allow_reckless_class_checks(depth=2): 
+634:        """Allow instance and class checks for special stdlib modules. 
+636:        issubclass() on the whole MRO of a user class, which may contain protocols. 
+644:    def _type_check_issubclass_arg_1(arg): 
+646:        in `issubclass(arg, <protocol>)`. 
+648:        In most cases, this is verified by type.__subclasscheck__. 
+649:        Checking it again unnecessarily would slow down issubclass() checks, 
+657:            # Same error message as for issubclass(1, int). 
+658:            raise TypeError('issubclass() arg 1 must be a class') 
+662:    # to mix without getting TypeErrors about "metaclass conflict" 
+663:    class _ProtocolMeta(type(typing.Protocol)): 
+664:        # This metaclass is somewhat unfortunate, 
+667:        # NOTE: DO NOT call super() in any methods in this class 
+691:        def __subclasscheck__(cls, other): 
+693:                return type.__subclasscheck__(cls, other) 
+696:                and not _allow_reckless_class_checks() 
+699:                    _type_check_issubclass_arg_1(other) 
+701:                        "Instance and class checks can only be used with " 
+707:                    and cls.__dict__.get("__subclasshook__") is _proto_hook 
+709:                    _type_check_issubclass_arg_1(other) 
+712:                        "Protocols with non-method members don't support issubclass()." 
+715:            return abc.ABCMeta.__subclasscheck__(cls, other) 
+723:                # i.e., it's a concrete subclass of a protocol 
+728:                not _allow_reckless_class_checks() 
+730:                raise TypeError("Instance and class checks can only be used with" 
+750:            # Hack so that typing.Generic.__class_getitem__ 
+758:        # complains about classes with this metaclass being unhashable, 
+763:    @classmethod 
+770:                # Check if the members appears in the class dictionary... 
+788:    class Protocol(typing.Generic, metaclass=_ProtocolMeta): 
+794:        def __init_subclass__(cls, *args, **kwargs): 
+795:            super().__init_subclass__(*args, **kwargs) 
+797:            # Determine if this is a protocol or a concrete subclass. 
+801:            # Set (or override) the protocol subclass hook. 
+802:            if '__subclasshook__' not in cls.__dict__: 
+803:                cls.__subclasshook__ = _proto_hook 
+805:            # Prohibit instantiation for protocol classes 
+815:        """Mark a protocol class as a runtime protocol. 
+817:        Such protocol can be used with isinstance() and issubclass(). 
+818:        Raise TypeError if applied to a non-protocol class. 
+825:            class Closable(Protocol): 
+833:        if not issubclass(cls, typing.Generic) or not getattr(cls, '_is_protocol', False): 
+834:            raise TypeError(f'@runtime_checkable can be only applied to protocol classes,' 
+838:        # typing.Protocol classes on <=3.11 break if we execute this block, 
+839:        # because typing.Protocol classes on <=3.11 don't have a 
+841:        # `__protocol_attrs__` attribute. Meanwhile, typing.Protocol classes on 3.12.2+ 
+843:        # protocol classes have a `__non_callable_proto_members__` attribute 
+846:            # PEP 544 prohibits using issubclass() 
+882:    class SupportsInt(Protocol): 
+891:    class SupportsFloat(Protocol): 
+900:    class SupportsComplex(Protocol): 
+909:    class SupportsBytes(Protocol): 
+918:    class SupportsIndex(Protocol): 
+926:    class SupportsAbs(Protocol[T_co]): 
+937:    class SupportsRound(Protocol[T_co]): 
+953:    class Reader(Protocol[T_co]): 
+970:    class Writer(Protocol[T_contra]): 
+988:    class SingletonMeta(type): 
+999:    class NoDefaultType(metaclass=SingletonMeta): 
+1019:    class NoExtraItemsType(metaclass=SingletonMeta): 
+1083:    class _TypedDictMeta(type): 
+1087:            """Create new typed dict class object. 
+1089:            This method is called when TypedDict is subclassed, 
+1092:            Subclasses and instances of TypedDict return actual dictionaries. 
+1097:                                    'and a non-TypedDict base class') 
+1101:            if any(issubclass(b, typing.Generic) for b in bases): 
+1109:            # the name of the class happens to be "Protocol" 
+1123:                if hasattr(annotationlib, "get_annotate_from_class_namespace"): 
+1124:                    own_annotate = annotationlib.get_annotate_from_class_namespace(ns) 
+1245:        def __subclasscheck__(cls, other): 
+1247:            raise TypeError('TypedDict does not support instance and class checks') 
+1249:        __instancecheck__ = __subclasscheck__ 
+1275:                "Python 3.15. To create a TypedDict class with 0 fields " 
+1306:            # Setting correct module is necessary to make typed dict classes 
+1315:    class _TypedDictSpecialForm(_SpecialForm, _root=True): 
+1351:            class Point2D(TypedDict): 
+1370:            class Point2D(TypedDict, total=False): 
+1377:        class body be required. 
+1382:            class Point2D(TypedDict): 
+1406:        """Check if an annotation is a TypedDict class 
+1409:            class Film(TypedDict): 
+1476:        The argument may be a module, class, method, or function. The annotations 
+1477:        are returned as a dictionary. For classes, annotations include also 
+1489:          globals from obj (or the respective module's globals for classes), 
+1584:        This supports generic types, Callable, Tuple, Union, Literal, Final, ClassVar 
+1589:            get_origin(ClassVar[int]) is ClassVar 
+1658:class _DefaultMixin: 
+1665:# Classes using this metaclass must provide a _backported_typevarlike ClassVar 
+1666:class _TypeVarLikeMeta(type): 
+1675:    class TypeVar(metaclass=_TypeVarLikeMeta): 
+1709:        def __init_subclass__(cls) -> None: 
+1719:    class _Immutable: 
+1729:    class ParamSpecArgs(_Immutable): 
+1752:    class ParamSpecKwargs(_Immutable): 
+1783:    class ParamSpec(metaclass=_TypeVarLikeMeta): 
+1825:        def __init_subclass__(cls) -> None: 
+1832:    class ParamSpec(list, _DefaultMixin): 
+1845:        See class Generic for more information on generic types.  An 
+1880:        __class__ = typing.TypeVar 
+1948:                return ForwardRef(arg, module=module, is_class=allow_special_forms) 
+1953:    class _ConcatenateGenericAlias(list): 
+1956:        __class__ = typing._GenericAlias 
+1990:            return self.__class__(self.__origin__, params) 
+1998:                raise TypeError(f"{self} is not a generic class") 
+2025:                        # This class inherits from list do not convert 
+2076:        class _ConcatenateGenericAlias(typing._ConcatenateGenericAlias, _root=True): 
+2077:            # needed for checks in collections.abc.Callable to accept this class 
+2098:class _EllipsisDummy: ... 
+2267:    class _TypeFormForm(_ExtensionsSpecialForm, _root=True): 
+2326:        """Used to spell the type of "self" in classes. 
+2332:          class ReturnsSelf: 
+2381:            class Movie(TypedDict, total=False): 
+2401:            class Movie(TypedDict): 
+2423:            class Movie(TypedDict): 
+2444:  # For some generic class `Foo`: 
+2452:  class Bar(Generic[Unpack[Ts]]): ... 
+2459:    class Bar(Generic[*Ts]): ... 
+2464:  class Movie(TypedDict): 
+2488:    class _UnpackSpecialForm(_ExtensionsSpecialForm, _root=True): 
+2493:    class _UnpackAlias(typing._GenericAlias, _root=True): 
+2496:            __class__ = typing.TypeVar 
+2546:    class TypeVarTuple(metaclass=_TypeVarLikeMeta): 
+2604:        def __init_subclass__(self, *args, **kwds): 
+2605:            raise TypeError("Cannot subclass special typing classes") 
+2608:    class TypeVarTuple(_DefaultMixin): 
+2622:            class Array(Generic[*Ts]): ... 
+2628:        as if we had simply written ``class Array(Generic[T1, T2]): ...``. 
+2630:        us to parameterise the class with an *arbitrary* number of type parameters. 
+2633:        This includes class definitions, as shown above, as well as function 
+2636:            class Array(Generic[*Ts]): 
+2653:        __class__ = typing.TypeVar 
+2681:        def __init_subclass__(self, *args, **kwds): 
+2683:                raise TypeError("Cannot subclass special typing classes") 
+2744:# dataclass_transform exists in 3.11 but lacks the frozen_default parameter 
+2747:    dataclass_transform = typing.dataclass_transform 
+2749:    def dataclass_transform( 
+2761:        """Decorator that marks a function, class, or metaclass as providing 
+2762:        dataclass-like behavior. 
+2766:            from typing_extensions import dataclass_transform 
+2771:            @dataclass_transform() 
+2777:            class CustomerModel: 
+2781:            # Used on a base class 
+2782:            @dataclass_transform() 
+2783:            class ModelBase: ... 
+2785:            class CustomerModel(ModelBase): 
+2789:            # Used on a metaclass 
+2790:            @dataclass_transform() 
+2791:            class ModelMeta(type): ... 
+2793:            class ModelBase(metaclass=ModelMeta): ... 
+2795:            class CustomerModel(ModelBase): 
+2799:        Each of the ``CustomerModel`` classes defined in this example will now 
+2800:        behave similarly to a dataclass created with the ``@dataclasses.dataclass`` 
+2813:        - ``field_specifiers`` specifies a static list of supported classes 
+2814:          or functions that describe fields, similar to ``dataclasses.field()``. 
+2817:        ``__dataclass_transform__`` attribute on the decorated object. 
+2823:            cls_or_fn.__dataclass_transform__ = { 
+2841:        """Indicate that a method is intended to override a method in a base class. 
+2845:            class Base: 
+2849:            class Child(Base): 
+2855:        validate that it overrides a method with the same name on a base class. 
+2856:        This helps prevent bugs that may occur when a base class is changed 
+2857:        without an equivalent change to a child class. 
+2871:            # read-only property, TypeError if it's a builtin class. 
+2883:    class deprecated: 
+2884:        """Indicate that a class, function or overload is deprecated. 
+2892:            class A: 
+2907:        for classes, on instantiation and on creation of subclasses. 
+2971:                original_init_subclass = arg.__init_subclass__ 
+2972:                # We need slightly different behavior if __init_subclass__ 
+2974:                if isinstance(original_init_subclass, MethodType): 
+2975:                    original_init_subclass = original_init_subclass.__func__ 
+2977:                    @functools.wraps(original_init_subclass) 
+2978:                    def __init_subclass__(*args, **kwargs): 
+2980:                        return original_init_subclass(*args, **kwargs) 
+2982:                    arg.__init_subclass__ = classmethod(__init_subclass__) 
+2984:                # object's implementation of __init_subclass__. 
+2986:                    @functools.wraps(original_init_subclass) 
+2987:                    def __init_subclass__(*args, **kwargs): 
+2989:                        return original_init_subclass(*args, **kwargs) 
+2991:                    arg.__init_subclass__ = __init_subclass__ 
+2994:                __init_subclass__.__deprecated__ = msg 
+3018:                    f"a class or callable, not {argr}" 
+3056:        if (inspect.isclass(cls) and issubclass(cls, typing.Generic) 
+3066:            raise TypeError(f"{cls} is not a generic class") 
+3069:                raise TypeError(f"{cls} is not a generic class") 
+3111:            raise TypeError(f"{cls} is not a generic class") 
+3248:                # We don't want __parameters__ descriptor of a bare Python class. 
+3308:    class _NamedTupleMeta(type): 
+3339:                if hasattr(typing, '_generic_class_getitem'):  # 3.12+ 
+3340:                    nm_tpl.__class_getitem__ = classmethod(typing._generic_class_getitem) 
+3342:                    class_getitem = typing.Generic.__class_getitem__.__func__ 
+3343:                    nm_tpl.__class_getitem__ = classmethod(class_getitem) 
+3367:                            # as in "normal" classes seems most important here. 
+3376:                nm_tpl.__init_subclass__() 
+3390:            class Employee(NamedTuple): 
+3398:        The resulting class has an extra __annotations__ attribute, giving a 
+3407:                deprecated_thing = "Creating NamedTuple classes using keyword arguments" 
+3410:                    "Use the class-based or functional syntax instead." 
+3417:                    "To create a NamedTuple class with 0 fields " 
+3432:                    "To create a NamedTuple class with 0 fields " 
+3456:    class Buffer(abc.ABC):  # noqa: B024 
+3457:        """Base class for classes that implement the buffer protocol. 
+3462:        to check whether a class implements the buffer protocol. In 
+3465:        ``collections.abc.Buffer`` ABC allows checking whether a class 
+3472:        classes. It is useful primarily for static checks. 
+3476:    # As a courtesy, register the most common stdlib buffer classes. 
+3487:        """Return the class's "original" bases prior to modification by `__mro_entries__`. 
+3495:            class Foo(Generic[T]): ... 
+3496:            class Bar(Foo[int], float): ... 
+3497:            class Baz(list[str]): ... 
+3515:# NewType is a class on Python 3.10+, making it pickleable 
+3516:# The error message for subclassing instances of NewType was improved on 3.11+ 
+3521:    class NewType: 
+3550:            # if a user attempts to subclass a NewType instance. bpo-46170 
+3553:            class Dummy: 
+3554:                def __init_subclass__(cls): 
+3557:                        f"Cannot subclass an instance of NewType. " 
+3615:            "__class__", 
+3629:        class _TypeAliasGenericAlias(typing._GenericAlias, _root=True): 
+3636:    class TypeAliasType: 
+3773:        def __init_subclass__(cls, *args, **kwargs): 
+3808:            >>> class P(Protocol): 
+3829:            >>> class P(Protocol): 
+3847:    class Doc: 
+3849:         used in class attributes, function and method parameters, return values, 
+3901:    class Format(enum.IntEnum): 
+3913:        obj may be a callable, class, or module. 
+3956:            # class 
+3982:            # "class funclike" from Lib/test/test_inspect... on and on it goes. 
+3991:            raise TypeError(f"{objr} is not a module, class, or callable.") 
+4143:        derived from, such as a module, class object, or function. It is used to 
+4210:class Sentinel: 
+51:    'DefaultDict', 
+111:    'NoDefault', 
+168:    def __repr__(self): 
+177:    def _should_collect_from_parameters(t): 
+182:    def _should_collect_from_parameters(t): 
+203:        def __instancecheck__(self, obj): 
+208:        def __repr__(self): 
+222:        def __new__(cls, *args, **kwargs): 
+236:    def __init__(self, getitem): 
+241:    def __getattr__(self, item): 
+247:    def __mro_entries__(self, bases): 
+250:    def __repr__(self): 
+253:    def __reduce__(self): 
+256:    def __call__(self, *args, **kwds): 
+259:    def __or__(self, other): 
+262:    def __ror__(self, other): 
+265:    def __instancecheck__(self, obj): 
+268:    def __subclasscheck__(self, cls): 
+272:    def __getitem__(self, parameters): 
+280:    def __repr__(self): 
+293:    def final(f): 
+300:                def done(self) -> None: 
+303:                def done(self) -> None:  # Error reported by type checker 
+328:    def disjoint_base(cls): 
+352:def IntVar(name): 
+361:    def _flatten_literal_params(parameters): 
+371:    def _value_and_type_iter(params): 
+376:        def __eq__(self, other): 
+383:        def __hash__(self): 
+387:        def __init__(self, doc: str): 
+391:        def __getitem__(self, parameters): 
+440:    _overload_registry = collections.defaultdict( 
+441:        functools.partial(collections.defaultdict, dict) 
+444:    def overload(func): 
+447:        In a stub file, place two or more stub definitions for the same 
+451:        def utf8(value: None) -> None: ... 
+453:        def utf8(value: bytes) -> bytes: ... 
+455:        def utf8(value: str) -> bytes: ... 
+462:        def utf8(value: None) -> None: ... 
+464:        def utf8(value: bytes) -> bytes: ... 
+466:        def utf8(value: str) -> bytes: ... 
+467:        def utf8(value): 
+484:    def get_overloads(func): 
+485:        """Return all defined overloads for *func* as a sequence.""" 
+495:    def clear_overloads(): 
+510:DefaultDict = typing.DefaultDict 
+522:    def _is_dunder(attr): 
+527:        def __init__(self, origin, nparams, *, inst=True, name=None, defaults=()): 
+529:            self._defaults = defaults 
+531:        def __setattr__(self, attr, val): 
+532:            allowed_attrs = {'_name', '_inst', '_nparams', '_defaults'} 
+539:        def __getitem__(self, params): 
+545:                self._defaults 
+547:                and len(params) + len(self._defaults) >= self._nparams 
+549:                params = (*params, *self._defaults[len(params) - self._nparams:]) 
+553:                if self._defaults: 
+554:                    expected = f"at least {self._nparams - len(self._defaults)}" 
+568:        collections.abc.Generator, 3, defaults=(_NoneType, _NoneType) 
+571:        collections.abc.AsyncGenerator, 2, defaults=(_NoneType,) 
+577:        defaults=(typing.Optional[bool],) 
+583:        defaults=(typing.Optional[bool],) 
+603:def _get_protocol_attrs(cls): 
+615:def _caller(depth=1, default='__main__'): 
+617:        return sys._getframemodulename(depth + 1) or default 
+621:        return sys._getframe(depth + 1).f_globals.get('__name__', default) 
+633:    def _allow_reckless_class_checks(depth=2): 
+640:    def _no_init(self, *args, **kwargs): 
+644:    def _type_check_issubclass_arg_1(arg): 
+670:        def __new__(mcls, name, bases, namespace, **kwargs): 
+686:        def __init__(cls, *args, **kwargs): 
+691:        def __subclasscheck__(cls, other): 
+717:        def __instancecheck__(cls, instance): 
+749:        def __eq__(cls, other): 
+757:        # This has to be defined, or the abc-module cache 
+759:        # if we define only __eq__ 
+760:        def __hash__(cls) -> int: 
+764:    def _proto_hook(cls, other): 
+794:        def __init_subclass__(cls, *args, **kwargs): 
+814:    def runtime_checkable(cls): 
+826:                def close(self): ... 
+887:        def __int__(self) -> int: 
+896:        def __float__(self) -> float: 
+905:        def __complex__(self) -> complex: 
+914:        def __bytes__(self) -> bytes: 
+922:        def __index__(self) -> int: 
+933:        def __abs__(self) -> T_co: 
+944:        def __round__(self, ndigits: int = 0) -> T_co: 
+962:        def read(self, size: int = ..., /) -> T_co: 
+979:        def write(self, data: T_contra, /) -> int: 
+984:    not hasattr(typing, "NoDefault") or not hasattr(typing, "NoExtraItems") 
+989:        def __setattr__(cls, attr, value): 
+996:if hasattr(typing, "NoDefault"): 
+997:    NoDefault = typing.NoDefault 
+999:    class NoDefaultType(metaclass=SingletonMeta): 
+1000:        """The type of the NoDefault singleton.""" 
+1004:        def __new__(cls): 
+1005:            return globals().get("NoDefault") or object.__new__(cls) 
+1007:        def __repr__(self): 
+1008:            return "typing_extensions.NoDefault" 
+1010:        def __reduce__(self): 
+1011:            return "NoDefault" 
+1013:    NoDefault = NoDefaultType() 
+1014:    del NoDefaultType 
+1024:        def __new__(cls): 
+1027:        def __repr__(self): 
+1030:        def __reduce__(self): 
+1062:    def _get_typeddict_qualifiers(annotation_type): 
+1085:        def __new__(cls, name, bases, ns, *, total=True, closed=None, 
+1203:                def __annotate__(format): 
+1245:        def __subclasscheck__(cls, other): 
+1253:    def _create_typeddict( 
+1296:                "The kwargs-based syntax for TypedDict definitions is deprecated " 
+1316:        def __call__( 
+1337:        def __mro_entries__(self, bases): 
+1341:    def TypedDict(self, args): 
+1367:        By default, all keys must be present in a TypedDict. It is possible 
+1376:        the total argument. True is the default, and makes all items defined in the 
+1383:                x: int  # the "x" key must always be present (Required is the default) 
+1405:    def is_typeddict(tp): 
+1423:    def assert_type(val, typ, /): 
+1429:            def greet(name: str) -> None: 
+1443:    def _strip_extras(t): 
+1467:    def get_type_hints(obj, globalns=None, localns=None, include_extras=False): 
+1472:        default value equal to None is set and recursively replaces all 
+1511:    def _could_be_inserted_optional(t): 
+1515:        # Assume if last argument is not None they are user defined 
+1521:    def _clean_optional(obj, hints, globalns=None, localns=None): 
+1523:        # when a None default value is used. 
+1527:        defaults = typing._get_defaults(obj)  # avoid accessing __annotations___ 
+1528:        if not defaults: 
+1534:                or name not in defaults 
+1535:                or defaults[name] is not None 
+1581:    def get_origin(tp): 
+1605:    def get_args(tp): 
+1632:    def TypeAlias(self, parameters): 
+1634:        be recognized as a proper type alias definition by type 
+1646:def _set_default(type_param, default): 
+1647:    type_param.has_default = lambda: default is not NoDefault 
+1648:    type_param.__default__ = default 
+1651:def _set_module(typevarlike): 
+1653:    def_mod = _caller(depth=2) 
+1654:    if def_mod  
+1655:        typevarlike.__module__ = def_mod 
+1658:class _DefaultMixin: 
+1659:    """Mixin for TypeVarLike defaults.""" 
+1662:    __init__ = _set_default 
+1667:    def __instancecheck__(cls, __instance: Any) -> bool: 
+1674:    # Add default and infer_variance parameters from PEP 696 and 695 
+1680:        def __new__(cls, name, *constraints, bound=None, 
+1682:                    default=NoDefault, infer_variance=False): 
+1695:            _set_default(typevar, default) 
+1698:            def _tvar_prepare_subst(alias, args): 
+1700:                    typevar.has_default() 
+1703:                    args += (typevar.__default__,) 
+1709:        def __init_subclass__(cls) -> None: 
+1723:        def __copy__(self): 
+1726:        def __deepcopy__(self, memo): 
+1741:        def __init__(self, origin): 
+1744:        def __repr__(self): 
+1747:        def __eq__(self, other): 
+1764:        def __init__(self, origin): 
+1767:        def __repr__(self): 
+1770:        def __eq__(self, other): 
+1782:    # Add default parameter - PEP 696 
+1788:        def __new__(cls, name, *, bound=None, 
+1790:                    infer_variance=False, default=NoDefault): 
+1803:            _set_default(paramspec, default) 
+1806:            def _paramspec_prepare_subst(alias, args): 
+1809:                if i == len(args) and paramspec.has_default(): 
+1810:                    args = [*args, paramspec.__default__] 
+1825:        def __init_subclass__(cls) -> None: 
+1832:    class ParamSpec(list, _DefaultMixin): 
+1844:        they are also supported in user-defined Generics at runtime. 
+1851:           def add_logging(f: Callable[P, T]) -> Callable[P, T]: 
+1853:               def inner(*args: P.args, **kwargs: P.kwargs) -> T: 
+1859:           def add_two(x: float, y: float) -> float: 
+1863:        Parameter specification variables defined with covariant=True or 
+1875:        Note that only parameter specification variables defined in global scope can 
+1883:        def args(self): 
+1887:        def kwargs(self): 
+1890:        def __init__(self, name, *, bound=None, covariant=False, contravariant=False, 
+1891:                     infer_variance=False, default=NoDefault): 
+1901:            _DefaultMixin.__init__(self, default) 
+1904:            def_mod = _caller() 
+1905:            if def_mod  
+1906:                self.__module__ = def_mod 
+1908:        def __repr__(self): 
+1919:        def __hash__(self): 
+1922:        def __eq__(self, other): 
+1925:        def __reduce__(self): 
+1929:        def __call__(self, *args, **kwargs): 
+1939:        def _type_convert(arg, module=None, *, allow_special_forms=False): 
+1958:        def __init__(self, origin, args): 
+1963:        def __repr__(self): 
+1968:        def __hash__(self): 
+1972:        def __call__(self, *args, **kwargs): 
+1976:        def __parameters__(self): 
+1982:        def copy_with(self, params): 
+1993:        def __getitem__(self, args): 
+2013:                        and getattr(param, '__default__', NoDefault) is not NoDefault 
+2015:                        args = [*args, param.__default__] 
+2080:            def copy_with(self, params): 
+2090:            def __getitem__(self, args): 
+2102:def _create_concatenate_alias(origin, parameters): 
+2127:def _concatenate_getitem(self, parameters): 
+2148:    def Concatenate(self, parameters): 
+2168:    def TypeGuard(self, parameters): 
+2169:        """Special typing form used to annotate the return type of a user-defined 
+2179:        Sometimes it would be convenient to use a user-defined boolean function 
+2192:            def is_str(val: Union[str, float]): 
+2209:        PEP 647 (User-Defined Type Guards). 
+2221:    def TypeIs(self, parameters): 
+2222:        """Special typing form used to annotate the return type of a user-defined 
+2232:        Sometimes it would be convenient to use a user-defined boolean function 
+2246:            def is_awaitable(val: object) -> TypeIs[Awaitable[Any]]: 
+2249:            def f(val: Union[int, Awaitable[int]]) -> int: 
+2270:        def __call__(self, obj, /): 
+2274:    def TypeForm(self, parameters): 
+2286:            def cast[T](typ: TypeForm[T], value: Any) -> T: ... 
+2302:    def LiteralString(self, params): 
+2309:          def query(sql: LiteralString) -> ...: 
+2325:    def Self(self, params): 
+2333:              def parse(self, data: bytes) -> Self: 
+2346:    def Never(self, params): 
+2349:        This can be used to define a function that should never be 
+2354:            def never_call_me(arg: Never) -> None: 
+2357:            def int_or_str(arg: int | str) -> None: 
+2377:    def Required(self, parameters): 
+2397:    def NotRequired(self, parameters): 
+2418:    def ReadOnly(self, parameters): 
+2427:            def mutate_movie(m: Movie) -> None: 
+2470:  def foo(**kwargs: Unpack[Movie]): ... 
+2484:    def _is_unpack(obj): 
+2489:        def __init__(self, getitem): 
+2499:        def __typing_unpacked_tuple_args__(self): 
+2510:        def __typing_is_unpacked_typevartuple__(self): 
+2515:        def __getitem__(self, args): 
+2521:    def Unpack(self, parameters): 
+2525:    def _is_unpack(obj): 
+2529:def _unpack_args(*args): 
+2545:    # Add default parameter - PEP 696 
+2551:        def __new__(cls, name, *, default=NoDefault): 
+2553:            _set_default(tvt, default) 
+2556:            def _typevartuple_prepare_subst(alias, args): 
+2588:                if left == alen - right and tvt.has_default(): 
+2589:                    replacement = _unpack_args(tvt.__default__) 
+2604:        def __init_subclass__(self, *args, **kwds): 
+2608:    class TypeVarTuple(_DefaultMixin): 
+2633:        This includes class definitions, as shown above, as well as function 
+2638:                def __init__(self, shape: Tuple[*Ts]): 
+2641:                def get_shape(self) -> Tuple[*Ts]: 
+2655:        def __iter__(self): 
+2658:        def __init__(self, name, *, default=NoDefault): 
+2660:            _DefaultMixin.__init__(self, default) 
+2663:            def_mod = _caller() 
+2664:            if def_mod  
+2665:                self.__module__ = def_mod 
+2669:        def __repr__(self): 
+2672:        def __hash__(self): 
+2675:        def __eq__(self, other): 
+2678:        def __reduce__(self): 
+2681:        def __init_subclass__(self, *args, **kwds): 
+2689:    def reveal_type(obj: T, /) -> T: 
+2718:    def assert_never(arg: Never, /) -> Never: 
+2723:            def int_or_str(arg: int | str) -> None: 
+2744:# dataclass_transform exists in 3.11 but lacks the frozen_default parameter 
+2749:    def dataclass_transform( 
+2751:        eq_default: bool = True, 
+2752:        order_default: bool = False, 
+2753:        kw_only_default: bool = False, 
+2754:        frozen_default: bool = False, 
+2772:            def create_model(cls: type[_T]) -> type[_T]: 
+2799:        Each of the ``CustomerModel`` classes defined in this example will now 
+2805:        - ``eq_default`` indicates whether the ``eq`` parameter is assumed to be 
+2807:        - ``order_default`` indicates whether the ``order`` parameter is 
+2809:        - ``kw_only_default`` indicates whether the ``kw_only`` parameter is 
+2811:        - ``frozen_default`` indicates whether the ``frozen`` parameter is 
+2822:        def decorator(cls_or_fn): 
+2824:                "eq_default": eq_default, 
+2825:                "order_default": order_default, 
+2826:                "kw_only_default": kw_only_default, 
+2827:                "frozen_default": frozen_default, 
+2840:    def override(arg: _F, /) -> _F: 
+2846:                def method(self) -> None: 
+2851:                def method(self) -> None: 
+2896:            def f(): 
+2901:            def g(x: int) -> int: ... 
+2903:            def g(x: str) -> int: ... 
+2910:        warning is emitted. If it is ``1`` (the default), the warning 
+2925:        def __init__( 
+2942:        def __call__(self, arg: _T, /) -> _T: 
+2958:                def __new__(cls, /, *args, **kwargs): 
+2978:                    def __init_subclass__(*args, **kwargs): 
+2987:                    def __init_subclass__(*args, **kwargs): 
+3002:                def wrapper(*args, **kwargs): 
+3023:    def _is_param_expr(arg): 
+3028:    def _is_param_expr(arg): 
+3049:    def _check_generic(cls, parameters, elen=_marker): 
+3080:                # deal with TypeVarLike defaults 
+3081:                # required TypeVarLikes cannot appear after a defaulted one. 
+3083:                    # since we validate TypeVarLike default in _collect_type_vars 
+3086:                        getattr(parameters[alen], '__default__', NoDefault) 
+3087:                        is not NoDefault 
+3091:                    num_default_tv = sum(getattr(p, '__default__', NoDefault) 
+3092:                                         is not NoDefault for p in parameters) 
+3094:                    elen -= num_default_tv 
+3105:    def _check_generic(cls, parameters, elen): 
+3118:                # deal with TypeVarLike defaults 
+3119:                # required TypeVarLikes cannot appear after a defaulted one. 
+3121:                    # since we validate TypeVarLike default in _collect_type_vars 
+3124:                        getattr(parameters[alen], '__default__', NoDefault) 
+3125:                        is not NoDefault 
+3129:                    num_default_tv = sum(getattr(p, '__default__', NoDefault) 
+3130:                                         is not NoDefault for p in parameters) 
+3132:                    elen -= num_default_tv 
+3143:def _has_generic_or_protocol_as_origin() -> bool: 
+3165:def _is_unpacked_typevartuple(x) -> bool: 
+3178:    def _collect_type_vars(types, typevar_types=None): 
+3188:        # A required TypeVarLike cannot appear after a TypeVarLike with a default 
+3190:        enforce_default_ordering = _has_generic_or_protocol_as_origin() 
+3191:        default_encountered = False 
+3193:        # Also, a TypeVarLike with a default cannot appear after a TypeVarTuple 
+3203:                if enforce_default_ordering: 
+3204:                    has_default = getattr(t, '__default__', NoDefault) is not NoDefault 
+3205:                    if has_default: 
+3207:                            raise TypeError('Type parameter with a default' 
+3209:                        default_encountered = True 
+3210:                    elif default_encountered: 
+3211:                        raise TypeError(f'Type parameter {tr} without a default' 
+3212:                                        ' follows type parameter with a default') 
+3228:    def _collect_parameters(args): 
+3238:        # A required TypeVarLike cannot appear after a TypeVarLike with default 
+3240:        enforce_default_ordering = _has_generic_or_protocol_as_origin() 
+3241:        default_encountered = False 
+3243:        # Also, a TypeVarLike with a default cannot appear after a TypeVarTuple 
+3259:                    if enforce_default_ordering: 
+3260:                        has_default = ( 
+3261:                            getattr(t, '__default__', NoDefault) is not NoDefault 
+3264:                        if type_var_tuple_encountered and has_default: 
+3265:                            raise TypeError('Type parameter with a default' 
+3268:                        if has_default: 
+3269:                            default_encountered = True 
+3270:                        elif default_encountered: 
+3271:                            raise TypeError(f'Type parameter {tr} without a default' 
+3272:                                            ' follows type parameter with a default') 
+3288:# In 3.11, the ability to define generic `NamedTuple`s was supported. 
+3296:    def _make_nmtuple(name, types, module, defaults=()): 
+3301:                                        defaults=defaults, module=module) 
+3309:        def __new__(cls, typename, bases, ns): 
+3323:            default_names = [] 
+3326:                    default_names.append(field_name) 
+3327:                elif default_names: 
+3328:                    raise TypeError(f"Non-default namedtuple field {field_name} " 
+3329:                                    f"cannot follow default field" 
+3330:                                    f"{'s' if len(default_names) > 1 else ''} " 
+3331:                                    f"{', '.join(default_names)}") 
+3334:                defaults=[ns[n] for n in default_names], 
+3381:    def _namedtuple_mro_entries(bases): 
+3385:    def NamedTuple(typename, fields=_marker, /, **kwargs): 
+3486:    def get_original_bases(cls, /): 
+3527:            def name_by_id(user_id: UserId) -> str: 
+3535:        def __call__(self, obj, /): 
+3538:        def __init__(self, name, tp): 
+3544:            def_mod = _caller() 
+3545:            if def_mod  
+3546:                self.__module__ = def_mod 
+3548:        def __mro_entries__(self, bases): 
+3549:            # We defined __mro_entries__ to get a better error message 
+3554:                def __init_subclass__(cls): 
+3564:        def __repr__(self): 
+3567:        def __reduce__(self): 
+3575:            def __or__(self, other): 
+3578:            def __ror__(self, other): 
+3590:        def _is_unionable(obj): 
+3601:        def _is_unionable(obj): 
+3630:            def __getattr__(self, attr): 
+3664:        def __init__(self, name: str, value, *, type_params=()): 
+3672:            default_value_encountered = False 
+3682:                has_default = ( 
+3683:                    getattr(type_param, '__default__', NoDefault) is not NoDefault 
+3685:                if default_value_encountered and not has_default: 
+3686:                    raise TypeError(f"non-default type parameter '{type_paramr}'" 
+3687:                                    " follows default type parameter") 
+3688:                if has_default: 
+3689:                    default_value_encountered = True 
+3695:            def_mod = _caller() 
+3696:            if def_mod  
+3697:                self.__module__ = def_mod 
+3701:        def __setattr__(self, name: str, value: object, /) -> None: 
+3706:        def __delattr__(self, name: str, /) -> Never: 
+3709:        def _raise_attribute_error(self, name: str) -> Never: 
+3723:        def __repr__(self) -> str: 
+3727:            def _check_single_param(self, param, recursion=0): 
+3741:        def _check_parameters(self, parameters): 
+3753:        def __getitem__(self, parameters): 
+3770:        def __reduce__(self): 
+3773:        def __init_subclass__(cls, *args, **kwargs): 
+3780:        def __call__(self): 
+3785:            def __or__(self, right): 
+3792:            def __ror__(self, left): 
+3802:    def is_protocol(tp: type, /) -> bool: 
+3809:            ...     def a(self) -> str: ... 
+3823:    def get_protocol_members(tp: type, /) -> typing.FrozenSet[str]: 
+3824:        """Return the set of members defined in a Protocol. 
+3830:            ...     def a(self) -> str: ... 
+3848:        """Define the documentation of a type annotation using ``Annotated``, to be 
+3862:            >>> def hi(to: Annotated[str, Doc("Who to say hi to")]) -> None: ... 
+3864:        def __init__(self, documentation: str, /) -> None: 
+3867:        def __repr__(self) -> str: 
+3870:        def __hash__(self) -> int: 
+3873:        def __eq__(self, other: object) -> bool: 
+3909:    def get_annotations(obj, *, globals=None, locals=None, eval_str=False, 
+3928:        * VALUE: the annotations are returned as-is. This is the default and 
+3931:          undefined names with ForwardRef objects. The implementation proposed by 
+4043:    def _eval_with_owner( 
+4121:    def evaluate_forward_ref( 
+4219:    def __init__( 
+4227:    def __repr__(self): 
+4233:        def __call__(self, *args, **kwargs): 
+4238:        def __or__(self, other): 
+4241:        def __ror__(self, other): 
+4244:    def __getstate__(self): 
+4251:    def type_repr(value): 
+4306:    # This is private, but it was defined by typing_extensions for a long time 
+4313:# These are defined unconditionally because they are used in 
+37:    # ABCs (from collections.abc). 
+177:    def _should_collect_from_parameters(t): 
+182:    def _should_collect_from_parameters(t): 
+199:    from typing import Any 
+218:        Note that all the above statements are true from the point of view of 
+230:# Vendored from cpython typing._SpecialFrom 
+276:# Note that inheriting from this class means that the object will be 
+331:        Child classes of a disjoint base cannot inherit from other disjoint bases that are 
+520:    from typing import AsyncContextManager, AsyncGenerator, ContextManager, Generator 
+627:# `__match_args__` attribute was removed from protocol members in 3.13, 
+660:    # Inheriting from typing._ProtocolMeta isn't actually desirable, 
+681:                            f"Protocols can only inherit from other protocols, " 
+858:                    ) from e 
+963:            """Read data from the input stream and return it. 
+1096:                    raise TypeError('cannot inherit from both a TypedDict type ' 
+1108:            # typing.py generally doesn't let you inherit from plain Generic, unless 
+1123:                if hasattr(annotationlib, "get_annotate_from_class_namespace"): 
+1124:                    own_annotate = annotationlib.get_annotate_from_class_namespace(ns) 
+1444:        """Strips Annotated, Required and NotRequired from a given type.""" 
+1489:          globals from obj (or the respective module's globals for classes), 
+1522:        # reverts injected Union[..., None] cases from typing.get_type_hints 
+1672:    from typing import TypeVar 
+1674:    # Add default and infer_variance parameters from PEP 696 and 695 
+1777:    from typing import ParamSpec 
+1831:    # Inherits from list as a workaround for Callable checks in Python < 3.9.2. 
+1935:    # Inherits from list as a workaround for Callable checks in Python < 3.9.2. 
+2025:                        # This class inherits from list do not convert 
+2275:        """A special form representing the value that results from the evaluation 
+2307:          from typing_extensions import LiteralString 
+2312:          query("SELECT * FROM table")  # ok 
+2313:          query(f"SELECT * FROM {input()}")  # not ok 
+2330:          from typing import Self 
+2352:            from typing_extensions import Never 
+2440:The type unpack operator takes the child types from some container type, 
+2456:From Python 3.11, this can also be done using the `*` operator: 
+2541:    from typing import TypeVarTuple 
+2766:            from typing_extensions import dataclass_transform 
+2953:                from types import MethodType 
+3147:    # - Catch ValueError: maybe we're called from an unexpected module 
+3152:        # If we somehow get invoked from outside typing.py, 
+3215:            if _should_collect_from_parameters(t): 
+3314:                        'can only inherit from a NamedTuple type and Generic') 
+3344:            # update from user namespace without overriding special namedtuple attributes 
+3373:                                raise RuntimeError(msg) from e 
+3464:        to the buffer protocol from Python code, and the 
+3469:        inherit from this ABC, either in a stub file or at runtime, 
+3491:            from typing import TypeVar, Generic 
+3492:            from typing_extensions import NamedTuple, TypedDict 
+3512:            ) from None 
+3611:        # Copied and pasted from https://github.com/python/cpython/blob/986a4e1b6fcae7fe7a1d0a26aea446107dd58dd2/Objects/genericaliasobject.c#L568-L582, 
+3698:            # Setting this attribute closes the TypeAliasType from further modification 
+3733:                # Note in <= 3.9 _ConcatenateGenericAlias inherits from list 
+3765:            # as it is converted to a list from which no parameters are extracted. 
+3807:            >>> from typing_extensions import Protocol, is_protocol 
+3828:            >>> from typing_extensions import Protocol, get_protocol_members 
+3861:            >>> from typing_extensions import Annotated, Doc 
+3897:    from annotationlib import Format, get_annotations 
+3982:            # "class funclike" from Lib/test/test_inspect... on and on it goes. 
+4143:        derived from, such as a module, class object, or function. It is used to 
+1:import abc 
+2:import builtins 
+3:import collections 
+4:import collections.abc 
+5:import contextlib 
+6:import enum 
+7:import functools 
+8:import inspect 
+9:import io 
+10:import keyword 
+11:import operator 
+12:import sys 
+13:import types as _types 
+14:import typing 
+15:import warnings 
+19:    import annotationlib 
+199:    from typing import Any 
+520:    from typing import AsyncContextManager, AsyncGenerator, ContextManager, Generator 
+1672:    from typing import TypeVar 
+1777:    from typing import ParamSpec 
+2307:          from typing_extensions import LiteralString 
+2330:          from typing import Self 
+2352:            from typing_extensions import Never 
+2541:    from typing import TypeVarTuple 
+2766:            from typing_extensions import dataclass_transform 
+2952:                import functools 
+2953:                from types import MethodType 
+2997:                import asyncio.coroutines 
+2998:                import functools 
+2999:                import inspect 
+3367:                            # as in "normal" classes seems most important here. 
+3491:            from typing import TypeVar, Generic 
+3492:            from typing_extensions import NamedTuple, TypedDict 
+3807:            >>> from typing_extensions import Protocol, is_protocol 
+3828:            >>> from typing_extensions import Protocol, get_protocol_members 
+3861:            >>> from typing_extensions import Annotated, Doc 
+3883:        import _socket 
+3884:    except ImportError: 
+3897:    from annotationlib import Format, get_annotations 
+4269:# We use hasattr() checks so this library will continue to import on 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\ansi.py 
+================================== 
+ 
+25:class AnsiCodes(object): 
+27:        # the subclasses declare class attributes which are numbers. 
+29:        # as the class attributes but wrapped with the ANSI escape sequence 
+36:class AnsiCursor(object): 
+49:class AnsiFore(AnsiCodes): 
+71:class AnsiBack(AnsiCodes): 
+93:class AnsiStyle(AnsiCodes): 
+12:def code_to_chars(code): 
+15:def set_title(title): 
+18:def clear_screen(mode=2): 
+21:def clear_line(mode=2): 
+26:    def __init__(self): 
+28:        # Upon instantiation we define instance attributes, which are the same 
+37:    def UP(self, n=1): 
+39:    def DOWN(self, n=1): 
+41:    def FORWARD(self, n=1): 
+43:    def BACK(self, n=1): 
+45:    def POS(self, x=1, y=1): 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\ansitowin32.py 
+================================== 
+ 
+16:class StreamWrapper(object): 
+72:class AnsiToWin32(object): 
+123:        True if this class is actually needed. If false, then the output 
+22:    def __init__(self, wrapped, converter): 
+28:    def __getattr__(self, name): 
+31:    def __enter__(self, *args, **kwargs): 
+37:    def __exit__(self, *args, **kwargs): 
+40:    def __setstate__(self, state): 
+43:    def __getstate__(self): 
+46:    def write(self, text): 
+49:    def isatty(self): 
+62:    def closed(self): 
+81:    def __init__(self, wrapped, convert=None, strip=None, autoreset=False): 
+85:        # should we reset colors to defaults after every .write() 
+121:    def should_wrap(self): 
+131:    def get_win32_calls(self): 
+175:    def write(self, text): 
+185:    def reset_all(self): 
+192:    def write_and_convert(self, text): 
+208:    def write_plain_text(self, text, start, end): 
+214:    def convert_ansi(self, paramstring, command): 
+220:    def extract_params(self, command, paramstring): 
+224:                # defaults: 
+229:                # defaults: 
+238:    def call_win32(self, command, params): 
+260:    def convert_osc(self, text): 
+276:    def flush(self): 
+6:from .ansi import AnsiFore, AnsiBack, AnsiStyle, Style, BEL 
+7:from .winterm import enable_vt_processing, WinTerm, WinColor, WinStyle 
+8:from .win32 import windll, winapi_test 
+19:    attribute access apart from method 'write()', which is delegated to our 
+75:    sequences from the text, and if outputting to a tty, will convert them into 
+105:        # should we strip ANSI sequences from our output? 
+195:        sequences from the text, and optionally converting them into win32 
+2:import re 
+3:import sys 
+4:import os 
+6:from .ansi import AnsiFore, AnsiBack, AnsiStyle, Style, BEL 
+7:from .winterm import enable_vt_processing, WinTerm, WinColor, WinStyle 
+8:from .win32 import windll, winapi_test 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\initialise.py 
+================================== 
+ 
+9:def _wipe_internal_state_for_tests(): 
+32:def reset_all(): 
+37:def init(autoreset=False, convert=None, strip=None, wrap=True): 
+65:def deinit(): 
+72:def just_fix_windows_console(): 
+96:def colorama_text(*args, **kwargs): 
+104:def reinit(): 
+111:def wrap_stream(stream, convert, strip, autoreset, wrap): 
+6:from .ansitowin32 import AnsiToWin32 
+2:import atexit 
+3:import contextlib 
+4:import sys 
+6:from .ansitowin32 import AnsiToWin32 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\win32.py 
+================================== 
+ 
+23:    class CONSOLE_SCREEN_BUFFER_INFO(Structure): 
+32:        def __str__(self): 
+108:    def _winapi_test(handle): 
+114:    def winapi_test(): 
+118:    def GetConsoleScreenBufferInfo(stream_id=STDOUT): 
+125:    def SetConsoleTextAttribute(stream_id, attrs): 
+129:    def SetConsoleCursorPosition(stream_id, position, adjust=True): 
+147:    def FillConsoleOutputCharacter(stream_id, char, length, start): 
+157:    def FillConsoleOutputAttribute(stream_id, attr, length, start): 
+167:    def SetConsoleTitle(title): 
+170:    def GetConsoleMode(handle): 
+177:    def SetConsoleMode(handle, mode): 
+3:# from winbase.h 
+11:    from ctypes import LibraryLoader 
+13:    from ctypes import wintypes 
+19:    from ctypes import byref, Structure, c_char, POINTER 
+10:    import ctypes 
+11:    from ctypes import LibraryLoader 
+13:    from ctypes import wintypes 
+14:except (AttributeError, ImportError): 
+19:    from ctypes import byref, Structure, c_char, POINTER 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\winterm.py 
+================================== 
+ 
+12:class WinColor(object): 
+23:class WinStyle(object): 
+28:class WinTerm(object): 
+5:    def get_osfhandle(_): 
+30:    def __init__(self): 
+31:        self._default = win32.GetConsoleScreenBufferInfo(win32.STDOUT).wAttributes 
+32:        self.set_attrs(self._default) 
+33:        self._default_fore = self._fore 
+34:        self._default_back = self._back 
+35:        self._default_style = self._style 
+42:    def get_attrs(self): 
+45:    def set_attrs(self, value): 
+50:    def reset_all(self, on_stderr=None): 
+51:        self.set_attrs(self._default) 
+52:        self.set_console(attrs=self._default) 
+55:    def fore(self, fore=None, light=False, on_stderr=False): 
+57:            fore = self._default_fore 
+66:    def back(self, back=None, light=False, on_stderr=False): 
+68:            back = self._default_back 
+77:    def style(self, style=None, on_stderr=False): 
+79:            style = self._default_style 
+83:    def set_console(self, attrs=None, on_stderr=False): 
+91:    def get_position(self, handle): 
+99:    def set_cursor_position(self, position=None, on_stderr=False): 
+101:            # I'm not currently tracking the position, so there is no default. 
+109:    def cursor_adjust(self, x, y, on_stderr=False): 
+117:    def erase_screen(self, mode=0, on_stderr=False): 
+149:    def erase_line(self, mode=0, on_stderr=False): 
+174:    def set_title(self, title): 
+178:def enable_vt_processing(fd): 
+3:    from msvcrt import get_osfhandle 
+9:from . import win32 
+11:# from wincon.h 
+22:# from wincon.h 
+118:        # 0 should clear from the cursor to the end of the screen. 
+119:        # 1 should clear from the cursor to the beginning of the screen. 
+130:            from_coord = csbi.dwCursorPosition 
+133:            from_coord = win32.COORD(0, 0) 
+136:            from_coord = win32.COORD(0, 0) 
+142:        win32.FillConsoleOutputCharacter(handle, ' ', cells_to_erase, from_coord) 
+144:        win32.FillConsoleOutputAttribute(handle, self.get_attrs(), cells_to_erase, from_coord) 
+150:        # 0 should clear from the cursor to the end of the line. 
+151:        # 1 should clear from the cursor to the beginning of the line. 
+158:            from_coord = csbi.dwCursorPosition 
+161:            from_coord = win32.COORD(0, csbi.dwCursorPosition.Y) 
+164:            from_coord = win32.COORD(0, csbi.dwCursorPosition.Y) 
+170:        win32.FillConsoleOutputCharacter(handle, ' ', cells_to_erase, from_coord) 
+172:        win32.FillConsoleOutputAttribute(handle, self.get_attrs(), cells_to_erase, from_coord) 
+3:    from msvcrt import get_osfhandle 
+4:except ImportError: 
+9:from . import win32 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\__init__.py 
+================================== 
+ 
+2:from .initialise import init, deinit, reinit, colorama_text, just_fix_windows_console 
+3:from .ansi import Fore, Back, Style, Cursor 
+4:from .ansitowin32 import AnsiToWin32 
+2:from .initialise import init, deinit, reinit, colorama_text, just_fix_windows_console 
+3:from .ansi import Fore, Back, Style, Cursor 
+4:from .ansitowin32 import AnsiToWin32 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\tests\ansitowin32_test.py 
+================================== 
+ 
+20:class StreamWrapperTest(TestCase): 
+61:class AnsiToWin32Test(TestCase): 
+22:    def testIsAProxy(self): 
+27:    def testDelegatesWrite(self): 
+34:    def testDelegatesContext(self): 
+41:    def testProxyNoContextManager(self): 
+49:    def test_closed_shouldnt_raise_on_closed_stream(self): 
+55:    def test_closed_shouldnt_raise_on_detached_stream(self): 
+63:    def testInit(self): 
+72:    def testStripIsTrueOnWindows(self): 
+78:    def testStripIsFalseOffWindows(self): 
+84:    def testWriteStripsAnsi(self): 
+96:    def testWriteDoesNotStripAnsi(self): 
+109:    def assert_autoresets(self, convert, autoreset=True): 
+120:    def testWriteAutoresets(self): 
+126:    def testWriteAndConvertWritesPlainText(self): 
+131:    def testWriteAndConvertStripsAllValidAnsi(self): 
+135:            'abc\033[mdef', 
+136:            'abc\033[0mdef', 
+137:            'abc\033[2mdef', 
+138:            'abc\033[02mdef', 
+139:            'abc\033[002mdef', 
+140:            'abc\033[40mdef', 
+141:            'abc\033[040mdef', 
+142:            'abc\033[0;1mdef', 
+143:            'abc\033[40;50mdef', 
+144:            'abc\033[50;30;40mdef', 
+145:            'abc\033[Adef', 
+146:            'abc\033[0Gdef', 
+147:            'abc\033[1;20;128Hdef', 
+154:               [ ('abc',), ('def',) ] 
+157:    def testWriteAndConvertSkipsEmptySnippets(self): 
+163:    def testWriteAndConvertCallsWin32WithParamsAndCommand(self): 
+169:            'abc\033[adef':         ('a', 'params'), 
+170:            'abc\033[;;bdef':       ('b', 'params'), 
+171:            'abc\033[0cdef':        ('c', 'params'), 
+172:            'abc\033[;;0;;Gdef':    ('G', 'params'), 
+173:            'abc\033[1;20;128Hdef': ('H', 'params'), 
+180:    def test_reset_all_shouldnt_raise_on_closed_orig_stdout(self): 
+187:    def test_wrap_shouldnt_raise_on_closed_orig_stdout(self): 
+197:    def test_wrap_shouldnt_raise_on_missing_closed_attr(self): 
+205:    def testExtractParams(self): 
+219:    def testCallWin32UsesLookup(self): 
+232:    def test_osc_codes(self): 
+248:    def test_native_windows_ansi(self): 
+250:            def p(a, b): 
+2:from io import StringIO, TextIOWrapper 
+3:from unittest import TestCase, main 
+5:    from contextlib import ExitStack 
+8:    from contextlib2 import ExitStack 
+11:    from unittest.mock import MagicMock, Mock, patch 
+13:    from mock import MagicMock, Mock, patch 
+15:from ..ansitowin32 import AnsiToWin32, StreamWrapper 
+16:from ..win32 import ENABLE_VIRTUAL_TERMINAL_PROCESSING 
+17:from .utils import osname 
+2:from io import StringIO, TextIOWrapper 
+3:from unittest import TestCase, main 
+5:    from contextlib import ExitStack 
+6:except ImportError: 
+8:    from contextlib2 import ExitStack 
+11:    from unittest.mock import MagicMock, Mock, patch 
+12:except ImportError: 
+13:    from mock import MagicMock, Mock, patch 
+15:from ..ansitowin32 import AnsiToWin32, StreamWrapper 
+16:from ..win32 import ENABLE_VIRTUAL_TERMINAL_PROCESSING 
+17:from .utils import osname 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\tests\ansi_test.py 
+================================== 
+ 
+12:class AnsiTest(TestCase): 
+14:    def setUp(self): 
+20:    def tearDown(self): 
+25:    def testForeAttributes(self): 
+47:    def testBackAttributes(self): 
+69:    def testStyleAttributes(self): 
+3:from unittest import TestCase, main 
+5:from ..ansi import Back, Fore, Style 
+6:from ..ansitowin32 import AnsiToWin32 
+2:import sys 
+3:from unittest import TestCase, main 
+5:from ..ansi import Back, Fore, Style 
+6:from ..ansitowin32 import AnsiToWin32 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\tests\initialise_test.py 
+================================== 
+ 
+18:class InitTest(TestCase): 
+119:class JustFixWindowsConsoleTest(TestCase): 
+21:    def setUp(self): 
+25:    def tearDown(self): 
+30:    def assertWrapped(self): 
+38:    def assertNotWrapped(self): 
+45:    def testInitWrapsOnWindows(self, _): 
+52:    def testInitDoesntWrapOnEmulatedWindows(self, _): 
+57:    def testInitDoesntWrapOnNonWindows(self): 
+62:    def testInitDoesntWrapIfNone(self): 
+70:    def testInitAutoresetOnWrapsOnAllPlatforms(self): 
+75:    def testInitWrapOffDoesntWrapOnWindows(self): 
+80:    def testInitWrapOffIncompatibleWithAutoresetOn(self): 
+85:    def testAutoResetPassedOn(self, mockATW32, _): 
+93:    def testAutoResetChangeable(self, mockATW32): 
+111:    def testAtexitRegisteredOnlyOnce(self, mockRegister): 
+120:    def _reset(self): 
+125:    def tearDown(self): 
+129:    def testJustFixWindowsConsole(self): 
+136:            def fake_std(): 
+3:from unittest import TestCase, main, skipUnless 
+6:    from unittest.mock import patch, Mock 
+8:    from mock import patch, Mock 
+10:from ..ansitowin32 import StreamWrapper 
+11:from ..initialise import init, just_fix_windows_console, _wipe_internal_state_for_tests 
+12:from .utils import osname, replace_by 
+2:import sys 
+3:from unittest import TestCase, main, skipUnless 
+6:    from unittest.mock import patch, Mock 
+7:except ImportError: 
+8:    from mock import patch, Mock 
+10:from ..ansitowin32 import StreamWrapper 
+11:from ..initialise import init, just_fix_windows_console, _wipe_internal_state_for_tests 
+12:from .utils import osname, replace_by 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\tests\isatty_test.py 
+================================== 
+ 
+12:class IsattyTest(TestCase): 
+9:def is_a_tty(stream): 
+14:    def test_TTY(self): 
+20:    def test_nonTTY(self): 
+26:    def test_withPycharm(self): 
+31:    def test_withPycharmTTYOverride(self): 
+36:    def test_withPycharmNonTTYOverride(self): 
+41:    def test_withPycharmNoneOverride(self): 
+48:    def test_withPycharmStreamWrapped(self): 
+3:from unittest import TestCase, main 
+5:from ..ansitowin32 import StreamWrapper, AnsiToWin32 
+6:from .utils import pycharm, replace_by, replace_original_by, StreamTTY, StreamNonTTY 
+2:import sys 
+3:from unittest import TestCase, main 
+5:from ..ansitowin32 import StreamWrapper, AnsiToWin32 
+6:from .utils import pycharm, replace_by, replace_original_by, StreamTTY, StreamNonTTY 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\tests\utils.py 
+================================== 
+ 
+8:class StreamTTY(StringIO): 
+12:class StreamNonTTY(StringIO): 
+9:    def isatty(self): 
+13:    def isatty(self): 
+17:def osname(name): 
+24:def replace_by(stream): 
+34:def replace_original_by(stream): 
+44:def pycharm(): 
+2:from contextlib import contextmanager 
+3:from io import StringIO 
+2:from contextlib import contextmanager 
+3:from io import StringIO 
+4:import sys 
+5:import os 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\tests\winterm_test.py 
+================================== 
+ 
+13:class WinTermTest(TestCase): 
+16:    def testInit(self, mockWin32): 
+26:    def testGetAttrs(self): 
+48:    def testResetAll(self, mockWin32): 
+67:    def testFore(self): 
+78:    def testBack(self): 
+89:    def testStyle(self): 
+100:    def testSetConsole(self, mockWin32): 
+115:    def testSetConsoleOnStderr(self, mockWin32): 
+3:from unittest import TestCase, main, skipUnless 
+6:    from unittest.mock import Mock, patch 
+8:    from mock import Mock, patch 
+10:from ..winterm import WinColor, WinStyle, WinTerm 
+2:import sys 
+3:from unittest import TestCase, main, skipUnless 
+6:    from unittest.mock import Mock, patch 
+7:except ImportError: 
+8:    from mock import Mock, patch 
+10:from ..winterm import WinColor, WinStyle, WinTerm 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\colorama\tests\__init__.py 
+================================== 
+ 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\api.py 
+================================== 
+ 
+1:"""Directly exposed API functions and classes, :func:`Document` for now. 
+19:def Document(docx: str | IO[bytes] | None = None) -> DocumentObject: 
+23:    If `docx` is missing or ``None``, the built-in default document "template" is 
+26:    docx = _default_docx_path() if docx is None else docx 
+34:def _default_docx_path(): 
+35:    """Return the path to the built-in default .docx package.""" 
+37:    return os.path.join(_thisdir, "templates", "default.docx") 
+6:from __future__ import annotations 
+9:from typing import IO, TYPE_CHECKING, cast 
+11:from docx.opc.constants import CONTENT_TYPE as CT 
+12:from docx.package import Package 
+15:    from docx.document import Document as DocumentObject 
+16:    from docx.parts.document import DocumentPart 
+20:    """Return a |Document| object loaded from `docx`, where `docx` can be either a path 
+6:from __future__ import annotations 
+8:import os 
+9:from typing import IO, TYPE_CHECKING, cast 
+11:from docx.opc.constants import CONTENT_TYPE as CT 
+12:from docx.package import Package 
+15:    from docx.document import Document as DocumentObject 
+16:    from docx.parts.document import DocumentPart 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\blkcntnr.py 
+================================== 
+ 
+33:class BlockItemContainer(StoryChild): 
+34:    """Base class for proxy objects that can contain block items. 
+41:    def __init__(self, element: BlockItemElement, parent: t.ProvidesStoryPart): 
+45:    def add_paragraph(self, text: str = "", style: str | ParagraphStyle | None = None) -> Paragraph: 
+61:    def add_table(self, rows: int, cols: int, width: Length) -> Table: 
+74:    def iter_inner_content(self) -> Iterator[Paragraph | Table]: 
+82:    def paragraphs(self): 
+90:    def tables(self): 
+99:    def _add_paragraph(self): 
+9:from __future__ import annotations 
+11:from typing import TYPE_CHECKING, Iterator 
+13:from typing_extensions import TypeAlias 
+15:from docx.oxml.table import CT_Tbl 
+16:from docx.oxml.text.paragraph import CT_P 
+17:from docx.shared import StoryChild 
+18:from docx.text.paragraph import Paragraph 
+22:    from docx.oxml.comments import CT_Comment 
+23:    from docx.oxml.document import CT_Body 
+24:    from docx.oxml.section import CT_HdrFtr 
+25:    from docx.oxml.table import CT_Tc 
+26:    from docx.shared import Length 
+27:    from docx.styles.style import ParagraphStyle 
+28:    from docx.table import Table 
+68:        from docx.table import Table 
+76:        from docx.table import Table 
+95:        from docx.table import Table 
+1:# pyright: reportImportCycles=false 
+9:from __future__ import annotations 
+11:from typing import TYPE_CHECKING, Iterator 
+13:from typing_extensions import TypeAlias 
+15:from docx.oxml.table import CT_Tbl 
+16:from docx.oxml.text.paragraph import CT_P 
+17:from docx.shared import StoryChild 
+18:from docx.text.paragraph import Paragraph 
+21:    import docx.types as t 
+22:    from docx.oxml.comments import CT_Comment 
+23:    from docx.oxml.document import CT_Body 
+24:    from docx.oxml.section import CT_HdrFtr 
+25:    from docx.oxml.table import CT_Tc 
+26:    from docx.shared import Length 
+27:    from docx.styles.style import ParagraphStyle 
+28:    from docx.table import Table 
+68:        from docx.table import Table 
+76:        from docx.table import Table 
+95:        from docx.table import Table 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\comments.py 
+================================== 
+ 
+17:class Comments: 
+83:class Comment(BlockItemContainer): 
+20:    def __init__(self, comments_elm: CT_Comments, comments_part: CommentsPart): 
+24:    def __iter__(self) -> Iterator[Comment]: 
+31:    def __len__(self) -> int: 
+35:    def add_comment(self, text: str = "", author: str = "", initials: str | None = "") -> Comment: 
+46:        The default is to place a single empty paragraph in the comment, which is the same 
+52:        `author` is a required attribute, set to the empty string by default. 
+54:        `initials` is an optional attribute, set to the empty string by default. Passing |None| 
+77:    def get(self, comment_id: int) -> Comment | None: 
+97:    def __init__(self, comment_elm: CT_Comment, comments_part: CommentsPart): 
+101:    def add_paragraph(self, text: str = "", style: str | ParagraphStyle | None = None) -> Paragraph: 
+106:        the default style for comments. 
+118:    def author(self) -> str: 
+126:    def author(self, value: str): 
+130:    def comment_id(self) -> int: 
+135:    def initials(self) -> str | None: 
+144:    def initials(self, value: str | None): 
+148:    def text(self) -> str: 
+158:    def timestamp(self) -> dt.datetime | None: 
+3:from __future__ import annotations 
+6:from typing import TYPE_CHECKING, Iterator 
+8:from docx.blkcntnr import BlockItemContainer 
+11:    from docx.oxml.comments import CT_Comment, CT_Comments 
+12:    from docx.parts.comments import CommentsPart 
+13:    from docx.styles.style import ParagraphStyle 
+14:    from docx.text.paragraph import Paragraph 
+55:        for the `initials` parameter causes that attribute to be omitted from the XML. 
+139:        any existing initials from the XML. 
+3:from __future__ import annotations 
+5:import datetime as dt 
+6:from typing import TYPE_CHECKING, Iterator 
+8:from docx.blkcntnr import BlockItemContainer 
+11:    from docx.oxml.comments import CT_Comment, CT_Comments 
+12:    from docx.parts.comments import CommentsPart 
+13:    from docx.styles.style import ParagraphStyle 
+14:    from docx.text.paragraph import Paragraph 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\document.py 
+================================== 
+ 
+28:class Document(ElementProxy): 
+249:class _Body(BlockItemContainer): 
+35:    def __init__(self, element: CT_Document, part: DocumentPart): 
+41:    def add_comment( 
+72:        `author` is a required attribute on a comment and is the empty string by default. 
+74:        `initials` attribute by default and we follow that convention by using the empty string 
+90:    def add_heading(self, text: str = "", level: int = 1): 
+103:    def add_page_break(self): 
+109:    def add_paragraph(self, text: str = "", style: str | ParagraphStyle | None = None) -> Paragraph: 
+121:    def add_picture( 
+134:        the dots-per-inch (dpi) value specified in the image file, defaulting to 72 dpi 
+140:    def add_section(self, start_type: WD_SECTION = WD_SECTION.NEW_PAGE): 
+144:        enumeration, and defaults to ``WD_SECTION.NEW_PAGE`` if not provided. 
+150:    def add_table(self, rows: int, cols: int, style: str | _TableStyle | None = None): 
+154:        the table inherits the default table style of the document. 
+161:    def comments(self) -> Comments: 
+166:    def core_properties(self): 
+171:    def inline_shapes(self): 
+180:    def iter_inner_content(self) -> Iterator[Paragraph | Table]: 
+185:    def paragraphs(self) -> List[Paragraph]: 
+194:    def part(self) -> DocumentPart: 
+198:    def save(self, path_or_stream: str | IO[bytes]): 
+207:    def sections(self) -> Sections: 
+212:    def settings(self) -> Settings: 
+217:    def styles(self): 
+222:    def tables(self) -> List[Table]: 
+233:    def _block_width(self) -> Length: 
+242:    def _body(self) -> _Body: 
+255:    def __init__(self, body_elm: CT_Body, parent: t.ProvidesStoryPart): 
+259:    def clear_content(self) -> _Body: 
+6:from __future__ import annotations 
+8:from typing import IO, TYPE_CHECKING, Iterator, List, Sequence 
+10:from docx.blkcntnr import BlockItemContainer 
+11:from docx.enum.section import WD_SECTION 
+12:from docx.enum.text import WD_BREAK 
+13:from docx.section import Section, Sections 
+14:from docx.shared import ElementProxy, Emu, Inches, Length 
+15:from docx.text.run import Run 
+19:    from docx.comments import Comment, Comments 
+20:    from docx.oxml.document import CT_Body, CT_Document 
+21:    from docx.parts.document import DocumentPart 
+22:    from docx.settings import Settings 
+23:    from docx.styles.style import ParagraphStyle, _TableStyle 
+24:    from docx.table import Table 
+25:    from docx.text.paragraph import Paragraph 
+1:# pyright: reportImportCycles=false 
+6:from __future__ import annotations 
+8:from typing import IO, TYPE_CHECKING, Iterator, List, Sequence 
+10:from docx.blkcntnr import BlockItemContainer 
+11:from docx.enum.section import WD_SECTION 
+12:from docx.enum.text import WD_BREAK 
+13:from docx.section import Section, Sections 
+14:from docx.shared import ElementProxy, Emu, Inches, Length 
+15:from docx.text.run import Run 
+18:    import docx.types as t 
+19:    from docx.comments import Comment, Comments 
+20:    from docx.oxml.document import CT_Body, CT_Document 
+21:    from docx.parts.document import DocumentPart 
+22:    from docx.settings import Settings 
+23:    from docx.styles.style import ParagraphStyle, _TableStyle 
+24:    from docx.table import Table 
+25:    from docx.text.paragraph import Paragraph 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\exceptions.py 
+================================== 
+ 
+3:The base exception class is PythonDocxError. 
+7:class PythonDocxError(Exception): 
+8:    """Generic error class.""" 
+11:class InvalidSpanError(PythonDocxError): 
+16:class InvalidXmlError(PythonDocxError): 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\package.py 
+================================== 
+ 
+1:"""WordprocessingML Package class and related objects.""" 
+15:class Package(OpcPackage): 
+50:class ImageParts: 
+18:    def after_unmarshal(self): 
+25:    def get_or_add_image_part(self, image_descriptor: str | IO[bytes]) -> ImagePart: 
+34:    def image_parts(self) -> ImageParts: 
+38:    def _gather_image_parts(self): 
+53:    def __init__(self): 
+56:    def __contains__(self, item: object): 
+59:    def __iter__(self): 
+62:    def __len__(self): 
+65:    def append(self, item: ImagePart): 
+68:    def get_or_add_image_part(self, image_descriptor: str | IO[bytes]) -> ImagePart: 
+80:    def _add_image_part(self, image: Image): 
+87:    def _get_by_sha1(self, sha1: str) -> ImagePart | None: 
+95:    def _next_image_partname(self, ext: str) -> PackURI: 
+103:        def image_partname(n: int) -> PackURI: 
+3:from __future__ import annotations 
+5:from typing import IO, cast 
+7:from docx.image.image import Image 
+8:from docx.opc.constants import RELATIONSHIP_TYPE as RT 
+9:from docx.opc.package import OpcPackage 
+10:from docx.opc.packuri import PackURI 
+11:from docx.parts.image import ImagePart 
+12:from docx.shared import lazyproperty 
+74:        image = Image.from_file(image_descriptor) 
+81:        """Return |ImagePart| instance newly created from `image` and appended to the collection.""" 
+83:        image_part = ImagePart.from_image(image, partname) 
+96:        """The next available image partname, starting from ``/word/media/image1.{ext}`` 
+3:from __future__ import annotations 
+5:from typing import IO, cast 
+7:from docx.image.image import Image 
+8:from docx.opc.constants import RELATIONSHIP_TYPE as RT 
+9:from docx.opc.package import OpcPackage 
+10:from docx.opc.packuri import PackURI 
+11:from docx.parts.image import ImagePart 
+12:from docx.shared import lazyproperty 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\section.py 
+================================== 
+ 
+1:"""The |Section| object and related proxy classes.""" 
+24:class Section: 
+256:class Sections(Sequence[Section]): 
+289:class _BaseHeaderFooter(BlockItemContainer): 
+290:    """Base class for header and footer classes.""" 
+340:        raise NotImplementedError("must be implemented by each subclass") 
+345:        raise NotImplementedError("must be implemented by each subclass") 
+349:        raise NotImplementedError("must be implemented by each subclass") 
+379:        raise NotImplementedError("must be implemented by each subclass") 
+387:        raise NotImplementedError("must be implemented by each subclass") 
+390:class _Footer(_BaseHeaderFooter): 
+436:class _Header(_BaseHeaderFooter): 
+30:    def __init__(self, sectPr: CT_SectPr, document_part: DocumentPart): 
+36:    def bottom_margin(self) -> Length | None: 
+45:    def bottom_margin(self, value: int | Length | None): 
+49:    def different_first_page_header_footer(self) -> bool: 
+52:        Read/write. The definition of the first-page header and footer are accessed 
+58:    def different_first_page_header_footer(self, value: bool): 
+62:    def even_page_footer(self) -> _Footer: 
+63:        """|_Footer| object defining footer content for even pages. 
+65:        The content of this footer definition is ignored unless the document setting 
+71:    def even_page_header(self) -> _Header: 
+72:        """|_Header| object defining header content for even pages. 
+74:        The content of this header definition is ignored unless the document setting 
+80:    def first_page_footer(self) -> _Footer: 
+81:        """|_Footer| object defining footer content for the first page of this section. 
+83:        The content of this footer definition is ignored unless the property 
+89:    def first_page_header(self) -> _Header: 
+90:        """|_Header| object defining header content for the first page of this section. 
+92:        The content of this header definition is ignored unless the property 
+98:    def footer(self) -> _Footer: 
+99:        """|_Footer| object representing default page footer for this section. 
+101:        The default footer is used for odd-numbered pages when separate odd/even footers 
+107:    def footer_distance(self) -> Length | None: 
+115:    def footer_distance(self, value: int | Length | None): 
+119:    def gutter(self) -> Length | None: 
+132:    def gutter(self, value: int | Length | None): 
+136:    def header(self) -> _Header: 
+137:        """|_Header| object representing default page header for this section. 
+139:        The default header is used for odd-numbered pages when separate odd/even headers 
+145:    def header_distance(self) -> Length | None: 
+149:        default value to be used. 
+154:    def header_distance(self, value: int | Length | None): 
+157:    def iter_inner_content(self) -> Iterator[Paragraph | Table]: 
+166:    def left_margin(self) -> Length | None: 
+172:    def left_margin(self, value: int | Length | None): 
+176:    def orientation(self) -> WD_ORIENTATION: 
+184:    def orientation(self, value: WD_ORIENTATION | None): 
+188:    def page_height(self) -> Length | None: 
+199:    def page_height(self, value: Length | None): 
+203:    def page_width(self) -> Length | None: 
+215:    def page_width(self, value: Length | None): 
+219:    def part(self) -> StoryPart: 
+223:    def right_margin(self) -> Length | None: 
+229:    def right_margin(self, value: Length | None): 
+233:    def start_type(self) -> WD_SECTION_START: 
+242:    def start_type(self, value: WD_SECTION_START | None): 
+246:    def top_margin(self) -> Length | None: 
+252:    def top_margin(self, value: Length | None): 
+262:    def __init__(self, document_elm: CT_Document, document_part: DocumentPart): 
+268:    def __getitem__(self, key: int) -> Section: ... 
+271:    def __getitem__(self, key: slice) -> List[Section]: ... 
+273:    def __getitem__(self, key: int | slice) -> Section | List[Section]: 
+281:    def __iter__(self) -> Iterator[Section]: 
+285:    def __len__(self) -> int: 
+292:    def __init__( 
+303:    def is_linked_to_previous(self) -> bool: 
+304:        """``True`` if this header/footer uses the definition from the prior section. 
+306:        ``False`` if this header/footer has an explicit definition. 
+308:        Assigning ``True`` to this property removes the header/footer definition for 
+309:        this section, causing it to "inherit" the corresponding definition of the prior 
+310:        section. Assigning ``False`` causes a new, empty definition to be added for this 
+311:        section, but only if no definition is already present. 
+314:        return not self._has_definition 
+317:    def is_linked_to_previous(self, value: bool) -> None: 
+323:            self._drop_definition() 
+325:            self._add_definition() 
+328:    def part(self) -> HeaderPart | FooterPart: 
+336:        return self._get_or_add_definition() 
+338:    def _add_definition(self) -> HeaderPart | FooterPart: 
+343:    def _definition(self) -> HeaderPart | FooterPart: 
+347:    def _drop_definition(self) -> None: 
+348:        """Remove header/footer part containing the definition of this header/footer.""" 
+352:    def _element(self): 
+354:        return self._get_or_add_definition().element 
+356:    def _get_or_add_definition(self) -> HeaderPart | FooterPart: 
+360:        is returned; this process continue recursively until a definition is found. If 
+361:        the definition cannot be inherited (because the header/footer belongs to the 
+362:        first section), a new definition is added for that first section and then 
+365:        # ---note this method is called recursively to access inherited definitions--- 
+366:        # ---case-1: definition is not inherited--- 
+367:        if self._has_definition: 
+368:            return self._definition 
+369:        # ---case-2: definition is inherited and belongs to second-or-later section--- 
+372:            return prior_headerfooter._get_or_add_definition() 
+373:        # ---case-3: definition is inherited, but belongs to first section--- 
+374:        return self._add_definition() 
+377:    def _has_definition(self) -> bool: 
+378:        """True if this header/footer has a related part containing its definition.""" 
+382:    def _prior_headerfooter(self) -> _Header | _Footer | None: 
+391:    """Page footer, used for all three types (default, even-page, and first-page). 
+400:    def _add_definition(self) -> FooterPart: 
+407:    def _definition(self): 
+410:        # -- currently this is never called when `._has_definition` evaluates False -- 
+414:    def _drop_definition(self): 
+415:        """Remove footer definition (footer part) associated with this section.""" 
+420:    def _has_definition(self) -> bool: 
+421:        """True if a footer is defined for this section.""" 
+426:    def _prior_headerfooter(self): 
+437:    """Page header, used for all three types (default, even-page, and first-page). 
+446:    def _add_definition(self): 
+453:    def _definition(self): 
+456:        # -- currently this is never called when `._has_definition` evaluates False -- 
+460:    def _drop_definition(self): 
+461:        """Remove header definition associated with this section.""" 
+466:    def _has_definition(self) -> bool: 
+467:        """True if a header is explicitly defined for this section.""" 
+472:    def _prior_headerfooter(self): 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING, Iterator, List, Sequence, overload 
+7:from docx.blkcntnr import BlockItemContainer 
+8:from docx.enum.section import WD_HEADER_FOOTER 
+9:from docx.oxml.text.paragraph import CT_P 
+10:from docx.parts.hdrftr import FooterPart, HeaderPart 
+11:from docx.shared import lazyproperty 
+12:from docx.table import Table 
+13:from docx.text.paragraph import Paragraph 
+16:    from docx.enum.section import WD_ORIENTATION, WD_SECTION_START 
+17:    from docx.oxml.document import CT_Document 
+18:    from docx.oxml.section import CT_SectPr 
+19:    from docx.parts.document import DocumentPart 
+20:    from docx.parts.story import StoryPart 
+21:    from docx.shared import Length 
+108:        """Distance from bottom edge of page to bottom edge of the footer. 
+146:        """Distance from top edge of page to top edge of header. 
+304:        """``True`` if this header/footer uses the definition from the prior section. 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING, Iterator, List, Sequence, overload 
+7:from docx.blkcntnr import BlockItemContainer 
+8:from docx.enum.section import WD_HEADER_FOOTER 
+9:from docx.oxml.text.paragraph import CT_P 
+10:from docx.parts.hdrftr import FooterPart, HeaderPart 
+11:from docx.shared import lazyproperty 
+12:from docx.table import Table 
+13:from docx.text.paragraph import Paragraph 
+16:    from docx.enum.section import WD_ORIENTATION, WD_SECTION_START 
+17:    from docx.oxml.document import CT_Document 
+18:    from docx.oxml.section import CT_SectPr 
+19:    from docx.parts.document import DocumentPart 
+20:    from docx.parts.story import StoryPart 
+21:    from docx.shared import Length 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\settings.py 
+================================== 
+ 
+15:class Settings(ElementProxy): 
+21:    def __init__(self, element: BaseOxmlElement, parent: t.ProvidesXmlPart | None = None): 
+26:    def odd_and_even_pages_header_footer(self) -> bool: 
+34:    def odd_and_even_pages_header_footer(self, value: bool): 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING, cast 
+7:from docx.shared import ElementProxy 
+11:    from docx.oxml.settings import CT_Settings 
+12:    from docx.oxml.xmlchemy import BaseOxmlElement 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING, cast 
+7:from docx.shared import ElementProxy 
+10:    import docx.types as t 
+11:    from docx.oxml.settings import CT_Settings 
+12:    from docx.oxml.xmlchemy import BaseOxmlElement 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\shape.py 
+================================== 
+ 
+21:class InlineShapes(Parented): 
+51:class InlineShape: 
+24:    def __init__(self, body_elm: CT_Body, parent: StoryPart): 
+28:    def __getitem__(self, idx: int): 
+38:    def __iter__(self): 
+41:    def __len__(self): 
+45:    def _inline_lst(self): 
+55:    def __init__(self, inline: CT_Inline): 
+60:    def height(self) -> Length: 
+68:    def height(self, cy: Length): 
+73:    def type(self): 
+93:    def width(self): 
+101:    def width(self, cx: Length): 
+6:from __future__ import annotations 
+8:from typing import TYPE_CHECKING 
+10:from docx.enum.shape import WD_INLINE_SHAPE 
+11:from docx.oxml.ns import nsmap 
+12:from docx.shared import Parented 
+15:    from docx.oxml.document import CT_Body 
+16:    from docx.oxml.shape import CT_Inline 
+17:    from docx.parts.story import StoryPart 
+18:    from docx.shared import Length 
+6:from __future__ import annotations 
+8:from typing import TYPE_CHECKING 
+10:from docx.enum.shape import WD_INLINE_SHAPE 
+11:from docx.oxml.ns import nsmap 
+12:from docx.shared import Parented 
+15:    from docx.oxml.document import CT_Body 
+16:    from docx.oxml.shape import CT_Inline 
+17:    from docx.parts.story import StoryPart 
+18:    from docx.shared import Length 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\shared.py 
+================================== 
+ 
+25:class Length(int): 
+26:    """Base class for length constructor classes Inches, Cm, Mm, Px, and Emu. 
+73:class Inches(Length): 
+81:class Cm(Length): 
+89:class Emu(Length): 
+97:class Mm(Length): 
+105:class Pt(Length): 
+106:    """Convenience value class for specifying a length in points.""" 
+113:class Twips(Length): 
+124:class RGBColor(Tuple[int, int, int]): 
+143:    @classmethod 
+155:class lazyproperty(Generic[T]): 
+164:    Like @property, this class produces a *data descriptor* object, which is stored in 
+165:    the __dict__ of the *class* under the name of the decorated method ('fget' 
+189:        class Obj(object) 
+205:        consistency with Python's `property` class which uses this name for the 
+216:        """Called on each access of 'fget' attribute on class or instance. 
+223:        the class, e.g. `Obj.fget`. 
+225:        *type* is the class hosting the decorated getter method (`fget`) on both class 
+228:        # --- when accessed on class, e.g. Obj.fget, just return this descriptor 
+277:class ElementProxy: 
+278:    """Base class for lxml element proxy classes. 
+280:    An element proxy class is one whose primary responsibilities are fulfilled by 
+282:    common type of class in python-docx other than custom element (oxml) classes. 
+319:class Parented: 
+324:    Provides ``self._parent`` attribute to subclasses. 
+336:class StoryChild: 
+344:    Provides `self._parent` attribute to subclasses. 
+356:class TextAccumulator: 
+39:    def __new__(cls, emu: int): 
+43:    def cm(self): 
+48:    def emu(self): 
+53:    def inches(self): 
+58:    def mm(self): 
+63:    def pt(self): 
+68:    def twips(self): 
+76:    def __new__(cls, inches: float): 
+84:    def __new__(cls, cm: float): 
+93:    def __new__(cls, emu: int): 
+100:    def __new__(cls, mm: float): 
+108:    def __new__(cls, points: float): 
+119:    def __new__(cls, twips: float): 
+125:    """Immutable value object defining a particular RGB color.""" 
+127:    def __new__(cls, r: int, g: int, b: int): 
+136:    def __repr__(self): 
+139:    def __str__(self): 
+144:    def from_string(cls, rgb_hex_str: str) -> RGBColor: 
+192:            def fget(self): 
+200:    def __init__(self, fget: Callable[..., T]) -> None: 
+215:    def __get__(self, obj: Any, type: Any = None) -> T: 
+244:    def __set__(self, obj: Any, value: Any) -> None: 
+266:def write_only_property(f: Callable[[Any, Any], None]): 
+285:    def __init__(self, element: BaseOxmlElement, parent: t.ProvidesXmlPart | None = None): 
+289:    def __eq__(self, other: object): 
+294:        state. Equality for proxy objects is defined as referring to the same XML 
+301:    def __ne__(self, other: object): 
+307:    def element(self): 
+312:    def part(self) -> XmlPart: 
+327:    def __init__(self, parent: t.ProvidesXmlPart): 
+331:    def part(self) -> XmlPart: 
+347:    def __init__(self, parent: t.ProvidesStoryPart): 
+351:    def part(self) -> StoryPart: 
+361:    the text fragments are punctuated, defaulting to the empty string. 
+364:    def __init__(self, separator: str = ""): 
+368:    def push(self, text: str) -> None: 
+372:    def pop(self) -> Iterator[str]: 
+3:from __future__ import annotations 
+6:from typing import ( 
+20:    from docx.opc.part import XmlPart 
+21:    from docx.oxml.xmlchemy import BaseOxmlElement 
+22:    from docx.parts.story import StoryPart 
+144:    def from_string(cls, rgb_hex_str: str) -> RGBColor: 
+145:        """Return a new instance from an RGB color hex string like ``'3C2F80'``.""" 
+175:    collaborator objects, removing that "real work" from the constructor, while still 
+176:    only executing once. It also de-couples client code from any sequencing 
+177:    considerations; if it's accessed from more than one location, it's assured it will 
+221:        *obj* is the "host" object instance when the attribute is accessed from an 
+315:            raise ValueError("part is not accessible from this element") 
+340:    (paragraphs and tables). Items from the block-item subtree occasionally require an 
+373:        """Generate sero-or-one str from those accumulated. 
+375:        Using `yield from accum.pop()` in a generator setting avoids producing an empty 
+3:from __future__ import annotations 
+5:import functools 
+6:from typing import ( 
+19:    import docx.types as t 
+20:    from docx.opc.part import XmlPart 
+21:    from docx.oxml.xmlchemy import BaseOxmlElement 
+22:    from docx.parts.story import StoryPart 
+183:    deleter) behavior of an @property. This is critically important to maintaining its 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\table.py 
+================================== 
+ 
+1:"""The |Table| object and related proxy classes.""" 
+29:class Table(StoryChild): 
+30:    """Proxy class for a WordprocessingML ``<w:tbl>`` element.""" 
+192:class _Cell(BlockItemContainer): 
+314:class _Column(Parented): 
+347:class _Columns(Parented): 
+387:class _Row(Parented): 
+507:class _Rows(Parented): 
+32:    def __init__(self, tbl: CT_Tbl, parent: t.ProvidesStoryPart): 
+37:    def add_column(self, width: Length): 
+47:    def add_row(self): 
+58:    def alignment(self) -> WD_TABLE_ALIGNMENT | None: 
+68:    def alignment(self, value: WD_TABLE_ALIGNMENT | None): 
+72:    def autofit(self) -> bool: 
+82:    def autofit(self, value: bool): 
+85:    def cell(self, row_idx: int, col_idx: int) -> _Cell: 
+93:    def column_cells(self, column_idx: int) -> list[_Cell]: 
+100:    def columns(self): 
+104:    def row_cells(self, row_idx: int) -> list[_Cell]: 
+115:    def rows(self) -> _Rows: 
+120:    def style(self) -> _TableStyle | None: 
+123:        Read/write. The default table style for the document (often `Normal Table`) is 
+126:        default table style of the document. 
+136:    def style(self, style_or_name: _TableStyle | str | None): 
+141:    def table(self): 
+151:    def table_direction(self) -> WD_TABLE_DIRECTION | None: 
+160:    def table_direction(self, value: WD_TABLE_DIRECTION | None): 
+164:    def _cells(self) -> list[_Cell]: 
+183:    def _column_count(self): 
+188:    def _tblPr(self) -> CT_TblPr: 
+195:    def __init__(self, tc: CT_Tc, parent: TableParent): 
+200:    def add_paragraph(self, text: str = "", style: str | ParagraphStyle | None = None): 
+213:    def add_table(  # pyright: ignore[reportIncompatibleMethodOverride] 
+229:    def grid_span(self) -> int: 
+237:    def merge(self, other_cell: _Cell): 
+241:        Raises |InvalidSpanError| if the cells do not define a rectangular region. 
+248:    def paragraphs(self): 
+252:        with a paragraph. By default, a new cell contains a single paragraph. Read-only 
+257:    def tables(self): 
+265:    def text(self) -> str: 
+274:    def text(self, text: str): 
+287:    def vertical_alignment(self): 
+291:        Assigning |None| causes any explicitly defined vertical alignment to be removed, 
+300:    def vertical_alignment(self, value: WD_CELL_VERTICAL_ALIGNMENT | None): 
+305:    def width(self): 
+310:    def width(self, value: Length): 
+317:    def __init__(self, gridCol: CT_TblGridCol, parent: TableParent): 
+323:    def cells(self) -> tuple[_Cell, ...]: 
+328:    def table(self) -> Table: 
+333:    def width(self) -> Length | None: 
+338:    def width(self, value: Length | None): 
+342:    def _index(self): 
+353:    def __init__(self, tbl: CT_Tbl, parent: TableParent): 
+358:    def __getitem__(self, idx: int): 
+367:    def __iter__(self): 
+371:    def __len__(self): 
+375:    def table(self) -> Table: 
+380:    def _gridCol_lst(self): 
+390:    def __init__(self, tr: CT_Row, parent: TableParent): 
+396:    def cells(self) -> tuple[_Cell, ...]: 
+410:        def iter_tc_cells(tc: CT_Tc) -> Iterator[_Cell]: 
+418:            # -- tc.vMerge="continue" (the default value of the `w:vMerge` attribute, when it is 
+433:        def _iter_row_cells() -> Iterator[_Cell]: 
+441:    def grid_cols_after(self) -> int: 
+458:    def grid_cols_before(self) -> int: 
+475:    def height(self) -> Length | None: 
+481:    def height(self, value: Length | None): 
+485:    def height_rule(self) -> WD_ROW_HEIGHT_RULE | None: 
+493:    def height_rule(self, value: WD_ROW_HEIGHT_RULE | None): 
+497:    def table(self) -> Table: 
+502:    def _index(self) -> int: 
+513:    def __init__(self, tbl: CT_Tbl, parent: TableParent): 
+519:    def __getitem__(self, idx: int) -> _Row: ... 
+522:    def __getitem__(self, idx: slice) -> list[_Row]: ... 
+524:    def __getitem__(self, idx: int | slice) -> _Row | list[_Row]: 
+528:    def __iter__(self): 
+531:    def __len__(self): 
+535:    def table(self) -> Table: 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING, Iterator, cast, overload 
+7:from typing_extensions import TypeAlias 
+9:from docx.blkcntnr import BlockItemContainer 
+10:from docx.enum.style import WD_STYLE_TYPE 
+11:from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT 
+12:from docx.oxml.simpletypes import ST_Merge 
+13:from docx.oxml.table import CT_TblGridCol 
+14:from docx.shared import Inches, Parented, StoryChild, lazyproperty 
+18:    from docx.enum.table import WD_ROW_HEIGHT_RULE, WD_TABLE_ALIGNMENT, WD_TABLE_DIRECTION 
+19:    from docx.oxml.table import CT_Row, CT_Tbl, CT_TblPr, CT_Tc 
+20:    from docx.shared import Length 
+21:    from docx.styles.style import ( 
+63:        effective value to be inherited from the style hierarchy. 
+128:        Note that the style name of a table style differs slightly from that displayed 
+145:        This is the terminus of a series of `parent._table` calls from an arbitrary 
+155:        from the style hierarchy. 
+343:        """Index of this column in its table, starting from zero.""" 
+404:        - If you are reading the cells from each row to form a rectangular "matrix" data structure 
+424:                yield from iter_tc_cells(tc._tc_above)  # pyright: ignore[reportPrivateUsage] 
+436:                yield from iter_tc_cells(tc) 
+503:        """Index of this row in its table, starting from zero.""" 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING, Iterator, cast, overload 
+7:from typing_extensions import TypeAlias 
+9:from docx.blkcntnr import BlockItemContainer 
+10:from docx.enum.style import WD_STYLE_TYPE 
+11:from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT 
+12:from docx.oxml.simpletypes import ST_Merge 
+13:from docx.oxml.table import CT_TblGridCol 
+14:from docx.shared import Inches, Parented, StoryChild, lazyproperty 
+17:    import docx.types as t 
+18:    from docx.enum.table import WD_ROW_HEIGHT_RULE, WD_TABLE_ALIGNMENT, WD_TABLE_DIRECTION 
+19:    from docx.oxml.table import CT_Row, CT_Tbl, CT_TblPr, CT_Tc 
+20:    from docx.shared import Length 
+21:    from docx.styles.style import ( 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\types.py 
+================================== 
+ 
+14:class ProvidesStoryPart(Protocol): 
+25:class ProvidesXmlPart(Protocol): 
+22:    def part(self) -> StoryPart: ... 
+34:    def part(self) -> XmlPart: ... 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING 
+7:from typing_extensions import Protocol 
+10:    from docx.opc.part import XmlPart 
+11:    from docx.parts.story import StoryPart 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING 
+7:from typing_extensions import Protocol 
+10:    from docx.opc.part import XmlPart 
+11:    from docx.parts.story import StoryPart 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\__init__.py 
+================================== 
+ 
+4:the part-classe that implements that type. 
+22:# -- register custom Part classes with opc package reader -- 
+37:def part_class_selector(content_type: str, reltype: str) -> Type[Part] | None: 
+43:PartFactory.part_class_selector = part_class_selector 
+64:    part_class_selector, 
+37:def part_class_selector(content_type: str, reltype: str) -> Type[Part] | None: 
+7:from __future__ import annotations 
+9:from typing import TYPE_CHECKING, Type 
+11:from docx.api import Document 
+14:    from docx.opc.part import Part 
+24:from docx.opc.constants import CONTENT_TYPE as CT 
+25:from docx.opc.constants import RELATIONSHIP_TYPE as RT 
+26:from docx.opc.part import PartFactory 
+27:from docx.opc.parts.coreprops import CorePropertiesPart 
+28:from docx.parts.comments import CommentsPart 
+29:from docx.parts.document import DocumentPart 
+30:from docx.parts.hdrftr import FooterPart, HeaderPart 
+31:from docx.parts.image import ImagePart 
+32:from docx.parts.numbering import NumberingPart 
+33:from docx.parts.settings import SettingsPart 
+34:from docx.parts.styles import StylesPart 
+7:from __future__ import annotations 
+9:from typing import TYPE_CHECKING, Type 
+11:from docx.api import Document 
+14:    from docx.opc.part import Part 
+24:from docx.opc.constants import CONTENT_TYPE as CT 
+25:from docx.opc.constants import RELATIONSHIP_TYPE as RT 
+26:from docx.opc.part import PartFactory 
+27:from docx.opc.parts.coreprops import CorePropertiesPart 
+28:from docx.parts.comments import CommentsPart 
+29:from docx.parts.document import DocumentPart 
+30:from docx.parts.hdrftr import FooterPart, HeaderPart 
+31:from docx.parts.image import ImagePart 
+32:from docx.parts.numbering import NumberingPart 
+33:from docx.parts.settings import SettingsPart 
+34:from docx.parts.styles import StylesPart 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\dml\color.py 
+================================== 
+ 
+22:class ColorFormat(ElementProxy): 
+25:    def __init__(self, rPr_parent: RPrParent): 
+30:    def rgb(self) -> RGBColor | None: 
+52:    def rgb(self, value: RGBColor | None): 
+61:    def theme_color(self) -> MSO_THEME_COLOR | None: 
+79:    def theme_color(self, value: MSO_THEME_COLOR | None): 
+87:    def type(self) -> MSO_COLOR_TYPE | None: 
+91:        color is defined. Its value is |None| if no color is applied at this level, which causes 
+104:    def _color(self) -> CT_Color | None: 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING, cast 
+7:from typing_extensions import TypeAlias 
+9:from docx.enum.dml import MSO_COLOR_TYPE 
+10:from docx.oxml.simpletypes import ST_HexColorAuto 
+11:from docx.shared import ElementProxy, RGBColor 
+14:    from docx.enum.dml import MSO_THEME_COLOR 
+15:    from docx.oxml.text.font import CT_Color 
+16:    from docx.oxml.text.run import CT_R 
+42:        effective color is inherited from the style hierarchy. 
+71:        inherited from the style hierarchy. 
+92:        the effective color to be inherited from the style hierarchy. 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING, cast 
+7:from typing_extensions import TypeAlias 
+9:from docx.enum.dml import MSO_COLOR_TYPE 
+10:from docx.oxml.simpletypes import ST_HexColorAuto 
+11:from docx.shared import ElementProxy, RGBColor 
+14:    from docx.enum.dml import MSO_THEME_COLOR 
+15:    from docx.oxml.text.font import CT_Color 
+16:    from docx.oxml.text.run import CT_R 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\dml\__init__.py 
+================================== 
+ 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\drawing\__init__.py 
+================================== 
+ 
+15:class Drawing(Parented): 
+18:    def __init__(self, drawing: CT_Drawing, parent: t.ProvidesStoryPart): 
+24:    def has_picture(self) -> bool: 
+47:    def image(self) -> Image: 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING 
+7:from docx.oxml.drawing import CT_Drawing 
+8:from docx.shared import Parented 
+12:    from docx.image.image import Image 
+32:        the image would only be retrievable from the filesystem. 
+3:from __future__ import annotations 
+5:from typing import TYPE_CHECKING 
+7:from docx.oxml.drawing import CT_Drawing 
+8:from docx.shared import Parented 
+11:    import docx.types as t 
+12:    from docx.image.image import Image 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\enum\base.py 
+================================== 
+ 
+1:"""Base classes and other objects used by enumerations.""" 
+15:class BaseEnum(int, enum.Enum): 
+16:    """Base class for Enums that do not map XML attr values. 
+33:class BaseXmlEnum(int, enum.Enum): 
+34:    """Base class for Enums that also map XML attr values. 
+53:    @classmethod 
+68:    @classmethod 
+80:class DocsPageFormatter: 
+83:    Formats a RestructuredText documention page (string) for the enumeration class parts 
+95:        This is the only API member for the class. 
+22:    def __new__(cls, ms_api_value: int, docstr: str): 
+28:    def __str__(self): 
+42:    def __new__(cls, ms_api_value: int, xml_value: str | None, docstr: str): 
+49:    def __str__(self): 
+54:    def from_xml(cls, xml_value: str | None) -> Self: 
+69:    def to_xml(cls: Type[_T], value: int | _T | None) -> str | None: 
+87:    def __init__(self, clsname: str, clsdict: Dict[str, Any]): 
+92:    def page_str(self): 
+102:            self._member_defs, 
+107:    def _intro_text(self): 
+119:    def _member_def(self, member: BaseEnum | BaseXmlEnum): 
+120:        """Return an individual member definition formatted as an RST glossary entry, 
+133:    def _member_defs(self): 
+134:        """A single string containing the aggregated member definitions section of the 
+137:        member_defs = [self._member_def(member) for member in members if member.name is not None] 
+138:        return "\n".join(member_defs) 
+141:    def _ms_name(self): 
+146:    def _page_title(self): 
+3:from __future__ import annotations 
+7:from typing import TYPE_CHECKING, Any, Dict, Type, TypeVar 
+10:    from typing_extensions import Self 
+54:    def from_xml(cls, xml_value: str | None) -> Self: 
+59:            >>> WD_PARAGRAPH_ALIGNMENT.from_xml("center") 
+3:from __future__ import annotations 
+5:import enum 
+6:import textwrap 
+7:from typing import TYPE_CHECKING, Any, Dict, Type, TypeVar 
+10:    from typing_extensions import Self 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\enum\dml.py 
+================================== 
+ 
+6:class MSO_COLOR_TYPE(BaseEnum): 
+30:class MSO_THEME_COLOR_INDEX(BaseXmlEnum): 
+3:from .base import BaseEnum, BaseXmlEnum 
+11:        from docx.enum.dml import MSO_COLOR_TYPE 
+38:        from docx.enum.dml import MSO_THEME_COLOR 
+3:from .base import BaseEnum, BaseXmlEnum 
+11:        from docx.enum.dml import MSO_COLOR_TYPE 
+38:        from docx.enum.dml import MSO_THEME_COLOR 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\enum\section.py 
+================================== 
+ 
+6:class WD_HEADER_FOOTER_INDEX(BaseXmlEnum): 
+30:class WD_ORIENTATION(BaseXmlEnum): 
+55:class WD_SECTION_START(BaseXmlEnum): 
+9:    Specifies one of the three possible header/footer definitions for a section. 
+17:    PRIMARY = (1, "default", "Header for odd pages or all if no even header.") 
+3:from .base import BaseXmlEnum 
+37:        from docx.enum.section import WD_ORIENT 
+62:        from docx.enum.section import WD_SECTION 
+3:from .base import BaseXmlEnum 
+37:        from docx.enum.section import WD_ORIENT 
+62:        from docx.enum.section import WD_SECTION 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\enum\shape.py 
+================================== 
+ 
+6:class WD_INLINE_SHAPE_TYPE(enum.Enum): 
+3:import enum 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\enum\style.py 
+================================== 
+ 
+6:class WD_BUILTIN_STYLE(BaseEnum): 
+426:class WD_STYLE_TYPE(BaseXmlEnum): 
+71:    DEFAULT_PARAGRAPH_FONT = (-66, "Default Paragraph Font.") 
+72:    """Default Paragraph Font.""" 
+140:    HTML_DFN = (-100, "HTML Definition.") 
+141:    """HTML Definition.""" 
+3:from .base import BaseEnum, BaseXmlEnum 
+13:        from docx import Document 
+14:        from docx.enum.style import WD_STYLE 
+431:        from docx import Document 
+432:        from docx.enum.style import WD_STYLE_TYPE 
+3:from .base import BaseEnum, BaseXmlEnum 
+13:        from docx import Document 
+14:        from docx.enum.style import WD_STYLE 
+431:        from docx import Document 
+432:        from docx.enum.style import WD_STYLE_TYPE 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\enum\table.py 
+================================== 
+ 
+6:class WD_CELL_VERTICAL_ALIGNMENT(BaseXmlEnum): 
+51:class WD_ROW_HEIGHT_RULE(BaseXmlEnum): 
+85:class WD_TABLE_ALIGNMENT(BaseXmlEnum): 
+110:class WD_TABLE_DIRECTION(BaseEnum): 
+3:from docx.enum.base import BaseEnum, BaseXmlEnum 
+13:        from docx.enum.table import WD_ALIGN_VERTICAL 
+58:        from docx.enum.table import WD_ROW_HEIGHT_RULE 
+90:        from docx.enum.table import WD_TABLE_ALIGNMENT 
+116:        from docx.enum.table import WD_TABLE_DIRECTION 
+3:from docx.enum.base import BaseEnum, BaseXmlEnum 
+13:        from docx.enum.table import WD_ALIGN_VERTICAL 
+58:        from docx.enum.table import WD_ROW_HEIGHT_RULE 
+90:        from docx.enum.table import WD_TABLE_ALIGNMENT 
+116:        from docx.enum.table import WD_TABLE_DIRECTION 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\enum\text.py 
+================================== 
+ 
+10:class WD_PARAGRAPH_ALIGNMENT(BaseXmlEnum): 
+70:class WD_BREAK_TYPE(enum.Enum): 
+92:class WD_COLOR_INDEX(BaseXmlEnum): 
+159:class WD_LINE_SPACING(BaseXmlEnum): 
+208:class WD_TAB_ALIGNMENT(BaseXmlEnum): 
+247:class WD_TAB_LEADER(BaseXmlEnum): 
+274:class WD_UNDERLINE(BaseXmlEnum): 
+104:    AUTO = (0, "default", "Automatic color. Default; usually black.") 
+105:    """Automatic color. Default; usually black.""" 
+175:    SINGLE = (0, "UNMAPPED", "Single spaced (default).") 
+176:    """Single spaced (default).""" 
+255:    SPACES = (0, "none", "Spaces. Default.") 
+256:    """Spaces. Default.""" 
+3:from __future__ import annotations 
+7:from docx.enum.base import BaseXmlEnum 
+17:        from docx.enum.text import WD_ALIGN_PARAGRAPH 
+101:    INHERITED = (-1, None, "Color is inherited from the style hierarchy.") 
+102:    """Color is inherited from the style hierarchy.""" 
+164:        from docx.enum.text import WD_LINE_SPACING 
+282:    INHERITED = (-1, None, "Inherit underline setting from containing paragraph.") 
+283:    """Inherit underline setting from containing paragraph.""" 
+289:        " be used to remove underline from a run that inherits underlining from its" 
+298:    underline from a run that inherits underlining from its containing paragraph. Note 
+3:from __future__ import annotations 
+5:import enum 
+7:from docx.enum.base import BaseXmlEnum 
+17:        from docx.enum.text import WD_ALIGN_PARAGRAPH 
+164:        from docx.enum.text import WD_LINE_SPACING 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\enum\__init__.py 
+================================== 
+ 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\image\bmp.py 
+================================== 
+ 
+6:class Bmp(BaseImageHeader): 
+9:    @classmethod 
+10:    def from_stream(cls, stream): 
+27:    def content_type(self): 
+33:    def default_ext(self): 
+34:        """Default filename extension, always 'bmp' for BMP images.""" 
+38:    def _dpi(px_per_meter): 
+39:        """Return the integer pixels per inch from `px_per_meter`, defaulting to 96 if 
+1:from .constants import MIME_TYPE 
+2:from .helpers import LITTLE_ENDIAN, StreamReader 
+3:from .image import BaseImageHeader 
+10:    def from_stream(cls, stream): 
+11:        """Return |Bmp| instance having header properties parsed from the BMP image in 
+39:        """Return the integer pixels per inch from `px_per_meter`, defaulting to 96 if 
+1:from .constants import MIME_TYPE 
+2:from .helpers import LITTLE_ENDIAN, StreamReader 
+3:from .image import BaseImageHeader 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\image\constants.py 
+================================== 
+ 
+4:class JPEG_MARKER_CODE: 
+95:    @classmethod 
+100:class MIME_TYPE: 
+110:class PNG_CHUNK_TYPE: 
+118:class TIFF_FLD_TYPE: 
+139:class TIFF_TAG: 
+38:    DQT = b"\xdb"  # Define Quantization Table(s) 
+96:    def is_standalone(cls, marker_code): 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\image\exceptions.py 
+================================== 
+ 
+4:class InvalidImageStreamError(Exception): 
+8:class UnexpectedEndOfFileError(Exception): 
+12:class UnrecognizedImageError(Exception): 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\image\gif.py 
+================================== 
+ 
+7:class Gif(BaseImageHeader): 
+14:    @classmethod 
+32:    @classmethod 
+11:    horizontal and vertical DPI default to 72. 
+15:    def from_stream(cls, stream): 
+22:    def content_type(self): 
+28:    def default_ext(self): 
+29:        """Default filename extension, always 'gif' for GIF images.""" 
+33:    def _dimensions_from_stream(cls, stream): 
+1:from struct import Struct 
+3:from .constants import MIME_TYPE 
+4:from .image import BaseImageHeader 
+15:    def from_stream(cls, stream): 
+16:        """Return |Gif| instance having header properties parsed from GIF image in 
+18:        px_width, px_height = cls._dimensions_from_stream(stream) 
+33:    def _dimensions_from_stream(cls, stream): 
+1:from struct import Struct 
+3:from .constants import MIME_TYPE 
+4:from .image import BaseImageHeader 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\image\helpers.py 
+================================== 
+ 
+9:class StreamReader: 
+16:    def __init__(self, stream, byte_order, base_offset=0): 
+22:    def read(self, count): 
+26:    def read_byte(self, base, offset=0): 
+27:        """Return the int value of the byte at the file position defined by 
+35:    def read_long(self, base, offset=0): 
+36:        """Return the int value of the four bytes at the file position defined by 
+46:    def read_short(self, base, offset=0): 
+52:    def read_str(self, char_count, base, offset=0): 
+56:        def str_struct(char_count): 
+65:    def seek(self, base, offset=0): 
+69:    def tell(self): 
+73:    def _read_bytes(self, byte_count, base, offset): 
+80:    def _read_int(self, fmt, base, offset): 
+84:    def _unpack_item(self, struct, base, offset): 
+1:from struct import Struct 
+3:from .exceptions import UnexpectedEndOfFileError 
+10:    """Wraps a file-like object to provide access to structured data from a binary file. 
+30:        If `base` is None, the byte is read from the current position in the stream. 
+39:        If `base` is None, the long is read from the current position in the stream. The 
+1:from struct import Struct 
+3:from .exceptions import UnexpectedEndOfFileError 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\image\image.py 
+================================== 
+ 
+18:class Image: 
+28:    @classmethod 
+30:        """Return a new |Image| subclass instance parsed from the image binary contained 
+35:    @classmethod 
+37:        """Return a new |Image| subclass instance loaded from the image file identified 
+153:    @classmethod 
+160:        """Return an instance of the |Image| subclass corresponding to the format of the 
+169:    """A |BaseImageHeader| subclass instance that can parse headers of image in `stream`.""" 
+185:class BaseImageHeader: 
+186:    """Base class for image header subclasses like |Jpeg| and |Tiff|.""" 
+196:        """Abstract property definition, must be implemented by all subclasses.""" 
+197:        msg = "content_type property must be implemented by all subclasses of BaseImageHeader" 
+204:        An abstract property definition, must be implemented by all subclasses. 
+207:            "default_ext property must be implemented by all subclasses of BaseImageHeader" 
+22:    def __init__(self, blob: bytes, filename: str, image_header: BaseImageHeader): 
+29:    def from_blob(cls, blob: bytes) -> Image: 
+36:    def from_file(cls, image_descriptor: str | IO[bytes]): 
+53:    def blob(self): 
+58:    def content_type(self) -> str: 
+63:    def ext(self): 
+73:    def filename(self): 
+79:    def px_width(self) -> int: 
+84:    def px_height(self) -> int: 
+89:    def horz_dpi(self) -> int: 
+92:        Defaults to 72 when not present in the file, as is often the case. 
+97:    def vert_dpi(self) -> int: 
+100:        Defaults to 72 when not present in the file, as is often the case. 
+105:    def width(self) -> Inches: 
+111:    def height(self) -> Inches: 
+116:    def scaled_dimensions( 
+131:        embedded in the image, defaulting to 72 dpi if no value is specified, as is 
+149:    def sha1(self): 
+154:    def _from_stream( 
+164:            filename = "image.%s" % image_header.default_ext 
+168:def _ImageHeaderFactory(stream: IO[bytes]): 
+172:    def read_32(stream: IO[bytes]): 
+188:    def __init__(self, px_width: int, px_height: int, horz_dpi: int, vert_dpi: int): 
+195:    def content_type(self) -> str: 
+196:        """Abstract property definition, must be implemented by all subclasses.""" 
+201:    def default_ext(self) -> str: 
+202:        """Default filename extension for images of this type. 
+204:        An abstract property definition, must be implemented by all subclasses. 
+207:            "default_ext property must be implemented by all subclasses of BaseImageHeader" 
+211:    def px_width(self): 
+216:    def px_height(self): 
+221:    def horz_dpi(self): 
+224:        Defaults to 72 when not present in the file, as is often the case. 
+229:    def vert_dpi(self): 
+232:        Defaults to 72 when not present in the file, as is often the case. 
+7:from __future__ import annotations 
+12:from typing import IO, Tuple 
+14:from docx.image.exceptions import UnrecognizedImageError 
+15:from docx.shared import Emu, Inches, Length, lazyproperty 
+29:    def from_blob(cls, blob: bytes) -> Image: 
+30:        """Return a new |Image| subclass instance parsed from the image binary contained 
+33:        return cls._from_stream(stream, blob) 
+36:    def from_file(cls, image_descriptor: str | IO[bytes]): 
+37:        """Return a new |Image| subclass instance loaded from the image file identified 
+50:        return cls._from_stream(stream, blob, filename) 
+66:        If an actual one is available from a load filename it is used. Otherwise a 
+74:        """Original image file name, if loaded from disk, or a generic filename if 
+75:        loaded from an anonymous stream.""" 
+106:        """A |Length| value representing the native width of the image, calculated from 
+112:        """A |Length| value representing the native height of the image, calculated from 
+154:    def _from_stream( 
+170:    from docx.image import SIGNATURES 
+181:            return cls.from_stream(stream) 
+7:from __future__ import annotations 
+9:import hashlib 
+10:import io 
+11:import os 
+12:from typing import IO, Tuple 
+14:from docx.image.exceptions import UnrecognizedImageError 
+15:from docx.shared import Emu, Inches, Length, lazyproperty 
+170:    from docx.image import SIGNATURES 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\image\jpeg.py 
+================================== 
+ 
+14:class Jpeg(BaseImageHeader): 
+15:    """Base class for JFIF and EXIF subclasses.""" 
+29:class Exif(Jpeg): 
+32:    @classmethod 
+47:class Jfif(Jpeg): 
+50:    @classmethod 
+64:class _JfifMarkers: 
+91:    @classmethod 
+93:        """Return a |_JfifMarkers| instance containing a |_JfifMarker| subclass instance 
+128:class _MarkerParser: 
+129:    """Service class that knows how to parse a JFIF stream and iterate over its 
+136:    @classmethod 
+155:class _MarkerFinder: 
+156:    """Service class that knows how to find the next JFIF marker in a stream.""" 
+162:    @classmethod 
+229:    """Return |_Marker| or subclass instance appropriate for marker at `offset` in 
+242:class _Marker: 
+243:    """Base class for JFIF marker classes. 
+254:    @classmethod 
+284:class _App0Marker(_Marker): 
+315:    @classmethod 
+336:class _App1Marker(_Marker): 
+344:    @classmethod 
+374:    @classmethod 
+383:    @classmethod 
+394:class _SofMarker(_Marker): 
+402:    @classmethod 
+18:    def content_type(self): 
+24:    def default_ext(self): 
+25:        """Default filename extension, always 'jpg' for JPG images.""" 
+33:    def from_stream(cls, stream): 
+51:    def from_stream(cls, stream): 
+68:    def __init__(self, markers): 
+72:    def __str__(self):  # pragma: no cover 
+92:    def from_stream(cls, stream): 
+104:    def app0(self): 
+112:    def app1(self): 
+120:    def sof(self): 
+132:    def __init__(self, stream_reader): 
+137:    def from_stream(cls, stream): 
+142:    def iter_markers(self): 
+158:    def __init__(self, stream): 
+163:    def from_stream(cls, stream): 
+167:    def next(self, start): 
+189:    def _next_non_ff_byte(self, start): 
+203:    def _offset_of_next_ff_byte(self, start): 
+217:    def _read_byte(self): 
+228:def _MarkerFactory(marker_code, stream, offset): 
+248:    def __init__(self, marker_code, offset, segment_length): 
+255:    def from_stream(cls, stream, marker_code, offset): 
+265:    def marker_code(self): 
+271:    def name(self):  # pragma: no cover 
+275:    def offset(self):  # pragma: no cover 
+279:    def segment_length(self): 
+287:    def __init__(self, marker_code, offset, length, density_units, x_density, y_density): 
+294:    def horz_dpi(self): 
+295:        """Horizontal dots per inch specified in this marker, defaults to 72 if not 
+300:    def vert_dpi(self): 
+301:        """Vertical dots per inch specified in this marker, defaults to 72 if not 
+305:    def _dpi(self, density): 
+316:    def from_stream(cls, stream, marker_code, offset): 
+339:    def __init__(self, marker_code, offset, length, horz_dpi, vert_dpi): 
+345:    def from_stream(cls, stream, marker_code, offset): 
+363:    def horz_dpi(self): 
+364:        """Horizontal dots per inch specified in this marker, defaults to 72 if not 
+369:    def vert_dpi(self): 
+370:        """Vertical dots per inch specified in this marker, defaults to 72 if not 
+375:    def _is_non_Exif_APP1_segment(cls, stream, offset): 
+384:    def _tiff_from_exif_segment(cls, stream, offset, segment_length): 
+397:    def __init__(self, marker_code, offset, segment_length, px_width, px_height): 
+403:    def from_stream(cls, stream, marker_code, offset): 
+418:    def px_height(self): 
+423:    def px_width(self): 
+8:from docx.image.constants import JPEG_MARKER_CODE, MIME_TYPE 
+9:from docx.image.helpers import BIG_ENDIAN, StreamReader 
+10:from docx.image.image import BaseImageHeader 
+11:from docx.image.tiff import Tiff 
+33:    def from_stream(cls, stream): 
+34:        """Return |Exif| instance having header properties parsed from Exif image in 
+36:        markers = _JfifMarkers.from_stream(stream) 
+51:    def from_stream(cls, stream): 
+52:        """Return a |Jfif| instance having header properties parsed from image in 
+54:        markers = _JfifMarkers.from_stream(stream) 
+92:    def from_stream(cls, stream): 
+95:        marker_parser = _MarkerParser.from_stream(stream) 
+137:    def from_stream(cls, stream): 
+138:        """Return a |_MarkerParser| instance to parse JFIF markers from `stream`.""" 
+145:        marker_finder = _MarkerFinder.from_stream(self._stream) 
+163:    def from_stream(cls, stream): 
+218:        """Return the next byte read from stream. 
+239:    return marker_cls.from_stream(stream, marker_code, offset) 
+255:    def from_stream(cls, stream, marker_code, offset): 
+316:    def from_stream(cls, stream, marker_code, offset): 
+345:    def from_stream(cls, stream, marker_code, offset): 
+346:        """Extract the horizontal and vertical dots-per-inch value from the APP1 header 
+359:        tiff = cls._tiff_from_exif_segment(stream, offset, segment_length) 
+384:    def _tiff_from_exif_segment(cls, stream, offset, segment_length): 
+385:        """Return a |Tiff| instance parsed from the Exif APP1 segment of 
+391:        return Tiff.from_stream(substream) 
+403:    def from_stream(cls, stream, marker_code, offset): 
+6:import io 
+8:from docx.image.constants import JPEG_MARKER_CODE, MIME_TYPE 
+9:from docx.image.helpers import BIG_ENDIAN, StreamReader 
+10:from docx.image.image import BaseImageHeader 
+11:from docx.image.tiff import Tiff 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\image\png.py 
+================================== 
+ 
+7:class Png(BaseImageHeader): 
+21:    @classmethod 
+35:class _PngParser: 
+42:    @classmethod 
+92:class _Chunks: 
+99:    @classmethod 
+129:class _ChunkParser: 
+136:    @classmethod 
+144:        """Generate a |_Chunk| subclass instance for each chunk in this parser's PNG 
+169:    """Return a |_Chunk| subclass instance appropriate to `chunk_type` parsed from 
+179:class _Chunk: 
+180:    """Base class for specific chunk types. 
+189:    @classmethod 
+200:class _IHDRChunk(_Chunk): 
+208:    @classmethod 
+225:class _pHYsChunk(_Chunk): 
+234:    @classmethod 
+11:    def content_type(self): 
+17:    def default_ext(self): 
+18:        """Default filename extension, always 'png' for PNG images.""" 
+22:    def from_stream(cls, stream): 
+38:    def __init__(self, chunks): 
+43:    def parse(cls, stream): 
+50:    def px_width(self): 
+56:    def px_height(self): 
+62:    def horz_dpi(self): 
+65:        Defaults to 72 when not present in the file, as is often the case. 
+73:    def vert_dpi(self): 
+76:        Defaults to 72 when not present in the file, as is often the case. 
+84:    def _dpi(units_specifier, px_per_unit): 
+95:    def __init__(self, chunk_iterable): 
+100:    def from_stream(cls, stream): 
+107:    def IHDR(self): 
+116:    def pHYs(self): 
+121:    def _find_first(self, match): 
+132:    def __init__(self, stream_rdr): 
+137:    def from_stream(cls, stream): 
+143:    def iter_chunks(self): 
+150:    def _iter_chunk_offsets(self): 
+168:def _ChunkFactory(chunk_type, stream_rdr, offset): 
+182:    Also serves as the default chunk type. 
+185:    def __init__(self, chunk_type): 
+190:    def from_offset(cls, chunk_type, stream_rdr, offset): 
+191:        """Return a default _Chunk instance that only knows its chunk type.""" 
+195:    def type_name(self): 
+203:    def __init__(self, chunk_type, px_width, px_height): 
+209:    def from_offset(cls, chunk_type, stream_rdr, offset): 
+217:    def px_width(self): 
+221:    def px_height(self): 
+228:    def __init__(self, chunk_type, horz_px_per_unit, vert_px_per_unit, units_specifier): 
+235:    def from_offset(cls, chunk_type, stream_rdr, offset): 
+244:    def horz_px_per_unit(self): 
+248:    def vert_px_per_unit(self): 
+252:    def units_specifier(self): 
+1:from .constants import MIME_TYPE, PNG_CHUNK_TYPE 
+2:from .exceptions import InvalidImageStreamError 
+3:from .helpers import BIG_ENDIAN, StreamReader 
+4:from .image import BaseImageHeader 
+22:    def from_stream(cls, stream): 
+23:        """Return a |Png| instance having header properties parsed from image in 
+44:        """Return a |_PngParser| instance containing the header properties parsed from 
+46:        chunks = _Chunks.from_stream(stream) 
+85:        """Return dots per inch value calculated from `units_specifier` and 
+93:    """Collection of the chunks parsed from a PNG image stream.""" 
+100:    def from_stream(cls, stream): 
+102:        chunk_parser = _ChunkParser.from_stream(stream) 
+130:    """Extracts chunks from a PNG image stream.""" 
+137:    def from_stream(cls, stream): 
+138:        """Return a |_ChunkParser| instance that can extract the chunks from the PNG 
+169:    """Return a |_Chunk| subclass instance appropriate to `chunk_type` parsed from 
+176:    return chunk_cls.from_offset(chunk_type, stream_rdr, offset) 
+190:    def from_offset(cls, chunk_type, stream_rdr, offset): 
+209:    def from_offset(cls, chunk_type, stream_rdr, offset): 
+210:        """Return an _IHDRChunk instance containing the image dimensions extracted from 
+235:    def from_offset(cls, chunk_type, stream_rdr, offset): 
+236:        """Return a _pHYsChunk instance containing the image resolution extracted from 
+1:from .constants import MIME_TYPE, PNG_CHUNK_TYPE 
+2:from .exceptions import InvalidImageStreamError 
+3:from .helpers import BIG_ENDIAN, StreamReader 
+4:from .image import BaseImageHeader 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\image\tiff.py 
+================================== 
+ 
+6:class Tiff(BaseImageHeader): 
+23:    @classmethod 
+37:class _TiffParser: 
+45:    @classmethod 
+80:    @classmethod 
+110:    @classmethod 
+118:class _IfdEntries: 
+134:    @classmethod 
+148:class _IfdParser: 
+172:    """Return an |_IfdEntry| subclass instance containing the value of the directory 
+174:    ifd_entry_classes = { 
+181:    EntryCls = ifd_entry_classes.get(field_type, _IfdEntry) 
+185:class _IfdEntry: 
+186:    """Base class for IFD entry classes. 
+188:    Subclasses are differentiated by value type, e.g. ASCII, long int, etc. 
+196:    @classmethod 
+198:        """Return an |_IfdEntry| subclass instance containing the tag and value of the 
+201:        Note this method is common to all subclasses. Override the ``_parse_value()`` 
+210:    @classmethod 
+214:        Intended to be overridden by subclasses. 
+229:class _AsciiIfdEntry(_IfdEntry): 
+232:    @classmethod 
+242:class _ShortIfdEntry(_IfdEntry): 
+245:    @classmethod 
+258:class _LongIfdEntry(_IfdEntry): 
+261:    @classmethod 
+274:class _RationalIfdEntry(_IfdEntry): 
+277:    @classmethod 
+13:    def content_type(self): 
+19:    def default_ext(self): 
+20:        """Default filename extension, always 'tiff' for TIFF images.""" 
+24:    def from_stream(cls, stream): 
+41:    def __init__(self, ifd_entries): 
+46:    def parse(cls, stream): 
+55:    def horz_dpi(self): 
+57:        ResolutionUnit tags of the IFD; defaults to 72 if those tags are not present.""" 
+61:    def vert_dpi(self): 
+63:        ResolutionUnit tags of the IFD; defaults to 72 if those tags are not present.""" 
+67:    def px_height(self): 
+74:    def px_width(self): 
+81:    def _detect_endian(cls, stream): 
+88:    def _dpi(self, resolution_tag): 
+100:        # resolution unit defaults to inches (2) 
+111:    def _make_stream_reader(cls, stream): 
+122:    def __init__(self, entries): 
+126:    def __contains__(self, key): 
+130:    def __getitem__(self, key): 
+135:    def from_stream(cls, stream, offset): 
+142:    def get(self, tag_code, default=None): 
+143:        """Return value of IFD entry having tag matching `tag_code`, or `default` if no 
+145:        return self._entries.get(tag_code, default) 
+152:    def __init__(self, stream_rdr, offset): 
+157:    def iter_entries(self): 
+166:    def _entry_count(self): 
+171:def _IfdEntryFactory(stream_rdr, offset): 
+191:    def __init__(self, tag_code, value): 
+197:    def from_stream(cls, stream_rdr, offset): 
+211:    def _parse_value(cls, stream_rdr, offset, value_count, value_offset): 
+219:    def tag(self): 
+224:    def value(self): 
+233:    def _parse_value(cls, stream_rdr, offset, value_count, value_offset): 
+246:    def _parse_value(cls, stream_rdr, offset, value_count, value_offset): 
+262:    def _parse_value(cls, stream_rdr, offset, value_count, value_offset): 
+278:    def _parse_value(cls, stream_rdr, offset, value_count, value_offset): 
+1:from .constants import MIME_TYPE, TIFF_FLD, TIFF_TAG 
+2:from .helpers import BIG_ENDIAN, LITTLE_ENDIAN, StreamReader 
+3:from .image import BaseImageHeader 
+24:    def from_stream(cls, stream): 
+47:        """Return an instance of |_TiffParser| containing the properties parsed from the 
+51:        ifd_entries = _IfdEntries.from_stream(stream_rdr, ifd0_offset) 
+56:        """The horizontal dots per inch value calculated from the XResolution and 
+62:        """The vertical dots per inch value calculated from the XResolution and 
+135:    def from_stream(cls, stream, offset): 
+136:        """Return a new |_IfdEntries| instance parsed from `stream` starting at 
+149:    """Service object that knows how to extract directory entries from an Image File 
+167:        """The count of directory entries, read from the top of the IFD header.""" 
+182:    return EntryCls.from_stream(stream_rdr, offset) 
+197:    def from_stream(cls, stream_rdr, offset): 
+199:        tag parsed from `stream_rdr` at `offset`. 
+212:        """Return the value of this field parsed from `stream_rdr` at `offset`. 
+234:        """Return the ASCII string parsed from `stream_rdr` at `value_offset`. 
+1:from .constants import MIME_TYPE, TIFF_FLD, TIFF_TAG 
+2:from .helpers import BIG_ENDIAN, LITTLE_ENDIAN, StreamReader 
+3:from .image import BaseImageHeader 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\image\__init__.py 
+================================== 
+ 
+14:    # class, offset, signature_bytes 
+7:from docx.image.bmp import Bmp 
+8:from docx.image.gif import Gif 
+9:from docx.image.jpeg import Exif, Jfif 
+10:from docx.image.png import Png 
+11:from docx.image.tiff import Tiff 
+7:from docx.image.bmp import Bmp 
+8:from docx.image.gif import Gif 
+9:from docx.image.jpeg import Exif, Jfif 
+10:from docx.image.png import Png 
+11:from docx.image.tiff import Tiff 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\opc\constants.py 
+================================== 
+ 
+7:class CONTENT_TYPE: 
+159:class NAMESPACE: 
+171:class RELATIONSHIP_TARGET_MODE: 
+178:class RELATIONSHIP_TYPE: 
+93:    SML_PIVOT_CACHE_DEFINITION = ( 
+94:        "application/vnd.openxmlformats-officedocument.spreadsheetml.pivotCacheDefinition+xml" 
+250:    PIVOT_CACHE_DEFINITION = ( 
+251:        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/pivotCacheDefinition" 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\opc\coreprops.py 
+================================== 
+ 
+17:class CoreProperties: 
+21:    def __init__(self, element: CT_CoreProperties): 
+25:    def author(self): 
+29:    def author(self, value: str): 
+33:    def category(self): 
+37:    def category(self, value: str): 
+41:    def comments(self): 
+45:    def comments(self, value: str): 
+49:    def content_status(self): 
+53:    def content_status(self, value: str): 
+57:    def created(self): 
+61:    def created(self, value: dt.datetime): 
+65:    def identifier(self): 
+69:    def identifier(self, value: str): 
+73:    def keywords(self): 
+77:    def keywords(self, value: str): 
+81:    def language(self): 
+85:    def language(self, value: str): 
+89:    def last_modified_by(self): 
+93:    def last_modified_by(self, value: str): 
+97:    def last_printed(self): 
+101:    def last_printed(self, value: dt.datetime): 
+105:    def modified(self): 
+109:    def modified(self, value: dt.datetime): 
+113:    def revision(self): 
+117:    def revision(self, value: int): 
+121:    def subject(self): 
+125:    def subject(self, value: str): 
+129:    def title(self): 
+133:    def title(self, value: str): 
+137:    def version(self): 
+141:    def version(self, value: str): 
+6:from __future__ import annotations 
+9:from typing import TYPE_CHECKING 
+11:from docx.oxml.coreprops import CT_CoreProperties 
+14:    from docx.oxml.coreprops import CT_CoreProperties 
+6:from __future__ import annotations 
+8:import datetime as dt 
+9:from typing import TYPE_CHECKING 
+11:from docx.oxml.coreprops import CT_CoreProperties 
+14:    from docx.oxml.coreprops import CT_CoreProperties 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\opc\exceptions.py 
+================================== 
+ 
+3:The base exception class is OpcError. 
+7:class OpcError(Exception): 
+8:    """Base error class for python-opc.""" 
+11:class PackageNotFoundError(OpcError): 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\opc\oxml.py 
+================================== 
+ 
+7:deleted or only hold the package related custom element classes. 
+20:element_class_lookup = etree.ElementNamespaceClassLookup() 
+22:oxml_parser.set_element_class_lookup(element_class_lookup) 
+71:# Custom element classes 
+75:class BaseOxmlElement(etree.ElementBase): 
+76:    """Base class for all custom element classes, to add standardized behavior to all 
+77:    classes in one place.""" 
+88:class CT_Default(BaseOxmlElement): 
+115:class CT_Override(BaseOxmlElement): 
+140:class CT_Relationship(BaseOxmlElement): 
+181:class CT_Relationships(BaseOxmlElement): 
+209:class CT_Types(BaseOxmlElement): 
+240:ct_namespace = element_class_lookup.get_namespace(nsmap["ct"]) 
+245:pr_namespace = element_class_lookup.get_namespace(nsmap["pr"]) 
+36:def parse_xml(text: str) -> etree._Element: 
+41:def qn(tag: str) -> str: 
+53:def serialize_part_xml(part_elm: etree._Element) -> bytes: 
+62:def serialize_for_reading(element: etree._Element) -> str: 
+80:    def xml(self) -> str: 
+88:class CT_Default(BaseOxmlElement): 
+89:    """`<Default>` element that appears in `[Content_Types].xml` part. 
+91:    Used to specify a default content type to be applied to any part with the specified extension. 
+95:    def content_type(self): 
+96:        """String held in the ``ContentType`` attribute of this ``<Default>`` 
+101:    def extension(self): 
+102:        """String held in the ``Extension`` attribute of this ``<Default>`` element.""" 
+106:    def new(ext: str, content_type: str): 
+107:        """Return a new ``<Default>`` element with attributes set to parameter values.""" 
+108:        xml = '<Default xmlns="%s"/>' % nsmap["ct"] 
+109:        default = parse_xml(xml) 
+110:        default.set("Extension", ext) 
+111:        default.set("ContentType", content_type) 
+112:        return default 
+120:    def content_type(self): 
+126:    def new(partname, content_type): 
+135:    def partname(self): 
+144:    def new(rId: str, reltype: str, target: str, target_mode: str = RTM.INTERNAL): 
+156:    def rId(self): 
+161:    def reltype(self): 
+166:    def target_ref(self): 
+172:    def target_mode(self): 
+176:        Defaults to ``Internal``. 
+184:    def add_rel(self, rId: str, reltype: str, target: str, is_external: bool = False): 
+192:    def new() -> CT_Relationships: 
+198:    def Relationship_lst(self): 
+203:    def xml(self): 
+210:    """``<Types>`` element, the container element for Default and Override elements in 
+213:    def add_default(self, ext, content_type): 
+214:        """Add a child ``<Default>`` element with attributes set to parameter values.""" 
+215:        default = CT_Default.new(ext, content_type) 
+216:        self.append(default) 
+218:    def add_override(self, partname, content_type): 
+225:    def defaults(self): 
+226:        return self.findall(qn("ct:Default")) 
+229:    def new(): 
+236:    def overrides(self): 
+241:ct_namespace["Default"] = CT_Default 
+6:replaced with objects from the pptx.oxml.core and then this module will either get 
+10:from __future__ import annotations 
+12:from typing import cast 
+14:from lxml import etree 
+16:from docx.opc.constants import NAMESPACE as NS 
+17:from docx.opc.constants import RELATIONSHIP_TARGET_MODE as RTM 
+37:    """`etree.fromstring()` replacement that uses oxml parser.""" 
+38:    return etree.fromstring(text, oxml_parser) 
+141:    """`<Relationship>` element, representing a single relationship from source to target part.""" 
+10:from __future__ import annotations 
+12:from typing import cast 
+14:from lxml import etree 
+16:from docx.opc.constants import NAMESPACE as NS 
+17:from docx.opc.constants import RELATIONSHIP_TARGET_MODE as RTM 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\opc\package.py 
+================================== 
+ 
+24:class OpcPackage: 
+25:    """Main API class for |python-opc|. 
+27:    A new instance is constructed by calling the :meth:`open` class method with a path 
+34:        May be overridden by subclasses without forwarding call to super. 
+37:        # subclass 
+123:    @classmethod 
+182:class Unmarshaller: 
+31:    def after_unmarshal(self): 
+41:    def core_properties(self) -> CoreProperties: 
+46:    def iter_rels(self) -> Iterator[_Relationship]: 
+50:        def walk_rels( 
+69:    def iter_parts(self) -> Iterator[Part]: 
+73:        def walk_parts(source, visited=[]): 
+89:    def load_rel(self, reltype: str, target: Part | str, rId: str, is_external: bool = False): 
+100:    def main_document_part(self): 
+109:    def next_partname(self, template: str) -> PackURI: 
+124:    def open(cls, pkg_file: str | IO[bytes]) -> Self: 
+131:    def part_related_by(self, reltype: str) -> Part: 
+140:    def parts(self) -> list[Part]: 
+144:    def relate_to(self, part: Part, reltype: str): 
+154:    def rels(self): 
+159:    def save(self, pkg_file: str | IO[bytes]): 
+169:    def _core_properties_part(self) -> CorePropertiesPart: 
+172:        Creates a default core properties part if one is not present (not common). 
+177:            core_properties_part = CorePropertiesPart.default(self) 
+186:    def unmarshal(pkg_reader, package, part_factory): 
+199:    def _unmarshal_parts(pkg_reader, package, part_factory): 
+212:    def _unmarshal_relationships(pkg_reader, package, parts): 
+3:from __future__ import annotations 
+5:from typing import IO, TYPE_CHECKING, Iterator, cast 
+7:from docx.opc.constants import RELATIONSHIP_TYPE as RT 
+8:from docx.opc.packuri import PACKAGE_URI, PackURI 
+9:from docx.opc.part import PartFactory 
+10:from docx.opc.parts.coreprops import CorePropertiesPart 
+11:from docx.opc.pkgreader import PackageReader 
+12:from docx.opc.pkgwriter import PackageWriter 
+13:from docx.opc.rel import Relationships 
+14:from docx.shared import lazyproperty 
+17:    from typing_extensions import Self 
+19:    from docx.opc.coreprops import CoreProperties 
+20:    from docx.opc.part import Part 
+21:    from docx.opc.rel import _Relationship  # pyright: ignore[reportPrivateUsage] 
+94:        use during load from a serialized package, where the rId is well known. Other 
+113:        from other parts of its type. `template` is a printf (%)-style template string 
+126:        pkg_reader = PackageReader.from_file(pkg_file) 
+183:    """Hosts static methods for unmarshalling a package from a |PackageReader|.""" 
+200:        """Return a dictionary of |Part| instances unmarshalled from `pkg_reader`, keyed 
+3:from __future__ import annotations 
+5:from typing import IO, TYPE_CHECKING, Iterator, cast 
+7:from docx.opc.constants import RELATIONSHIP_TYPE as RT 
+8:from docx.opc.packuri import PACKAGE_URI, PackURI 
+9:from docx.opc.part import PartFactory 
+10:from docx.opc.parts.coreprops import CorePropertiesPart 
+11:from docx.opc.pkgreader import PackageReader 
+12:from docx.opc.pkgwriter import PackageWriter 
+13:from docx.opc.rel import Relationships 
+14:from docx.shared import lazyproperty 
+17:    from typing_extensions import Self 
+19:    from docx.opc.coreprops import CoreProperties 
+20:    from docx.opc.part import Part 
+21:    from docx.opc.rel import _Relationship  # pyright: ignore[reportPrivateUsage] 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\opc\packuri.py 
+================================== 
+ 
+12:class PackURI(str): 
+20:    def __new__(cls, pack_uri_str: str): 
+27:    def from_rel_ref(baseURI: str, relative_ref: str) -> PackURI: 
+34:    def baseURI(self) -> str: 
+43:    def ext(self) -> str: 
+53:    def filename(self): 
+62:    def idx(self): 
+78:    def membername(self): 
+86:    def relative_ref(self, baseURI: str): 
+97:    def rels_uri(self): 
+6:from __future__ import annotations 
+27:    def from_rel_ref(baseURI: str, relative_ref: str) -> PackURI: 
+87:        """Return string containing relative reference to package item from `baseURI`. 
+6:from __future__ import annotations 
+8:import posixpath 
+9:import re 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\opc\part.py 
+================================== 
+ 
+21:class Part: 
+22:    """Base class for package parts. 
+24:    Provides common properties and methods, but intended to be subclassed in client code 
+45:        May be overridden by subclasses without forwarding call to super. 
+48:        # subclass 
+55:        May be overridden by subclasses without forwarding call to super. 
+58:        # subclass 
+65:        May be text or binary. Intended to be overridden by subclasses. Default behavior 
+84:    @classmethod 
+165:class PartFactory: 
+166:    """Provides a way for client code to specify a subclass of |Part| to be constructed 
+169:    Setting ``PartFactory.part_class_selector`` to a callable object will cause that 
+171:    part in the package. If the callable returns an object, it is used as the class for 
+172:    that part. If it returns |None|, part class selection falls back to the content type 
+173:    map defined in ``PartFactory.part_type_for``. If no class is returned from either of 
+174:    these, the class contained in ``PartFactory.default_part_type`` is used to construct 
+178:    part_class_selector: Callable[[str, str], Type[Part] | None] | None 
+190:        PartClass: Type[Part] | None = None 
+191:        if cls.part_class_selector is not None: 
+192:            part_class_selector = cls_method_fn(cls, "part_class_selector") 
+193:            PartClass = part_class_selector(content_type, reltype) 
+194:        if PartClass is None: 
+195:            PartClass = cls._part_cls_for(content_type) 
+196:        return PartClass.load(partname, content_type, blob, package) 
+198:    @classmethod 
+200:        """Return the custom part class registered for `content_type`, or the default 
+201:        part class if no custom class is registered for `content_type`.""" 
+207:class XmlPart(Part): 
+208:    """Base class for package parts containing an XML payload, which is most of them. 
+210:    Provides additional methods to the |Part| base class that take care of parsing and 
+229:    @classmethod 
+28:    def __init__( 
+41:    def after_unmarshal(self): 
+51:    def before_marshal(self): 
+62:    def blob(self) -> bytes: 
+65:        May be text or binary. Intended to be overridden by subclasses. Default behavior 
+71:    def content_type(self): 
+75:    def drop_rel(self, rId: str): 
+85:    def load(cls, partname: PackURI, content_type: str, blob: bytes, package: Package): 
+88:    def load_rel(self, reltype: str, target: Part | str, rId: str, is_external: bool = False): 
+100:    def package(self): 
+105:    def partname(self): 
+111:    def partname(self, partname: str): 
+117:    def part_related_by(self, reltype: str) -> Part: 
+126:    def relate_to(self, target: Part | str, reltype: str, is_external: bool = False) -> str: 
+139:    def related_parts(self): 
+146:    def rels(self): 
+152:    def target_ref(self, rId: str) -> str: 
+157:    def _rel_ref_count(self, rId: str) -> int: 
+173:    map defined in ``PartFactory.part_type_for``. If no class is returned from either of 
+174:    these, the class contained in ``PartFactory.default_part_type`` is used to construct 
+175:    the part, which is by default ``opc.package.Part``. 
+180:    default_part_type = Part 
+182:    def __new__( 
+199:    def _part_cls_for(cls, content_type: str): 
+200:        """Return the custom part class registered for `content_type`, or the default 
+204:        return cls.default_part_type 
+214:    def __init__( 
+221:    def blob(self): 
+225:    def element(self): 
+230:    def load(cls, partname: PackURI, content_type: str, blob: bytes, package: Package): 
+235:    def part(self): 
+243:    def _rel_ref_count(self, rId: str) -> int: 
+5:from __future__ import annotations 
+7:from typing import TYPE_CHECKING, Callable, Type, cast 
+9:from docx.opc.oxml import serialize_part_xml 
+10:from docx.opc.packuri import PackURI 
+11:from docx.opc.rel import Relationships 
+12:from docx.opc.shared import cls_method_fn 
+13:from docx.oxml.parser import parse_xml 
+14:from docx.shared import lazyproperty 
+17:    from docx.oxml.xmlchemy import BaseOxmlElement 
+18:    from docx.package import Package 
+94:        use during load from a serialized package, where the rId is well-known. Other 
+129:        The returned `rId` is from an existing relationship if there is one, otherwise a 
+173:    map defined in ``PartFactory.part_type_for``. If no class is returned from either of 
+1:# pyright: reportImportCycles=false 
+5:from __future__ import annotations 
+7:from typing import TYPE_CHECKING, Callable, Type, cast 
+9:from docx.opc.oxml import serialize_part_xml 
+10:from docx.opc.packuri import PackURI 
+11:from docx.opc.rel import Relationships 
+12:from docx.opc.shared import cls_method_fn 
+13:from docx.oxml.parser import parse_xml 
+14:from docx.shared import lazyproperty 
+17:    from docx.oxml.xmlchemy import BaseOxmlElement 
+18:    from docx.package import Package 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\opc\phys_pkg.py 
+================================== 
+ 
+10:class PhysPkgReader: 
+28:class PhysPkgWriter: 
+35:class _DirPkgReader(PhysPkgReader): 
+71:class _ZipPkgReader(PhysPkgReader): 
+104:class _ZipPkgWriter(PhysPkgWriter): 
+4:from zipfile import ZIP_DEFLATED, ZipFile, is_zipfile 
+13:    def __new__(cls, pkg_file): 
+31:    def __new__(cls, pkg_file): 
+39:    def __init__(self, path): 
+44:    def blob_for(self, pack_uri): 
+51:    def close(self): 
+57:    def content_types_xml(self): 
+61:    def rels_xml_for(self, source_uri): 
+74:    def __init__(self, pkg_file): 
+78:    def blob_for(self, pack_uri): 
+85:    def close(self): 
+90:    def content_types_xml(self): 
+94:    def rels_xml_for(self, source_uri): 
+107:    def __init__(self, pkg_file): 
+109:        self._zipf = ZipFile(pkg_file, "w", compression=ZIP_DEFLATED) 
+111:    def close(self): 
+116:    def write(self, pack_uri, blob): 
+4:from zipfile import ZIP_DEFLATED, ZipFile, is_zipfile 
+6:from docx.opc.exceptions import PackageNotFoundError 
+7:from docx.opc.packuri import CONTENT_TYPES_URI 
+58:        """Return the `[Content_Types].xml` blob from the package.""" 
+91:        """Return the `[Content_Types].xml` blob from the zip package.""" 
+3:import os 
+4:from zipfile import ZIP_DEFLATED, ZipFile, is_zipfile 
+6:from docx.opc.exceptions import PackageNotFoundError 
+7:from docx.opc.packuri import CONTENT_TYPES_URI 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\opc\pkgreader.py 
+================================== 
+ 
+10:class PackageReader: 
+86:class _ContentTypeMap: 
+130:class _SerializedPart: 
+167:class _SerializedRelationship: 
+230:class _SerializedRelationships: 
+14:    def __init__(self, content_types, pkg_srels, sparts): 
+20:    def from_file(pkg_file): 
+29:    def iter_sparts(self): 
+35:    def iter_srels(self): 
+45:    def _load_serialized_parts(phys_reader, pkg_srels, content_types): 
+58:    def _srels_for(phys_reader, source_uri): 
+65:    def _walk_phys_parts(phys_reader, srels, visited_partnames=None): 
+90:    def __init__(self): 
+93:        self._defaults = CaseInsensitiveDict() 
+95:    def __getitem__(self, partname): 
+102:        if partname.ext in self._defaults: 
+103:            return self._defaults[partname.ext] 
+108:    def from_xml(content_types_xml): 
+115:        for d in types_elm.defaults: 
+116:            ct_map._add_default(d.extension, d.content_type) 
+119:    def _add_default(self, extension, content_type): 
+120:        """Add the default mapping of `extension` to `content_type` to this content type 
+122:        self._defaults[extension] = content_type 
+124:    def _add_override(self, partname, content_type): 
+125:        """Add the default mapping of `partname` to `content_type` to this content type 
+137:    def __init__(self, partname, content_type, reltype, blob, srels): 
+146:    def partname(self): 
+150:    def content_type(self): 
+154:    def blob(self): 
+158:    def reltype(self): 
+163:    def srels(self): 
+174:    def __init__(self, baseURI, rel_elm): 
+183:    def is_external(self): 
+188:    def reltype(self): 
+193:    def rId(self): 
+199:    def target_mode(self): 
+205:    def target_ref(self): 
+212:    def target_partname(self): 
+220:                "target_partname attribute on Relationship is undefined w" 
+234:    def __init__(self): 
+238:    def __iter__(self): 
+243:    def load_from_xml(baseURI, rels_item_xml): 
+3:from docx.opc.constants import RELATIONSHIP_TARGET_MODE as RTM 
+4:from docx.opc.oxml import parse_xml 
+5:from docx.opc.packuri import PACKAGE_URI, PackURI 
+6:from docx.opc.phys_pkg import PhysPkgReader 
+7:from docx.opc.shared import CaseInsensitiveDict 
+20:    def from_file(pkg_file): 
+23:        content_types = _ContentTypeMap.from_xml(phys_reader.content_types_xml) 
+62:        return _SerializedRelationships.load_from_xml(source_uri.baseURI, rels_xml) 
+108:    def from_xml(content_types_xml): 
+226:            self._target_partname = PackURI.from_rel_ref(self._baseURI, self.target_ref) 
+243:    def load_from_xml(baseURI, rels_item_xml): 
+3:from docx.opc.constants import RELATIONSHIP_TARGET_MODE as RTM 
+4:from docx.opc.oxml import parse_xml 
+5:from docx.opc.packuri import PACKAGE_URI, PackURI 
+6:from docx.opc.phys_pkg import PhysPkgReader 
+7:from docx.opc.shared import CaseInsensitiveDict 
+ 
+---------------------------------------- 
+ 
+ 
+================================== 
+ARCHIVO: F:\GesConAdif\.venv\Lib\site-packages\docx\opc\pkgwriter.py 
+================================== 
+ 
+22:class PackageWriter: 
+26:    Its single API method, :meth:`write`, is static, so this class is not intended to be 
+62:class _ContentTypesItem: 
+63:    """Service class that composes a content types item ([Content_Types].xml) based on a 
+80:    @classmethod 

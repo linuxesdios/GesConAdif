@@ -63,13 +63,13 @@ class ControladorRutas:
     # =================== RUTAS DE ARCHIVOS DE DATOS ===================
     
     def get_ruta_base_datos(self) -> str:
-        """Ruta del archivo BaseDatos.json - SIEMPRE EN _internal"""
+        """Ruta del archivo BaseDatos.json - EN CARPETA basedatos"""
         if self._es_ejecutable:
             # FORZAR: SIEMPRE en _internal/BaseDatos.json
             return os.path.join(self._base_path, "_internal", "BaseDatos.json")
         else:
-            # Para desarrollo, mantener en raíz
-            return os.path.join(self._base_path, "BaseDatos.json")
+            # Para desarrollo, en carpeta basedatos
+            return os.path.join(self._base_path, "basedatos", "BaseDatos.json")
     
     def get_ruta_backups(self) -> str:
         """🆕 Ruta de la carpeta de backups centralizada - SIMPLIFICADA"""
@@ -82,8 +82,10 @@ class ControladorRutas:
             os.makedirs(backups_dir, exist_ok=True)
             return backups_dir
         else:
-            # Para desarrollo, mantener en raíz
-            return self._base_path
+            # Para desarrollo, en carpeta basedatos
+            backups_dir = os.path.join(self._base_path, "basedatos")
+            os.makedirs(backups_dir, exist_ok=True)
+            return backups_dir
     
     def get_ruta_carpeta_obras(self) -> str:
         """Ruta de la carpeta obras"""
@@ -91,27 +93,33 @@ class ControladorRutas:
         os.makedirs(ruta, exist_ok=True)
         return ruta
     
+    def get_ruta_carpeta_informes(self) -> str:
+        """Ruta de la carpeta informes - Compatible con EXE y desarrollo"""
+        ruta = os.path.join(self._base_path, "informes")
+        os.makedirs(ruta, exist_ok=True)
+        return ruta
+    
     def get_ruta_facturas_directas(self) -> str:
-        """Ruta del archivo facturas_directas.json - SIEMPRE EN _internal"""
+        """Ruta del archivo facturas_directas.json - EN CARPETA basedatos"""
         if self._es_ejecutable:
             # FORZAR: SIEMPRE en _internal/facturas_directas.json
             ruta = os.path.join(self._base_path, "_internal", "facturas_directas.json")
             os.makedirs(os.path.dirname(ruta), exist_ok=True)
             return ruta
         else:
-            # Para desarrollo, mantener en raíz
-            return os.path.join(self._base_path, "facturas_directas.json")
+            # Para desarrollo, en carpeta basedatos
+            return os.path.join(self._base_path, "basedatos", "facturas_directas.json")
     
     def get_ruta_historial_documentos(self) -> str:
-        """Ruta del archivo historial_documentos.json - SIEMPRE EN _internal"""
+        """Ruta del archivo historial_documentos.json - EN CARPETA basedatos"""
         if self._es_ejecutable:
             # FORZAR: SIEMPRE en _internal/historial_documentos.json
             ruta = os.path.join(self._base_path, "_internal", "historial_documentos.json")
             os.makedirs(os.path.dirname(ruta), exist_ok=True)
             return ruta
         else:
-            # Para desarrollo, mantener en raíz
-            return os.path.join(self._base_path, "historial_documentos.json")
+            # Para desarrollo, en carpeta basedatos
+            return os.path.join(self._base_path, "basedatos", "historial_documentos.json")
     
     # =================== RUTAS DE PLANTILLAS ===================
     

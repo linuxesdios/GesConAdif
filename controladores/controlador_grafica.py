@@ -1818,6 +1818,12 @@ class ControladorGrafica(QMainWindow):
                                     # Forzar procesamiento de la selección
                                     QApplication.processEvents()
                                     
+                                    # 🆕 ACTUALIZAR CAMPOS PARA CONTRATO NUEVO
+                                    if (hasattr(self, 'controlador_autosave') and 
+                                        self.controlador_autosave):
+                                        self.controlador_autosave.actualizar(nombre_creado)
+                                        print(f"[ControladorGrafica] 🔄 Campos actualizados para contrato nuevo: {nombre_creado}")
+                                    
                                     # Activar tabWidget si estaba oculto
                                     if hasattr(self, 'tabWidget'):
                                         self.tabWidget.setVisible(True)

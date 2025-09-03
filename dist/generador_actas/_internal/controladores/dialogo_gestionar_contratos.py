@@ -4,7 +4,7 @@ Incluye: Crear contrato, Borrar contrato, Cambiar tipo
 """
 from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, 
                            QPushButton, QTextEdit, QComboBox, QCheckBox, QMessageBox,
-                           QFormLayout, QGroupBox, QScrollArea, QWidget)
+                           QFormLayout, QGroupBox, QScrollArea, QWidget, QFrame)
 from PyQt5.QtCore import Qt
 
 
@@ -284,10 +284,8 @@ class DialogoClonarContrato(QDialog):
         botones_rapidos_layout.addStretch()
         scroll_layout.addLayout(botones_rapidos_layout)
         
-        # Secciones de clonación 
-        self.crear_seccion_datos_contrato(scroll_layout)
-        self.crear_seccion_empresas(scroll_layout)
-        self.crear_seccion_documentos_especificos(scroll_layout)
+        # Secciones de clonación por GroupBox
+        self.crear_secciones_groupbox(scroll_layout)
         
         scroll_area.setWidget(scroll_widget)
         scroll_area.setWidgetResizable(True)
@@ -337,6 +335,178 @@ class DialogoClonarContrato(QDialog):
         
         self.checkboxes[key] = checkbox
         return checkbox
+    
+    def crear_secciones_groupbox(self, layout):
+        """Crear secciones organizadas por GroupBox de la UI"""
+        
+        # Diccionario con la estructura de GroupBox y sus campos
+        groupbox_estructura = {
+            "groupBox_2": {
+                "titulo": "📋 INFORMACIÓN DEL CONTRATO",
+                "campos": {
+                    "OrganoSolicitaOfertas": "Órgano Solicita Ofertas",
+                    "organoContratacion": "Órgano Contratación",
+                    "organoContratacion2": "Órgano Contratación 2", 
+                    "nombreObra": "Nombre Obra",
+                    "plazoEjecucion": "Plazo Ejecución",
+                    "basePresupuesto": "Base Presupuesto",
+                    "ivaPresupuestoBase": "IVA Presupuesto Base",
+                    "totalPresupuestoBase": "Total Presupuesto Base"
+                }
+            },
+            "groupBox_3": {
+                "titulo": "📝 DESCRIPCIÓN Y JUSTIFICACIÓN", 
+                "campos": {
+                    "objeto": "Objeto",
+                    "justificacion": "Justificación",
+                    "insuficiencia": "Insuficiencia",
+                    "justificacionLimites": "Justificación Límites",
+                    "regimenPagos": "Régimen Pagos"
+                }
+            },
+            "groupBox": {
+                "titulo": "💰 ACTA DE LIQUIDACIÓN",
+                "campos": {
+                    "TantoPorCiento": "Tanto Por Ciento",
+                    "adicionalBaseLiquidacion": "Adicional Base Liquidación",
+                    "adicionalIvaLiquidacion": "Adicional IVA Liquidación",
+                    "adicionalTotalLiquidacion_2": "Adicional Total Liquidación 2",
+                    "saldoBaseLiquidacion": "Saldo Base Liquidación",
+                    "saldoIvaLiquidacion": "Saldo IVA Liquidación", 
+                    "adicionalTotalLiquidacion": "Adicional Total Liquidación",
+                    "empresaBaseAFavor": "Empresa Base A Favor",
+                    "empresaIvaAFavor": "Empresa IVA A Favor",
+                    "empresaTotalAFavor": "Empresa Total A Favor",
+                    "liquidacionAFavorAdifBase": "Liquidación A Favor ADIF Base",
+                    "adifIvaAFavor": "ADIF IVA A Favor",
+                    "adifTotalAFavor": "ADIF Total A Favor",
+                    "certBase": "Cert Base",
+                    "certIva": "Cert IVA",
+                    "certTotal": "Cert Total",
+                    "AfavorDe": "A Favor De",
+                    "lugarFirma": "Lugar Firma",
+                    "representanteContratista": "Representante Contratista",
+                    "fechaRecepcion": "Fecha Recepción"
+                }
+            },
+            "groupBox_9": {
+                "titulo": "📨 CARTAS DE INVITACIÓN",
+                "campos": {
+                    "mailDeRecepcion": "Mail De Recepción",
+                    "consultasAdministrativas": "Consultas Administrativas", 
+                    "consultasTecnicas": "Consultas Técnicas",
+                    "horaDeApertura": "Hora De Apertura",
+                    "diaDeApertura": "Día De Apertura"
+                }
+            },
+            "groupBox_10": {
+                "titulo": "🏆 ACTA Y CARTAS DE ADJUDICACIÓN",
+                "campos": {
+                    "precioAdjudicacion": "Precio Adjudicación",
+                    "precioAdjudicacionIva": "Precio Adjudicación IVA",
+                    "precioAdjudicacionTotal": "Precio Adjudicación Total",
+                    "empresaAdjudicada": "Empresa Adjudicada",
+                    "contratistaCIF": "Contratista CIF",
+                    "numEmpresasPresentadas": "Num Empresas Presentadas",
+                    "numEmpresasSolicitadas": "Num Empresas Solicitadas",
+                    "numeroExpediente": "Número Expediente",
+                    "fechaAdjudicacion": "Fecha Adjudicación",
+                    "licitacion15": "Licitación 15%",
+                    "licitacion07": "Licitación 7%"
+                }
+            },
+            "groupBox_11": {
+                "titulo": "📋 CONTRATO",
+                "campos": {
+                    "BaseAnualidad1": "Base Anualidad 1",
+                    "IvaAnualidad1": "IVA Anualidad 1", 
+                    "TotalAnualidad1": "Total Anualidad 1",
+                    "BaseAnualidad2": "Base Anualidad 2",
+                    "IvaAnualidad2": "IVA Anualidad 2",
+                    "TotalAnualidad2": "Total Anualidad 2",
+                    "CIf_Contrato": "CIF Contrato",
+                    "Lugar_Contrato": "Lugar Contrato",
+                    "fechaContrato": "Fecha Contrato",
+                    "Contrato_Por_Empresa": "Contrato Por Empresa",
+                    "Contrato_Por_Adif": "Contrato Por ADIF"
+                }
+            },
+            "groupBox_5": {
+                "titulo": "📐 ACTA DE REPLANTEO",
+                "campos": {
+                    "fechaInforme": "Fecha Informe",
+                    "fechaProyecto": "Fecha Proyecto",
+                    "fechaReplanteo": "Fecha Replanteo",
+                    "nombreAsistenteAdjudicatario": "Nombre Asistente Adjudicatario",
+                    "nombreAsistenteAdif": "Nombre Asistente ADIF",
+                    "representanteFirmaReplanteo": "Representante Firma Replanteo",
+                    "lugarReplanteo": "Lugar Replanteo"
+                }
+            },
+            "groupBox_6": {
+                "titulo": "✅ ACTA DE RECEPCIÓN",
+                "campos": {
+                    "localizacion": "Localización",
+                    "provincia": "Provincia",
+                    "responsableContratoRecepcion": "Responsable Contrato Recepción",
+                    "representanteContratistaRecepcion": "Representante Contratista Recepción",
+                    "directorFacultativo": "Director Facultativo",
+                    "tipoContrato": "Tipo Contrato",
+                    "fechaLegalFin": "Fecha Legal Fin",
+                    "fechaFinal": "Fecha Final",
+                    "fechaRecepcion": "Fecha Recepción"
+                }
+            }
+        }
+        
+        # Crear secciones por cada GroupBox
+        for groupbox_id, info in groupbox_estructura.items():
+            self.crear_seccion_groupbox_individual(layout, groupbox_id, info["titulo"], info["campos"])
+    
+    def crear_seccion_groupbox_individual(self, layout, groupbox_id, titulo, campos):
+        """Crear una sección individual para un GroupBox"""
+        grupo = QGroupBox(titulo)
+        grupo_layout = QVBoxLayout()
+        
+        # Checkbox principal para seleccionar todo el GroupBox
+        checkbox_grupo = QCheckBox(f"🔲 Seleccionar todo el grupo")
+        checkbox_grupo.setStyleSheet("QCheckBox { font-weight: bold; font-size: 13px; color: #1976D2; margin: 5px; }")
+        checkbox_grupo.stateChanged.connect(lambda state, gid=groupbox_id: self.toggle_groupbox(gid, state))
+        
+        self.checkboxes[f"groupbox_{groupbox_id}"] = checkbox_grupo
+        grupo_layout.addWidget(checkbox_grupo)
+        
+        # Línea separadora
+        line = QFrame()
+        line.setFrameShape(QFrame.HLine)
+        line.setStyleSheet("background-color: #ddd;")
+        grupo_layout.addWidget(line)
+        
+        # Crear checkboxes para cada campo individual
+        for campo_id, campo_nombre in campos.items():
+            checkbox = self.crear_checkbox(
+                f"{groupbox_id}_{campo_id}",
+                f"  ▫ {campo_nombre}",
+                f"Copiar el campo {campo_nombre} del grupo {titulo}"
+            )
+            checkbox.setStyleSheet("QCheckBox { font-size: 11px; margin-left: 20px; }")
+            grupo_layout.addWidget(checkbox)
+        
+        grupo.setLayout(grupo_layout) 
+        layout.addWidget(grupo)
+        
+        # Guardar referencia de campos por GroupBox para el toggle
+        if not hasattr(self, 'groupbox_campos'):
+            self.groupbox_campos = {}
+        self.groupbox_campos[groupbox_id] = [f"{groupbox_id}_{campo}" for campo in campos.keys()]
+    
+    def toggle_groupbox(self, groupbox_id, state):
+        """Alternar selección de todos los campos de un GroupBox"""
+        if groupbox_id in self.groupbox_campos:
+            checked = state == 2  # Qt.Checked
+            for campo_key in self.groupbox_campos[groupbox_id]:
+                if campo_key in self.checkboxes:
+                    self.checkboxes[campo_key].setChecked(checked)
     
     def crear_seccion_datos_contrato(self, layout):
         """Crear sección de datos del contrato"""
@@ -591,11 +761,12 @@ class DialogoBorrarContrato(QDialog):
     def __init__(self, parent=None, nombre_contrato="", datos_contrato=None):
         super().__init__(parent)
         self.confirmado = False
+        self.borrar_carpeta = False
         self.nombre_contrato = nombre_contrato
         self.datos_contrato = datos_contrato or {}
         self.setWindowTitle("Borrar Contrato")
         self.setModal(True)
-        self.resize(450, 300)
+        self.resize(450, 350)  # Aumentar altura para el nuevo checkbox
         self.setup_ui()
     
     def setup_ui(self):
@@ -646,6 +817,12 @@ class DialogoBorrarContrato(QDialog):
         self.checkbox_confirmar = QCheckBox("He leído la advertencia y confirmo que quiero eliminar este contrato")
         layout.addWidget(self.checkbox_confirmar)
         
+        # Checkbox adicional para borrar carpeta
+        self.checkbox_borrar_carpeta = QCheckBox("🗂️ También borrar la carpeta de obra (si existe)")
+        self.checkbox_borrar_carpeta.setStyleSheet("QCheckBox { color: #d32f2f; font-weight: bold; margin-top: 10px; }")
+        self.checkbox_borrar_carpeta.setToolTip("Buscará y eliminará la carpeta física del proyecto en la carpeta 'obras'")
+        layout.addWidget(self.checkbox_borrar_carpeta)
+        
         # Botones
         botones_layout = QHBoxLayout()
         
@@ -667,15 +844,28 @@ class DialogoBorrarContrato(QDialog):
     
     def confirmar_eliminacion(self):
         """Confirmar eliminación con doble verificación"""
-        respuesta = QMessageBox.critical(
-            self, "⚠️ CONFIRMACIÓN FINAL",
-            f"¿Estás COMPLETAMENTE SEGURO de que quieres eliminar:\n\n"
-            f"'{self.nombre_contrato}'?\n\n"
-            f"Esta acción es IRREVERSIBLE.",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No
-        )
+        if self.checkbox_borrar_carpeta.isChecked():
+            respuesta = QMessageBox.question(
+                self, "⚠️ CONFIRMACIÓN DE BORRADO",
+                f"¿Confirmas borrar el contrato?\n\n"
+                f"'{self.nombre_contrato}'\n\n"
+                f"- Se eliminará del JSON\n"
+                f"- También se buscará y borrará la carpeta física\n\n"
+                f"¿Proceder?",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
+        else:
+            respuesta = QMessageBox.question(
+                self, "⚠️ CONFIRMACIÓN DE BORRADO",
+                f"¿Confirmas borrar el contrato del JSON?\n\n"
+                f"'{self.nombre_contrato}'\n\n"
+                f"(No se tocará la carpeta física)",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
         
         if respuesta == QMessageBox.Yes:
             self.confirmado = True
+            self.borrar_carpeta = self.checkbox_borrar_carpeta.isChecked()
             self.accept()

@@ -19,7 +19,7 @@ def test_nombre_carpeta():
         print("OK BaseDatos.json cargado")
     except Exception as e:
         print(f"ERROR: No se pudo leer BaseDatos.json: {e}")
-        return False
+        assert False, f"No se pudo leer BaseDatos.json: {e}"
     
     obras = datos.get('obras', [])
     print(f"OK {len(obras)} obras encontradas")
@@ -62,18 +62,18 @@ def test_nombre_carpeta():
             
             if nombre_generado == obra_test.get('nombreCarpeta'):
                 print("OK CORRECTO: El controlador usa nombreCarpeta del JSON")
-                return True
+                assert True  # El controlador usa nombreCarpeta del JSON
             else:
                 print("X ERROR: El controlador NO usa nombreCarpeta del JSON")
-                return False
+                assert False, "El controlador NO usa nombreCarpeta del JSON"
                 
         except Exception as e:
             print(f"ERROR en test controlador: {e}")
-            return False
+            assert False, f"Error en test controlador: {e}"
     else:
         print("X No hay obras con nombreCarpeta para probar")
         print("  Ejecuta primero el cambio de expediente en la aplicación")
-        return False
+        assert False, "No hay obras con nombreCarpeta para probar"
 
 if __name__ == "__main__":
     resultado = test_nombre_carpeta()

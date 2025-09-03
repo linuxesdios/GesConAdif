@@ -28,17 +28,17 @@ def test_import_controlador():
                 print(f"✅ Método {metodo} existe")
             else:
                 print(f"❌ Método {metodo} NO existe")
-                return False
+                assert False, f"Método {metodo} NO existe"
                 
         print("✅ Todos los métodos requeridos están presentes")
-        return True
+        assert True  # All methods exist
         
     except ImportError as e:
         print(f"❌ Error importando: {e}")
-        return False
+        assert False, f"Error: {e}"
     except Exception as e:
         print(f"❌ Error inesperado: {e}")
-        return False
+        assert False, f"Error: {e}"
 
 def test_campos_problematicos():
     """Verificar que los campos problemáticos están definidos correctamente"""
@@ -69,14 +69,14 @@ def test_campos_problematicos():
         
         if len(campos_encontrados) == len(campos_esperados):
             print("✅ Todos los campos problemáticos están definidos")
-            return True
+            assert True  # All methods exist
         else:
             print(f"❌ Faltan {len(campos_esperados) - len(campos_encontrados)} campos")
-            return False
+            assert False, f"Error: {e}"
             
     except Exception as e:
         print(f"❌ Error verificando campos: {e}")
-        return False
+        assert False, f"Error: {e}"
 
 def test_metodo_nuevo():
     """Verificar que el nuevo método tiene la estructura correcta"""
@@ -106,14 +106,14 @@ def test_metodo_nuevo():
         
         if len(elementos_encontrados) == len(elementos_requeridos):
             print("✅ Nuevo método tiene estructura correcta")
-            return True
+            assert True  # All methods exist
         else:
             print(f"❌ Faltan {len(elementos_requeridos) - len(elementos_encontrados)} elementos")
-            return False
+            assert False, f"Error: {e}"
             
     except Exception as e:
         print(f"❌ Error verificando método: {e}")
-        return False
+        assert False, f"Error: {e}"
 
 if __name__ == "__main__":
     print("=" * 50)

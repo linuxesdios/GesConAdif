@@ -32,6 +32,24 @@ class Empresa:
     contacto: str = ""
     oferta: Optional[float] = None
     
+    def __init__(self, nombre="", nif="", email="", contacto="", oferta=None, ofertas=None, **kwargs):
+        """Constructor con compatibilidad para parámetros legacy"""
+        self.nombre = nombre
+        self.nif = nif
+        self.email = email
+        self.contacto = contacto
+        
+        # Compatibilidad con 'ofertas' parameter
+        if ofertas is not None:
+            try:
+                self.oferta = float(ofertas)
+            except (ValueError, TypeError):
+                self.oferta = None
+        elif oferta is not None:
+            self.oferta = float(oferta)
+        else:
+            self.oferta = None
+    
     @staticmethod
     def validar_correo_basico(correo: str) -> bool:
         """Validación básica de formato email"""
@@ -134,6 +152,15 @@ class Oferta:
             'observaciones': self.observaciones
         }
     
+    def to_dict(self) -> Dict[str, Any]:
+        """Alias para a_diccionario para compatibilidad"""
+        return self.a_diccionario()
+    
+    @classmethod
+    def from_dict(cls, datos: Dict[str, Any]) -> 'Oferta':
+        """Alias para desde_diccionario para compatibilidad"""
+        return cls.desde_diccionario(datos)
+    
     @classmethod
     def desde_diccionario(cls, datos: Dict[str, Any]) -> 'Oferta':
         """Crea una oferta desde diccionario"""
@@ -164,6 +191,43 @@ class DatosContrato:
     importe_total: float = 0.0
     duracion: str = ""
     plazo_ejecucion: str = ""
+    
+    def __init__(self, numero_expediente="", objeto_contrato="", tipo_contrato=None, 
+                 tipo=None, presupuesto_base=None, importe_licitacion=None, 
+                 importe_iva=0.0, importe_total=0.0, duracion="", plazo_ejecucion="", **kwargs):
+        """Constructor con compatibilidad para parámetros legacy"""
+        self.numero_expediente = numero_expediente
+        self.objeto_contrato = objeto_contrato
+        
+        # Compatibilidad con 'tipo' parameter
+        if tipo is not None:
+            if isinstance(tipo, str):
+                self.tipo_contrato = TipoContrato.OBRA if tipo.lower() == 'obra' else TipoContrato.SERVICIO
+            else:
+                self.tipo_contrato = tipo
+        else:
+            self.tipo_contrato = tipo_contrato or TipoContrato.SERVICIO
+        
+        # Compatibilidad con 'presupuesto_base'
+        if presupuesto_base is not None:
+            self.importe_licitacion = float(presupuesto_base)
+        elif importe_licitacion is not None:
+            self.importe_licitacion = float(importe_licitacion)
+        else:
+            self.importe_licitacion = 0.0
+            
+        self.importe_iva = float(importe_iva)
+        self.importe_total = float(importe_total)
+        self.duracion = duracion
+        self.plazo_ejecucion = plazo_ejecucion
+        
+        # Inicializar fechas y campos adicionales con valores por defecto
+        for field_name in ['fecha_limite_presentacion', 'fecha_apertura', 'fecha_adjudicacion',
+                          'fecha_inicio', 'fecha_fin_prevista', 'fecha_recepcion']:
+            setattr(self, field_name, kwargs.get(field_name, None))
+        
+        for field_name in ['responsable_contrato', 'director_obra', 'justificacion', 'criterios_adjudicacion']:
+            setattr(self, field_name, kwargs.get(field_name, ""))
     
     # Fechas importantes
     fecha_limite_presentacion: Optional[date] = None
@@ -276,6 +340,29 @@ class DatosLiquidacion:
     fecha_liquidacion: Optional[date] = None
     observaciones_liquidacion: str = ""
     
+    def __init__(self, importe_licitado=None, importe_adjudicado=None, importe_facturado=0.0, 
+                 importe_penalizaciones=0.0, diferencia=0.0, porcentaje_ejecutado=0.0,
+                 empresa_ejecutora="", saldo_favor_adif=0.0, saldo_favor_empresa=0.0,
+                 fecha_liquidacion=None, observaciones_liquidacion="", **kwargs):
+        """Constructor con compatibilidad para parámetros legacy"""
+        # Compatibilidad con 'importe_adjudicado'
+        if importe_adjudicado is not None:
+            self.importe_licitado = float(importe_adjudicado)
+        elif importe_licitado is not None:
+            self.importe_licitado = float(importe_licitado)
+        else:
+            self.importe_licitado = 0.0
+            
+        self.importe_facturado = float(importe_facturado)
+        self.importe_penalizaciones = float(importe_penalizaciones)
+        self.diferencia = float(diferencia)
+        self.porcentaje_ejecutado = float(porcentaje_ejecutado)
+        self.empresa_ejecutora = empresa_ejecutora
+        self.saldo_favor_adif = float(saldo_favor_adif)
+        self.saldo_favor_empresa = float(saldo_favor_empresa)
+        self.fecha_liquidacion = fecha_liquidacion
+        self.observaciones_liquidacion = observaciones_liquidacion
+    
     def calcular_diferencia(self) -> float:
         """Calcula la diferencia entre licitado y facturado"""
         self.diferencia = abs(self.importe_licitado - self.importe_facturado - self.importe_penalizaciones)
@@ -367,6 +454,62 @@ class Proyecto:
     fecha_creacion: datetime = field(default_factory=datetime.now)
     ultima_modificacion: datetime = field(default_factory=datetime.now)
     version: str = "3.0"
+    
+    @property 
+    def datos_contrato(self) -> DatosContrato:
+        """Alias para compatibilidad con tests"""
+        return self.contrato
+    
+    def obtener_oferta_ganadora(self) -> Optional[Oferta]:
+        """Alias para obtener_oferta_minima"""
+        return self.obtener_oferta_minima()
+    
+    def agregar_empresa(self, empresa: Empresa):
+        """Agregar empresa al proyecto"""
+        if empresa not in self.empresas:
+            self.empresas.append(empresa)
+    
+    def exportar_json(self) -> Dict[str, Any]:
+        """Exportar proyecto a diccionario"""
+        return {
+            'nombre': self.nombre,
+            'ruta': self.ruta,
+            'archivo_json': self.archivo_json,
+            'contrato': self.contrato.to_dict(),
+            'empresas': [empresa.to_dict() for empresa in self.empresas],
+            'ofertas': [oferta.a_diccionario() for oferta in self.ofertas],
+            'liquidacion': self.liquidacion.to_dict(),
+            'fecha_creacion': self.fecha_creacion.isoformat(),
+            'ultima_modificacion': self.ultima_modificacion.isoformat(),
+            'version': self.version
+        }
+    
+    @classmethod
+    def importar_json(cls, data: Dict[str, Any]) -> 'Proyecto':
+        """Importar proyecto desde diccionario"""
+        proyecto = cls(
+            nombre=data.get('nombre', ''),
+            ruta=data.get('ruta', ''),
+            archivo_json=data.get('archivo_json', '')
+        )
+        
+        # Cargar contrato
+        if 'contrato' in data:
+            proyecto.contrato = DatosContrato.from_dict(data['contrato'])
+        
+        # Cargar empresas
+        if 'empresas' in data:
+            proyecto.empresas = [Empresa.from_dict(emp) for emp in data['empresas']]
+        
+        # Cargar ofertas
+        if 'ofertas' in data:
+            proyecto.ofertas = [Oferta.desde_diccionario(oferta) for oferta in data['ofertas']]
+        
+        # Cargar liquidación
+        if 'liquidacion' in data:
+            proyecto.liquidacion = DatosLiquidacion.from_dict(data['liquidacion'])
+            
+        return proyecto
     
     def obtener_empresa_adjudicataria(self) -> Optional[Empresa]:
         """Obtiene la empresa con la oferta más baja"""

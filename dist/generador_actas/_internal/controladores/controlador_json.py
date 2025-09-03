@@ -522,6 +522,103 @@ class GestorJsonUnificado:
             import traceback
             traceback.print_exc()
             return False, f"Error creando contrato: {e}"
+    
+    def clonar_contrato(self, nombre_origen, nuevo_nombre, opciones=None):
+        """Clonar un contrato existente con nuevo nombre y opciones selectivas"""
+        from PyQt5.QtWidgets import QMessageBox
+        
+        print(f"[GestorJsonUnificado] 🔧 DEBUG CLONAR - Origen: '{nombre_origen}', Nuevo: '{nuevo_nombre}'")
+        
+        try:
+            # Verificar que el contrato origen existe
+            contrato_origen = self.leer_contrato_completo(nombre_origen)
+            if not contrato_origen:
+                QMessageBox.critical(None, "Error", f"No se encontró el contrato: {nombre_origen}")
+                return False
+            
+            # Verificar que el nuevo nombre no existe
+            if self.leer_contrato_completo(nuevo_nombre):
+                QMessageBox.warning(None, "Error", f"Ya existe un contrato con el nombre: {nuevo_nombre}")
+                return False
+            
+            # Si no se especifican opciones, clonar todo (comportamiento legacy)
+            if opciones is None:
+                datos_clonados = contrato_origen.copy()
+                datos_clonados["nombreObra"] = nuevo_nombre
+            else:
+                # Clonación selectiva según opciones
+                datos_clonados = self._clonar_selectivo(contrato_origen, nuevo_nombre, opciones)
+                
+            print(f"[GestorJsonUnificado] 🔧 DEBUG DATOS CLONADOS - nombreObra: '{datos_clonados.get('nombreObra', 'NO_ENCONTRADO')}'")
+            
+            # Crear nuevo contrato usando el método unificado
+            resultado_tupla = self.crear_contrato_con_carpetas(datos_clonados)
+            resultado = resultado_tupla[0] if isinstance(resultado_tupla, tuple) else resultado_tupla
+            
+            if resultado:
+                # Mostrar resumen de lo que se clonó
+                if opciones:
+                    seleccionadas = sum(1 for v in opciones.values() if v)
+                    QMessageBox.information(None, "Éxito", 
+                        f"Contrato clonado: '{nuevo_nombre}'\n"
+                        f"Se copiaron {seleccionadas} secciones seleccionadas.")
+                else:
+                    QMessageBox.information(None, "Éxito", f"Contrato clonado: '{nuevo_nombre}'")
+                return True
+            else:
+                QMessageBox.critical(None, "Error", "Error creando el contrato clonado")
+                return False
+                
+        except Exception as e:
+            print(f"[GestorJsonUnificado] ❌ Error clonando contrato: {e}")
+            QMessageBox.critical(None, "Error", f"Error clonando contrato: {e}")
+            return False
+    
+    def _clonar_selectivo(self, contrato_origen, nuevo_nombre, opciones):
+        """Realizar clonación selectiva según opciones especificadas con los nuevos nombres de campos"""
+        print(f"[GestorJsonUnificado] 🔧 DEBUG _clonar_selectivo - nuevo_nombre: '{nuevo_nombre}'")
+        print(f"[GestorJsonUnificado] 🔧 DEBUG opciones seleccionadas: {len([k for k,v in opciones.items() if v])}")
+        
+        # Crear estructura básica del contrato
+        datos_clonados = {
+            "nombreObra": nuevo_nombre,
+            "tipoActuacion": contrato_origen.get("tipoActuacion", ""),
+            "fechaCreacion": contrato_origen.get("fechaCreacion", ""),
+            "version": contrato_origen.get("version", "1.0")
+        }
+        
+        campos_copiados = 0
+        
+        # Clonar campos según la nueva estructura basada en GroupBox_Campo
+        for campo_key, valor in opciones.items():
+            if valor and not campo_key.startswith('groupbox_'):  # Ignorar checkboxes de grupo
+                print(f"[GestorJsonUnificado] 🔧 Procesando campo: {campo_key}")
+                
+                # Extraer el nombre del campo real
+                if campo_key.startswith(('groupBox_2_', 'groupBox_3_', 'groupBox_', 
+                                       'groupBox_9_', 'groupBox_10_', 'groupBox_11_',
+                                       'groupBox_5_', 'groupBox_6_')):
+                    # Extraer el nombre del campo real eliminando el prefijo del GroupBox
+                    partes = campo_key.split('_')
+                    if len(partes) >= 3:
+                        campo_real = '_'.join(partes[2:])  # Tomar todo después de groupBox_X_
+                    else:
+                        campo_real = campo_key
+                        
+                    print(f"[GestorJsonUnificado] 🔧 Campo extraído: '{campo_real}'")
+                    
+                    # Copiar el campo si existe en el contrato origen, EXCEPTO nombreObra
+                    if campo_real == 'nombreObra':
+                        print(f"[GestorJsonUnificado] ⚠️ Saltando campo 'nombreObra' para preservar nuevo nombre")
+                    elif campo_real in contrato_origen:
+                        datos_clonados[campo_real] = contrato_origen[campo_real]
+                        campos_copiados += 1
+                        print(f"[GestorJsonUnificado] ✅ Campo copiado: '{campo_real}' = '{contrato_origen[campo_real]}'")
+                    else:
+                        print(f"[GestorJsonUnificado] ⚠️ Campo '{campo_real}' no encontrado en contrato origen")
+        
+        print(f"[GestorJsonUnificado] 🔧 Total campos copiados: {campos_copiados}")
+        return datos_clonados
 
 
 # =================== COMPATIBILIDAD CON CÓDIGO EXISTENTE ===================

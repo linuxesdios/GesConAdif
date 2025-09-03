@@ -1,46 +1,7 @@
 {
-    "version": "1.0",
-    "fecha_creacion": "2025-08-31T06:39:30.291672",
-    "facturas": [
-        {
-            "id": 1,
-            "fecha_creacion": "2025-08-31T06:39:50.166378",
-            "importe": 120.0,
-            "categoria": "Vegetal",
-            "localidad": "soria",
-            "archivo_pdf": "",
-            "activa": false,
-            "fecha_eliminacion": "2025-08-31T07:11:27.358064"
-        },
-        {
-            "id": 2,
-            "fecha_creacion": "2025-08-31T06:51:14.781483",
-            "importe": 12.45,
-            "categoria": "Otras",
-            "localidad": "Madrid",
-            "comentarios": "motivo desconocido",
-            "gped": "",
-            "archivo_pdf": "",
-            "activa": true,
-            "estado": "Tramitada",
-            "fecha_modificacion_estado": "2025-08-31T07:24:16.956009"
-        },
-        {
-            "id": 3,
-            "fecha_creacion": "2025-08-31T07:10:22.803347",
-            "importe": 12120.0,
-            "categoria": "Agua",
-            "localidad": "soria",
-            "empresa": "mundoacometida",
-            "cif": "12121212",
-            "identificador_especial": "",
-            "estado": "Con deficiencias",
-            "comentarios": "",
-            "gped": "12",
-            "archivo_pdf": "3_mundoacometida_12120,00.pdf",
-            "activa": true
-        }
-    ],
+    "version": "1.1",
+    "fecha_creacion": "2025-09-03T18:19:27.429663",
+    "facturas": [],
     "configuracion": {
         "categorias": [
             "Agua",
@@ -49,6 +10,12 @@
             "Actuaciones mantenimiento",
             "Otras"
         ],
-        "ultimo_id": 3
+        "estados": [
+            "Emitida",
+            "Tramitada",
+            "Pagada",
+            "Con deficiencias"
+        ],
+        "ultimo_id": 0
     }
 }

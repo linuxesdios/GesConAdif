@@ -964,6 +964,38 @@ class ControladorCalculos:
             print(f"[ControladorCalculos] ❌ Error obteniendo valor de widget: {e}")
             return 0.0
     
+    # =================== MÉTODOS BÁSICOS REQUERIDOS POR LOS TESTS ===================
+    
+    def calcular_iva(self, importe: float, porcentaje: float = 21.0) -> float:
+        """Calcular IVA de un importe"""
+        try:
+            return importe * (porcentaje / 100)
+        except Exception:
+            return 0.0
+    
+    def calcular_total_con_iva(self, importe: float, porcentaje: float = 21.0) -> float:
+        """Calcular total con IVA"""
+        try:
+            return importe * (1 + porcentaje / 100)
+        except Exception:
+            return 0.0
+    
+    def validar_importe(self, importe) -> bool:
+        """Validar que un importe es válido"""
+        try:
+            if isinstance(importe, str):
+                importe = float(importe.replace(',', '.'))
+            return isinstance(importe, (int, float)) and importe >= 0
+        except (ValueError, TypeError):
+            return False
+    
+    def formatear_moneda(self, importe: float, simbolo: str = '€') -> str:
+        """Formatear importe como moneda"""
+        try:
+            return f"{importe:,.2f} {simbolo}".replace(',', 'X').replace('.', ',').replace('X', '.')
+        except Exception:
+            return f"0,00 {simbolo}"
+    
     # =================== MÉTODOS DE CONTROL ===================
     
     def pausar_calculos(self):

@@ -32,12 +32,21 @@ def es_numero_valido(valor_str: str) -> bool:
         
         valor_str = valor_str.strip().replace(',', '.')
         
+        # Rechazar strings especiales antes de la conversión
+        if valor_str.lower() in ['nan', 'inf', '-inf', 'infinity', '-infinity']:
+            return False
+        
         # Verificar formato básico
         if valor_str.count('.') > 1:
             return False
         
         # Intentar conversión
-        float(valor_str)
+        numero = float(valor_str)
+        
+        # Verificar que no sea NaN o infinito
+        if str(numero).lower() in ['nan', 'inf', '-inf'] or numero != numero:  # NaN != NaN es True
+            return False
+            
         return True
         
     except (ValueError, TypeError):
@@ -60,6 +69,14 @@ def validar_email_basico(email: str) -> bool:
         return False
     
     email = email.strip().lower()
+    
+    # Rechazar patrones problemáticos
+    if '..' in email:  # Puntos consecutivos
+        return False
+    if email.startswith('.') or email.endswith('.'):  # Empieza o termina con punto
+        return False
+    if '@.' in email or '.@' in email:  # Punto inmediato al @
+        return False
     
     # Patrón básico de email
     patron = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
@@ -369,7 +386,7 @@ def formatear_numero_espanol(numero: float, decimales: int = 2) -> str:
     Returns:
         Número formateado
     """
-    if numero >= 1000:
+    if abs(numero) >= 1000:
         # Formatear con separadores de miles
         formatted = f"{numero:,.{decimales}f}"
         # Cambiar separadores al formato español

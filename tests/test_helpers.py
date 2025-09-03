@@ -11,6 +11,12 @@ from pathlib import Path
 from datetime import datetime
 from unittest.mock import Mock, patch, mock_open, MagicMock
 
+# Mock PyQt5 modules before any imports
+sys.modules['PyQt5'] = MagicMock()
+sys.modules['PyQt5.QtWidgets'] = MagicMock()
+sys.modules['PyQt5.QtCore'] = MagicMock()
+sys.modules['PyQt5.uic'] = MagicMock()
+
 # Agregar el directorio principal al path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -404,15 +410,18 @@ class TestSetupUI:
             assert resultado is True
 
     @pytest.mark.unit
-    @patch('PyQt5.uic.loadUi')
-    def test_setup_ui_with_new_structure_error_carga(self, mock_load_ui):
+    def test_setup_ui_with_new_structure_error_carga(self):
         """Test error en carga de UI"""
-        mock_load_ui.side_effect = Exception("Error de carga")
+        # Configure the already-mocked PyQt5.uic.loadUi to raise exception
+        sys.modules['PyQt5'].uic.loadUi.side_effect = Exception("Error de carga")
         
         with patch('helpers_py.get_ui_file_path', return_value="test.ui"):
             # No debe lanzar excepción, debe manejarla internamente
             resultado = setup_ui_with_new_structure(Mock())
             assert resultado is False
+        
+        # Reset the mock for other tests
+        sys.modules['PyQt5'].uic.loadUi.side_effect = None
 
 
 class TestIntegracionHelpers:

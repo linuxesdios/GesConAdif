@@ -974,8 +974,6 @@ class DialogoPDF(QDialog):
 def convertir_docx_a_pdf_simple(docx_path: str) -> bool:
     """Conversión usando docx2pdf"""
     try:
-
-        
         if not os.path.exists(docx_path):
             print(f"[PDF] ERROR: Archivo no existe: {docx_path}")
             return False
@@ -983,13 +981,15 @@ def convertir_docx_a_pdf_simple(docx_path: str) -> bool:
         from docx2pdf import convert
         pdf_path = docx_path.replace('.docx', '.pdf')
         
-
+        print(f"[PDF] Generando PDF: {os.path.basename(pdf_path)}")
         convert(docx_path, pdf_path)
-
         
         exists = os.path.exists(pdf_path)
-
-        
+        if exists:
+            print(f"[PDF] ✓ PDF generado correctamente: {pdf_path}")
+        else:
+            print(f"[PDF] ERROR: No se pudo generar el PDF")
+            
         return exists
         
     except Exception as e:
@@ -1006,14 +1006,21 @@ def mostrar_dialogo_pdf(parent=None, nombre_documento="documento", docx_path=Non
             if docx_path and os.path.exists(docx_path):
                 # Conversión simple y directa
                 if convertir_docx_a_pdf_simple(docx_path):
+                    pdf_path = docx_path.replace('.docx', '.pdf')
                     QMessageBox.information(parent, "Éxito", 
                                           f"✅ PDF generado correctamente")
                     
-                    # Abrir carpeta donde se creó
+                    # Abrir automáticamente el PDF
                     import subprocess
                     import os
-                    carpeta = os.path.dirname(docx_path)
-                    subprocess.run(f'explorer "{carpeta}"', shell=True)
+                    try:
+                        print(f"[PDF] Abriendo PDF automáticamente: {pdf_path}")
+                        subprocess.run([pdf_path], shell=True, check=True)
+                    except Exception as e:
+                        print(f"[PDF] Error abriendo PDF: {e}")
+                        # Si falla abrir el PDF, abrir la carpeta
+                        carpeta = os.path.dirname(docx_path)
+                        subprocess.run(f'explorer "{carpeta}"', shell=True)
                     
                 else:
                     QMessageBox.warning(parent, "Error", 

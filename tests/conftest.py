@@ -6,10 +6,104 @@ import json
 import tempfile
 import shutil
 import os
+import sys
 from datetime import datetime, date
 from typing import Dict, Any, List
 from unittest.mock import Mock, MagicMock, patch
 from faker import Faker
+
+# Global PyQt5 mocking - must be done before any controller imports
+
+# Crear una clase personalizada para el mock de módulo Qt
+class QtModuleMock:
+    """Mock personalizado para módulos de PyQt5 que soporta import *"""
+    
+    def __init__(self, module_name, all_attrs):
+        self.__name__ = module_name
+        self.__path__ = []
+        self.__all__ = all_attrs
+        
+        # Crear atributos específicos como Mocks
+        for attr_name in all_attrs:
+            attr_mock = Mock()
+            attr_mock.__name__ = attr_name
+            setattr(self, attr_name, attr_mock)
+    
+    def __getattr__(self, name):
+        """Devuelve un Mock para cualquier atributo no definido"""
+        # Evitar recursión infinita al usar object.__getattribute__
+        try:
+            return object.__getattribute__(self, name)
+        except AttributeError:
+            # Crear y cachear un nuevo mock
+            attr_mock = Mock()
+            attr_mock.__name__ = name
+            object.__setattr__(self, name, attr_mock)
+            return attr_mock
+
+def create_qt_module_mock(module_name, all_attrs):
+    """Crea un mock de módulo Qt con __all__ definido"""
+    return QtModuleMock(module_name, all_attrs)
+
+# Definir listas de atributos para cada módulo Qt
+qt_core_all = ['Qt', 'QObject', 'QDate', 'QTimer', 'pyqtSignal', 
+               'QThread', 'QMutex', 'QSize', 'QPoint', 'QRect']
+
+qt_widgets_all = ['QMainWindow', 'QWidget', 'QDialog', 'QMessageBox',
+                  'QApplication', 'QLineEdit', 'QComboBox', 'QSpinBox',
+                  'QDoubleSpinBox', 'QLabel', 'QPushButton', 'QVBoxLayout',
+                  'QHBoxLayout', 'QTableWidget', 'QTableWidgetItem',
+                  'QCheckBox', 'QRadioButton', 'QGroupBox', 'QTabWidget',
+                  'QScrollArea', 'QSplitter', 'QFrame', 'QProgressBar']
+
+qt_gui_all = ['QFont', 'QPixmap', 'QIcon', 'QDoubleValidator',
+              'QIntValidator', 'QPalette', 'QColor', 'QPainter',
+              'QPen', 'QBrush']
+
+# Crear mocks globales que inyecten los nombres en el namespace global
+class GloballyInjectingQtMock(QtModuleMock):
+    """Mock que inyecta nombres en el namespace global al ser importado"""
+    
+    def __init__(self, module_name, all_attrs):
+        super().__init__(module_name, all_attrs)
+        # Inyectar todos los atributos en builtins para que estén globalmente disponibles
+        import builtins
+        for attr_name in all_attrs:
+            if not hasattr(builtins, attr_name):
+                setattr(builtins, attr_name, getattr(self, attr_name))
+
+# Crear instancias de los mocks usando la clase que inyecta globalmente
+mock_qt_core = GloballyInjectingQtMock('PyQt5.QtCore', qt_core_all)
+mock_qt_widgets = GloballyInjectingQtMock('PyQt5.QtWidgets', qt_widgets_all)  
+mock_qt_gui = GloballyInjectingQtMock('PyQt5.QtGui', qt_gui_all)
+
+# Crear mock principal para PyQt5
+main_pyqt5_mock = Mock()
+main_pyqt5_mock.__name__ = 'PyQt5'
+main_pyqt5_mock.__path__ = []
+
+# Asignar a sys.modules ANTES de cualquier importación
+sys.modules['PyQt5'] = main_pyqt5_mock
+sys.modules['PyQt5.QtWidgets'] = mock_qt_widgets
+sys.modules['PyQt5.QtCore'] = mock_qt_core
+sys.modules['PyQt5.QtGui'] = mock_qt_gui
+
+# Crear mocks con __name__ correcto para otros submódulos
+uic_mock = Mock()
+uic_mock.__name__ = 'PyQt5.uic'
+sys.modules['PyQt5.uic'] = uic_mock
+
+test_mock = Mock()
+test_mock.__name__ = 'PyQt5.QtTest'
+sys.modules['PyQt5.QtTest'] = test_mock
+
+# Mocks para PyQt5.QtChart
+chart_mock = Mock()
+chart_mock.QChart = Mock()
+chart_mock.QChartView = Mock()
+chart_mock.QPieSeries = Mock()
+chart_mock.QPieSlice = Mock()
+sys.modules['PyQt5.QtChart'] = chart_mock
 
 fake = Faker('es_ES')
 

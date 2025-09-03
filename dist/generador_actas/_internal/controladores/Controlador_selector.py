@@ -356,6 +356,13 @@ class ContractManagerQt5(QObject):
                         main_window.controlador_eventos_ui.cargar_empresas_desde_json(nombre_completo)
                         print(f"[ContractManager] 🏢 Empresas recargadas para: {nombre_completo}")
                     
+                    # 🆕 ACTUALIZAR CAMPOS Y TABLAS CON CONTROLADOR_AUTOSAVE
+                    if (main_window and 
+                        hasattr(main_window, 'controlador_autosave') and 
+                        main_window.controlador_autosave):
+                        main_window.controlador_autosave.actualizar(nombre_completo)
+                        print(f"[ContractManager] 🔄 Campos actualizados para: {nombre_completo}")
+                    
                 else:
                     self._update_labels("Error", "Error")
             else:
