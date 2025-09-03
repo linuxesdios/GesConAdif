@@ -8,10 +8,13 @@ controlador_pdf_unificado.py - Controlador PDF unificado y optimizado
 - Integración completa con el sistema de contratos
 """
 
+import logging
 import os
 import platform
 import subprocess
 import threading
+
+logger = logging.getLogger(__name__)
 from datetime import datetime
 from typing import Optional
 
@@ -49,12 +52,12 @@ def _load_fitz_lazy():
     except ImportError as e:
         _fitz_load_error = f"PyMuPDF no disponible: {e}"
         _fitz_module = None
-        print(f"[PDF] ❌ {_fitz_load_error}")
+        logger.error(f"[PDF] ❌ {_fitz_load_error}")
         return None
     except Exception as e:
         _fitz_load_error = f"Error cargando PyMuPDF: {e}"
         _fitz_module = None
-        print(f"[PDF] ❌ {_fitz_load_error}")
+        logger.error(f"[PDF] ❌ {_fitz_load_error}")
         return None
     finally:
         _fitz_loading = False
@@ -141,7 +144,7 @@ class _PDFControllerOptimized(QObject):
             self._setup_custom_scroll_area()
             
         except Exception as e:
-            print(f"[PDF] ❌ Error inicializando widgets: {e}")
+            logger.error(f"[PDF] ❌ Error inicializando widgets: {e}")
 
     
     def _connect_basic_signals(self):
@@ -166,7 +169,7 @@ class _PDFControllerOptimized(QObject):
             self._update_controls()
             
         except Exception as e:
-            print(f"[PDF] ❌ Error conectando señales: {e}")
+            logger.error(f"[PDF] ❌ Error conectando señales: {e}")
 
     def _show_loading_message(self):
         """Mostrar mensaje de carga mientras se carga PyMuPDF"""
@@ -225,7 +228,7 @@ class _PDFControllerOptimized(QObject):
 
     def _on_fitz_failed(self, error: str):
         """Callback cuando falla la carga de PyMuPDF"""
-        print(f"[PDF] ❌ PyMuPDF no disponible: {error}")
+        logger.error(f"[PDF] ❌ PyMuPDF no disponible: {error}")
         
         if self.pdf_label:
             self.pdf_label.setText(

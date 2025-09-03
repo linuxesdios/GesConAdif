@@ -10,6 +10,9 @@ import json
 import shutil
 from datetime import datetime
 from typing import Dict, List, Any, Optional
+import logging
+
+logger = logging.getLogger(__name__)
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -24,7 +27,7 @@ try:
     DOCX_AVAILABLE = True
 except ImportError:
     DOCX_AVAILABLE = False
-    print("[FacturasDirectas] ⚠️ python-docx no está instalado. Instalar con: pip install python-docx")
+    logger.warning("python-docx no está instalado. Instalar con: pip install python-docx")
 
 class ControladorFacturasDirectas:
     """Controlador principal para gestión de facturas directas"""
@@ -58,7 +61,7 @@ class ControladorFacturasDirectas:
                     current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 return current_dir
         except Exception as e:
-            print(f"[FacturasDirectas] ⚠️ Error obteniendo directorio base: {e}")
+            logger.warning(f"Error obteniendo directorio base: {e}")
             return os.getcwd()
     
     def _inicializar_archivos(self):
@@ -78,15 +81,15 @@ class ControladorFacturasDirectas:
                 }
                 with open(self.archivo_json, 'w', encoding='utf-8') as f:
                     json.dump(datos_iniciales, f, ensure_ascii=False, indent=4)
-                print(f"[FacturasDirectas] ✅ Archivo JSON creado: {self.archivo_json}")
+                logger.info(f"Archivo JSON creado: {self.archivo_json}")
             
             # Crear carpeta de PDFs si no existe
             if not os.path.exists(self.carpeta_pdfs):
                 os.makedirs(self.carpeta_pdfs, exist_ok=True)
-                print(f"[FacturasDirectas] ✅ Carpeta PDFs creada: {self.carpeta_pdfs}")
+                logger.info(f"Carpeta PDFs creada: {self.carpeta_pdfs}")
                 
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error inicializando archivos: {e}")
+            logger.error(f"Error inicializando archivos: {e}")
     
     def mostrar_popup_principal(self):
         """Mostrar popup principal de Facturas Directas"""
@@ -103,7 +106,7 @@ class ControladorFacturasDirectas:
             with open(self.archivo_json, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error leyendo JSON: {e}")
+            logger.error(f"Error leyendo JSON: {e}")
             return {"facturas": [], "configuracion": {"categorias": [], "ultimo_id": 0}}
     
     def guardar_datos_json(self, datos: Dict) -> bool:
@@ -113,7 +116,7 @@ class ControladorFacturasDirectas:
                 json.dump(datos, f, ensure_ascii=False, indent=4)
             return True
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error guardando JSON: {e}")
+            logger.error(f"Error guardando JSON: {e}")
             return False
     
     def agregar_factura(self, datos_factura: Dict) -> bool:
@@ -147,12 +150,12 @@ class ControladorFacturasDirectas:
             datos["facturas"].append(nueva_factura)
             
             if self.guardar_datos_json(datos):
-                print(f"[FacturasDirectas] ✅ Factura agregada con ID: {nuevo_id}")
+                logger.info(f"Factura agregada con ID: {nuevo_id}")
                 return True
             return False
             
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error agregando factura: {e}")
+            logger.error(f"Error agregando factura: {e}")
             return False
     
     def obtener_facturas(self) -> List[Dict]:
@@ -161,7 +164,7 @@ class ControladorFacturasDirectas:
             datos = self.leer_datos_json()
             return [f for f in datos.get("facturas", []) if f.get("activa", True)]
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error obteniendo facturas: {e}")
+            logger.error(f"Error obteniendo facturas: {e}")
             return []
     
     def eliminar_factura(self, factura_id: int) -> bool:
@@ -175,13 +178,13 @@ class ControladorFacturasDirectas:
                     factura["fecha_eliminacion"] = datetime.now().isoformat()
                     
                     if self.guardar_datos_json(datos):
-                        print(f"[FacturasDirectas] ✅ Factura {factura_id} eliminada")
+                        logger.info(f"Factura {factura_id} eliminada")
                         return True
                     break
             return False
             
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error eliminando factura: {e}")
+            logger.error(f"Error eliminando factura: {e}")
             return False
     
     def actualizar_estado_factura(self, factura_id: int, nuevo_estado: str) -> bool:
@@ -195,13 +198,13 @@ class ControladorFacturasDirectas:
                     factura["fecha_modificacion_estado"] = datetime.now().isoformat()
                     
                     if self.guardar_datos_json(datos):
-                        print(f"[FacturasDirectas] ✅ Estado de factura {factura_id} actualizado a: {nuevo_estado}")
+                        logger.info(f"Estado de factura {factura_id} actualizado a: {nuevo_estado}")
                         return True
                     break
             return False
             
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error actualizando estado: {e}")
+            logger.error(f"Error actualizando estado: {e}")
             return False
     
     def generar_nombre_pdf(self, id_factura: int, empresa: str, importe: float) -> str:
@@ -222,7 +225,7 @@ class ControladorFacturasDirectas:
             return nombre_pdf
             
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error generando nombre PDF: {e}")
+            logger.error(f"Error generando nombre PDF: {e}")
             return f"{id_factura}_factura.pdf"
     
     def gestionar_pdf(self, archivo_origen: str, datos_factura: Dict) -> str:
@@ -245,12 +248,12 @@ class ControladorFacturasDirectas:
             
             # Copiar archivo
             shutil.copy2(archivo_origen, archivo_destino)
-            print(f"[FacturasDirectas] ✅ PDF copiado con formato: {nombre_pdf}")
+            logger.info(f"PDF copiado con formato: {nombre_pdf}")
             
             return nombre_pdf
             
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error gestionando PDF: {e}")
+            logger.error(f"Error gestionando PDF: {e}")
             return ""
     
     def generar_informe_word(self, facturas: List[Dict]) -> str:
@@ -404,7 +407,7 @@ class ControladorFacturasDirectas:
             return self._guardar_documento(doc)
             
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error generando informe Word: {e}")
+            logger.error(f"Error generando informe Word: {e}")
             return ""
     
     def _crear_sombreado(self, cell, color: RGBColor):
@@ -427,11 +430,11 @@ class ControladorFacturasDirectas:
             
             # Guardar documento
             doc.save(ruta_archivo)
-            print(f"[FacturasDirectas] ✅ Informe guardado: {ruta_archivo}")
+            logger.info(f"Informe guardado: {ruta_archivo}")
             return ruta_archivo
             
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error guardando documento: {e}")
+            logger.error(f"Error guardando documento: {e}")
             return ""
     
     def eliminar_pdf(self, nombre_archivo: str) -> bool:
@@ -440,11 +443,11 @@ class ControladorFacturasDirectas:
             archivo_path = os.path.join(self.carpeta_pdfs, nombre_archivo)
             if os.path.exists(archivo_path):
                 os.remove(archivo_path)
-                print(f"[FacturasDirectas] ✅ PDF eliminado: {nombre_archivo}")
+                logger.info(f"PDF eliminado: {nombre_archivo}")
                 return True
             return False
         except Exception as e:
-            print(f"[FacturasDirectas] ❌ Error eliminando PDF: {e}")
+            logger.error(f"Error eliminando PDF: {e}")
             return False
 
 
@@ -1067,7 +1070,7 @@ class DialogoCrearFactura(QDialog):
                     self.archivo_pdf_seleccionado = nuevo_nombre
                     self.archivo_label.setText(f"Archivo: {nuevo_nombre}")
                     self.btn_quitar_pdf.setEnabled(True)
-                    print(f"[DialogoCrearFactura] ✅ PDF seleccionado con nombre: {nuevo_nombre}")
+                    logger.info(f"PDF seleccionado con nombre: {nuevo_nombre}")
                 else:
                     QMessageBox.critical(self, "Error", "No se pudo copiar el archivo PDF")
             else:

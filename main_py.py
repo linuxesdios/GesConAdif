@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
-import sys, os, time
+import sys, os, time, logging
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('app.log', encoding='utf-8')
+    ]
+)
 
 # PRECARGAR TODO PARA EXE - CRÍTICO PARA VELOCIDAD
 from PyQt5.QtWidgets import QApplication, QSplashScreen, QMessageBox

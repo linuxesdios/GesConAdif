@@ -1,0 +1,42 @@
+2025-09-03 20:43:03,721 - controladores.controlador_routes - INFO - Inicializado
+2025-09-03 20:43:03,932 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-03 20:43:03,932 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] [!] Gestor unificado no disponible
+2025-09-03 20:43:03,933 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Tracker de documentos configurado
+2025-09-03 20:43:03,934 - controladores.controlador_routes - INFO - Inicializado
+2025-09-03 20:43:03,965 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controlador de facturas directas inicializado
+2025-09-03 20:43:04,743 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-03 20:43:04,747 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-03 20:43:04,748 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-03 20:43:04,755 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI
+2025-09-03 20:43:04,757 - controladores.controlador_routes - INFO - Inicializado
+2025-09-03 20:43:04,768 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-03 20:43:04,768 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-03 20:43:04,769 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-03 20:43:04,785 - controladores.controlador_eventos_ui - INFO - Controlador de cálculos conectado
+2025-09-03 20:43:04,795 - controladores.controlador_eventos_ui - INFO - Setup de eventos completado exitosamente
+2025-09-03 20:43:04,798 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Inicializado con 11 fases configuradas
+2025-09-03 20:43:04,816 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ 0 campos de firmado conectados
+2025-09-03 20:43:05,847 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-03 20:43:06,882 - controladores.controlador_routes - INFO - Inicializado
+2025-09-03 20:43:06,903 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] 🔄 Cargando widgets para: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-03 20:43:06,914 - controladores.controlador_calculos - INFO - Iniciando cálculo de liquidación completa...
+2025-09-03 20:43:06,984 - controladores.controlador_routes - INFO - Inicializado
+2025-09-03 20:43:07,020 - controladores.Controlador_selector - WARNING - [ContractManager] ⚠️ Tipo no válido: serv_mantenimiento, usando 'Servicios' por defecto
+2025-09-03 20:43:07,025 - controladores.controlador_calculos - INFO - Limpiando campos por falta de ofertas válidas
+2025-09-03 20:43:07,027 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-03 20:43:07,037 - controladores.controlador_routes - INFO - Inicializado
+2025-09-03 20:43:07,045 - controladores.controlador_calculos - INFO - Iniciando cálculo de liquidación completa...
+2025-09-03 20:43:07,049 - controladores.controlador_json - INFO - Escritura realizada en: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-03 20:43:07,049 - controladores.controlador_json - INFO - Contrato actualizado: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-03 20:43:07,049 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] 🔄 Cargando widgets para: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-03 20:43:07,058 - controladores.controlador_calculos - INFO - Iniciando cálculo de liquidación completa...
+2025-09-03 20:43:07,078 - controladores.controlador_routes - INFO - Inicializado
+2025-09-03 20:43:07,125 - controladores.Controlador_selector - WARNING - [ContractManager] ⚠️ Tipo no válido: serv_mantenimiento, usando 'Servicios' por defecto
+2025-09-03 20:43:07,130 - controladores.controlador_calculos - INFO - Limpiando campos por falta de ofertas válidas
+2025-09-03 20:43:07,130 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-03 20:43:07,131 - controladores.controlador_fases_documentos - WARNING - [ControladorFases] ⚠️ No se encontraron datos para OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-03 20:43:07,132 - controladores.controlador_json - INFO - Escritura realizada en: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-03 20:43:07,132 - controladores.controlador_json - INFO - Contrato actualizado: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-03 20:43:54,079 - controladores.controlador_json - INFO - Escritura realizada en: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-03 20:43:54,079 - controladores.controlador_json - INFO - Contrato actualizado: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-03 20:43:54,080 - controladores.controlador_json - INFO - Empresas guardadas: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES → 1 empresas

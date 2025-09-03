@@ -6,6 +6,9 @@ import os
 import sys
 from pathlib import Path
 from typing import Optional
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ControladorRutas:
@@ -16,9 +19,9 @@ class ControladorRutas:
         self._es_ejecutable = self._detectar_si_es_ejecutable()
         self._inicializar_rutas()
         
-        print(f"[ControladorRutas] Inicializado")
-        print(f"[ControladorRutas] Base path: {self.get_base_path()}")
-        print(f"[ControladorRutas] Es ejecutable: {self._es_ejecutable}")
+        logger.info("Inicializado")
+        logger.debug(f"Base path: {self.get_base_path()}")
+        logger.debug(f"Es ejecutable: {self._es_ejecutable}")
     
     def _detectar_si_es_ejecutable(self) -> bool:
         """Detectar si estamos ejecutándose desde un ejecutable empaquetado"""
@@ -159,11 +162,11 @@ class ControladorRutas:
         
         for ruta in posibles_rutas:
             if os.path.exists(ruta):
-                print(f"[ControladorRutas] Plantilla encontrada: {nombre_plantilla} -> {ruta}")
+                logger.debug(f"Plantilla encontrada: {nombre_plantilla} -> {ruta}")
                 return ruta
         
-        print(f"[ControladorRutas] Plantilla no encontrada: {nombre_plantilla}")
-        print(f"[ControladorRutas] Buscado en: {posibles_rutas}")
+        logger.warning(f"Plantilla no encontrada: {nombre_plantilla}")
+        logger.debug(f"Buscado en: {posibles_rutas}")
         return None
     
     # =================== RUTAS DE INTERFAZ UI ===================
@@ -299,7 +302,7 @@ class ControladorRutas:
         for carpeta in carpetas_requeridas:
             ruta_carpeta = os.path.join(self._base_path, carpeta)
             if not os.path.exists(ruta_carpeta):
-                print(f"[ControladorRutas] Creando carpeta faltante: {carpeta}")
+                logger.info(f"Creando carpeta faltante: {carpeta}")
                 os.makedirs(ruta_carpeta, exist_ok=True)
         
         # Verificar archivos críticos
@@ -311,7 +314,7 @@ class ControladorRutas:
                 ruta_archivo = os.path.join(self._base_path, archivo)
             
             if not os.path.exists(ruta_archivo):
-                print(f"[ControladorRutas] Archivo crítico faltante: {archivo}")
+                logger.error(f"Archivo crítico faltante: {archivo}")
                 return False
         
         return True
@@ -351,7 +354,7 @@ class ControladorRutas:
         plantillas_dir = self.get_ruta_plantillas()
         
         if not os.path.exists(plantillas_dir):
-            print(f"Directorio de plantillas no existe: {plantillas_dir}")
+            logger.warning(f"Directorio de plantillas no existe: {plantillas_dir}")
             return []
         
         archivos = []
@@ -359,9 +362,9 @@ class ControladorRutas:
             if archivo.endswith('.docx'):
                 archivos.append(archivo)
         
-        print(f"\nPLANTILLAS DISPONIBLES en {plantillas_dir}:")
+        logger.info(f"Plantillas disponibles en {plantillas_dir}: {archivos}")
         for i, archivo in enumerate(archivos, 1):
-            print(f"  {i}. {archivo}")
+            logger.debug(f"  {i}. {archivo}")
         
         return archivos
 
@@ -393,7 +396,7 @@ def resource_path(relative_path: str) -> str:
 def validar_y_crear_estructura():
     """Validar y crear estructura básica de la aplicación"""
     if not rutas.validar_estructura_basica():
-        print("[ControladorRutas] Creando estructura básica...")
+        logger.info("Creando estructura básica...")
         rutas.crear_estructura_basica()
     
     return rutas.validar_estructura_basica()
@@ -403,17 +406,17 @@ def validar_y_crear_estructura():
 
 if __name__ == "__main__":
     # Test del controlador de rutas
-    print("TESTING CONTROLADOR DE RUTAS")
+    logger.info("TESTING CONTROLADOR DE RUTAS")
     
     rutas.debug_rutas()
     rutas.listar_plantillas_disponibles()
     
     # Test de funciones de conveniencia
-    print(f"\nFUNCIONES DE CONVENIENCIA:")
-    print(f"  get_base_path(): {get_base_path()}")
-    print(f"  get_obras_path(): {get_obras_path()}")
-    print(f"  resource_path('test'): {resource_path('test')}")
+    logger.info("Funciones de conveniencia:")
+    logger.debug(f"get_base_path(): {get_base_path()}")
+    logger.debug(f"get_obras_path(): {get_obras_path()}")
+    logger.debug(f"resource_path('test'): {resource_path('test')}")
     
     # Validar estructura
-    print(f"\nVALIDACION ESTRUCTURA:")
-    print(f"  Estructura valida: {validar_y_crear_estructura()}")
+    logger.info("Validación estructura:")
+    logger.info(f"Estructura válida: {validar_y_crear_estructura()}")

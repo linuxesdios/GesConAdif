@@ -5,9 +5,12 @@ Controlador JSON especializado SOLO para lectura/escritura de datos JSON
 Sin lógica de UI, solo operaciones puras de datos
 """
 import json
+import logging
 import os
 import re
 from datetime import datetime
+
+logger = logging.getLogger(__name__)
 from typing import Dict, Any, Optional, List
 from PyQt5.QtWidgets import QMessageBox
 
@@ -17,44 +20,44 @@ class GestorContratosJSON:
     def __init__(self, ruta_archivo: str):
         self.ruta_archivo = ruta_archivo
         self.datos = self._cargar_datos_iniciales()
-        print(f"[GestorContratosJSON] 📁 Inicializado con archivo: {ruta_archivo}")
+        logger.info(f"[GestorContratosJSON] 📁 Inicializado con archivo: {ruta_archivo}")
 
     def _cargar_datos_iniciales(self) -> Dict[str, Any]:
         """Cargar datos con verificación mejorada de archivos"""
         try:
-            print(f"[GestorContratosJSON] Intentando cargar: {self.ruta_archivo}")
-            print(f"[GestorContratosJSON] Archivo existe: {os.path.exists(self.ruta_archivo)}")
+            logger.debug(f"[GestorContratosJSON] Intentando cargar: {self.ruta_archivo}")
+            logger.debug(f"[GestorContratosJSON] Archivo existe: {os.path.exists(self.ruta_archivo)}")
             
             if os.path.exists(self.ruta_archivo):
                 # Verificar que el archivo no esté vacío
                 tamaño = os.path.getsize(self.ruta_archivo)
-                print(f"[GestorContratosJSON] Tamaño del archivo: {tamaño} bytes")
+                logger.debug(f"[GestorContratosJSON] Tamaño del archivo: {tamaño} bytes")
                 
                 if tamaño == 0:
-                    print(f"[GestorContratosJSON] Archivo vacío, creando estructura inicial")
+                    logger.warning(f"[GestorContratosJSON] Archivo vacío, creando estructura inicial")
                     return self._crear_estructura_inicial()
                 
                 with open(self.ruta_archivo, "r", encoding="utf-8") as archivo:
                     datos = json.load(archivo)
                     obras_count = len(datos.get('obras', []))
-                    print(f"[GestorContratosJSON] Datos cargados: {obras_count} obras")
+                    logger.info(f"[GestorContratosJSON] Datos cargados: {obras_count} obras")
                     
                     if obras_count == 0:
-                        print(f"[GestorContratosJSON] No hay obras en el archivo")
+                        logger.warning(f"[GestorContratosJSON] No hay obras en el archivo")
                     else:
                         # Mostrar nombres de las primeras 3 obras para debug
                         obras = datos.get('obras', [])
                         for i, obra in enumerate(obras[:3]):
                             nombre = obra.get('nombreObra', 'Sin nombre')
-                            print(f"[GestorContratosJSON] Obra {i+1}: {nombre}")
+                            logger.debug(f"[GestorContratosJSON] Obra {i+1}: {nombre}")
                     
                     return datos
             else:
-                print(f"[GestorContratosJSON] Archivo no existe, creando nuevo...")
+                logger.info(f"[GestorContratosJSON] Archivo no existe, creando nuevo...")
                 return self._crear_estructura_inicial()
                     
         except (json.JSONDecodeError, Exception) as e:
-            print(f"[GestorContratosJSON] Error cargando/creando JSON: {e}")
+            logger.error(f"[GestorContratosJSON] Error cargando/creando JSON: {e}")
             return {"firmantes": {}, "obras": []}
 
     def _crear_estructura_inicial(self) -> Dict[str, Any]:
@@ -80,15 +83,15 @@ class GestorContratosJSON:
         directorio = os.path.dirname(self.ruta_archivo)
         if directorio and not os.path.exists(directorio):
             os.makedirs(directorio, exist_ok=True)
-            print(f"[GestorContratosJSON] Directorio creado: {directorio}")
+            logger.info(f"[GestorContratosJSON] Directorio creado: {directorio}")
         
         # Guardar archivo inicial
         try:
             with open(self.ruta_archivo, "w", encoding="utf-8") as archivo:
                 json.dump(estructura_inicial, archivo, ensure_ascii=False, indent=2)
-            print(f"[GestorContratosJSON] BaseDatos.json creado: {self.ruta_archivo}")
+            logger.info(f"[GestorContratosJSON] BaseDatos.json creado: {self.ruta_archivo}")
         except Exception as e:
-            print(f"[GestorContratosJSON] Error creando archivo inicial: {e}")
+            logger.error(f"[GestorContratosJSON] Error creando archivo inicial: {e}")
         
         return estructura_inicial
     def recargar_datos(self) -> bool:
@@ -97,7 +100,7 @@ class GestorContratosJSON:
             self.datos = self._cargar_datos_iniciales()
             return True
         except Exception as e:
-            print(f"[GestorContratosJSON] ❌ Error recargando datos: {e}")
+            logger.error(f"[GestorContratosJSON] ❌ Error recargando datos: {e}")
             return False
 
     def guardar_datos(self) -> bool:
@@ -112,11 +115,11 @@ class GestorContratosJSON:
             with open(self.ruta_archivo, "w", encoding="utf-8") as archivo:
                 json.dump(self.datos, archivo, ensure_ascii=False, indent=2)
             
-            print(f"[GestorContratosJSON] 💾 Datos guardados exitosamente")
+            logger.info(f"[GestorContratosJSON] 💾 Datos guardados exitosamente")
             return True
             
         except Exception as e:
-            print(f"[GestorContratosJSON] ❌ Error guardando datos: {e}")
+            logger.error(f"[GestorContratosJSON] ❌ Error guardando datos: {e}")
             return False
 
     def buscar_contrato_por_nombre(self, nombre_contrato: str) -> Optional[Dict[str, Any]]:
@@ -125,7 +128,7 @@ class GestorContratosJSON:
             return None
             
         obras = self.datos.get("obras", [])
-        print(f"[GestorContratosJSON] 🔍 Buscando contrato por nombre: '{nombre_contrato}' en {len(obras)} obras")
+        logger.debug(f"[GestorContratosJSON] 🔍 Buscando contrato por nombre: '{nombre_contrato}' en {len(obras)} obras")
         
         # 🆕 DEBUG: Mostrar nombres disponibles
         for i, obra in enumerate(obras):

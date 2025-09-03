@@ -5,9 +5,13 @@ Maneja el seguimiento automático de las fases del proyecto y actualización de 
 """
 import os
 import json
+import logging
 from datetime import datetime
+
 from typing import Dict, Optional, List
 from enum import Enum
+
+logger = logging.getLogger(__name__)
 
 class FaseDocumento(Enum):
     """Enum para las fases de documentos"""
@@ -100,32 +104,32 @@ class ControladorFasesDocumentos:
             }
         }
         
-        print("[ControladorFases] ✅ Inicializado con 11 fases configuradas")
+        logger.info("[ControladorFases] ✅ Inicializado con 11 fases configuradas")
     
     def forzar_actualizar_cartas_invitacion(self, nombre_contrato: str):
         """Forzar la actualización de la fase de cartas invitación si se detecta que se generaron"""
         try:
-            print(f"[ControladorFases] 🔧 Forzando actualización de cartas invitación para {nombre_contrato}")
+            logger.info(f"[ControladorFases] 🔧 Forzando actualización de cartas invitación para {nombre_contrato}")
             fecha_actual = datetime.now().strftime("%Y-%m-%d")
             self._actualizar_fecha_generado(nombre_contrato, FaseDocumento.CARTASINVITACION, fecha_actual)
-            print(f"[ControladorFases] ✅ Cartas invitación marcadas como generadas: {fecha_actual}")
+            logger.info(f"[ControladorFases] ✅ Cartas invitación marcadas como generadas: {fecha_actual}")
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error forzando actualización de cartas invitación: {e}")
+            logger.error(f"[ControladorFases] ❌ Error forzando actualización de cartas invitación: {e}")
     
     def forzar_actualizar_cartas_adjudicacion(self, nombre_contrato: str):
         """Forzar la actualización de la fase de cartas adjudicación si se detecta que se generaron"""
         try:
-            print(f"[ControladorFases] 🔧 Forzando actualización de cartas adjudicación para {nombre_contrato}")
+            logger.info(f"[ControladorFases] 🔧 Forzando actualización de cartas adjudicación para {nombre_contrato}")
             fecha_actual = datetime.now().strftime("%Y-%m-%d")
             self._actualizar_fecha_generado(nombre_contrato, FaseDocumento.CARTASADJUDICACION, fecha_actual)
-            print(f"[ControladorFases] ✅ Cartas adjudicación marcadas como generadas: {fecha_actual}")
+            logger.info(f"[ControladorFases] ✅ Cartas adjudicación marcadas como generadas: {fecha_actual}")
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error forzando actualización de cartas adjudicación: {e}")
+            logger.error(f"[ControladorFases] ❌ Error forzando actualización de cartas adjudicación: {e}")
     
     def conectar_campos_ui(self):
         """Conectar los campos de fecha de la UI"""
         if not self.main_window:
-            print("[ControladorFases] ⚠️ No hay ventana principal para conectar")
+            logger.warning("[ControladorFases] ⚠️ No hay ventana principal para conectar")
             return
         
         try:
@@ -142,10 +146,10 @@ class ControladorFasesDocumentos:
                     widget.dateChanged.connect(lambda date, f=fase: self._on_fecha_firmado_cambiada(f, date))
                     campos_conectados += 1
                     
-            print(f"[ControladorFases] ✅ {campos_conectados} campos de firmado conectados")
+            logger.info(f"[ControladorFases] ✅ {campos_conectados} campos de firmado conectados")
             
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error conectando campos: {e}")
+            logger.error(f"[ControladorFases] ❌ Error conectando campos: {e}")
     
     def cargar_fases_desde_json(self, nombre_contrato: str):
         """Cargar las fases desde el JSON y actualizar la UI"""
@@ -153,12 +157,12 @@ class ControladorFasesDocumentos:
             # Obtener datos del contrato
             datos_contrato = self._obtener_datos_contrato(nombre_contrato)
             if not datos_contrato:
-                print(f"[ControladorFases] ⚠️ No se encontraron datos para {nombre_contrato}")
+                logger.warning(f"[ControladorFases] ⚠️ No se encontraron datos para {nombre_contrato}")
                 return
                 
             # 🆕 INICIALIZAR estructura de fases si no existe
             if "fases_documentos" not in datos_contrato:
-                print(f"[ControladorFases] 🆕 Inicializando estructura de fases para {nombre_contrato}")
+                logger.info(f"[ControladorFases] 🆕 Inicializando estructura de fases para {nombre_contrato}")
                 datos_contrato["fases_documentos"] = {}
                 # Inicializar todas las fases vacías
                 for fase in FaseDocumento:
@@ -168,7 +172,7 @@ class ControladorFasesDocumentos:
                     }
                 # Guardar la estructura inicializada
                 self._guardar_datos_contrato(nombre_contrato, datos_contrato)
-                print(f"[ControladorFases] ✅ Estructura de fases inicializada y guardada")
+                logger.info(f"[ControladorFases] ✅ Estructura de fases inicializada y guardada")
             
             # Obtener fases_documentos del JSON
             fases_datos = datos_contrato.get("fases_documentos", {})
@@ -176,29 +180,29 @@ class ControladorFasesDocumentos:
             # Actualizar campos en la UI
             self._actualizar_campos_ui(fases_datos)
             
-            print(f"[ControladorFases] ✅ Fases cargadas para {nombre_contrato}")
+            logger.info(f"[ControladorFases] ✅ Fases cargadas para {nombre_contrato}")
             
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error cargando fases: {e}")
+            logger.error(f"[ControladorFases] ❌ Error cargando fases: {e}")
     
     def marcar_documento_generado(self, tipo_documento: str, nombre_contrato: str = None):
         """Marcar un documento como generado automáticamente"""
         try:
-            print(f"[ControladorFases] 📥 Recibiendo notificación: {tipo_documento} para contrato: {nombre_contrato}")
+            logger.info(f"[ControladorFases] 📥 Recibiendo notificación: {tipo_documento} para contrato: {nombre_contrato}")
             
             if not nombre_contrato and self.main_window:
                 # Intentar obtener el contrato actual
                 if hasattr(self.main_window, 'comboBox'):
                     nombre_contrato = self.main_window.comboBox.currentText()
-                    print(f"[ControladorFases] 🔍 Contrato obtenido desde comboBox: {nombre_contrato}")
+                    logger.debug(f"[ControladorFases] 🔍 Contrato obtenido desde comboBox: {nombre_contrato}")
             
             if not nombre_contrato:
-                print("[ControladorFases] ⚠️ No se pudo determinar el contrato actual")
+                logger.warning("[ControladorFases] ⚠️ No se pudo determinar el contrato actual")
                 return
             
             # Encontrar la fase correspondiente al tipo de documento
             fase_encontrada = None
-            print(f"[ControladorFases] 🔍 Buscando fase para documento: {tipo_documento}")
+            logger.debug(f"[ControladorFases] 🔍 Buscando fase para documento: {tipo_documento}")
             
             # Obtener el valor correcto del tipo de documento
             if hasattr(tipo_documento, 'value'):
@@ -206,31 +210,31 @@ class ControladorFasesDocumentos:
             else:
                 documento_valor = str(tipo_documento)
             
-            print(f"[ControladorFases] 🔍 Valor del documento: {documento_valor}")
+            logger.debug(f"[ControladorFases] 🔍 Valor del documento: {documento_valor}")
             
             for fase, config in self.fases_config.items():
-                print(f"[ControladorFases] 🔍 Verificando fase {fase.value}: {config['documentos_relacionados']}")
+                logger.debug(f"[ControladorFases] 🔍 Verificando fase {fase.value}: {config['documentos_relacionados']}")
                 if documento_valor.lower() in config["documentos_relacionados"]:
                     fase_encontrada = fase
-                    print(f"[ControladorFases] ✅ Fase encontrada: {fase.value}")
+                    logger.info(f"[ControladorFases] ✅ Fase encontrada: {fase.value}")
                     break
             
             if not fase_encontrada:
-                print(f"[ControladorFases] ⚠️ No se encontró fase para documento: {tipo_documento}")
-                print(f"[ControladorFases] 📋 Fases disponibles:")
+                logger.warning(f"[ControladorFases] ⚠️ No se encontró fase para documento: {tipo_documento}")
+                logger.warning(f"[ControladorFases] 📋 Fases disponibles:")
                 for fase, config in self.fases_config.items():
-                    print(f"[ControladorFases]    {fase.value}: {config['documentos_relacionados']}")
+                    logger.warning(f"[ControladorFases]    {fase.value}: {config['documentos_relacionados']}")
                 return
             
             # Marcar como generado
             fecha_actual = datetime.now().strftime("%Y-%m-%d")
-            print(f"[ControladorFases] 💾 Marcando documento como generado: {fecha_actual}")
+            logger.info(f"[ControladorFases] 💾 Marcando documento como generado: {fecha_actual}")
             self._actualizar_fecha_generado(nombre_contrato, fase_encontrada, fecha_actual)
             
-            print(f"[ControladorFases] ✅ Documento {tipo_documento} marcado como generado en fase {fase_encontrada.value}")
+            logger.info(f"[ControladorFases] ✅ Documento {tipo_documento} marcado como generado en fase {fase_encontrada.value}")
             
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error marcando documento: {e}")
+            logger.error(f"[ControladorFases] ❌ Error marcando documento: {e}")
             import traceback
             traceback.print_exc()
     
@@ -239,9 +243,9 @@ class ControladorFasesDocumentos:
         try:
             fecha_actual = datetime.now().strftime("%Y-%m-%d")
             self._actualizar_fecha_generado(nombre_contrato, FaseDocumento.CREACION, fecha_actual)
-            print(f"[ControladorFases] ✅ Proyecto {nombre_contrato} marcado como creado")
+            logger.info(f"[ControladorFases] ✅ Proyecto {nombre_contrato} marcado como creado")
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error marcando creación: {e}")
+            logger.error(f"[ControladorFases] ❌ Error marcando creación: {e}")
     
     def obtener_resumen_progreso(self, nombre_contrato: str) -> Dict:
         """Obtener resumen del progreso del proyecto"""
@@ -278,7 +282,7 @@ class ControladorFasesDocumentos:
             }
             
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error obteniendo resumen: {e}")
+            logger.error(f"[ControladorFases] ❌ Error obteniendo resumen: {e}")
             return {"generados": 0, "firmados": 0, "total": 11, "proxima_fase": None}
     
     def obtener_historial_actividad(self, nombre_contrato: str, limite: int = 10) -> List[Dict]:
@@ -319,7 +323,7 @@ class ControladorFasesDocumentos:
             return actividades[:limite]
             
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error obteniendo historial: {e}")
+            logger.error(f"[ControladorFases] ❌ Error obteniendo historial: {e}")
             return []
     
     def _actualizar_fecha_generado(self, nombre_contrato: str, fase: FaseDocumento, fecha: str):
@@ -342,10 +346,10 @@ class ControladorFasesDocumentos:
                     widget.setDate(fecha_qt)
                     # ✅ REACTIVAR señales
                     widget.blockSignals(False)
-                    print(f"[ControladorFases] 🎯 UI actualizada para {field_name}: {fecha}")
+                    logger.debug(f"[ControladorFases] 🎯 UI actualizada para {field_name}: {fecha}")
                     
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error actualizando fecha generado: {e}")
+            logger.error(f"[ControladorFases] ❌ Error actualizando fecha generado: {e}")
     
     def _on_fecha_firmado_cambiada(self, fase: FaseDocumento, fecha):
         """Callback cuando cambia una fecha de firmado"""
@@ -360,10 +364,10 @@ class ControladorFasesDocumentos:
             fecha_str = fecha.toString("yyyy-MM-dd")
             self._actualizar_json(nombre_contrato, fase.value, "firmado", fecha_str)
             
-            print(f"[ControladorFases] ✅ Fecha firmado actualizada: {fase.value} -> {fecha_str}")
+            logger.info(f"[ControladorFases] ✅ Fecha firmado actualizada: {fase.value} -> {fecha_str}")
             
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error actualizando fecha firmado: {e}")
+            logger.error(f"[ControladorFases] ❌ Error actualizando fecha firmado: {e}")
     
     def _actualizar_campos_ui(self, fases_datos: Dict):
         """Actualizar todos los campos de la UI con datos del JSON"""

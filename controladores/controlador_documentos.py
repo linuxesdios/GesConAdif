@@ -6,12 +6,17 @@ import os
 import re
 import sys, json
 import subprocess
+import logging
 from typing import Dict, Any, List, Optional
+
+logger = logging.getLogger(__name__)
 from docx import Document
 from docx.shared import Pt
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from PyQt5.QtWidgets import QMessageBox
+
+logger = logging.getLogger(__name__)
 
 from helpers_py import (
     resource_path, limpiar_nombre_archivo, formatear_numero_espanol
@@ -21,7 +26,7 @@ try:
     from .controlador_pdf_unificado import mostrar_dialogo_pdf
     PDF_DISPONIBLE = True
 except Exception as e:
-    print(f"[ControladorDocumentos] Módulo PDF no disponible: {e}")
+    logger.warning(f"[ControladorDocumentos] Módulo PDF no disponible: {e}")
     PDF_DISPONIBLE = False
     mostrar_dialogo_pdf = None
 
@@ -76,9 +81,9 @@ class ControladorDocumentos:
             if self.main_window and hasattr(self.main_window, 'gestor_archivos_unificado'):
                 self.gestor_archivos = self.main_window.gestor_archivos_unificado
             else:
-                print(f"[ControladorDocumentos] [!] Gestor unificado no disponible")
+                logger.warning(f"[ControladorDocumentos] [!] Gestor unificado no disponible")
         except Exception as e:
-            print(f"[ControladorDocumentos] [X] Error configurando gestor: {e}")
+            logger.error(f"[ControladorDocumentos] [X] Error configurando gestor: {e}")
     
     def _configurar_tracker_documentos(self):
         """Configurar tracker de documentos generados"""
@@ -86,10 +91,10 @@ class ControladorDocumentos:
             from .controlador_resumen import TrackerDocumentos, TipoDocumento
             self.tracker = TrackerDocumentos()
             self.TipoDocumento = TipoDocumento
-            print(f"[ControladorDocumentos] ✅ Tracker de documentos configurado")
+            logger.info(f"[ControladorDocumentos] ✅ Tracker de documentos configurado")
             return True
         except Exception as e:
-            print(f"[ControladorDocumentos] [!] Error configurando tracker: {e}")
+            logger.error(f"[ControladorDocumentos] [!] Error configurando tracker: {e}")
             self.tracker = None
             return False
     
@@ -100,7 +105,7 @@ class ControladorDocumentos:
         try:
             return self._generar_documento_con_sustitucion(tipo_documento, datos_contrato, nombre_archivo)
         except Exception as e:
-            print(f"[ControladorDocumentos] Error generando documento: {e}")
+            logger.error(f"[ControladorDocumentos] Error generando documento: {e}")
             return False
     
     def _sustituir_variables_texto(self, texto: str, datos_json: Dict[str, Any]) -> str:
@@ -120,7 +125,7 @@ class ControladorDocumentos:
             
             return re.sub(patron, reemplazar_variable, texto)
         except Exception as e:
-            print(f"[ControladorDocumentos] Error sustituyendo variables: {e}")
+            logger.error(f"[ControladorDocumentos] Error sustituyendo variables: {e}")
             return texto
     
     def _validar_datos_basicos_contrato(self, datos_contrato: Dict[str, Any]) -> bool:
@@ -151,15 +156,15 @@ class ControladorDocumentos:
                 contrato_data = self.main_window.controlador_json.leer_contrato_completo(nombre_contrato)
                 if contrato_data and 'nombreCarpeta' in contrato_data:
                     nombre_carpeta = contrato_data['nombreCarpeta']
-                    print(f"[ControladorDocumentos] 📁 Nombre de carpeta desde JSON: {nombre_carpeta}")
+                    logger.info(f"[ControladorDocumentos] 📁 Nombre de carpeta desde JSON: {nombre_carpeta}")
                     return nombre_carpeta
             
             # Fallback: usar nombre del contrato si no hay nombreCarpeta en JSON
-            print(f"[ControladorDocumentos] ⚠️ Usando nombre de contrato como fallback: {nombre_contrato}")
+            logger.warning(f"[ControladorDocumentos] ⚠️ Usando nombre de contrato como fallback: {nombre_contrato}")
             return nombre_contrato
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error obteniendo nombre carpeta: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error obteniendo nombre carpeta: {e}")
             return nombre_contrato  # Fallback seguro
     
     def _iniciar_tracking_documento(self, tipo_documento, nombre_documento, plantilla=""):
@@ -175,17 +180,17 @@ class ControladorDocumentos:
                 plantilla
             )
         except Exception as e:
-            print(f"[ControladorDocumentos] Error iniciando tracking: {e}")
+            logger.error(f"[ControladorDocumentos] Error iniciando tracking: {e}")
             return None
     
     def _completar_tracking_documento(self, documento_id, ruta_archivo, observaciones=""):
         """Completar tracking de un documento generado exitosamente"""
-        print(f"[ControladorDocumentos] 🔍 Completando tracking - ID: {documento_id}")
-        print(f"[ControladorDocumentos] 🔍 Tracker: {self.tracker is not None}")
-        print(f"[ControladorDocumentos] 🔍 Contract_name: {hasattr(self, 'contract_name')}")
+        logger.debug(f"[ControladorDocumentos] 🔍 Completando tracking - ID: {documento_id}")
+        logger.debug(f"[ControladorDocumentos] 🔍 Tracker: {self.tracker is not None}")
+        logger.debug(f"[ControladorDocumentos] 🔍 Contract_name: {hasattr(self, 'contract_name')}")
         
         if not self.tracker or not documento_id or not hasattr(self, 'contract_name'):
-            print(f"[ControladorDocumentos] ⚠️ Tracking no completado - faltan requisitos")
+            logger.warning(f"[ControladorDocumentos] ⚠️ Tracking no completado - faltan requisitos")
             return
         
         try:
@@ -199,16 +204,16 @@ class ControladorDocumentos:
             # ✅ NOTA: La fase ya se actualizó durante la generación
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error completando tracking: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error completando tracking: {e}")
     
     def _actualizar_fase_en_generacion(self, tipo_documento: str):
         """Actualizar la fase del documento DURANTE la generación"""
         try:
-            print(f"[ControladorDocumentos] 🎯 Actualizando fase durante generación: {tipo_documento}")
+            logger.info(f"[ControladorDocumentos] 🎯 Actualizando fase durante generación: {tipo_documento}")
             
             # Verificar disponibilidad del controlador de fases
             if not self.main_window or not hasattr(self.main_window, 'controlador_fases'):
-                print(f"[ControladorDocumentos] ⚠️ Controlador de fases no disponible")
+                logger.warning(f"[ControladorDocumentos] ⚠️ Controlador de fases no disponible")
                 return
             
             # Obtener nombre del contrato actual
@@ -219,53 +224,53 @@ class ControladorDocumentos:
                 nombre_contrato = self.main_window.comboBox.currentText()
             
             if not nombre_contrato:
-                print(f"[ControladorDocumentos] ⚠️ No se pudo determinar el contrato actual")
+                logger.warning(f"[ControladorDocumentos] ⚠️ No se pudo determinar el contrato actual")
                 return
             
             # Marcar documento como generado en el controlador de fases
             self.main_window.controlador_fases.marcar_documento_generado(tipo_documento, nombre_contrato)
-            print(f"[ControladorDocumentos] ✅ Fase actualizada durante generación: {tipo_documento}")
+            logger.info(f"[ControladorDocumentos] ✅ Fase actualizada durante generación: {tipo_documento}")
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error actualizando fase durante generación: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error actualizando fase durante generación: {e}")
             import traceback
             traceback.print_exc()
     
     def _notificar_documento_generado(self, documento_id: str, ruta_archivo: str):
         """Notificar al controlador de fases que se generó un documento"""
         try:
-            print(f"[ControladorDocumentos] 🔔 Notificando documento generado: {documento_id}")
+            logger.info(f"[ControladorDocumentos] 🔔 Notificando documento generado: {documento_id}")
             
             # Determinar tipo de documento por el ID o la ruta
             tipo_documento = self._detectar_tipo_documento(documento_id, ruta_archivo)
-            print(f"[ControladorDocumentos] 📋 Tipo detectado: {tipo_documento}")
+            logger.debug(f"[ControladorDocumentos] 📋 Tipo detectado: {tipo_documento}")
             
             # Verificar disponibilidad del controlador de fases
-            print(f"[ControladorDocumentos] 🔍 Main window: {self.main_window is not None}")
-            print(f"[ControladorDocumentos] 🔍 Tiene controlador_fases: {hasattr(self.main_window, 'controlador_fases') if self.main_window else False}")
+            logger.debug(f"[ControladorDocumentos] 🔍 Main window: {self.main_window is not None}")
+            logger.debug(f"[ControladorDocumentos] 🔍 Tiene controlador_fases: {hasattr(self.main_window, 'controlador_fases') if self.main_window else False}")
             
             # Notificar al controlador de fases si está disponible
             if self.main_window and hasattr(self.main_window, 'controlador_fases'):
-                print(f"[ControladorDocumentos] ➡️ Enviando a controlador de fases: {tipo_documento} para {self.contract_name}")
+                logger.info(f"[ControladorDocumentos] ➡️ Enviando a controlador de fases: {tipo_documento} para {self.contract_name}")
                 self.main_window.controlador_fases.marcar_documento_generado(
                     tipo_documento, self.contract_name
                 )
-                print(f"[ControladorDocumentos] ✅ Fase actualizada para documento: {tipo_documento}")
+                logger.info(f"[ControladorDocumentos] ✅ Fase actualizada para documento: {tipo_documento}")
             else:
-                print(f"[ControladorDocumentos] ❌ Controlador de fases no disponible")
+                logger.warning(f"[ControladorDocumentos] ❌ Controlador de fases no disponible")
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ⚠️ Error notificando fases: {e}")
+            logger.error(f"[ControladorDocumentos] ⚠️ Error notificando fases: {e}")
             import traceback
             traceback.print_exc()
     
     def _detectar_tipo_documento(self, documento_id: str, ruta_archivo: str) -> str:
         """Detectar el tipo de documento basado en ID o ruta"""
-        print(f"[ControladorDocumentos] 🔍 Detectando tipo - ID: {documento_id}, Ruta: {ruta_archivo}")
+        logger.debug(f"[ControladorDocumentos] 🔍 Detectando tipo - ID: {documento_id}, Ruta: {ruta_archivo}")
         
         # Convertir a minúsculas para comparación
         texto_busqueda = f"{documento_id} {ruta_archivo}".lower()
-        print(f"[ControladorDocumentos] 🔍 Texto de búsqueda: {texto_busqueda}")
+        logger.debug(f"[ControladorDocumentos] 🔍 Texto de búsqueda: {texto_busqueda}")
         
         # Mapeo mejorado de términos a tipos de documento
         mapeo_tipos = {
@@ -283,17 +288,17 @@ class ControladorDocumentos:
         for tipo, palabras_clave in mapeo_tipos.items():
             for palabra in palabras_clave:
                 if palabra in texto_busqueda:
-                    print(f"[ControladorDocumentos] ✅ Tipo detectado: {tipo} (coincidencia: {palabra})")
+                    logger.debug(f"[ControladorDocumentos] ✅ Tipo detectado: {tipo} (coincidencia: {palabra})")
                     return tipo
         
         # Si no se encuentra, intentar extraer del nombre del archivo
         nombre_archivo = os.path.basename(ruta_archivo).lower() if ruta_archivo else ""
-        print(f"[ControladorDocumentos] 🔍 Verificando nombre archivo: {nombre_archivo}")
+        logger.debug(f"[ControladorDocumentos] 🔍 Verificando nombre archivo: {nombre_archivo}")
         
         for tipo, palabras_clave in mapeo_tipos.items():
             for palabra in palabras_clave:
                 if palabra in nombre_archivo:
-                    print(f"[ControladorDocumentos] ✅ Tipo detectado por archivo: {tipo} (coincidencia: {palabra})")
+                    logger.debug(f"[ControladorDocumentos] ✅ Tipo detectado por archivo: {tipo} (coincidencia: {palabra})")
                     return tipo
         
         # También verificar el tracker si está disponible para obtener contexto
@@ -304,13 +309,13 @@ class ControladorDocumentos:
                     documentos = self.tracker.obtener_documentos_contrato(self.contract_name)
                     for doc in documentos:
                         if doc.id == documento_id:
-                            print(f"[ControladorDocumentos] 🔍 Info del tracker: {doc.tipo.value if hasattr(doc.tipo, 'value') else doc.tipo}")
+                            logger.debug(f"[ControladorDocumentos] 🔍 Info del tracker: {doc.tipo.value if hasattr(doc.tipo, 'value') else doc.tipo}")
                             return str(doc.tipo.value if hasattr(doc.tipo, 'value') else doc.tipo)
             except Exception as e:
-                print(f"[ControladorDocumentos] ⚠️ Error obteniendo info del tracker: {e}")
+                logger.warning(f"[ControladorDocumentos] ⚠️ Error obteniendo info del tracker: {e}")
         
         # Fallback: devolver tipo genérico
-        print(f"[ControladorDocumentos] ⚠️ No se pudo detectar tipo específico, usando 'documento'")
+        logger.warning(f"[ControladorDocumentos] ⚠️ No se pudo detectar tipo específico, usando 'documento'")
         return "documento"
     
     def _error_tracking_documento(self, documento_id, error):
@@ -325,7 +330,7 @@ class ControladorDocumentos:
                 str(error)
             )
         except Exception as e:
-            print(f"[ControladorDocumentos] Error registrando error en tracking: {e}")
+            logger.error(f"[ControladorDocumentos] Error registrando error en tracking: {e}")
     
     def _mapear_tipo_documento(self, tipo_funcion: str):
         """Mapear tipo de función a tipo de documento para tracking"""
@@ -361,16 +366,16 @@ class ControladorDocumentos:
             if exito:
                 # Verificar que el archivo se haya generado correctamente
                 if os.path.exists(archivo_salida):
-                    print(f"[ControladorDocumentos] ✅ Archivo generado: {archivo_salida}")
+                    logger.info(f"[ControladorDocumentos] ✅ Archivo generado: {archivo_salida}")
                     return True, archivo_salida
                 else:
-                    print(f"[ControladorDocumentos] ⚠️ Archivo esperado no encontrado: {archivo_salida}")
+                    logger.warning(f"[ControladorDocumentos] ⚠️ Archivo esperado no encontrado: {archivo_salida}")
                     return True, ""
             else:
                 return False, ""
                 
         except Exception as e:
-            print(f"[ControladorDocumentos] Error en generación tracked: {e}")
+            logger.error(f"[ControladorDocumentos] Error en generación tracked: {e}")
             return False, ""
     
     def _obtener_carpeta_contrato_actual(self):
@@ -387,7 +392,7 @@ class ControladorDocumentos:
             
             return None
         except Exception as e:
-            print(f"[ControladorDocumentos] Error obteniendo carpeta contrato: {e}")
+            logger.error(f"[ControladorDocumentos] Error obteniendo carpeta contrato: {e}")
             return None
 
     # ===== NUEVA FUNCIÓN A AÑADIR =====
@@ -402,15 +407,15 @@ class ControladorDocumentos:
                 if carpeta_path:
                     return carpeta_path
                 else:
-                    print(f"[ControladorDocumentos] ❌ Gestor no retornó carpeta")
+                    logger.error(f"[ControladorDocumentos] ❌ Gestor no retornó carpeta")
             else:
-                print(f"[ControladorDocumentos] ⚠️ Gestor no disponible")
+                logger.warning(f"[ControladorDocumentos] ⚠️ Gestor no disponible")
             
             # Fallback al método anterior
             return self._crear_o_obtener_carpeta_contrato(contract_data)
                 
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error obteniendo carpeta: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error obteniendo carpeta: {e}")
             return self._crear_o_obtener_carpeta_contrato(contract_data)
 
     # ===== NUEVA FUNCIÓN A AÑADIR =====
@@ -446,7 +451,7 @@ class ControladorDocumentos:
             return subcarpeta
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error determinando subcarpeta: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error determinando subcarpeta: {e}")
             return '04-documentos-sin-firmar'
 
     
@@ -479,15 +484,15 @@ class ControladorDocumentos:
             # Construir nombre de archivo según tipo
             if es_obra:
                 nombre_plantilla = f"{plantilla_base}_obra.docx"
-                print(f"[ControladorDocumentos] [OBRA] Tipo obra/obra_mantenimiento - Usando plantilla OBRA: {nombre_plantilla}")
+                logger.debug(f"[ControladorDocumentos] [OBRA] Tipo obra/obra_mantenimiento - Usando plantilla OBRA: {nombre_plantilla}")
             else:
                 nombre_plantilla = f"{plantilla_base}_servicio.docx"
-                print(f"[ControladorDocumentos] [SERVICIO] Tipo servicio/serv_mantenimiento - Usando plantilla SERVICIO: {nombre_plantilla}")
+                logger.debug(f"[ControladorDocumentos] [SERVICIO] Tipo servicio/serv_mantenimiento - Usando plantilla SERVICIO: {nombre_plantilla}")
             
             return nombre_plantilla
             
         except Exception as e:
-            print(f"[ControladorDocumentos] [X] Error obteniendo plantilla dinámica: {e}")
+            logger.error(f"[ControladorDocumentos] [X] Error obteniendo plantilla dinámica: {e}")
             # Fallback al mapeo legacy
             return self.mapeo_plantillas.get(tipo_funcion, f"{tipo_funcion}.docx")
 
@@ -510,7 +515,7 @@ class ControladorDocumentos:
             self._generar_documento_simple('generar_acta_inicio', 'Acta_Inicio', "Acta de Inicio")
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error en generar_acta_inicio: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error en generar_acta_inicio: {e}")
             import traceback
             traceback.print_exc()
             self._mostrar_error(f"Error inesperado generando Acta de Inicio: {str(e)}")
@@ -618,7 +623,7 @@ class ControladorDocumentos:
             self._generar_documento_simple('generar_contrato', 'Contrato', "Contrato")
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error en generar_contrato: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error en generar_contrato: {e}")
             import traceback
             traceback.print_exc()
             self._mostrar_error(f"Error inesperado generando Contrato: {str(e)}")
@@ -630,7 +635,7 @@ class ControladorDocumentos:
         documento_id = None
         try:
             if not self._validar_contrato_seleccionado():
-                print(f"[ControladorDocumentos] ❌ Validación falló")
+                logger.warning(f"[ControladorDocumentos] ❌ Validación falló")
                 return False
             
             contract_data = self._obtener_datos_contrato_actual()
@@ -678,7 +683,7 @@ class ControladorDocumentos:
             if documento_id:
                 self._error_tracking_documento(documento_id, f"Excepción: {str(e)}")
             
-            print(f"[ControladorDocumentos] ❌ Excepción: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Excepción: {e}")
             import traceback
             traceback.print_exc()
             return False
@@ -690,28 +695,28 @@ class ControladorDocumentos:
             # Obtener plantilla dinámicamente según tipo de contrato
             nombre_plantilla = self._obtener_nombre_plantilla_dinamico(tipo_funcion)
             if not nombre_plantilla:
-                print(f"[ControladorDocumentos] ❌ No se encontró plantilla para: {tipo_funcion}")
+                logger.error(f"[ControladorDocumentos] ❌ No se encontró plantilla para: {tipo_funcion}")
                 return False
             
-            print(f"[ControladorDocumentos] 📄 Usando plantilla: {nombre_plantilla}")
+            logger.info(f"[ControladorDocumentos] 📄 Usando plantilla: {nombre_plantilla}")
             
             ruta_plantilla = self._obtener_ruta_plantilla(nombre_plantilla)
             if not ruta_plantilla:
-                print(f"[ControladorDocumentos] ❌ No se encontró archivo de plantilla: {nombre_plantilla}")
+                logger.error(f"[ControladorDocumentos] ❌ No se encontró archivo de plantilla: {nombre_plantilla}")
                 # 🆕 FALLBACK: Intentar con plantilla legacy
                 nombre_plantilla_legacy = self.mapeo_plantillas.get(tipo_funcion)
                 if nombre_plantilla_legacy:
-                    print(f"[ControladorDocumentos] ⚠️ Fallback a plantilla legacy: {nombre_plantilla_legacy}")
+                    logger.warning(f"[ControladorDocumentos] ⚠️ Fallback a plantilla legacy: {nombre_plantilla_legacy}")
                     ruta_plantilla = self._obtener_ruta_plantilla(nombre_plantilla_legacy)
                     
                 if not ruta_plantilla:
-                    print(f"[ControladorDocumentos] ❌ No se encontró archivo de plantilla ni legacy")
+                    logger.error(f"[ControladorDocumentos] ❌ No se encontró archivo de plantilla ni legacy")
                     return False
             
             # 🆕 USAR GESTOR UNIFICADO PARA OBTENER CARPETA
             carpeta_contrato = self._obtener_carpeta_con_gestor_unificado(contract_data)
             if not carpeta_contrato:
-                print(f"[ControladorDocumentos] ❌ No se pudo obtener carpeta del contrato")
+                logger.error(f"[ControladorDocumentos] ❌ No se pudo obtener carpeta del contrato")
                 return False
             
             # 🆕 DETERMINAR SUBCARPETA SEGÚN TIPO DE DOCUMENTO
@@ -736,7 +741,7 @@ class ControladorDocumentos:
             return False
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error generando documento: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error generando documento: {e}")
             return False
 
     def _sustituir_variables_en_documento(self, ruta_plantilla: str, archivo_salida: str, contract_data: Dict[str, Any]) -> bool:
@@ -745,7 +750,7 @@ class ControladorDocumentos:
             
             # Verificar plantilla
             if not os.path.exists(ruta_plantilla):
-                print(f"[ControladorDocumentos] ❌ Plantilla no existe: {ruta_plantilla}")
+                logger.error(f"[ControladorDocumentos] ❌ Plantilla no existe: {ruta_plantilla}")
                 return False
             
             # Preparar datos para sustitución
@@ -758,7 +763,7 @@ class ControladorDocumentos:
             
             if campos_vacios:
                 if not self._mostrar_popup_campos_vacios(campos_vacios, os.path.basename(archivo_salida)):
-                    print(f"[ControladorDocumentos] ⚠️ Generación cancelada por campos vacíos")
+                    logger.warning(f"[ControladorDocumentos] ⚠️ Generación cancelada por campos vacíos")
                     return False
             
             # Abrir documento
@@ -772,7 +777,7 @@ class ControladorDocumentos:
                     vars_parrafo = self._procesar_paragraph_con_variables(paragraph, datos_completos)
                     variables_encontradas.update(vars_parrafo)
                 except Exception as e:
-                    print(f"[ControladorDocumentos] ⚠️ Error en párrafo {i}: {e}")
+                    logger.warning(f"[ControladorDocumentos] ⚠️ Error en párrafo {i}: {e}")
                     continue
             
             # Procesar tablas
@@ -784,7 +789,7 @@ class ControladorDocumentos:
                                 vars_celda = self._procesar_paragraph_con_variables(paragraph, datos_completos)
                                 variables_encontradas.update(vars_celda)
                 except Exception as e:
-                    print(f"[ControladorDocumentos] ⚠️ Error en tabla {i}: {e}")
+                    logger.warning(f"[ControladorDocumentos] ⚠️ Error en tabla {i}: {e}")
                     continue
             
             # Procesar headers y footers
@@ -799,7 +804,7 @@ class ControladorDocumentos:
                             vars_footer = self._procesar_paragraph_con_variables(paragraph, datos_completos)
                             variables_encontradas.update(vars_footer)
             except Exception as e:
-                print(f"[ControladorDocumentos] ⚠️ Error en headers/footers: {e}")
+                logger.warning(f"[ControladorDocumentos] ⚠️ Error en headers/footers: {e}")
             
             # 🆕 NUEVO: Procesar marcadores especiales de tabla (como antes)
             try:
@@ -807,7 +812,7 @@ class ControladorDocumentos:
                 if empresas_lista:
                     self._sustituir_marcadores_tabla(doc, empresas_lista)
             except Exception as e:
-                print(f"[ControladorDocumentos] ⚠️ Error en tablas especiales: {e}")
+                logger.warning(f"[ControladorDocumentos] ⚠️ Error en tablas especiales: {e}")
             
             # Crear directorio de salida
             directorio_salida = os.path.dirname(archivo_salida)
@@ -823,7 +828,7 @@ class ControladorDocumentos:
             return True
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error crítico procesando documento: {e}")
+            logger.critical(f"[ControladorDocumentos] ❌ Error crítico procesando documento: {e}")
             import traceback
             traceback.print_exc()
             
@@ -852,7 +857,7 @@ class ControladorDocumentos:
             return empresas_lista
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error obteniendo lista de empresas: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error obteniendo lista de empresas: {e}")
             return []
     def _detectar_variables_en_plantilla(self, ruta_plantilla: str) -> set:
         """Detectar qué variables están presentes en la plantilla"""
@@ -887,7 +892,7 @@ class ControladorDocumentos:
             return variables_encontradas
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error detectando variables: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error detectando variables: {e}")
             return set()
 
     def _verificar_campos_vacios(self, variables_plantilla: set, datos_disponibles: dict) -> list:
@@ -961,14 +966,14 @@ class ControladorDocumentos:
             resultado = msg.exec_()
             
             if resultado == QMessageBox.Yes:
-                print(f"[ControladorDocumentos] ⚠️ Usuario eligió continuar con {len(campos_vacios)} campos vacíos")
+                logger.warning(f"[ControladorDocumentos] ⚠️ Usuario eligió continuar con {len(campos_vacios)} campos vacíos")
                 return True
             else:
-                print(f"[ControladorDocumentos] ❌ Usuario canceló por campos vacíos")
+                logger.info(f"[ControladorDocumentos] ❌ Usuario canceló por campos vacíos")
                 return False
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error mostrando popup: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error mostrando popup: {e}")
             return True  # En caso de error, continuar
 
     
@@ -1026,7 +1031,7 @@ class ControladorDocumentos:
                                 #print(f"[DEBUG] 🔳 Firmante GLOBAL vacío: {campo_firmante} = '{valor_firmante}'")
                     
                 except Exception as e:
-                    print(f"[DEBUG] ❌ Error cargando firmantes globales: {e}")
+                    logger.error(f"[DEBUG] ❌ Error cargando firmantes globales: {e}")
             
             # 🆕 PROCESAR CAMPOS ENTEROS CON CARACTERES INVISIBLES (CORREGIDO)
             campos_enteros = ['plazoEjecucion', 'numEmpresasPresentadas', 'numEmpresasSolicitadas']
@@ -1066,7 +1071,7 @@ class ControladorDocumentos:
                                 datos_finales['plazoEjecucionTexto'] = "0\u200B"
                                 
                     except Exception as e:
-                        print(f"[DEBUG] ❌ Error procesando {campo}: {e}")
+                        logger.error(f"[DEBUG] ❌ Error procesando {campo}: {e}")
                         datos_finales[campo] = "0\u200B"
                         if campo == 'plazoEjecucion':
                             datos_finales['plazoEjecucionTexto'] = "0\u200B"
@@ -1092,7 +1097,7 @@ class ControladorDocumentos:
             return datos_finales
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error preparando datos: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error preparando datos: {e}")
             import traceback
             traceback.print_exc()
             return contract_data  # Devolver datos originales en caso de error
@@ -1124,7 +1129,7 @@ class ControladorDocumentos:
             return self._crear_carpeta_manual_simple(contract_data)
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error creando carpeta de contrato: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error creando carpeta de contrato: {e}")
             return self._crear_carpeta_manual_simple(contract_data)
 
     
@@ -1209,21 +1214,21 @@ class ControladorDocumentos:
         """Obtener datos del contrato actual - LEYENDO JSON DIRECTAMENTE"""
         
         if not self.main_window:
-            print(f"[ControladorDocumentos] ❌ main_window es None")
+            logger.error(f"[ControladorDocumentos] ❌ main_window es None")
             return None
         
         if not hasattr(self.main_window, 'contract_manager'):
-            print(f"[ControladorDocumentos] ❌ No tiene contract_manager")
+            logger.error(f"[ControladorDocumentos] ❌ No tiene contract_manager")
             return None
         
         if not self.main_window.contract_manager:
-            print(f"[ControladorDocumentos] ❌ contract_manager es None")
+            logger.error(f"[ControladorDocumentos] ❌ contract_manager es None")
             return None
         
         # Obtener nombre del contrato actual
         nombre_contrato = self.main_window.contract_manager.get_current_contract()
         if not nombre_contrato:
-            print(f"[ControladorDocumentos] ❌ No hay contrato seleccionado")
+            logger.warning(f"[ControladorDocumentos] ❌ No hay contrato seleccionado")
             return None
         
         # 🆕 NUEVO: Guardar nombre del contrato para tracking
@@ -1251,7 +1256,7 @@ class ControladorDocumentos:
                 
                 return data_json
             else:
-                print(f"[ControladorDocumentos] ❌ No se encontraron datos en JSON para: {nombre_contrato}")
+                logger.error(f"[ControladorDocumentos] ❌ No se encontraron datos en JSON para: {nombre_contrato}")
         
         # Fallback al método original solo si falla el JSON
         data = self.main_window.contract_manager.get_current_contract_data()
@@ -1259,7 +1264,7 @@ class ControladorDocumentos:
         if data:
             return data
         else:
-            print(f"[ControladorDocumentos] ❌ get_current_contract_data() retornó None")
+            logger.error(f"[ControladorDocumentos] ❌ get_current_contract_data() retornó None")
             return None
     def _mostrar_error(self, mensaje: str):
         """Mostrar mensaje de error"""
@@ -1270,7 +1275,7 @@ class ControladorDocumentos:
         """Conversión automática a PDF sin diálogo"""
         try:
             if ruta_docx and ruta_docx.endswith('.docx') and os.path.exists(ruta_docx):
-                print(f"[ControladorDocumentos] 📄 Generando PDF automáticamente para: {ruta_docx}")
+                logger.info(f"[ControladorDocumentos] 📄 Generando PDF automáticamente para: {ruta_docx}")
                 
                 # Importar función de conversión
                 from .controlador_pdf_unificado import convertir_docx_a_pdf_simple
@@ -1282,25 +1287,25 @@ class ControladorDocumentos:
                     # Abrir automáticamente el PDF
                     import subprocess
                     try:
-                        print(f"[ControladorDocumentos] 📄 Abriendo PDF automáticamente: {pdf_path}")
+                        logger.info(f"[ControladorDocumentos] 📄 Abriendo PDF automáticamente: {pdf_path}")
                         subprocess.run([pdf_path], shell=True, check=True)
                     except Exception as e:
-                        print(f"[ControladorDocumentos] ⚠️ Error abriendo PDF: {e}")
+                        logger.warning(f"[ControladorDocumentos] ⚠️ Error abriendo PDF: {e}")
                         # Si falla abrir el PDF, abrir la carpeta
                         carpeta = os.path.dirname(ruta_docx)
                         subprocess.run(f'explorer "{carpeta}"', shell=True)
                 else:
-                    print(f"[ControladorDocumentos] ❌ Error generando PDF para: {ruta_docx}")
+                    logger.error(f"[ControladorDocumentos] ❌ Error generando PDF para: {ruta_docx}")
             else:
-                print(f"[ControladorDocumentos] ⚠️ No se puede mostrar diálogo PDF - Archivo no válido: {ruta_docx}")
+                logger.warning(f"[ControladorDocumentos] ⚠️ No se puede mostrar diálogo PDF - Archivo no válido: {ruta_docx}")
         except ImportError as e:
-            print(f"[ControladorDocumentos] ❌ Error de importación en diálogo PDF: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error de importación en diálogo PDF: {e}")
             if self.main_window:
                 from PyQt5.QtWidgets import QMessageBox
                 QMessageBox.warning(self.main_window, "Advertencia", 
                                   "El módulo de conversión PDF no está disponible")
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error inesperado en diálogo PDF: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error inesperado en diálogo PDF: {e}")
             import traceback
             traceback.print_exc()
 
@@ -1355,7 +1360,7 @@ class ControladorDocumentos:
     def _sustituir_marcadores_tabla(self, doc: Document, empresas_lista: List[Dict]):
         """Sustituir marcadores @tabla-ofertas@ en TODO el documento"""
         try:
-            print(f"[DEBUG] SUSTITUYENDO MARCADORES - EMPRESAS: {empresas_lista}")
+            logger.debug(f"[DEBUG] SUSTITUYENDO MARCADORES - EMPRESAS: {empresas_lista}")
             
             paragrafos_a_procesar = []
             
@@ -1363,7 +1368,7 @@ class ControladorDocumentos:
             for i, paragraph in enumerate(doc.paragraphs):
                 texto = paragraph.text
                 if '@tabla-ofertas@' in texto:
-                    print(f"[DEBUG] ENCONTRADO @tabla-ofertas@ EN PÁRRAFO PRINCIPAL {i}")
+                    logger.debug(f"[DEBUG] ENCONTRADO @tabla-ofertas@ EN PÁRRAFO PRINCIPAL {i}")
                     paragrafos_a_procesar.append((paragraph, 'ofertas'))
                 elif '@tabla-empresas@' in texto:
                     paragrafos_a_procesar.append((paragraph, 'empresas'))
@@ -1377,7 +1382,7 @@ class ControladorDocumentos:
                         for l, paragraph in enumerate(cell.paragraphs):
                             texto = paragraph.text
                             if '@tabla-ofertas@' in texto:
-                                print(f"[DEBUG] ENCONTRADO @tabla-ofertas@ EN TABLA {i}, FILA {j}, CELDA {k}")
+                                logger.debug(f"[DEBUG] ENCONTRADO @tabla-ofertas@ EN TABLA {i}, FILA {j}, CELDA {k}")
                                 paragrafos_a_procesar.append((paragraph, 'ofertas'))
                             elif '@tabla-empresas@' in texto:
                                 paragrafos_a_procesar.append((paragraph, 'empresas'))
@@ -1390,21 +1395,21 @@ class ControladorDocumentos:
                     for paragraph in section.header.paragraphs:
                         texto = paragraph.text
                         if '@tabla-ofertas@' in texto:
-                            print(f"[DEBUG] ENCONTRADO @tabla-ofertas@ EN HEADER")
+                            logger.debug(f"[DEBUG] ENCONTRADO @tabla-ofertas@ EN HEADER")
                             paragrafos_a_procesar.append((paragraph, 'ofertas'))
                 if section.footer:
                     for paragraph in section.footer.paragraphs:
                         texto = paragraph.text
                         if '@tabla-ofertas@' in texto:
-                            print(f"[DEBUG] ENCONTRADO @tabla-ofertas@ EN FOOTER")
+                            logger.debug(f"[DEBUG] ENCONTRADO @tabla-ofertas@ EN FOOTER")
                             paragrafos_a_procesar.append((paragraph, 'ofertas'))
             
-            print(f"[DEBUG] PÁRRAFOS A PROCESAR: {len(paragrafos_a_procesar)}")
+            logger.debug(f"[DEBUG] PÁRRAFOS A PROCESAR: {len(paragrafos_a_procesar)}")
             
             # 4. PROCESAR TODOS LOS MARCADORES ENCONTRADOS
             for paragraph, tipo_tabla in paragrafos_a_procesar:
                 if tipo_tabla == 'ofertas':
-                    print(f"[DEBUG] LLAMANDO _insertar_tabla_ofertas")
+                    logger.debug(f"[DEBUG] LLAMANDO _insertar_tabla_ofertas")
                     self._insertar_tabla_ofertas(doc, paragraph, empresas_lista)
                 elif tipo_tabla == 'empresas':
                     self._insertar_tabla_empresas(doc, paragraph, empresas_lista)
@@ -1412,7 +1417,7 @@ class ControladorDocumentos:
                     self._insertar_tabla_clasificacion(doc, paragraph, empresas_lista)
             
         except Exception as e:
-            print(f"[DEBUG] ERROR EN MARCADORES: {e}")
+            logger.error(f"[DEBUG] ERROR EN MARCADORES: {e}")
             import traceback
             traceback.print_exc()
     def obtener_empresas_para_docx(self, contract_data):
@@ -1443,7 +1448,7 @@ class ControladorDocumentos:
             return empresas_para_docx
 
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error preparando empresas para DOCX: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error preparando empresas para DOCX: {e}")
             return []
 
     def _formatear_oferta_euros(self, oferta_str):
@@ -1487,14 +1492,14 @@ class ControladorDocumentos:
             return empresas_unificadas
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error migrando para DOCX: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error migrando para DOCX: {e}")
             return []
 
     def _insertar_tabla_empresas(self, doc: Document, paragraph, empresas_lista: List[Dict]):
         """Insertar tabla de empresas - VERSIÓN MEJORADA"""
         try:
-            print(f"[DEBUG] 📊 INSERTANDO TABLA EMPRESAS")
-            print(f"[DEBUG] Empresas recibidas: {empresas_lista}")
+            logger.debug(f"[DEBUG] 📊 INSERTANDO TABLA EMPRESAS")
+            logger.debug(f"[DEBUG] Empresas recibidas: {empresas_lista}")
             
             if not empresas_lista:
                 paragraph.text = paragraph.text.replace('@tabla-empresas@', '[No hay empresas registradas]')
@@ -1517,7 +1522,7 @@ class ControladorDocumentos:
 
             # Datos de empresas
             for i, empresa in enumerate(empresas_lista):
-                print(f"[DEBUG] Procesando empresa {i+1}: {empresa}")
+                logger.debug(f"[DEBUG] Procesando empresa {i+1}: {empresa}")
                 
                 # Obtener datos con valores por defecto
                 nombre = empresa.get('nombre') or empresa.get('empresa') or f'Empresa {i+1}'
@@ -1526,7 +1531,7 @@ class ControladorDocumentos:
                 contacto = empresa.get('contacto') or empresa.get('persona de contacto') or ''
                 
                 datos = [nombre, nif, email, contacto]
-                print(f"[DEBUG] Datos extraídos: {datos}")
+                logger.debug(f"[DEBUG] Datos extraídos: {datos}")
 
                 fila = tabla.rows[i + 1]
                 for j, dato in enumerate(datos):
@@ -1540,14 +1545,14 @@ class ControladorDocumentos:
             paragraph.text = paragraph.text.replace('@tabla-empresas@', '')
 
         except Exception as e:
-            print(f"[DEBUG] ❌ ERROR insertando tabla: {e}")
+            logger.error(f"[DEBUG] ❌ ERROR insertando tabla: {e}")
             paragraph.text = paragraph.text.replace('@tabla-empresas@', '[Error insertando tabla de empresas]')
 
     def _insertar_tabla_ofertas(self, doc: Document, paragraph, empresas_lista: List[Dict]):
         """Crear tabla de ofertas simple leyendo empresas del JSON"""
         try:
-            print(f"[DEBUG] 📊 CREANDO TABLA DE OFERTAS")
-            print(f"[DEBUG] Empresas recibidas: {len(empresas_lista)}")
+            logger.debug(f"[DEBUG] 📊 CREANDO TABLA DE OFERTAS")
+            logger.debug(f"[DEBUG] Empresas recibidas: {len(empresas_lista)}")
             
             # 1. PROCESAR DATOS DE EMPRESAS
             datos_tabla = []
@@ -1589,14 +1594,14 @@ class ControladorDocumentos:
                     dato['orden'] = "-"
             
             # 4. MOSTRAR TABLA POR PRINT (PARA DEBUG)
-            print(f"\n[DEBUG] 📋 TABLA FINAL:")
-            print(f"{'Nombre':<40} {'¿Presenta?':<12} {'Importe':<15} {'Orden':<10}")
-            print("-" * 80)
+            logger.debug(f"\n[DEBUG] 📋 TABLA FINAL:")
+            logger.debug(f"{'Nombre':<40} {'¿Presenta?':<12} {'Importe':<15} {'Orden':<10}")
+            logger.debug("-" * 80)
             for dato in datos_tabla:
                 nombre_corto = dato['nombre'][:38] + ".." if len(dato['nombre']) > 40 else dato['nombre']
                 importe_str = f"{dato['precio']:.2f}" if dato['precio'] > 0 else "0.00"
-                print(f"{nombre_corto:<40} {dato['presenta']:<12} {importe_str:<15} {dato['orden']:<10}")
-            print("-" * 80)
+                logger.debug(f"{nombre_corto:<40} {dato['presenta']:<12} {importe_str:<15} {dato['orden']:<10}")
+            logger.debug("-" * 80)
             
             # 5. CREAR TABLA EN WORD
             tabla = doc.add_table(rows=len(datos_tabla) + 1, cols=4)
@@ -1651,11 +1656,11 @@ class ControladorDocumentos:
             # 9. LIMPIAR MARCADOR
             paragraph.text = paragraph.text.replace('@tabla-ofertas@', '')
             
-            print(f"[DEBUG] ✅ Tabla insertada correctamente en Word")
+            logger.debug(f"[DEBUG] ✅ Tabla insertada correctamente en Word")
             return datos_tabla
             
         except Exception as e:
-            print(f"[DEBUG] ❌ ERROR: {e}")
+            logger.error(f"[DEBUG] ❌ ERROR: {e}")
             import traceback
             traceback.print_exc()
             paragraph.text = paragraph.text.replace('@tabla-ofertas@', '[Error procesando tabla]')
@@ -1703,11 +1708,11 @@ class ControladorDocumentos:
             ruta_plantilla = self._obtener_ruta_plantilla(nombre_plantilla)
             
             if not ruta_plantilla:
-                print(f"[ControladorDocumentos] ❌ Plantilla no encontrada: {nombre_plantilla}")
+                logger.error(f"[ControladorDocumentos] ❌ Plantilla no encontrada: {nombre_plantilla}")
                 return False
             
             if not os.path.exists(ruta_plantilla):
-                print(f"[ControladorDocumentos] ❌ Archivo de plantilla no existe: {ruta_plantilla}")
+                logger.error(f"[ControladorDocumentos] ❌ Archivo de plantilla no existe: {ruta_plantilla}")
                 return False
             
             # Verificar que no está en uso
@@ -1716,12 +1721,12 @@ class ControladorDocumentos:
                     test_file.read(1)
                 return True
             except PermissionError:
-                print(f"[ControladorDocumentos] ❌ Plantilla en uso: {ruta_plantilla}")
+                logger.warning(f"[ControladorDocumentos] ❌ Plantilla en uso: {ruta_plantilla}")
                 self._mostrar_error(f"La plantilla '{nombre_plantilla}' está siendo usada por Word.\nCierra Word y vuelve a intentar.")
                 return False
                 
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error verificando plantilla: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error verificando plantilla: {e}")
             return False
     def _procesar_paragraph_con_variables(self, paragraph, datos_json: Dict[str, Any]) -> set:
         """Procesar un párrafo sustituyendo variables @campo@ y \\@campo@ - VERSIÓN ROBUSTA"""
@@ -1785,12 +1790,12 @@ class ControladorDocumentos:
                             pass  # Ignorar errores de formato
                             
                 except Exception as e:
-                    print(f"[ControladorDocumentos] ⚠️ Error actualizando párrafo: {e}")
+                    logger.warning(f"[ControladorDocumentos] ⚠️ Error actualizando párrafo: {e}")
                     # Si falla la actualización, al menos registrar las variables encontradas
                     pass
         
         except Exception as e:
-            print(f"[ControladorDocumentos] ⚠️ Error procesando párrafo: {e}")
+            logger.warning(f"[ControladorDocumentos] ⚠️ Error procesando párrafo: {e}")
         
         return variables_encontradas
 
@@ -1861,34 +1866,34 @@ class ControladorDocumentos:
         """Generar cartas de adjudicación: solo una adjudicataria, resto no adjudicatarios"""
         try:
             if not self._validar_contrato_seleccionado():
-                print("[DEBUG] Validación de contrato fallida")
+                logger.debug("[DEBUG] Validación de contrato fallida")
                 return
             
             contract_data = self._obtener_datos_contrato_actual()
             #print(f"[DEBUG] contract_data keys: {list(contract_data.keys()) if contract_data else 'None'}")
             if not contract_data:
-                print("[DEBUG] No se pudieron obtener los datos del contrato")
+                logger.debug("[DEBUG] No se pudieron obtener los datos del contrato")
                 return self._mostrar_error("No se pudieron obtener los datos del contrato")
             
             empresas_lista = self._obtener_empresas_lista(contract_data)
-            print(f"[DEBUG] Total empresas para cartas adjudicación: {len(empresas_lista)}")
+            logger.debug(f"[DEBUG] Total empresas para cartas adjudicación: {len(empresas_lista)}")
             if not empresas_lista:
-                print("[DEBUG] No hay empresas para generar cartas de adjudicación")
+                logger.debug("[DEBUG] No hay empresas para generar cartas de adjudicación")
                 return self._mostrar_error("No hay empresas para generar cartas de adjudicación")
             
             plantilla_adjudicacion = self._obtener_ruta_plantilla('plantilla_cartas_adjudicacion.docx')
             plantilla_noadjudicacion = self._obtener_ruta_plantilla('plantilla_cartas_noadjudicacion.docx')
             
-            print(f"[DEBUG] plantilla_adjudicacion: {plantilla_adjudicacion}")
-            print(f"[DEBUG] plantilla_noadjudicacion: {plantilla_noadjudicacion}")
+            logger.debug(f"[DEBUG] plantilla_adjudicacion: {plantilla_adjudicacion}")
+            logger.debug(f"[DEBUG] plantilla_noadjudicacion: {plantilla_noadjudicacion}")
             if not plantilla_adjudicacion or not plantilla_noadjudicacion:
-                print("[DEBUG] No se encontraron las plantillas de adjudicación/no adjudicación")
+                logger.debug("[DEBUG] No se encontraron las plantillas de adjudicación/no adjudicación")
                 return self._mostrar_error("No se encontraron las plantillas de adjudicación/no adjudicación")
             
             carpeta_contrato = self._obtener_carpeta_con_gestor_unificado(contract_data)
-            print(f"[DEBUG] carpeta_contrato: {carpeta_contrato}")
+            logger.debug(f"[DEBUG] carpeta_contrato: {carpeta_contrato}")
             if not carpeta_contrato:
-                print("[DEBUG] No se pudo crear/obtener la carpeta del contrato")
+                logger.debug("[DEBUG] No se pudo crear/obtener la carpeta del contrato")
                 return self._mostrar_error("No se pudo crear/obtener la carpeta del contrato")
             
             subcarpeta_cartas = self._determinar_subcarpeta_por_tipo_documento('generar_cartas_adjudicacion')
@@ -1896,24 +1901,24 @@ class ControladorDocumentos:
             os.makedirs(directorio_cartas, exist_ok=True)
             
             empresa_adjudicataria = contract_data.get('empresaAdjudicada', '').strip().lower()
-            print(f"[DEBUG] 🏆 empresaAdjudicataria (comparación): '{empresa_adjudicataria}'")
+            logger.debug(f"[DEBUG] 🏆 empresaAdjudicataria (comparación): '{empresa_adjudicataria}'")
             
             cartas_generadas = []
             
             for i, empresa in enumerate(empresas_lista):
                 nombre_empresa = empresa.get('nombre', f'Empresa_{i+1}')
                 nombre_empresa_limpio = self._limpiar_nombre_para_archivo(nombre_empresa)
-                print(f"[DEBUG] Empresa {i+1}: '{nombre_empresa}' (comparando con adjudicataria '{empresa_adjudicataria}')")
-                print(f"[DEBUG] Empresa dict: {empresa}")
+                logger.debug(f"[DEBUG] Empresa {i+1}: '{nombre_empresa}' (comparando con adjudicataria '{empresa_adjudicataria}')")
+                logger.debug(f"[DEBUG] Empresa dict: {empresa}")
                 # Solo una adjudicataria, resto no adjudicatarios
                 if nombre_empresa.strip().lower() == empresa_adjudicataria and empresa_adjudicataria:
-                    print(f"[DEBUG] --> adjudicataria detectada: '{nombre_empresa}'")
+                    logger.debug(f"[DEBUG] --> adjudicataria detectada: '{nombre_empresa}'")
                     plantilla_usar = plantilla_adjudicacion
                     nombre_archivo = f"Carta_Adjudicatario_{i+1:02d}_{nombre_empresa_limpio}.docx"
                     tipo_carta = "ADJUDICATARIA"
                     es_adjudicataria = True
                 else:
-                    print(f"[DEBUG] --> NO adjudicataria: '{nombre_empresa}'")
+                    logger.debug(f"[DEBUG] --> NO adjudicataria: '{nombre_empresa}'")
                     plantilla_usar = plantilla_noadjudicacion
                     nombre_archivo = f"Carta_No_Adjudicatario_{i+1:02d}_{nombre_empresa_limpio}.docx"
                     tipo_carta = "NO ADJUDICATARIA"
@@ -1921,12 +1926,12 @@ class ControladorDocumentos:
                 
                 archivo_salida = os.path.join(directorio_cartas, nombre_archivo)
                 
-                print(f"[DEBUG] Generando carta {tipo_carta} para: {nombre_empresa} -> {archivo_salida}")
+                logger.debug(f"[DEBUG] Generando carta {tipo_carta} para: {nombre_empresa} -> {archivo_salida}")
                 
                 datos_carta = self._preparar_datos_carta_adjudicacion(contract_data, empresa, i, es_adjudicataria)
                 
                 if self._generar_carta_individual(plantilla_usar, archivo_salida, datos_carta):
-                    print(f"[DEBUG] Carta generada correctamente: {archivo_salida}")
+                    logger.debug(f"[DEBUG] Carta generada correctamente: {archivo_salida}")
                     cartas_generadas.append({
                         'archivo': archivo_salida,
                         'empresa': nombre_empresa,
@@ -1934,9 +1939,9 @@ class ControladorDocumentos:
                         'tipo': tipo_carta
                     })
                 else:
-                    print(f"[DEBUG] Error generando carta para: {nombre_empresa}")
+                    logger.error(f"[DEBUG] Error generando carta para: {nombre_empresa}")
             
-            print(f"[DEBUG] Total cartas generadas: {len(cartas_generadas)}")
+            logger.debug(f"[DEBUG] Total cartas generadas: {len(cartas_generadas)}")
             self._mostrar_resultado_cartas(cartas_generadas, contract_data, "Cartas de Adjudicación")
             if cartas_generadas:
                 self._abrir_cartas_generadas(cartas_generadas)
@@ -1945,7 +1950,7 @@ class ControladorDocumentos:
                 self._actualizar_fase_en_generacion('cartas_adjudicacion')
             
         except Exception as e:
-            print(f"[DEBUG] Error generando cartas de adjudicación: {str(e)}")
+            logger.error(f"[DEBUG] Error generando cartas de adjudicación: {str(e)}")
             self._mostrar_error(f"Error generando cartas de adjudicación: {str(e)}")
     def _preparar_datos_carta_adjudicacion(self, contract_data, empresa, indice_empresa, es_adjudicataria=False):
         """Preparar datos individualizados para carta de adjudicación/no adjudicataria"""
@@ -1983,12 +1988,12 @@ class ControladorDocumentos:
                     ofertas_valor_limpio = ofertas_valor.replace('.', '').replace(',', '.')
                     precio_empresa_actual = f"{float(ofertas_valor_limpio):.2f}"
                 except Exception as e:
-                    print(f"[DEBUG] Error convirtiendo oferta: {ofertas_valor} -> {e}")
+                    logger.error(f"[DEBUG] Error convirtiendo oferta: {ofertas_valor} -> {e}")
                     precio_empresa_actual = "0.00"
             datos_carta['precioEmpresaActual'] = precio_empresa_actual
             return datos_carta
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error preparando datos carta adjudicación: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error preparando datos carta adjudicación: {e}")
             return contract_data
 
     def _generar_carta_individual(self, ruta_plantilla, archivo_salida, datos_carta):
@@ -2015,7 +2020,7 @@ class ControladorDocumentos:
             doc.save(archivo_salida)
             return True
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error generando carta individual: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error generando carta individual: {e}")
             return False
 
     # =================== FUNCIONES DE VALIDACIÓN Y COMPROBACIÓN ===================
@@ -2061,7 +2066,7 @@ class ControladorDocumentos:
             return len(campos_vacios) == 0 and len(fechas_incorrectas) == 0, campos_vacios + fechas_incorrectas
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error validando: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error validando: {e}")
             return True, []  # En caso de error, permitir continuar
 
     def _es_campo_fecha(self, nombre_campo):
@@ -2098,13 +2103,13 @@ class ControladorDocumentos:
             for formato in formatos:
                 try:
                     fecha_obj = datetime.strptime(fecha_str, formato)
-                    print(f"[DEBUG] Fecha parseada: {fecha_str} -> {fecha_obj} usando formato {formato}")
+                    logger.debug(f"[DEBUG] Fecha parseada: {fecha_str} -> {fecha_obj} usando formato {formato}")
                     break
                 except ValueError:
                     continue
             
             if not fecha_obj:
-                print(f"[DEBUG] No se pudo parsear fecha: {fecha_str}")
+                logger.warning(f"[DEBUG] No se pudo parsear fecha: {fecha_str}")
                 return True  # Si no puede parsear, considera válida
             
             # Verificar rango de ±6 meses
@@ -2113,12 +2118,12 @@ class ControladorDocumentos:
             limite_posterior = hoy + timedelta(days=180)  # 6 meses adelante
             
             es_valida = limite_anterior <= fecha_obj <= limite_posterior
-            print(f"[DEBUG] Validación fecha: {fecha_obj} | Rango: {limite_anterior} - {limite_posterior} | Válida: {es_valida}")
+            logger.debug(f"[DEBUG] Validación fecha: {fecha_obj} | Rango: {limite_anterior} - {limite_posterior} | Válida: {es_valida}")
             
             return es_valida
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error validando fecha {valor_fecha}: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error validando fecha {valor_fecha}: {e}")
             return True  # En caso de error, considerar válida
 
     def _mostrar_popup_validacion(self, problemas_encontrados, nombre_documento):
@@ -2168,7 +2173,7 @@ class ControladorDocumentos:
             return resultado == QMessageBox.Yes
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error mostrando popup validación: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error mostrando popup validación: {e}")
             return True  # En caso de error, permitir continuar
 
     # =================== FUNCIONES COMPROBAR_GENERAR ===================
@@ -2251,16 +2256,16 @@ class ControladorDocumentos:
                 continuar = self._mostrar_popup_validacion(problemas, nombre_documento)
                 
                 if not continuar:
-                    print(f"[ControladorDocumentos] ⚠️ Generación cancelada por validación")
+                    logger.warning(f"[ControladorDocumentos] ⚠️ Generación cancelada por validación")
                     return False
             
             # Ejecutar función de generación
-            print(f"[ControladorDocumentos] ✅ Validación pasada, generando documento")
+            logger.info(f"[ControladorDocumentos] ✅ Validación pasada, generando documento")
             funcion_generar()
             return True
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error en comprobar y ejecutar: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error en comprobar y ejecutar: {e}")
             self._mostrar_error(f"Error en validación: {str(e)}")
             return False
 
@@ -2279,7 +2284,7 @@ class ControladorDocumentos:
             return True
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error validando contrato: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error validando contrato: {e}")
             return False
 
     def _obtener_datos_contrato_actual(self):
@@ -2304,7 +2309,7 @@ class ControladorDocumentos:
             return datos_contrato
             
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error obteniendo datos contrato: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error obteniendo datos contrato: {e}")
             return None
 
     def _mostrar_error(self, mensaje):
@@ -2313,7 +2318,7 @@ class ControladorDocumentos:
             from PyQt5.QtWidgets import QMessageBox
             QMessageBox.critical(self.main_window, "❌ Error", mensaje)
         except Exception as e:
-            print(f"[ControladorDocumentos] ❌ Error mostrando mensaje: {e}")
+            logger.error(f"[ControladorDocumentos] ❌ Error mostrando mensaje: {e}")
 
     # =================== FUNCIONES DE GENERACIÓN DE RESUMEN DOCX ===================
     # Funciones movidas desde controlador_resumen.py para unificar el código de documentos
@@ -2321,17 +2326,17 @@ class ControladorDocumentos:
     def generar_fichero_resumen(self, nombre_contrato: str, datos_contrato: dict) -> str:
         """Generar fichero completo de resumen del contrato en formato Word"""
         try:
-            print(f"[ControladorDocumentos] Iniciando generación de fichero para: {nombre_contrato}")
+            logger.info(f"[ControladorDocumentos] Iniciando generación de fichero para: {nombre_contrato}")
             
             # Crear tracker
             from .controlador_resumen import TrackerDocumentos
             tracker = TrackerDocumentos()
             
-            print("[ControladorDocumentos] Obteniendo resumen de documentos...")
+            logger.info("[ControladorDocumentos] Obteniendo resumen de documentos...")
             resumen_docs = tracker.obtener_resumen_contrato(nombre_contrato)
             
             # Obtener datos de firmas para la tabla de seguimiento
-            print("[ControladorDocumentos] Obteniendo datos de firmas...")
+            logger.info("[ControladorDocumentos] Obteniendo datos de firmas...")
             datos_firmas = {}
             firmantes_unicos = []
             if hasattr(self.main_window, 'controlador_resumen'):
@@ -2341,30 +2346,30 @@ class ControladorDocumentos:
                     # Los datos quedan guardados internamente, necesitamos extraerlos
                     datos_firmas = getattr(self.main_window.controlador_resumen, '_datos_firmas_cache', {})
                     firmantes_unicos = getattr(self.main_window.controlador_resumen, '_firmantes_unicos_cache', [])
-                    print(f"[ControladorDocumentos] Datos de firmas obtenidos: {len(datos_firmas)} fases, {len(firmantes_unicos)} firmantes")
+                    logger.info(f"[ControladorDocumentos] Datos de firmas obtenidos: {len(datos_firmas)} fases, {len(firmantes_unicos)} firmantes")
                 except Exception as e:
-                    print(f"[ControladorDocumentos] ⚠️ Error obteniendo datos de firmas: {e}")
+                    logger.warning(f"[ControladorDocumentos] ⚠️ Error obteniendo datos de firmas: {e}")
             
             # Crear documento Word
-            print("[ControladorDocumentos] Creando documento Word...")
+            logger.info("[ControladorDocumentos] Creando documento Word...")
             documento_word = self._crear_contenido_fichero_resumen(
                 nombre_contrato, datos_contrato, resumen_docs, tracker, datos_firmas, firmantes_unicos
             )
             
             # Guardar archivo Word
-            print("[ControladorDocumentos] Guardando archivo...")
+            logger.info("[ControladorDocumentos] Guardando archivo...")
             ruta_archivo = self._guardar_fichero_resumen(nombre_contrato, documento_word)
             
-            print(f"[ControladorDocumentos] ✅ Fichero generado exitosamente: {ruta_archivo}")
+            logger.info(f"[ControladorDocumentos] ✅ Fichero generado exitosamente: {ruta_archivo}")
             return ruta_archivo
             
         except ImportError as e:
             error_msg = f"Error de importación: {e}"
-            print(f"[ControladorDocumentos] ❌ {error_msg}")
+            logger.error(f"[ControladorDocumentos] ❌ {error_msg}")
             raise ImportError(error_msg)
         except Exception as e:
             error_msg = f"Error generando fichero: {e}"
-            print(f"[ControladorDocumentos] ❌ {error_msg}")
+            logger.error(f"[ControladorDocumentos] ❌ {error_msg}")
             raise Exception(error_msg)
     
     def _crear_contenido_fichero_resumen(self, nombre_contrato: str, datos_contrato: dict, 
@@ -2704,7 +2709,7 @@ class ControladorDocumentos:
                 run.font.italic = True
                 
         except Exception as e:
-            print(f"[ControladorDocumentos] Error insertando cronograma en Word: {e}")
+            logger.error(f"[ControladorDocumentos] Error insertando cronograma en Word: {e}")
             # Agregar mensaje de error en el documento
             para_error = doc.add_paragraph(f"Error generando cronograma: {e}")
             para_error.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -2797,7 +2802,7 @@ class ControladorDocumentos:
             doc.add_paragraph("• Firmantes: Nombre, DNI y fecha de firma de cada firmante")
             
         except Exception as e:
-            print(f"[ControladorDocumentos] Error insertando tabla seguimiento en Word: {e}")
+            logger.error(f"[ControladorDocumentos] Error insertando tabla seguimiento en Word: {e}")
             # Agregar mensaje de error en el documento
             para_error = doc.add_paragraph(f"Error generando tabla de seguimiento: {e}")
             para_error.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -2819,19 +2824,19 @@ class ControladorDocumentos:
             
             # Crear el directorio si no existe
             os.makedirs(directorio_obra, exist_ok=True)
-            print(f"[ControladorDocumentos] Directorio creado/verificado: {directorio_obra}")
+            logger.info(f"[ControladorDocumentos] Directorio creado/verificado: {directorio_obra}")
             
             # Ruta completa del archivo
             ruta_archivo = os.path.join(directorio_obra, nombre_archivo)
             
             # Guardar documento Word
             documento_word.save(ruta_archivo)
-            print(f"[ControladorDocumentos] Documento guardado en: {ruta_archivo}")
+            logger.info(f"[ControladorDocumentos] Documento guardado en: {ruta_archivo}")
             
             return ruta_archivo
             
         except Exception as e:
-            print(f"[ControladorDocumentos] Error guardando en carpeta obra, intentando ubicación de respaldo: {e}")
+            logger.warning(f"[ControladorDocumentos] Error guardando en carpeta obra, intentando ubicación de respaldo: {e}")
             
             # Si falla, usar directorio de reportes como respaldo
             directorio_reportes = os.path.join(os.getcwd(), "reportes")
@@ -2840,5 +2845,5 @@ class ControladorDocumentos:
             ruta_archivo_respaldo = os.path.join(directorio_reportes, nombre_archivo)
             documento_word.save(ruta_archivo_respaldo)
             
-            print(f"[ControladorDocumentos] Documento guardado en ubicación de respaldo: {ruta_archivo_respaldo}")
+            logger.info(f"[ControladorDocumentos] Documento guardado en ubicación de respaldo: {ruta_archivo_respaldo}")
             return ruta_archivo_respaldo

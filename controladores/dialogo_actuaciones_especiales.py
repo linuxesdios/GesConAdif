@@ -8,6 +8,9 @@ import json
 import glob
 from datetime import datetime
 from typing import List, Dict, Any
+import logging
+
+logger = logging.getLogger(__name__)
 from PyQt5.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, 
     QListWidget, QListWidgetItem, QMessageBox, QFileDialog,
@@ -181,7 +184,7 @@ class DialogoActuacionesEspeciales(QDialog):
                 self.label_json_actual.setText("❌ Controlador JSON no disponible")
                 
         except Exception as e:
-            print(f"[DialogoActuacionesEspeciales] Error cargando JSON actual: {e}")
+            logger.error(f"Error cargando JSON actual: {e}")
             self.label_json_actual.setText("❌ Error cargando JSON actual")
     
     def cargar_lista_backups(self):
@@ -221,17 +224,17 @@ class DialogoActuacionesEspeciales(QDialog):
                     self.lista_backups.addItem(item)
                     
                 except Exception as e:
-                    print(f"Error procesando backup {backup_path}: {e}")
+                    logger.error(f"Error procesando backup {backup_path}: {e}")
             
-            print(f"[DialogoActuacionesEspeciales] Cargados {self.lista_backups.count()} backups")
+            logger.info(f"Cargados {self.lista_backups.count()} backups")
             
         except Exception as e:
-            print(f"[DialogoActuacionesEspeciales] Error cargando backups: {e}")
+            logger.error(f"Error cargando backups: {e}")
     
     def refrescar_backups(self):
         """Refrescar manualmente la lista de backups"""
         try:
-            print("[DialogoActuacionesEspeciales] 🔄 Refrescando lista de backups manualmente...")
+            logger.debug("Refrescando lista de backups manualmente...")
             self.cargar_lista_backups()
             
             # Mostrar mensaje temporal de confirmación
@@ -244,7 +247,7 @@ class DialogoActuacionesEspeciales(QDialog):
                 self.area_contenido.setPlainText(f"{contenido_actual}\n\n{mensaje_temp}")
             
         except Exception as e:
-            print(f"[DialogoActuacionesEspeciales] Error refrescando backups: {e}")
+            logger.error(f"Error refrescando backups: {e}")
             QMessageBox.critical(self, "Error", f"Error refrescando backups: {e}")
     
     def mostrar_todas_actuaciones(self):
@@ -451,7 +454,7 @@ class DialogoActuacionesEspeciales(QDialog):
                 directorio_actual = os.path.dirname(self.json_actual) if self.json_actual else ""
                 
                 if directorio_cargado == directorio_actual:
-                    print("[DialogoActuacionesEspeciales] 🔄 Refrescando backups por archivo en mismo directorio")
+                    logger.debug("Refrescando backups por archivo en mismo directorio")
                     self.cargar_lista_backups()
             
         except json.JSONDecodeError as e:
@@ -496,7 +499,7 @@ class DialogoActuacionesEspeciales(QDialog):
     def refrescar_interfaz_completa(self):
         """Refrescar completamente la interfaz del diálogo después de cambiar JSON"""
         try:
-            print("[DialogoActuacionesEspeciales] 🔄 Refrescando interfaz completa...")
+            logger.debug("Refrescando interfaz completa...")
             
             # Limpiar el área de contenido
             self.area_contenido.clear()
@@ -527,7 +530,7 @@ Seleccione una opción para continuar...
             
             self.area_contenido.setPlainText(mensaje_refresh)
             
-            print("[DialogoActuacionesEspeciales] ✅ Interfaz refrescada completamente")
+            logger.info("Interfaz refrescada completamente")
             
         except Exception as e:
-            print(f"[DialogoActuacionesEspeciales] ❌ Error refrescando interfaz: {e}")
+            logger.error(f"Error refrescando interfaz: {e}")

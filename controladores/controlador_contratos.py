@@ -5,6 +5,9 @@ Maneja ContractManager, tipos de contrato y lógica relacionada
 import os
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5 import QtWidgets
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ControladorContratos:
@@ -13,7 +16,7 @@ class ControladorContratos:
     def __init__(self, main_window):
         self.main_window = main_window
         self.contract_manager = None
-        print("[ControladorContratos] 🏗️ Inicializado")
+        logger.info("Inicializado")
         
 
     
@@ -24,16 +27,16 @@ class ControladorContratos:
                 # Conectar señales
                 self.contract_manager.contract_loaded.connect(self.on_contract_loaded)
                 self.contract_manager.contract_type_changed.connect(self.on_contract_type_changed)
-                print("[ControladorContratos] ✅ Callbacks conectados")
+                logger.debug("Callbacks conectados")
                 
         except Exception as e:
-            print(f"[ControladorContratos] ❌ Error conectando callbacks: {e}")
+            logger.error(f"Error conectando callbacks: {e}")
 
 
     def on_contract_type_changed(self, tipo_contrato):
         """Callback cuando cambia el tipo de contrato - ACTUALIZADO PARA MÚLTIPLES TIPOS"""
         try:
-            print(f"[ControladorContratos] 🔄 Cambiando tipo de contrato a: {tipo_contrato}")
+            logger.info(f"Cambiando tipo de contrato a: {tipo_contrato}")
             
             tipo_lower = tipo_contrato.lower()
             
@@ -46,10 +49,10 @@ class ControladorContratos:
             elif tipo_lower in ["facturas", "factura"]:
                 self.activar_modo_facturas()
             else:
-                print(f"[ControladorContratos] ⚠️ Tipo de contrato no reconocido: {tipo_contrato}")
+                logger.warning(f"Tipo de contrato no reconocido: {tipo_contrato}")
                 
         except Exception as e:
-            print(f"[ControladorContratos] ❌ Error configurando tipo de contrato: {e}")
+            logger.error(f"Error configurando tipo de contrato: {e}")
 
 
     def activar_modo_servicios(self):
@@ -58,7 +61,7 @@ class ControladorContratos:
             pass
             
         except Exception as e:
-            print(f"[ControladorContratos] ❌ Error activando modo servicios: {e}")
+            logger.error(f"Error activando modo servicios: {e}")
 
     def activar_modo_obras(self):
         """Activa modo obras"""
@@ -66,26 +69,26 @@ class ControladorContratos:
             pass
             
         except Exception as e:
-            print(f"[ControladorContratos] ❌ Error activando modo obras: {e}")
+            logger.error(f"Error activando modo obras: {e}")
 
     def activar_modo_mantenimiento(self):
         """Activa modo mantenimiento"""
         try:
-            print("[ControladorContratos] 🔨 Activando modo MANTENIMIENTO")
+            logger.info("Activando modo MANTENIMIENTO")
             
             # Aplicar configuraciones específicas de mantenimiento
             if hasattr(self.main_window, '_configurar_campos_mantenimiento'):
                 self.main_window._configurar_campos_mantenimiento()
             
-            print("[ControladorContratos] ✅ Modo mantenimiento activado")
+            logger.info("Modo mantenimiento activado")
             
         except Exception as e:
-            print(f"[ControladorContratos] ❌ Error activando modo mantenimiento: {e}")
+            logger.error(f"Error activando modo mantenimiento: {e}")
 
     def activar_modo_facturas(self):
         """Activa modo facturas"""
         try:
-            print("[ControladorContratos] 💰 Activando modo FACTURAS")
+            logger.info("Activando modo FACTURAS")
             
             # Configuraciones específicas para facturas
             if hasattr(self.main_window, 'controlador_actuaciones_facturas'):
@@ -97,10 +100,10 @@ class ControladorContratos:
             if hasattr(self.main_window, '_configurar_campos_facturas'):
                 self.main_window._configurar_campos_facturas()
             
-            print("[ControladorContratos] ✅ Modo facturas activado")
+            logger.info("Modo facturas activado")
             
         except Exception as e:
-            print(f"[ControladorContratos] ❌ Error activando modo facturas: {e}")
+            logger.error(f"Error activando modo facturas: {e}")
 
     # =================== MÉTODOS DE ACCESO PÚBLICO ===================
     
@@ -118,14 +121,14 @@ class ControladorContratos:
         """Recargar la lista de contratos"""
         try:
             if self.contract_manager:
-                print("[ControladorContratos] 🔄 Recargando lista de contratos...")
+                logger.info("Recargando lista de contratos...")
                 self.contract_manager.reload_contracts()
-                print("[ControladorContratos] ✅ Lista de contratos recargada")
+                logger.info("Lista de contratos recargada")
             else:
-                print("[ControladorContratos] ⚠️ ContractManager no disponible para recargar")
+                logger.warning("ContractManager no disponible para recargar")
                 
         except Exception as e:
-            print(f"[ControladorContratos] ❌ Error recargando contratos: {e}")
+            logger.error(f"Error recargando contratos: {e}")
 
     def get_current_contract_name(self):
         """Obtener el nombre del contrato actual"""
@@ -149,7 +152,7 @@ class ControladorContratos:
         """Forzar selección de un contrato específico"""
         try:
             if not self.contract_manager:
-                print("[ControladorContratos] ❌ ContractManager no disponible")
+                logger.error("ContractManager no disponible")
                 return False
                 
             if contract_name is None:
@@ -157,21 +160,21 @@ class ControladorContratos:
                 if self.contract_manager.contracts_list:
                     contract_name = self.contract_manager.contracts_list[0]
                 else:
-                    print("[ControladorContratos] ❌ No hay contratos disponibles")
+                    logger.error("No hay contratos disponibles")
                     return False
             
-            print(f"[ControladorContratos] 🎯 Forzando selección de: '{contract_name}'")
+            logger.info(f"Forzando selección de: '{contract_name}'")
             
             # Buscar índice del contrato en el ComboBox
             index = self.main_window.comboBox.findText(contract_name)
             if index >= 0:
                 self.main_window.comboBox.setCurrentIndex(index)
-                print(f"[ControladorContratos] ✅ Contrato seleccionado en índice {index}")
+                logger.info(f"Contrato seleccionado en índice {index}")
                 return True
             else:
-                print(f"[ControladorContratos] ❌ Contrato '{contract_name}' no encontrado en ComboBox")
+                logger.error(f"Contrato '{contract_name}' no encontrado en ComboBox")
                 return False
                 
         except Exception as e:
-            print(f"[ControladorContratos] ❌ Error forzando selección: {e}")
+            logger.error(f"Error forzando selección: {e}")
             return False

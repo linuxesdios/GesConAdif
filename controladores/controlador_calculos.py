@@ -6,6 +6,9 @@ from typing import Optional
 from PyQt5.QtWidgets import QTableWidgetItem
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ControladorCalculos:
@@ -30,7 +33,7 @@ class ControladorCalculos:
             
             # Verificar que existe basePresupuesto
             if not hasattr(window, 'basePresupuesto'):
-                print("[ControladorCalculos] ❌ No existe basePresupuesto en window")
+                logger.error("No existe basePresupuesto en window")
                 return False
             
             widget_base = window.basePresupuesto
@@ -62,7 +65,7 @@ class ControladorCalculos:
                 iva_guardado = self._guardar_campo_calculado_en_json(window, 'ivaPresupuestoBase', f"{iva:.2f}")
                 
             else:
-                print("[ControladorCalculos] ❌ No existe ivaPresupuestoBase en window")
+                logger.error("No existe ivaPresupuestoBase en window")
             
             # Establecer total en UI y guardar en JSON
             if hasattr(window, 'totalPresupuestoBase'):
@@ -73,7 +76,7 @@ class ControladorCalculos:
                 total_guardado = self._guardar_campo_calculado_en_json(window, 'totalPresupuestoBase', f"{total:.2f}")
                 
             else:
-                print("[ControladorCalculos] ❌ No existe totalPresupuestoBase en window")
+                logger.error("No existe totalPresupuestoBase en window")
             
             # Resumen de guardado
             if iva_guardado:
@@ -87,7 +90,7 @@ class ControladorCalculos:
             return True
             
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error IVA base: {e}")
+            logger.error(f"Error IVA base: {e}")
             import traceback
             traceback.print_exc()
             return False
@@ -103,7 +106,7 @@ class ControladorCalculos:
             self._calculando = True
             
             if not hasattr(window, 'precioAdjudicacion'):
-                print("[ControladorCalculos] ❌ No existe precioAdjudicacion")
+                logger.error("No existe precioAdjudicacion")
                 return False
             
             base = self._obtener_valor_widget(window.precioAdjudicacion)
@@ -165,7 +168,7 @@ class ControladorCalculos:
             return True
             
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error IVA adjudicación: {e}")
+            logger.error(f"Error IVA adjudicación: {e}")
             import traceback
             traceback.print_exc()
             return False
@@ -185,7 +188,7 @@ class ControladorCalculos:
             return liquidacion_ok
             
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error certificación: {e}")
+            logger.error(f"Error certificación: {e}")
             return False
         finally:
             self._calculando = False
@@ -193,11 +196,11 @@ class ControladorCalculos:
     def calcular_liquidacion(self, window):
         """Calcular liquidación completa - CON AUTO-GUARDADO DE TODOS LOS CAMPOS"""
         try:
-            print("[ControladorCalculos] 🧮 Iniciando cálculo de liquidación completa...")
+            logger.info("Iniciando cálculo de liquidación completa...")
 
             # Verificar campos mínimos necesarios
             if not hasattr(window, 'certBase'):
-                print("[ControladorCalculos] ❌ No existe certBase")
+                logger.error("No existe certBase")
                 return False
 
             cert_base = self._obtener_valor_widget(window.certBase)
@@ -224,7 +227,7 @@ class ControladorCalculos:
 
             # 3. CALCULAR saldoBaseLiquidacion Y GUARDAR
             saldo_base = ejecucion - cert_base
-            print(f"[ControladorCalculos] 🧮 Calculando saldoBaseLiquidacion: {ejecucion} - {cert_base} = {saldo_base}")
+            logger.debug(f"Calculando saldoBaseLiquidacion: {ejecucion} - {cert_base} = {saldo_base}")
             
             if hasattr(window, 'saldoBaseLiquidacion'):
                 self._establecer_valor_widget(window.saldoBaseLiquidacion, saldo_base)
@@ -238,7 +241,7 @@ class ControladorCalculos:
 
             # 5. Calcular diferencia para liquidación
             diferencia_base = saldo_base
-            print(f"[ControladorCalculos] 🧮 Diferencia base = {diferencia_base}")
+            logger.debug(f"Diferencia base = {diferencia_base}")
 
             # 6. Calcular adicional Y GUARDAR
             adicional_base = abs(diferencia_base)
@@ -310,7 +313,7 @@ class ControladorCalculos:
             return True
 
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error liquidación: {e}")
+            logger.error(f"Error liquidación: {e}")
             import traceback
             traceback.print_exc()
             return False
@@ -340,11 +343,11 @@ class ControladorCalculos:
                 self._campos_pendientes.clear()
                 return True
             else:
-                print(f"[ControladorCalculos] ⚠️ No hay controlador_eventos_ui para lote")
+                logger.warning("No hay controlador_eventos_ui para lote")
                 return False
                 
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error guardando lote: {e}")
+            logger.error(f"Error guardando lote: {e}")
             self._campos_pendientes.clear()
             return False
 
@@ -362,7 +365,7 @@ class ControladorCalculos:
                 self._agregar_campo_pendiente(nombre_campo, valor)
                 return True
         except Exception as e:
-            print(f"[ControladorCalculos] ERROR guardando campo {nombre_campo}: {e}")
+            logger.error(f"Error guardando campo {nombre_campo}: {e}")
             return False
 
     # =================== CÁLCULOS DE OFERTAS CON AUTO-GUARDADO ===================
@@ -376,7 +379,7 @@ class ControladorCalculos:
             self._calculando = True
             
             if not hasattr(window, 'TwOfertas'):
-                print("[ControladorCalculos] ❌ No existe TwOfertas")
+                logger.error("No existe TwOfertas")
                 return False
             
             tabla = window.TwOfertas
@@ -405,10 +408,7 @@ class ControladorCalculos:
                 licitacion15_valor = precio_min * 1.5
                 licitacion07_valor = precio_min * 0.7
                 
-                print(f"[ControladorCalculos] 🧮 Auto-calculando licitaciones desde ofertas:")
-                print(f"  - Precio mínimo: {precio_min:.2f}")
-                print(f"  - licitacion15: {precio_min:.2f} × 1.5 = {licitacion15_valor:.2f}")
-                print(f"  - licitacion07: {precio_min:.2f} × 0.7 = {licitacion07_valor:.2f}")
+                logger.info(f"Auto-calculando licitaciones desde ofertas: precio mínimo {precio_min:.2f}, licitacion15 {licitacion15_valor:.2f}, licitacion07 {licitacion07_valor:.2f}")
                 
                 if hasattr(window, 'ivaAdjudicacion'):
                     self._establecer_valor_widget(window.ivaAdjudicacion, iva_adj)
@@ -431,15 +431,15 @@ class ControladorCalculos:
                 if hasattr(window, 'licitacion15'):
                     self._establecer_valor_widget(window.licitacion15, licitacion15_valor)
                     self._guardar_campo_calculado_en_json(window, 'licitacion15', f"{licitacion15_valor:.2f}")
-                    print(f"[ControladorCalculos] ✅ licitacion15 auto-establecido: {licitacion15_valor:.2f}")
+                    logger.info(f"licitacion15 auto-establecido: {licitacion15_valor:.2f}")
                 
                 if hasattr(window, 'licitacion07'):
                     self._establecer_valor_widget(window.licitacion07, licitacion07_valor)
                     self._guardar_campo_calculado_en_json(window, 'licitacion07', f"{licitacion07_valor:.2f}")
-                    print(f"[ControladorCalculos] ✅ licitacion07 auto-establecido: {licitacion07_valor:.2f}")
+                    logger.info(f"licitacion07 auto-establecido: {licitacion07_valor:.2f}")
             else:
                 # Limpiar campos dependientes del precio cuando no hay ofertas válidas
-                print("[ControladorCalculos] 🧹 Limpiando campos por falta de ofertas válidas")
+                logger.info("Limpiando campos por falta de ofertas válidas")
                 
                 if hasattr(window, 'precioAdjudicacion'):
                     self._establecer_valor_widget(window.precioAdjudicacion, 0.0)

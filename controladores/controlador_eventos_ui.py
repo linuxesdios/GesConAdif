@@ -4,6 +4,9 @@ Solo detecta eventos y llama funciones del controlador de cálculos
 VERSIÓN COMPLETA CORREGIDA - CON IMPORTACIONES OPCIONALES
 """
 from typing import Optional
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Importaciones opcionales de PyQt5
 try:
@@ -12,7 +15,7 @@ try:
     from PyQt5 import QtCore
     PYQT5_AVAILABLE = True
 except ImportError:
-    print("[ControladorEventosUI] WARNING PyQt5 no disponible, usando modo compatibilidad")
+    logger.warning("PyQt5 no disponible, usando modo compatibilidad")
     PYQT5_AVAILABLE = False
     # Clases mock para compatibilidad
     QLineEdit = QTextEdit = QTableWidgetItem = QDateEdit = QTimeEdit = None
@@ -28,11 +31,11 @@ class ControladorEventosUI:
     def set_controlador_calculos(self, controlador_calculos):
         """Establecer referencia al controlador de cálculos"""
         self.controlador_calculos = controlador_calculos
-        print("[ControladorEventosUI] [CALC] Controlador de cálculos conectado")
+        logger.info("Controlador de cálculos conectado")
         
         # CRÍTICO: Re-setup de eventos después de conectar el controlador
         if self.controlador_calculos:
-            print("[ControladorEventosUI] RELOAD Re-configurando eventos tras conexión de controlador_calculos")
+            logger.debug("Re-configurando eventos tras conexión de controlador_calculos")
             self.setup_event_handlers()
         
     def iniciar_carga_datos(self):
@@ -45,17 +48,17 @@ class ControladorEventosUI:
         
     def setup_event_handlers(self):
         """Configurar todos los manejadores de eventos - VERSIÓN CORREGIDA"""
-        print("[ControladorEventosUI] SETUP Iniciando setup_event_handlers")
+        logger.debug("Iniciando setup_event_handlers")
         try:
             if not PYQT5_AVAILABLE:
-                print("[ControladorEventosUI] WARNING PyQt5 no disponible - saltando configuración eventos")
+                logger.warning("PyQt5 no disponible - saltando configuración eventos")
                 return
                 
             if not self.main_window:
-                print("[ControladorEventosUI] ERROR main_window es None")
+                logger.error("main_window es None")
                 return
                 
-            print("[ControladorEventosUI] OK Ventana principal encontrada")
+            logger.debug("Ventana principal encontrada")
             
             # 1. CONFIGURAR CAMPOS ESPECÍFICOS
             self._setup_campos_especificos()
@@ -78,55 +81,55 @@ class ControladorEventosUI:
             # 7. CONFIGURAR JUSTIFICACIÓN INICIAL
             self.setup_justificacion_inicial()
             
-            print("[ControladorEventosUI] OK Setup de eventos completado exitosamente")
+            logger.info("Setup de eventos completado exitosamente")
             
             # Configurar eventos específicos después de un delay
             QTimer.singleShot(1000, self._setup_eventos_tardios)
 
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en setup_event_handlers: {e}")
+            logger.error(f"Error en setup_event_handlers: {e}")
             import traceback
             traceback.print_exc()
     
     def _setup_eventos_tardios(self):
         """Configurar eventos que requieren widgets completamente inicializados"""
         try:
-            print("[CAMBIO_CONTRATO] 🕐 Configurando eventos tardíos...")
+            logger.debug("Configurando eventos tardíos...")
             
             # numEmpresasPresentadas - AUTO-GUARDADO TARDÍO
             if hasattr(self.main_window, 'numEmpresasPresentadas'):
                 widget = self.main_window.numEmpresasPresentadas
-                print(f"[CAMBIO_CONTRATO] 🔧 CONECTANDO TARDÍO numEmpresasPresentadas (tipo: {type(widget).__name__})")
+                logger.debug(f"Conectando tardío numEmpresasPresentadas (tipo: {type(widget).__name__})")
                 # NO desconectar - usar el sistema general que ya funciona
                 # Solo verificar que el widget existe y está disponible
-                print(f"[CAMBIO_CONTRATO] ✅ numEmpresasPresentadas VERIFICADO - usando sistema general")
+                logger.debug("numEmpresasPresentadas verificado - usando sistema general")
             else:
-                print(f"[CAMBIO_CONTRATO] ❌ numEmpresasPresentadas NO ENCONTRADO en setup tardío")
+                logger.warning("numEmpresasPresentadas no encontrado en setup tardío")
 
             # numEmpresasSolicitadas - AUTO-GUARDADO TARDÍO  
             if hasattr(self.main_window, 'numEmpresasSolicitadas'):
                 widget = self.main_window.numEmpresasSolicitadas
-                print(f"[CAMBIO_CONTRATO] 🔧 CONECTANDO TARDÍO numEmpresasSolicitadas (tipo: {type(widget).__name__})")
+                logger.debug(f"Conectando tardío numEmpresasSolicitadas (tipo: {type(widget).__name__})")
                 # NO desconectar - usar el sistema general que ya funciona
                 # Solo verificar que el widget existe y está disponible
-                print(f"[CAMBIO_CONTRATO] ✅ numEmpresasSolicitadas VERIFICADO - usando sistema general")
+                logger.debug("numEmpresasSolicitadas verificado - usando sistema general")
             else:
-                print(f"[CAMBIO_CONTRATO] ❌ numEmpresasSolicitadas NO ENCONTRADO en setup tardío")
+                logger.warning("numEmpresasSolicitadas no encontrado en setup tardío")
                 
             # Verificar plazoEjecucion para debugging de carga
             if hasattr(self.main_window, 'plazoEjecucion'):
                 widget = self.main_window.plazoEjecucion
                 valor_actual = widget.value() if hasattr(widget, 'value') else widget.text() if hasattr(widget, 'text') else 'N/A'
-                print(f"[CAMBIO_CONTRATO] 🔍 plazoEjecucion actual: '{valor_actual}' (tipo: {type(widget).__name__})")
+                logger.debug(f"plazoEjecucion actual: '{valor_actual}' (tipo: {type(widget).__name__})")
             
             # Verificar si existe plazoActuacion
             if hasattr(self.main_window, 'plazoActuacion'):
                 widget = self.main_window.plazoActuacion
-                print(f"[CAMBIO_CONTRATO] 🔧 ENCONTRADO plazoActuacion (tipo: {type(widget).__name__})")
+                logger.debug(f"Encontrado plazoActuacion (tipo: {type(widget).__name__})")
                 # NO desconectar - usar el sistema general que ya funciona
-                print(f"[CAMBIO_CONTRATO] ✅ plazoActuacion VERIFICADO - usando sistema general")
+                logger.debug("plazoActuacion verificado - usando sistema general")
             else:
-                print(f"[CAMBIO_CONTRATO] ❌ plazoActuacion NO ENCONTRADO")
+                logger.warning("plazoActuacion no encontrado")
                 
         except Exception as e:
             print(f"[CAMBIO_CONTRATO] ❌ Error en setup tardío: {e}")
