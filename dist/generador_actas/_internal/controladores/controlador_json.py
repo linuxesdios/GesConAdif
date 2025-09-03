@@ -73,6 +73,7 @@ class GestorJsonUnificado:
         try:
             with open(self.ruta_archivo, "w", encoding="utf-8") as archivo:
                 json.dump(estructura_inicial, archivo, ensure_ascii=False, indent=2)
+            print(f"[JSON] ✅ Escritura inicial realizada en: {self.ruta_archivo}")
             print(f"[GestorJsonUnificado] BaseDatos.json creado: {self.ruta_archivo}")
         except Exception as e:
             print(f"[GestorJsonUnificado] Error creando archivo inicial: {e}")
@@ -95,6 +96,7 @@ class GestorJsonUnificado:
             with open(self.ruta_archivo, "w", encoding="utf-8") as archivo:
                 json.dump(self.datos, archivo, ensure_ascii=False, indent=2)
             
+            print(f"[JSON] ✅ Escritura realizada en: {self.ruta_archivo}")
             pass
             return True
         except Exception as e:
@@ -239,7 +241,10 @@ class GestorJsonUnificado:
             
             # Actualizar campo
             datos_actualizados = {nombre_campo: valor}
-            return self.actualizar_contrato(nombre_contrato, datos_actualizados)
+            resultado = self.actualizar_contrato(nombre_contrato, datos_actualizados)
+            if resultado:
+                print(f"[JSON] ✅ Campo guardado: {nombre_contrato} → {nombre_campo} = '{valor}'")
+            return resultado
             
         except Exception as e:
             print(f"[GestorJsonUnificado] ERROR guardando campo: {e}")
@@ -256,7 +261,10 @@ class GestorJsonUnificado:
                 "empresas": empresas_data  # Array directo, no nested
             }
             
-            return self.actualizar_contrato(nombre_contrato, datos_empresas)
+            resultado = self.actualizar_contrato(nombre_contrato, datos_empresas)
+            if resultado:
+                print(f"[JSON] ✅ Empresas guardadas: {nombre_contrato} → {len(empresas_data)} empresas")
+            return resultado
             
         except Exception as e:
             print(f"[GestorJsonUnificado] ERROR guardando empresas unificadas: {e}")
@@ -282,7 +290,10 @@ class GestorJsonUnificado:
                     
                     # Guardar solo si se solicita
                     if guardar_inmediato:
-                        return self.guardar_datos()
+                        resultado = self.guardar_datos()
+                        if resultado:
+                            print(f"[JSON] ✅ Contrato actualizado: {nombre_contrato}")
+                        return resultado
                     else:
                         return True
             
@@ -324,12 +335,18 @@ class GestorJsonUnificado:
                 if obra.get("nombreObra") == nombre_obra:
                     obras[i] = datos_contrato
                     print(f"[GestorJsonUnificado] OK: Contrato actualizado: {nombre_obra}")
-                    return self.guardar_datos()
+                    resultado = self.guardar_datos()
+                    if resultado:
+                        print(f"[JSON] ✅ Contrato guardado (actualización): {nombre_obra}")
+                    return resultado
             
             # Si no existe, agregar nuevo
             obras.append(datos_contrato)
             print(f"[GestorJsonUnificado] OK: Nuevo contrato agregado: {nombre_obra}")
-            return self.guardar_datos()
+            resultado = self.guardar_datos()
+            if resultado:
+                print(f"[JSON] ✅ Contrato guardado (nuevo): {nombre_obra}")
+            return resultado
             
         except Exception as e:
             print(f"[GestorJsonUnificado] ERROR guardando contrato: {e}")

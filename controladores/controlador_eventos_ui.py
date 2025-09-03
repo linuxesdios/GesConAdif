@@ -1270,8 +1270,14 @@ class ControladorEventosUI:
                                 def handler(event):
                                     if orig_handler:
                                         orig_handler(event)
-                                    if hasattr(self.main_window, 'controlador_autosave'):
-                                        pass
+                                    # 🆕 SOLUCIÓN CONFLICTO: Llamar también al auto-guardado
+                                    if (hasattr(self.main_window, 'controlador_autosave') and 
+                                        self.main_window.controlador_autosave and
+                                        hasattr(self.main_window.controlador_autosave, '_guardar_campo_inmediato') and
+                                        not self.main_window.controlador_autosave.cargando_datos):
+                                        nombre_widget = w.objectName()
+                                        if nombre_widget and not nombre_widget.startswith('qt_'):
+                                            self.main_window.controlador_autosave._guardar_campo_inmediato(nombre_widget, w)
                                 return handler
                             
                             widget.focusOutEvent = create_focus_out_handler(widget, original_focus_out)

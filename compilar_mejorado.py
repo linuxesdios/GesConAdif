@@ -37,8 +37,8 @@ def verificar_basedatos_json():
     """Verifica y corrige BaseDatos.json antes de compilar"""
     print("\n🔍 Verificando BaseDatos.json...")
     
-    if not os.path.exists("BaseDatos.json"):
-        print("⚠️ BaseDatos.json no encontrado, creando uno básico...")
+    if not os.path.exists("basedatos/BaseDatos.json"):
+        print("⚠️ basedatos/BaseDatos.json no encontrado, creando uno básico...")
         estructura_basica = {
             "firmantes": {
                 "jefe_proyecto": {
@@ -71,13 +71,15 @@ def verificar_basedatos_json():
             ]
         }
         
-        with open("BaseDatos.json", 'w', encoding='utf-8') as f:
+        # Crear directorio basedatos si no existe
+        os.makedirs("basedatos", exist_ok=True)
+        with open("basedatos/BaseDatos.json", 'w', encoding='utf-8') as f:
             json.dump(estructura_basica, f, ensure_ascii=False, indent=2)
-        print("✅ BaseDatos.json creado con datos de ejemplo")
+        print("✅ basedatos/BaseDatos.json creado con datos de ejemplo")
     else:
         # Verificar y corregir estructura existente
         try:
-            with open("BaseDatos.json", 'r', encoding='utf-8') as f:
+            with open("basedatos/BaseDatos.json", 'r', encoding='utf-8') as f:
                 datos = json.load(f)
                 
             # Verificar estructura básica
@@ -98,10 +100,10 @@ def verificar_basedatos_json():
                     obra["expediente"] = f"EXP-{obra.get('nombre', 'SIN_NOMBRE')[:10]}"
                     
             # Guardar cambios
-            with open("BaseDatos.json", 'w', encoding='utf-8') as f:
+            with open("basedatos/BaseDatos.json", 'w', encoding='utf-8') as f:
                 json.dump(datos, f, ensure_ascii=False, indent=2)
                 
-            print(f"✅ BaseDatos.json verificado - {len(datos['obras'])} obras encontradas")
+            print(f"✅ basedatos/BaseDatos.json verificado - {len(datos['obras'])} obras encontradas")
             
         except Exception as e:
             print(f"❌ Error verificando BaseDatos.json: {e}")
@@ -113,7 +115,7 @@ def preservar_archivos_criticos():
     """Respalda archivos críticos esenciales"""
     print("\n🛡️ Preservando archivos críticos...")
     
-    archivos_preservar = ["BaseDatos.json"]
+    archivos_preservar = ["basedatos/BaseDatos.json"]
     carpetas_preservar = ["obras", "plantillas"]
     
     backups = {"archivos": {}, "carpetas": {}}
@@ -169,7 +171,7 @@ def compilar_con_mejoras(python_exe):
         "--workpath=build",
         
         # ARCHIVOS DE DATOS CRÍTICOS
-        "--add-data=BaseDatos.json;.",
+        "--add-data=basedatos/BaseDatos.json;.",
         "--add-data=controladores;controladores",
         "--add-data=ui;ui", 
         "--add-data=plantillas;plantillas",
@@ -256,18 +258,22 @@ def reorganizar_estructura_mejorada(backups):
     
     archivos_json = {
         "BaseDatos.json": [
-            "BaseDatos.json.backup_compilacion", # Desde backup (primera prioridad)
-            "BaseDatos.json",                     # Desde directorio actual
-            f"{dist_dir}/BaseDatos.json",         # Por si quedó en raíz dist
-            f"{internal_dir}/BaseDatos.json"      # Desde add-data (última prioridad)
+            "basedatos/BaseDatos.json.backup_compilacion", # Desde backup (primera prioridad)
+            "basedatos/BaseDatos.json",                     # Desde directorio basedatos
+            "BaseDatos.json.backup_compilacion",            # Backup en raíz (compatibilidad)
+            "BaseDatos.json",                               # Desde directorio actual (compatibilidad)
+            f"{dist_dir}/BaseDatos.json",                   # Por si quedó en raíz dist
+            f"{internal_dir}/BaseDatos.json"                # Desde add-data (última prioridad)
         ],
         "facturas_directas.json": [
-            "facturas_directas.json",            # Desde directorio actual
+            "basedatos/facturas_directas.json",  # Desde directorio basedatos
+            "facturas_directas.json",            # Desde directorio actual (compatibilidad)
             f"{dist_dir}/facturas_directas.json",
             f"{internal_dir}/facturas_directas.json"
         ],
         "historial_documentos.json": [
-            "historial_documentos.json",         # Desde directorio actual
+            "basedatos/historial_documentos.json", # Desde directorio basedatos
+            "historial_documentos.json",           # Desde directorio actual (compatibilidad)
             f"{dist_dir}/historial_documentos.json",
             f"{internal_dir}/historial_documentos.json"
         ]

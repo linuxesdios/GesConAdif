@@ -631,7 +631,7 @@ class ControladorCalculos:
                 # Columna 0: Nombre empresa (solo lectura, fondo gris)
                 item_nombre = QTableWidgetItem(nombre_empresa)
                 item_nombre.setFlags(item_nombre.flags() & ~Qt.ItemIsEditable)
-                item_nombre.setBackgroundColor(QColor('lightgray'))
+                item_nombre.setBackground(QColor('lightgray'))
                 tabla_ofertas.setItem(i, 0, item_nombre)
                 
                 # Columna 1: Oferta (mantener valor existente si existe)

@@ -164,7 +164,13 @@ class DialogoCrearContrato(QDialog):
         
         # Solo tipo de actuación (obligatorio)
         self.tipo_actuacion = QComboBox()
-        self.tipo_actuacion.addItems(["Servicios", "Obras", "Mantenimiento", "Facturas"])
+        self.tipo_actuacion.addItems([
+            "Seleccionar tipo...",
+            "obras",
+            "servicios", 
+            "serv_mantenimiento",
+            "obra_mantenimiento"
+        ])
         form_layout.addRow("Tipo de actuación*:", self.tipo_actuacion)
         
         layout.addLayout(form_layout)
