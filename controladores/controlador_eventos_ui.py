@@ -320,6 +320,28 @@ class ControladorEventosUI:
         
         # Botón especial de abrir carpeta
         self._setup_abrir_carpeta()
+        
+        # Botón especial de Excel (Importar/Exportar)
+        self._setup_boton_excel()
+    
+    def _setup_boton_excel(self):
+        """Configurar botón especial de Excel con menú desplegable"""
+        try:
+            if hasattr(self.main_window, 'Pb_Imp_Exp_excel'):
+                boton = self.main_window.Pb_Imp_Exp_excel
+                if boton is not None:
+                    try:
+                        boton.clicked.disconnect()
+                    except:
+                        pass
+                    boton.clicked.connect(self.on_pb_imp_exp_excel_clicked)
+                    print("[ControladorEventosUI] ✅ Pb_Imp_Exp_excel conectado")
+                else:
+                    print("[ControladorEventosUI] ⚠️ Pb_Imp_Exp_excel es None")
+            else:
+                print("[ControladorEventosUI] ⚠️ Pb_Imp_Exp_excel no encontrado")
+        except Exception as e:
+            print(f"[ControladorEventosUI] ❌ Error conectando Pb_Imp_Exp_excel: {e}")
 
     def _setup_botones_gestion_empresas(self):
         """Configurar botones de gestión de empresas"""
@@ -1418,7 +1440,6 @@ class ControladorEventosUI:
         self.main_window = main_window
         self.cargando_datos = False
         self.controlador_calculos = None
-        self.conectar_boton_excel()
         self.conectar_boton_actuacion_mail()
         # SISTEMA DE GUARDADO POR FOCO
         self._cambios_pendientes = {}
