@@ -951,7 +951,12 @@ class ControladorDocumentos:
                     # Buscar archivo JSON
                     current_dir = os.path.dirname(__file__)
                     parent_dir = os.path.dirname(current_dir)
-                    json_path = os.path.join(parent_dir, "BaseDatos.json")
+                    # Intentar primero en carpeta basedatos
+                    json_path = os.path.join(parent_dir, "basedatos", "BaseDatos.json")
+                    
+                    # Si no existe, intentar en raíz como fallback
+                    if not os.path.exists(json_path):
+                        json_path = os.path.join(parent_dir, "BaseDatos.json")
                     
                     if os.path.exists(json_path):
                         with open(json_path, "r", encoding="utf-8") as f:
@@ -1210,15 +1215,30 @@ class ControladorDocumentos:
             QMessageBox.critical(self.main_window, "❌ Error", mensaje)
             
     def _mostrar_dialogo_conversion_pdf(self, titulo: str, ruta_docx: str):
-        """Mostrar diálogo para conversión a PDF"""
+        """Conversión automática a PDF sin diálogo"""
         try:
             if ruta_docx and ruta_docx.endswith('.docx') and os.path.exists(ruta_docx):
-                print(f"[ControladorDocumentos] 📄 Mostrando diálogo PDF para: {ruta_docx}")
-                mostrar_dialogo_pdf(
-                    parent=self.main_window,
-                    nombre_documento=titulo,
-                    docx_path=ruta_docx
-                )
+                print(f"[ControladorDocumentos] 📄 Generando PDF automáticamente para: {ruta_docx}")
+                
+                # Importar función de conversión
+                from .controlador_pdf_unificado import convertir_docx_a_pdf_simple
+                
+                # Convertir directamente
+                if convertir_docx_a_pdf_simple(ruta_docx):
+                    pdf_path = ruta_docx.replace('.docx', '.pdf')
+                    
+                    # Abrir automáticamente el PDF
+                    import subprocess
+                    try:
+                        print(f"[ControladorDocumentos] 📄 Abriendo PDF automáticamente: {pdf_path}")
+                        subprocess.run([pdf_path], shell=True, check=True)
+                    except Exception as e:
+                        print(f"[ControladorDocumentos] ⚠️ Error abriendo PDF: {e}")
+                        # Si falla abrir el PDF, abrir la carpeta
+                        carpeta = os.path.dirname(ruta_docx)
+                        subprocess.run(f'explorer "{carpeta}"', shell=True)
+                else:
+                    print(f"[ControladorDocumentos] ❌ Error generando PDF para: {ruta_docx}")
             else:
                 print(f"[ControladorDocumentos] ⚠️ No se puede mostrar diálogo PDF - Archivo no válido: {ruta_docx}")
         except ImportError as e:

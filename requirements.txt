@@ -1,0 +1,7 @@
+PyQt5>=5.15.0
+python-docx>=0.8.11
+docx2pdf>=0.1.8
+openpyxl>=3.0.9
+Pillow>=8.3.2
+PyQtChart>=5.15.0
+lxml>=4.6.0

@@ -15,6 +15,13 @@ from pathlib import Path
 # Agregar el directorio principal al path  
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
+# Mock de PyQt5.QtChart antes de importar
+sys.modules['PyQt5.QtChart'] = MagicMock()
+sys.modules['PyQt5.QtChart.QChart'] = MagicMock()
+sys.modules['PyQt5.QtChart.QChartView'] = MagicMock()
+sys.modules['PyQt5.QtChart.QPieSeries'] = MagicMock()
+sys.modules['PyQt5.QtChart.QPieSlice'] = MagicMock()
+
 # Mock de docx antes de importar
 sys.modules['docx'] = MagicMock()
 sys.modules['docx.Document'] = MagicMock()

@@ -1,8 +1,8 @@
 {
-  "nombre_obra": "MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES",
-  "numero_expediente": "",
-  "tipo_actuacion": "Mantenimiento",
-  "fecha_creacion": "2025-08-07T20:50:27.272974",
+  "nombre_obra": "MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.",
+  "numero_expediente": "Sin expediente",
+  "tipo_actuacion": "obra_mantenimiento",
+  "fecha_creacion": "2025-09-03T02:14:00.057314",
   "subcarpetas_creadas": 12,
   "version_gestor": "1.0",
   "estructura": [

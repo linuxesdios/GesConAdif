@@ -571,6 +571,36 @@ def generar_nombre_archivo_unico(directorio: str, nombre_base: str, extension: s
 
 
 
+def limpiar_respaldos_antiguos(directorio: str, nombre_base: str, extension: str, max_respaldos: int = 5):
+    """
+    Limpia respaldos antiguos manteniendo solo los más recientes
+    
+    Args:
+        directorio: Directorio de respaldos
+        nombre_base: Nombre base del archivo
+        extension: Extensión del archivo
+        max_respaldos: Número máximo de respaldos a mantener
+    """
+    try:
+        patron = f"{nombre_base}_backup_*{extension}"
+        archivos_respaldo = glob.glob(os.path.join(directorio, patron))
+        
+        if len(archivos_respaldo) > max_respaldos:
+            # Ordenar por fecha de modificación (más reciente primero)
+            archivos_respaldo.sort(key=os.path.getmtime, reverse=True)
+            
+            # Eliminar los más antiguos
+            for archivo_antiguo in archivos_respaldo[max_respaldos:]:
+                try:
+                    os.remove(archivo_antiguo)
+                    print(f"[INFO] Respaldo antiguo eliminado: {archivo_antiguo}")
+                except Exception as e:
+                    print(f"[WARNING] No se pudo eliminar respaldo: {e}")
+                    
+    except Exception as e:
+        print(f"[WARNING] Error limpiando respaldos antiguos: {e}")
+
+
 def crear_copia_respaldo_proyecto(ruta_archivo: str, directorio_respaldos: str = None) -> str:
     """
     Crea una copia de respaldo de un proyecto con rotación automática

@@ -5,10 +5,10 @@ CARPETA: 08-actuaciones
 Descripción: Registros de actuaciones y trabajos
 
 INFORMACIÓN DEL PROYECTO:
-  • Nombre: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES
-  • Expediente: 
-  • Tipo: Mantenimiento
-  • Creado: 2025-08-07 20:50:27
+  • Nombre: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+  • Expediente: Sin expediente
+  • Tipo: obra_mantenimiento
+  • Creado: 2025-09-03 02:14:00
 
 CONTENIDO ESPERADO:
   Registros de actuaciones y trabajos

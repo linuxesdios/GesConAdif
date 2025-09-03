@@ -888,12 +888,25 @@ class GestorArchivos:
             traceback.print_exc()
             return False
     def _get_json_path(self):
-        """Encontrar archivo JSON de datos"""
+        """Encontrar archivo JSON de datos - ACTUALIZADO PARA CARPETA basedatos"""
         try:
-            # Buscar en múltiples ubicaciones
+            # Importar controlador de rutas
+            from .controlador_routes import ControladorRutas
+            rutas = ControladorRutas()
+            
+            # Usar ruta oficial del controlador de rutas
+            ruta_oficial = rutas.get_ruta_base_datos()
+            if os.path.exists(ruta_oficial):
+                return ruta_oficial
+            
+            # Buscar en múltiples ubicaciones como fallback
             current_dir = os.path.dirname(os.path.abspath(__file__))
             
             posibles_rutas = [
+                os.path.join("basedatos", "BaseDatos.json"),
+                os.path.join(".", "basedatos", "BaseDatos.json"),
+                os.path.join("..", "basedatos", "BaseDatos.json"),
+                os.path.join(current_dir, "..", "basedatos", "BaseDatos.json"),
                 "BaseDatos.json",
                 os.path.join(".", "BaseDatos.json"),
                 os.path.join("..", "BaseDatos.json"),

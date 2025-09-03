@@ -20,6 +20,13 @@ from PyQt5.QtCore import Qt
 # Configurar ruta de importación
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
+# Mock de PyQt5.QtChart antes de importar
+sys.modules['PyQt5.QtChart'] = MagicMock()
+sys.modules['PyQt5.QtChart.QChart'] = MagicMock()
+sys.modules['PyQt5.QtChart.QChartView'] = MagicMock()
+sys.modules['PyQt5.QtChart.QPieSeries'] = MagicMock()
+sys.modules['PyQt5.QtChart.QPieSlice'] = MagicMock()
+
 from controladores.controlador_facturas_directas import (
     ControladorFacturasDirectas,
     DialogoFacturasDirectas,

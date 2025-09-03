@@ -844,14 +844,26 @@ class DialogoBorrarContrato(QDialog):
     
     def confirmar_eliminacion(self):
         """Confirmar eliminación con doble verificación"""
-        respuesta = QMessageBox.critical(
-            self, "⚠️ CONFIRMACIÓN FINAL",
-            f"¿Estás COMPLETAMENTE SEGURO de que quieres eliminar:\n\n"
-            f"'{self.nombre_contrato}'?\n\n"
-            f"Esta acción es IRREVERSIBLE.",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No
-        )
+        if self.checkbox_borrar_carpeta.isChecked():
+            respuesta = QMessageBox.question(
+                self, "⚠️ CONFIRMACIÓN DE BORRADO",
+                f"¿Confirmas borrar el contrato?\n\n"
+                f"'{self.nombre_contrato}'\n\n"
+                f"- Se eliminará del JSON\n"
+                f"- También se buscará y borrará la carpeta física\n\n"
+                f"¿Proceder?",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
+        else:
+            respuesta = QMessageBox.question(
+                self, "⚠️ CONFIRMACIÓN DE BORRADO",
+                f"¿Confirmas borrar el contrato del JSON?\n\n"
+                f"'{self.nombre_contrato}'\n\n"
+                f"(No se tocará la carpeta física)",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
         
         if respuesta == QMessageBox.Yes:
             self.confirmado = True

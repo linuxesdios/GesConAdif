@@ -65,6 +65,10 @@ class Empresa:
             'oferta': self.oferta
         }
     
+    def to_dict(self) -> Dict[str, Any]:
+        """Alias para a_diccionario para compatibilidad"""
+        return self.a_diccionario()
+    
     @classmethod
     def desde_diccionario(cls, datos: Dict[str, Any]) -> 'Empresa':
         """Crea una empresa desde diccionario"""
@@ -75,6 +79,11 @@ class Empresa:
             contacto=datos.get('contacto', ''),
             oferta=datos.get('oferta')
         )
+    
+    @classmethod
+    def from_dict(cls, datos: Dict[str, Any]) -> 'Empresa':
+        """Alias para desde_diccionario para compatibilidad"""
+        return cls.desde_diccionario(datos)
 
 
 
