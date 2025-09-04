@@ -380,7 +380,7 @@ background: #90CAF9;
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <property name="setFixedSize" stdset="0">
      <size>
@@ -1297,7 +1297,7 @@ QGroupBox::title {
          <x>20</x>
          <y>50</y>
          <width>671</width>
-         <height>331</height>
+         <height>397</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -3381,7 +3381,7 @@ QPushButton:pressed {
         <item>
          <widget class="QLabel" name="Lb21_2">
           <property name="text">
-           <string>Empresa</string>
+           <string>N firma</string>
           </property>
          </widget>
         </item>
@@ -3403,7 +3403,7 @@ QPushButton:pressed {
         <item>
          <widget class="QLabel" name="Lb20_2">
           <property name="text">
-           <string>Adif</string>
+           <string>N Adif</string>
           </property>
          </widget>
         </item>

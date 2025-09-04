@@ -32,18 +32,22 @@ class ControladorAutoGuardado:
     def iniciar_carga_datos(self):
         """Pausar auto-guardado durante carga de datos"""
         self.cargando_datos = True
+        logger.info(f"🔒 DIAGNÓSTICO: cargando_datos = TRUE - auto-guardado PAUSADO")
         
     def finalizar_carga_datos(self):
         """Reactivar auto-guardado después de carga"""
         self.cargando_datos = False
         self.ultimo_guardado.clear()
+        logger.info(f"🔓 DIAGNÓSTICO: cargando_datos = FALSE - auto-guardado ACTIVADO")
 
 
     def configurar_auto_guardado_completo(self):
         """Configurar auto-guardado para todos los widgets"""
         try:
+            logger.info(f"🔧 DIAGNÓSTICO: Iniciando configuración auto-guardado completo")
             self.configurar_auto_guardado_campos()
             self.configurar_auto_guardado_tablas()
+            logger.info(f"✅ DIAGNÓSTICO: Configuración auto-guardado completo terminada")
             
         except Exception as e:
             logger.error(f"Error configurando auto-guardado: {e}")
@@ -115,13 +119,21 @@ class ControladorAutoGuardado:
     def configurar_auto_guardado_tablas(self):
         """Configurar auto-guardado para tablas en pérdida de foco"""
         try:
+            logger.info(f"🔧 DIAGNÓSTICO: Configurando auto-guardado de tablas")
+            
             if hasattr(self.main_window, 'TwEmpresas'):
                 tabla = self.main_window.TwEmpresas
                 tabla.itemChanged.connect(lambda item: self._auto_guardar_tabla_empresas() if not self.cargando_datos else None)
+                logger.info(f"✅ DIAGNÓSTICO: TwEmpresas configurada para auto-guardado")
+            else:
+                logger.warning(f"⚠️ DIAGNÓSTICO: TwEmpresas NO encontrada")
             
             if hasattr(self.main_window, 'TwOfertas'):
                 tabla = self.main_window.TwOfertas
                 tabla.itemChanged.connect(lambda item: self._auto_guardar_tabla_ofertas() if not self.cargando_datos else None)
+                logger.info(f"✅ DIAGNÓSTICO: TwOfertas configurada para auto-guardado")
+            else:
+                logger.warning(f"⚠️ DIAGNÓSTICO: TwOfertas NO encontrada")
             
         except Exception as e:
             logger.error(f"Error configurando tablas: {e}")
@@ -133,8 +145,8 @@ class ControladorAutoGuardado:
             if not self._verificar_dependencias():
                 return False
 
-            # OBTENER CONTRATO ACTUAL SIEMPRE FRESCO
-            contrato = self.contract_manager.get_current_contract()
+            # USAR ÚNICA FUENTE DE VERDAD
+            contrato = self.obtener_contrato_actual()
             if not contrato:
                 return False
 
@@ -166,8 +178,8 @@ class ControladorAutoGuardado:
             if not self._verificar_dependencias():
                 return False
 
-            # OBTENER CONTRATO ACTUAL SIEMPRE FRESCO
-            contrato = self.contract_manager.get_current_contract()
+            # USAR ÚNICA FUENTE DE VERDAD
+            contrato = self.obtener_contrato_actual()
             if not contrato:
                 return False
 
@@ -182,28 +194,41 @@ class ControladorAutoGuardado:
 
     def _auto_guardar_tabla_empresas(self):
         """MODIFICADA: Guardar estructura unificada"""
+        logger.info(f"🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO")
+        
         if self.cargando_datos:
+            logger.warning(f"⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = {self.cargando_datos}")
             return
             
         try:
             if not self._verificar_dependencias():
+                logger.warning(f"⚠️ DIAGNÓSTICO: Dependencias no verificadas")
                 return
 
-            contrato = self.contract_manager.get_current_contract()
+            # USAR ÚNICA FUENTE DE VERDAD
+            contrato = self.obtener_contrato_actual()
             if not contrato:
+                logger.warning(f"⚠️ DIAGNÓSTICO: No hay contrato actual")
                 return
+            
+            logger.info(f"📊 DIAGNÓSTICO: Guardando empresas para contrato: '{contrato}'")
             
             # Extraer datos unificados
             empresas_data = self._extraer_datos_tabla_empresas()
+            logger.info(f"📊 DIAGNÓSTICO: Extraídas {len(empresas_data)} empresas de la tabla")
             
             # Verificar cambios reales
             cache_key = "empresas_unificadas"
             if cache_key in self.ultimo_guardado and self.ultimo_guardado[cache_key] == empresas_data:
+                logger.info(f"📊 DIAGNÓSTICO: Sin cambios en empresas - no guardando")
                 return  # Sin cambios
 
             # ✅ GUARDAR ESTRUCTURA UNIFICADA
             if self.controlador_json.guardar_empresas_unificadas_en_json(contrato, empresas_data):
                 self.ultimo_guardado[cache_key] = empresas_data
+                logger.info(f"✅ DIAGNÓSTICO: Empresas guardadas exitosamente")
+            else:
+                logger.error(f"❌ DIAGNÓSTICO: Error guardando empresas en JSON")
             
         except Exception as e:
             logger.error(f"Error guardando empresas unificadas: {e}")
@@ -377,6 +402,9 @@ class ControladorAutoGuardado:
             # AÑADIDO: Actualizar justificación de límites ANTES de cálculos
             self._actualizar_justificacion_limites(nombre_contrato)
             
+            # CONFIGURAR EVENTO DIRECTO PARA TABLA EMPRESAS
+            self.configurar_evento_tabla_empresas()
+            
             # Actualizar campos de texto
             self._actualizar_campos_desde_json(contract_data)
             
@@ -414,9 +442,9 @@ class ControladorAutoGuardado:
         if hasattr(self.main_window, 'TwEmpresas') and 'empresas' in contract_data:
             self._actualizar_tabla_empresas(contract_data['empresas'])
             
-        # Actualizar tabla ofertas
+        # Actualizar tabla ofertas UNIFICADO
         if hasattr(self.main_window, 'TwOfertas') and 'empresas' in contract_data:
-            self._actualizar_tabla_ofertas(contract_data['empresas'])
+            self.actualizar_tabla_ofertas_unificado(contract_data['empresas'])
 
     def _actualizar_tabla_empresas(self, empresas_data):
         """Actualizar tabla de empresas"""
@@ -429,14 +457,87 @@ class ControladorAutoGuardado:
             tabla.setItem(row, 2, QtWidgets.QTableWidgetItem(empresa.get('email', '')))
             tabla.setItem(row, 3, QtWidgets.QTableWidgetItem(empresa.get('contacto', '')))
 
-    def _actualizar_tabla_ofertas(self, empresas_data):
-        """Actualizar tabla de ofertas"""
-        tabla = self.main_window.TwOfertas
-        tabla.setRowCount(len(empresas_data))
+    def actualizar_tabla_ofertas_unificado(self, source_data=None, source_type="auto"):
+        """FUNCIÓN UNIFICADA: Actualizar tabla ofertas desde cualquier fuente"""
+        try:
+            if not hasattr(self.main_window, 'TwOfertas'):
+                logger.warning("TwOfertas no encontrada")
+                return False
+                
+            tabla = self.main_window.TwOfertas
+            
+            # Determinar fuente de datos
+            if source_data is None:
+                # Auto-detectar: leer desde tabla empresas actual
+                source_type = "tabla_empresas"
+                source_data = self._extraer_nombres_tabla_empresas()
+            elif isinstance(source_data, list) and len(source_data) > 0:
+                if isinstance(source_data[0], dict):
+                    source_type = "empresas_data"
+                else:
+                    source_type = "nombres_lista"
+            
+            logger.info(f"📊 Actualizando tabla ofertas - tipo: {source_type}, elementos: {len(source_data) if source_data else 0}")
+            
+            # Bloquear señales
+            tabla.blockSignals(True)
+            
+            # Guardar ofertas existentes
+            ofertas_existentes = {}
+            for fila in range(tabla.rowCount()):
+                oferta_item = tabla.item(fila, 1)
+                nombre_item = tabla.item(fila, 0)
+                if nombre_item and oferta_item and oferta_item.text().strip():
+                    ofertas_existentes[nombre_item.text().strip()] = oferta_item.text().strip()
+            
+            # Procesar según tipo de fuente
+            if source_type == "empresas_data":
+                tabla.setRowCount(len(source_data))
+                for row, empresa in enumerate(source_data):
+                    nombre = empresa.get('nombre', '')
+                    ofertas = empresa.get('ofertas', ofertas_existentes.get(nombre, ''))
+                    self._crear_fila_tabla_ofertas(tabla, row, nombre, ofertas)
+                    
+            else:  # nombres_lista o tabla_empresas
+                tabla.setRowCount(len(source_data))
+                for row, nombre in enumerate(source_data):
+                    ofertas = ofertas_existentes.get(nombre, '')
+                    self._crear_fila_tabla_ofertas(tabla, row, nombre, ofertas)
+            
+            tabla.blockSignals(False)
+            logger.info(f"✅ Tabla ofertas actualizada - {len(source_data)} filas")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error actualizando tabla ofertas: {e}")
+            if tabla:
+                tabla.blockSignals(False)
+            return False
+
+    def _extraer_nombres_tabla_empresas(self):
+        """Extraer nombres desde tabla empresas actual"""
+        nombres = []
+        if hasattr(self.main_window, 'TwEmpresas'):
+            tabla = self.main_window.TwEmpresas
+            for fila in range(tabla.rowCount()):
+                nombre_item = tabla.item(fila, 0)
+                if nombre_item and nombre_item.text().strip():
+                    nombres.append(nombre_item.text().strip())
+        return nombres
+
+    def _crear_fila_tabla_ofertas(self, tabla, row, nombre, ofertas):
+        """Crear fila en tabla ofertas con formato consistente"""
+        # Nombre (solo lectura, fondo gris)
+        item_nombre = QtWidgets.QTableWidgetItem(nombre)
+        from PyQt5.QtCore import Qt
+        from PyQt5.QtGui import QColor
+        item_nombre.setFlags(item_nombre.flags() & ~Qt.ItemIsEditable)
+        item_nombre.setBackground(QColor('lightgray'))
+        tabla.setItem(row, 0, item_nombre)
         
-        for row, empresa in enumerate(empresas_data):
-            tabla.setItem(row, 0, QtWidgets.QTableWidgetItem(empresa.get('nombre', '')))
-            tabla.setItem(row, 1, QtWidgets.QTableWidgetItem(empresa.get('ofertas', '')))
+        # Ofertas (editable)
+        item_ofertas = QtWidgets.QTableWidgetItem(str(ofertas))
+        tabla.setItem(row, 1, item_ofertas)
 
     def _establecer_valor_widget(self, widget, valor):
         """Establecer valor en widget según su tipo"""
@@ -465,7 +566,7 @@ class ControladorAutoGuardado:
             tabla = self.main_window.TwOfertas
             
             # Obtener nombre del contrato activo
-            nombre_contrato = self._obtener_nombre_contrato_actual()
+            nombre_contrato = self.obtener_contrato_actual()
             if not nombre_contrato:
                 logger.error("No se pudo guardar ofertas: contrato no definido")
                 return
@@ -517,3 +618,52 @@ class ControladorAutoGuardado:
                 
         except Exception as e:
             logger.error(f"Error actualizando justificación de límites: {e}")
+
+    def configurar_evento_tabla_empresas(self):
+        """Configurar evento directo para itemChanged en tabla empresas"""
+        try:
+            if hasattr(self.main_window, 'TwEmpresas'):
+                tabla = self.main_window.TwEmpresas
+                
+                # Desconectar eventos previos para evitar duplicados
+                try:
+                    tabla.itemChanged.disconnect()
+                except:
+                    pass  # No había conexiones previas
+                
+                # Conectar evento directo
+                tabla.itemChanged.connect(self.on_tabla_empresas_changed)
+                logger.info(f"✅ Evento directo configurado para TwEmpresas")
+                
+            else:
+                logger.warning(f"⚠️ TwEmpresas no encontrada para configurar evento")
+                
+        except Exception as e:
+            logger.error(f"Error configurando evento tabla empresas: {e}")
+
+    def on_tabla_empresas_changed(self, item):
+        """Evento directo cuando cambia un item en la tabla empresas"""
+        try:
+            logger.info(f"🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: {item.row()}, col: {item.column()}")
+            
+            # Sincronizar tabla ofertas automáticamente
+            self.actualizar_tabla_ofertas_unificado()
+            
+            # Llamar directamente al guardado
+            self._auto_guardar_tabla_empresas()
+            
+        except Exception as e:
+            logger.error(f"Error en evento tabla empresas: {e}")
+
+    def obtener_contrato_actual(self) -> Optional[str]:
+        """ÚNICA FUENTE DE VERDAD GLOBAL - SOLO EL COMBO"""
+        try:
+            if (hasattr(self.main_window, 'comboBox') and 
+                self.main_window.comboBox):
+                texto = self.main_window.comboBox.currentText()
+                if texto and not texto.startswith("Seleccionar"):
+                    return texto
+            return None
+        except Exception as e:
+            logger.error(f"Error obteniendo contrato: {e}")
+            return None
