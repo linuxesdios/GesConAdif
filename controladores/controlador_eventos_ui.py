@@ -717,6 +717,15 @@ class ControladorEventosUI:
                         pass
                     widget.editingFinished.connect(lambda: self._on_fecha_contrato_changed())
 
+            # anoactual - actualiza anosiguinte
+            if hasattr(self.main_window, 'anoactual'):
+                widget = self.main_window.anoactual
+                try:
+                    widget.dateChanged.disconnect()
+                except:
+                    pass
+                widget.dateChanged.connect(self._on_ano_actual_changed)
+
         except Exception as e:
             print(f"[ControladorEventosUI] ERROR Error en campos específicos: {e}")
 
@@ -739,6 +748,18 @@ class ControladorEventosUI:
                 
         except Exception as e:
             print(f"[ControladorEventosUI] ERROR Error en precio_adjudicacion_changed: {e}")
+
+    def _on_ano_actual_changed(self, fecha):
+        """Evento: anoactual cambió - actualizar anosiguinte"""
+        try:
+            if hasattr(self.main_window, 'anosiguinte') and fecha:
+                ano_siguiente = fecha.year() + 1
+                from PyQt5.QtCore import QDate
+                nueva_fecha = QDate(ano_siguiente, 1, 1)
+                self.main_window.anosiguinte.setDate(nueva_fecha)
+                logger.debug(f"Año actual: {fecha.year()} → Año siguiente: {ano_siguiente}")
+        except Exception as e:
+            logger.error(f"Error actualizando año siguiente: {e}")
     
     def _setup_tablas_especificas(self):
         """Configurar tablas que disparan cálculos"""

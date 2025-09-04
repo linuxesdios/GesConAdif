@@ -3182,6 +3182,12 @@ QPushButton:pressed {
         </property>
         <item>
          <widget class="QDateEdit" name="anosiguinte">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
           <property name="dateTime">
            <datetime>
             <hour>0</hour>

@@ -19,7 +19,7 @@
       "fechaCreacion": "2025-08-07 12:40:02",
       "tipoActuacion": "obras",
       "plazoEjecucion": "12",
-      "fechaModificacion": "2025-09-04 14:53:26",
+      "fechaModificacion": "2025-09-04 15:41:28",
       "organoContratacion": "saas",
       "organoContratacion2": "DG de Negocio y Operaciones Comerciales",
       "OrganoSolicitaOfertas": "DEPARTAMENTO DE ADMINISTRACIÓN DE LA GERENCIA DE PATRIMONIO Y URBANISMO CENTRO",
@@ -82,7 +82,7 @@
       "firmantePropone": "PABLO MARTÍN FERNÁNDEZ",
       "cargoPropone": "Cuadro Técnico de Mantenimiento",
       "nombreCarpeta": "OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES",
-      "fechaCreacionCarpeta": "2025-09-04 15:01:47",
+      "fechaCreacionCarpeta": "2025-09-02 06:53:08",
       "gestorVersion": "1.0-archivos",
       "empresaAdjudicada": "sss",
       "contratistaAdjudicado": "Sara Palomar Latorre",
@@ -137,7 +137,8 @@
       "Contrato_Por_Empresa": "dfvsfds",
       "CIf_Contrato": "dssfd",
       "Lugar_Contrato": "dfdffd",
-      "anosiguinte": "2026-09-04"
+      "anosiguinte": "2026-09-04",
+      "anoactual": "2026-09-04"
     },
     {
       "nombreObra": "MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.",
