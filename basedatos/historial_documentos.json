@@ -122,6 +122,94 @@
       "tamano_kb": 70.2939453125,
       "observaciones": "Generado exitosamente usando plantilla_acta_inicio_servicio.docx",
       "plantilla_usada": "plantilla_acta_inicio_servicio.docx"
+    },
+    {
+      "id": "6130c27a",
+      "tipo": "contrato",
+      "nombre": "Contrato",
+      "ruta_archivo": "f:\\GesConAdif\\obras\\OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES\\04-documentos-sin-firmar\\Contrato.docx",
+      "fecha_generacion": "2025-09-04T14:41:14.262729",
+      "estado": "generado",
+      "tamano_kb": 47.11328125,
+      "observaciones": "Generado exitosamente usando plantilla_contrato_obra.docx",
+      "plantilla_usada": "plantilla_contrato_obra.docx"
+    },
+    {
+      "id": "9dbd611a",
+      "tipo": "contrato",
+      "nombre": "Contrato",
+      "ruta_archivo": "f:\\GesConAdif\\obras\\OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES\\04-documentos-sin-firmar\\Contrato.docx",
+      "fecha_generacion": "2025-09-04T14:45:34.003668",
+      "estado": "generado",
+      "tamano_kb": 47.08203125,
+      "observaciones": "Generado exitosamente usando plantilla_contrato_obra.docx",
+      "plantilla_usada": "plantilla_contrato_obra.docx"
+    },
+    {
+      "id": "a6cd3043",
+      "tipo": "contrato",
+      "nombre": "Contrato",
+      "ruta_archivo": "f:\\GesConAdif\\obras\\OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES\\04-documentos-sin-firmar\\Contrato.docx",
+      "fecha_generacion": "2025-09-04T14:50:51.728052",
+      "estado": "generado",
+      "tamano_kb": 47.0546875,
+      "observaciones": "Generado exitosamente usando plantilla_contrato_obra.docx",
+      "plantilla_usada": "plantilla_contrato_obra.docx"
+    },
+    {
+      "id": "d4302300",
+      "tipo": "contrato",
+      "nombre": "Contrato",
+      "ruta_archivo": "f:\\GesConAdif\\obras\\OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES\\04-documentos-sin-firmar\\Contrato.docx",
+      "fecha_generacion": "2025-09-04T14:51:16.908758",
+      "estado": "generado",
+      "tamano_kb": 47.0546875,
+      "observaciones": "Generado exitosamente usando plantilla_contrato_obra.docx",
+      "plantilla_usada": "plantilla_contrato_obra.docx"
+    },
+    {
+      "id": "1f15b811",
+      "tipo": "contrato",
+      "nombre": "Contrato",
+      "ruta_archivo": "",
+      "fecha_generacion": "2025-09-04T14:53:31.242738",
+      "estado": "error",
+      "tamano_kb": 0.0,
+      "observaciones": "Error: Error en la generación del documento",
+      "plantilla_usada": "plantilla_contrato_obra.docx"
+    },
+    {
+      "id": "9b394d01",
+      "tipo": "contrato",
+      "nombre": "Contrato",
+      "ruta_archivo": "f:\\GesConAdif\\obras\\OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES\\04-documentos-sin-firmar\\Contrato.docx",
+      "fecha_generacion": "2025-09-04T14:53:51.902010",
+      "estado": "generado",
+      "tamano_kb": 47.037109375,
+      "observaciones": "Generado exitosamente usando plantilla_contrato_obra.docx",
+      "plantilla_usada": "plantilla_contrato_obra.docx"
+    },
+    {
+      "id": "f485c2de",
+      "tipo": "contrato",
+      "nombre": "Contrato",
+      "ruta_archivo": "f:\\GesConAdif\\obras\\OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES\\04-documentos-sin-firmar\\Contrato.docx",
+      "fecha_generacion": "2025-09-04T15:00:08.109301",
+      "estado": "generado",
+      "tamano_kb": 45.6865234375,
+      "observaciones": "Generado exitosamente usando plantilla_contrato_obra.docx",
+      "plantilla_usada": "plantilla_contrato_obra.docx"
+    },
+    {
+      "id": "bfd49f28",
+      "tipo": "contrato",
+      "nombre": "Contrato",
+      "ruta_archivo": "f:\\GesConAdif\\obras\\OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES\\04-documentos-sin-firmar\\Contrato.docx",
+      "fecha_generacion": "2025-09-04T15:01:47.476353",
+      "estado": "generado",
+      "tamano_kb": 45.703125,
+      "observaciones": "Generado exitosamente usando plantilla_contrato_obra.docx",
+      "plantilla_usada": "plantilla_contrato_obra.docx"
     }
   ],
   "MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.": [

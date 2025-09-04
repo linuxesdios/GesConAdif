@@ -1388,6 +1388,9 @@ class ControladorDocumentos:
                                 paragrafos_a_procesar.append((paragraph, 'empresas'))
                             elif '@tabla-clasificacion@' in texto:
                                 paragrafos_a_procesar.append((paragraph, 'clasificacion'))
+                            elif '@tablaAnualidades@' in texto:
+                                logger.debug(f"[DEBUG] ENCONTRADO @tablaAnualidades@ EN TABLA {i}, FILA {j}, CELDA {k}")
+                                paragrafos_a_procesar.append((paragraph, 'anualidades'))
             
             # 3. BUSCAR EN HEADERS Y FOOTERS
             for section in doc.sections:
@@ -1415,6 +1418,9 @@ class ControladorDocumentos:
                     self._insertar_tabla_empresas(doc, paragraph, empresas_lista)
                 elif tipo_tabla == 'clasificacion':
                     self._insertar_tabla_clasificacion(doc, paragraph, empresas_lista)
+                elif tipo_tabla == 'anualidades':
+                    logger.debug(f"[DEBUG] LLAMANDO _insertar_tabla_anualidades")
+                    self._insertar_tabla_anualidades(doc, paragraph)
             
         except Exception as e:
             logger.error(f"[DEBUG] ERROR EN MARCADORES: {e}")
@@ -1665,6 +1671,169 @@ class ControladorDocumentos:
             traceback.print_exc()
             paragraph.text = paragraph.text.replace('@tabla-ofertas@', '[Error procesando tabla]')
             return []
+
+    def _insertar_tabla_anualidades(self, doc: Document, paragraph):
+        """Crear tabla de anualidades con años y totales financieros"""
+        try:
+            logger.debug(f"[DEBUG] 📊 CREANDO TABLA DE ANUALIDADES")
+            
+            # 1. OBTENER DATOS DE WIDGETS
+            ano_actual = self._obtener_valor_widget_directo('anoactual', '')
+            ano_siguiente = self._obtener_valor_widget_directo('anosiguinte', '')
+            
+            anualidad1_sin_iva = self._obtener_valor_widget_directo('BaseAnualidad1', '0,00')
+            anualidad1_iva = self._obtener_valor_widget_directo('IvaAnualidad1', '0,00')
+            anualidad1_con_iva = self._obtener_valor_widget_directo('TotalAnualidad1', '0,00')
+            
+            anualidad2_sin_iva = self._obtener_valor_widget_directo('BaseAnualidad2', '0,00')
+            anualidad2_iva = self._obtener_valor_widget_directo('IvaAnualidad2', '0,00')
+            anualidad2_con_iva = self._obtener_valor_widget_directo('TotalAnualidad2', '0,00')
+            
+            # 2. DETERMINAR FILAS A CREAR
+            # Verificar si año siguiente tiene valores significativos
+            ano_siguiente_valido = bool(ano_siguiente and str(ano_siguiente).strip())
+            anualidad2_tiene_valor = self._tiene_valores_significativos(anualidad2_sin_iva, anualidad2_iva, anualidad2_con_iva)
+            
+            incluir_ano_siguiente = ano_siguiente_valido and anualidad2_tiene_valor
+            num_filas = 3 if incluir_ano_siguiente else 2  # header + datos + total
+            
+            logger.debug(f"[DEBUG] Año actual: {ano_actual}, Año siguiente: {ano_siguiente}")
+            logger.debug(f"[DEBUG] Anualidad2 tiene valor: {anualidad2_tiene_valor}")
+            logger.debug(f"[DEBUG] Incluir año siguiente: {incluir_ano_siguiente}, Filas: {num_filas}")
+            
+            # 3. CREAR TABLA
+            tabla = doc.add_table(rows=num_filas + 1, cols=4)  # +1 para header
+            
+            # 4. CONFIGURAR HEADER
+            header_row = tabla.rows[0]
+            headers = ['ANUALIDAD', 'TOTAL SIN IVA', 'IMPORTE IVA', 'TOTAL CON IVA']
+            for i, header_text in enumerate(headers):
+                celda = header_row.cells[i]
+                celda.text = header_text
+                
+            # 5. FILA AÑO ACTUAL
+            fila_ano_actual = tabla.rows[1]
+            fila_ano_actual.cells[0].text = str(ano_actual)
+            fila_ano_actual.cells[1].text = f"{anualidad1_sin_iva} €"
+            fila_ano_actual.cells[2].text = f"{anualidad1_iva} €"
+            fila_ano_actual.cells[3].text = f"{anualidad1_con_iva} €"
+            
+            # 6. FILA AÑO SIGUIENTE (SI EXISTE)
+            fila_index = 2
+            if incluir_ano_siguiente:
+                fila_ano_siguiente = tabla.rows[fila_index]
+                fila_ano_siguiente.cells[0].text = str(ano_siguiente)
+                fila_ano_siguiente.cells[1].text = f"{anualidad2_sin_iva} €"
+                fila_ano_siguiente.cells[2].text = f"{anualidad2_iva} €"
+                fila_ano_siguiente.cells[3].text = f"{anualidad2_con_iva} €"
+                fila_index = 3
+                
+            # 7. FILA TOTAL
+            fila_total = tabla.rows[fila_index]
+            fila_total.cells[0].text = "TOTAL"
+            
+            # Calcular totales
+            total_sin_iva = self._sumar_importes(anualidad1_sin_iva, anualidad2_sin_iva if incluir_ano_siguiente else '0,00')
+            total_iva = self._sumar_importes(anualidad1_iva, anualidad2_iva if incluir_ano_siguiente else '0,00')
+            total_con_iva = self._sumar_importes(anualidad1_con_iva, anualidad2_con_iva if incluir_ano_siguiente else '0,00')
+            
+            fila_total.cells[1].text = f"{total_sin_iva} €"
+            fila_total.cells[2].text = f"{total_iva} €"
+            fila_total.cells[3].text = f"{total_con_iva} €"
+            
+            # 8. CONFIGURAR TABLA SIN BORDES
+            self._configurar_tabla_sin_bordes(tabla)
+            
+            # 9. INSERTAR EN DOCUMENTO
+            if hasattr(self, '_insertar_tabla_despues_de_parrafo'):
+                self._insertar_tabla_despues_de_parrafo(paragraph, tabla)
+            
+            # 10. LIMPIAR MARCADOR
+            paragraph.text = paragraph.text.replace('@tablaAnualidades@', '')
+            
+            logger.debug(f"[DEBUG] ✅ Tabla anualidades insertada correctamente")
+            
+        except Exception as e:
+            logger.error(f"[DEBUG] ❌ ERROR en tabla anualidades: {e}")
+            import traceback
+            traceback.print_exc()
+            paragraph.text = paragraph.text.replace('@tablaAnualidades@', '[Error procesando tabla anualidades]')
+
+    def _obtener_valor_widget_directo(self, widget_name: str, default: str = '') -> str:
+        """Obtener valor directamente del widget por nombre"""
+        try:
+            if hasattr(self, 'main_window') and hasattr(self.main_window, widget_name):
+                widget = getattr(self.main_window, widget_name)
+                
+                # Para QDateEdit (años)
+                if hasattr(widget, 'date'):
+                    fecha = widget.date()
+                    return str(fecha.year())
+                
+                # Para QDoubleSpinBox (importes)
+                elif hasattr(widget, 'value'):
+                    valor = widget.value()
+                    # Convertir a formato español (1234.56 -> 1.234,56)
+                    return f"{valor:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+                
+                # Para QLineEdit u otros
+                elif hasattr(widget, 'text'):
+                    return widget.text()
+                
+            return default
+        except Exception as e:
+            logger.debug(f"Error obteniendo widget {widget_name}: {e}")
+            return default
+            
+    def _obtener_valor_widget(self, marcador: str, default: str = '') -> str:
+        """Obtener valor de widget usando el sistema de sustitución existente"""
+        try:
+            # Usar el método de sustitución que ya existe
+            texto_temp = marcador
+            if hasattr(self, 'main_window'):
+                # Llamar al método de sustitución existente
+                resultado = self._sustituir_variables_en_texto(texto_temp, self.main_window)
+                if resultado != marcador:  # Si se sustituyó
+                    return resultado
+            return default
+        except:
+            return default
+            
+    def _tiene_valores_significativos(self, *importes) -> bool:
+        """Verificar si alguno de los importes es mayor que cero"""
+        try:
+            for importe in importes:
+                if not importe or importe.strip() == '':
+                    continue
+                # Convertir formato español a float (1.234,56 -> 1234.56)
+                limpio = str(importe).replace('.', '').replace(',', '.')
+                valor = float(limpio)
+                if valor > 0:
+                    return True
+            return False
+        except:
+            return False
+
+    def _sumar_importes(self, importe1: str, importe2: str) -> str:
+        """Sumar dos importes en formato español (1.234,56)"""
+        try:
+            # Convertir formato español a float
+            def convertir_importe(importe_str):
+                if not importe_str or importe_str.strip() == '':
+                    return 0.0
+                # Limpiar y convertir (1.234,56 -> 1234.56)
+                limpio = str(importe_str).replace('.', '').replace(',', '.')
+                return float(limpio)
+            
+            valor1 = convertir_importe(importe1)
+            valor2 = convertir_importe(importe2)
+            total = valor1 + valor2
+            
+            # Convertir de vuelta a formato español
+            return f"{total:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+        except:
+            return "0,00"
+
     def _configurar_tabla_basica(self, tabla):
         """Configurar estilo básico de tabla"""
         try:
@@ -1686,6 +1855,33 @@ class ControladorDocumentos:
                         border.set(qn('w:val'), 'single')
                         border.set(qn('w:sz'), '4')
                         border.set(qn('w:color'), '000000')
+                        tcBorders.append(border)
+                    
+                    tcPr.append(tcBorders)
+        except Exception:
+            pass
+
+    def _configurar_tabla_sin_bordes(self, tabla):
+        """Configurar tabla sin bordes visibles"""
+        try:
+            from docx.shared import Inches
+            from docx.oxml import OxmlElement
+            from docx.oxml.ns import qn
+            
+            # Ancho de columnas
+            for columna in tabla.columns:
+                columna.width = Inches(1.5)
+            
+            # Sin bordes - configurar como transparentes/none
+            for fila in tabla.rows:
+                for celda in fila.cells:
+                    tc = celda._element
+                    tcPr = tc.get_or_add_tcPr()
+                    tcBorders = OxmlElement("w:tcBorders")
+                    
+                    for border_name in ['top', 'left', 'bottom', 'right']:
+                        border = OxmlElement(f"w:{border_name}")
+                        border.set(qn('w:val'), 'none')  # Sin bordes
                         tcBorders.append(border)
                     
                     tcPr.append(tcBorders)
