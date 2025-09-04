@@ -1,0 +1,15 @@
+{
+  "avutarda": [
+    {
+      "id": "5d707928",
+      "tipo": "contrato",
+      "nombre": "Contrato",
+      "ruta_archivo": "F:\\GesConAdif\\dist\\generador_actas\\obras\\avutarda\\04-documentos-sin-firmar\\Contrato.docx",
+      "fecha_generacion": "2025-09-04T17:54:36.774919",
+      "estado": "generado",
+      "tamano_kb": 45.7734375,
+      "observaciones": "Generado exitosamente usando plantilla_contrato_obra.docx",
+      "plantilla_usada": "plantilla_contrato_obra.docx"
+    }
+  ]
+}

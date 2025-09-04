@@ -89,7 +89,7 @@ class ControladorEventosUI:
         except Exception as e:
             logger.error(f"Error en setup_event_handlers: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def _setup_eventos_tardios(self):
         """Configurar eventos que requieren widgets completamente inicializados"""
@@ -132,7 +132,7 @@ class ControladorEventosUI:
                 logger.warning("plazoActuacion no encontrado")
                 
         except Exception as e:
-            print(f"[CAMBIO_CONTRATO] ❌ Error en setup tardío: {e}")
+            logger.error(f"[CAMBIO_CONTRATO] Error en setup tardío: {e}")
     
     def verificar_carga_campo(self, nombre_campo):
         """Método para verificar si un campo se carga correctamente"""
@@ -145,11 +145,11 @@ class ControladorEventosUI:
                     valor = widget.text()
                 else:
                     valor = 'N/A'
-                print(f"[CAMBIO_CONTRATO] 🔍 VERIFICACIÓN {nombre_campo}: '{valor}' (tipo: {type(widget).__name__})")
+                logger.debug(f"[CAMBIO_CONTRATO] VERIFICACIÓN {nombre_campo}: '{valor}' (tipo: {type(widget).__name__})")
                 
                 # FORZAR ACTUALIZACIÓN VISUAL si el valor no es vacío
                 if valor and valor != 'N/A' and valor != '' and valor != 0:
-                    print(f"[CAMBIO_CONTRATO] 🔄 Repaint visual de {nombre_campo} (SIN setValue/setText para evitar loops)")
+                    logger.debug(f"[CAMBIO_CONTRATO] Repaint visual de {nombre_campo} (SIN setValue/setText para evitar loops)")
                     try:
                         # ❌ COMENTADO: NO forzar setValue/setText que puede causar loops de datos
                         # if hasattr(widget, 'setValue'):
@@ -163,41 +163,41 @@ class ControladorEventosUI:
                         if hasattr(widget, 'update'):
                             widget.update()
                             
-                        print(f"[CAMBIO_CONTRATO] ✅ Repaint visual completado para {nombre_campo} (datos preservados)")
+                        logger.debug(f"[CAMBIO_CONTRATO] Repaint visual completado para {nombre_campo} (datos preservados)")
                     except Exception as e:
-                        print(f"[CAMBIO_CONTRATO] ❌ Error en actualización visual: {e}")
+                        logger.error(f"[CAMBIO_CONTRATO] Error en actualización visual: {e}")
                 
                 return valor
             else:
-                print(f"[CAMBIO_CONTRATO] ❌ VERIFICACIÓN {nombre_campo}: NO ENCONTRADO")
+                logger.warning(f"[CAMBIO_CONTRATO] VERIFICACIÓN {nombre_campo}: NO ENCONTRADO")
                 return None
         except Exception as e:
-            print(f"[CAMBIO_CONTRATO] ❌ Error verificando {nombre_campo}: {e}")
+            logger.error(f"[CAMBIO_CONTRATO] Error verificando {nombre_campo}: {e}")
             return None
     
     def _on_plazo_actuacion_changed(self):
         """Evento: plazoActuacion cambió - AUTO-GUARDADO"""
-        print(f"[CAMBIO_CONTRATO] 🔥 _on_plazo_actuacion_changed EJECUTADO - cargando_datos={self.cargando_datos}")
+        logger.debug(f"[CAMBIO_CONTRATO] _on_plazo_actuacion_changed EJECUTADO - cargando_datos={self.cargando_datos}")
         
         if self.cargando_datos:
-            print(f"[CAMBIO_CONTRATO] ⏸️ SKIP - cargando datos")
+            logger.debug(f"[CAMBIO_CONTRATO] SKIP - cargando datos")
             return
         
         try:
             if hasattr(self.main_window, 'plazoActuacion'):
                 widget = self.main_window.plazoActuacion
                 valor = widget.text() if hasattr(widget, 'text') else str(widget.value() if hasattr(widget, 'value') else '')
-                print(f"[CAMBIO_CONTRATO] ⏱️ plazoActuacion = '{valor}' - GUARDANDO")
+                logger.info(f"[CAMBIO_CONTRATO] plazoActuacion = '{valor}' - GUARDANDO")
                 self._guardar_campo_en_json('plazoActuacion', valor)
             else:
-                print(f"[CAMBIO_CONTRATO] ❌ Widget plazoActuacion no encontrado")
+                logger.error(f"[CAMBIO_CONTRATO] Widget plazoActuacion no encontrado")
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en _on_plazo_actuacion_changed: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error en _on_plazo_actuacion_changed: {e}")
 
     def _conectar_todos_los_botones(self):
         """Conectar TODOS los botones de la aplicación"""
-        print("[ControladorEventosUI] 🔘 Iniciando conexión de botones...")
+        logger.info("[ControladorEventosUI] 🔘 Iniciando conexión de botones...")
         
         try:
             # BOTONES CRÍTICOS
@@ -219,10 +219,10 @@ class ControladorEventosUI:
             self._setup_botones_especiales()
             
             
-            print("[ControladorEventosUI] OK Todos los botones conectados")
+            logger.info("[ControladorEventosUI] OK Todos los botones conectados")
             
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error conectando botones: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error conectando botones: {e}")
     
     def _conectar_botones_criticos(self):
         """Conectar botones críticos (cerrar y minimizar)"""
@@ -234,7 +234,7 @@ class ControladorEventosUI:
                 except:
                     pass
                 self.main_window.cerrar_app.clicked.connect(self.main_window.close)
-                print("[ControladorEventosUI] OK cerrar_app conectado")
+                logger.info("[ControladorEventosUI] OK cerrar_app conectado")
             
             # Botón minimizar
             if hasattr(self.main_window, 'minimizar_app') and self.main_window.minimizar_app:
@@ -243,10 +243,10 @@ class ControladorEventosUI:
                 except:
                     pass
                 self.main_window.minimizar_app.clicked.connect(self.main_window.showMinimized)
-                print("[ControladorEventosUI] OK minimizar_app conectado")
+                logger.info("[ControladorEventosUI] OK minimizar_app conectado")
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error conectando botones críticos: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error conectando botones críticos: {e}")
     
    
 
@@ -302,10 +302,10 @@ class ControladorEventosUI:
                 
             # Conectar
             boton.clicked.connect(metodo)
-            print(f"[ControladorEventosUI] ✅ {boton_name} -> {metodo_name} conectado")
+            logger.info(f"[ControladorEventosUI] {boton_name} -> {metodo_name} conectado")
             
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error conectando {boton_name}: {e}")
+            logger.error(f"[ControladorEventosUI] Error conectando {boton_name}: {e}")
 
     def _setup_botones_gestion_archivo(self):
         """Configurar botones de gestión de archivos"""
@@ -335,13 +335,13 @@ class ControladorEventosUI:
                     except:
                         pass
                     boton.clicked.connect(self.on_pb_imp_exp_excel_clicked)
-                    print("[ControladorEventosUI] ✅ Pb_Imp_Exp_excel conectado")
+                    logger.info("[ControladorEventosUI] ✅ Pb_Imp_Exp_excel conectado")
                 else:
-                    print("[ControladorEventosUI] ⚠️ Pb_Imp_Exp_excel es None")
+                    logger.info("[ControladorEventosUI] ⚠️ Pb_Imp_Exp_excel es None")
             else:
-                print("[ControladorEventosUI] ⚠️ Pb_Imp_Exp_excel no encontrado")
+                logger.info("[ControladorEventosUI] ⚠️ Pb_Imp_Exp_excel no encontrado")
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error conectando Pb_Imp_Exp_excel: {e}")
+            logger.error(f"[ControladorEventosUI] Error conectando Pb_Imp_Exp_excel: {e}")
 
     def _setup_botones_gestion_empresas(self):
         """Configurar botones de gestión de empresas"""
@@ -366,9 +366,9 @@ class ControladorEventosUI:
                 self.main_window.comboBox.currentTextChanged.connect(
                     self._on_combo_changed
                 )
-                print("[ControladorEventosUI] ✅ comboBox conectado")
+                logger.info("[ControladorEventosUI] ✅ comboBox conectado")
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error conectando comboBox: {e}")
+            logger.error(f"[ControladorEventosUI] Error conectando comboBox: {e}")
 
         # Botón cambio expediente
         try:
@@ -381,9 +381,9 @@ class ControladorEventosUI:
                 self.main_window.btn_cambio_exp.clicked.connect(
                     self._ejecutar_cambio_expediente
                 )
-                print("[ControladorEventosUI] ✅ btn_cambio_exp conectado")
+                logger.info("[ControladorEventosUI] ✅ btn_cambio_exp conectado")
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error conectando btn_cambio_exp: {e}")
+            logger.error(f"[ControladorEventosUI] Error conectando btn_cambio_exp: {e}")
             
         # Botón editar firmantes
         try:
@@ -396,9 +396,9 @@ class ControladorEventosUI:
                 self.main_window.actionEditar_firmantes.triggered.connect(
                     self._ejecutar_editar_firmantes
                 )
-                print("[ControladorEventosUI] ✅ actionEditar_firmantes conectado")
+                logger.info("[ControladorEventosUI] ✅ actionEditar_firmantes conectado")
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error conectando actionEditar_firmantes: {e}")
+            logger.error(f"[ControladorEventosUI] Error conectando actionEditar_firmantes: {e}")
     
     def _setup_botones_resumen_y_tablas(self):
         """Configurar botones específicos del resumen y tablas"""
@@ -414,10 +414,10 @@ class ControladorEventosUI:
             for boton_name, metodo_name in botones_actuaciones:
                 self._conectar_boton_actuacion(boton_name, metodo_name)
             
-            print("[ControladorEventosUI] ✅ Botones de resumen y tablas configurados")
+            logger.info("[ControladorEventosUI] ✅ Botones de resumen y tablas configurados")
             
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error configurando botones resumen: {e}")
+            logger.error(f"[ControladorEventosUI] Error configurando botones resumen: {e}")
     
     def _conectar_boton_actuacion(self, boton_name, metodo_name):
         """Conectar un botón de actuación específico"""
@@ -443,10 +443,10 @@ class ControladorEventosUI:
                 
             # Conectar
             boton.clicked.connect(metodo)
-            print(f"[ControladorEventosUI] ✅ {boton_name} -> {metodo_name} conectado")
+            logger.info(f"[ControladorEventosUI] {boton_name} -> {metodo_name} conectado")
             
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error conectando {boton_name}: {e}")
+            logger.error(f"[ControladorEventosUI] Error conectando {boton_name}: {e}")
 
     def _conectar_boton_simple(self, boton_name, metodo_name):
         """Conectar un botón con su método correspondiente"""
@@ -468,10 +468,10 @@ class ControladorEventosUI:
                 
             # Conectar
             boton.clicked.connect(metodo)
-            print(f"[ControladorEventosUI] ✅ {boton_name} -> {metodo_name} conectado")
+            logger.info(f"[ControladorEventosUI] {boton_name} -> {metodo_name} conectado")
             
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error conectando {boton_name}: {e}")
+            logger.error(f"[ControladorEventosUI] Error conectando {boton_name}: {e}")
 
     def _conectar_accion_simple(self, accion_name, metodo_name):
         """Conectar una acción de menú con su método correspondiente"""
@@ -493,10 +493,10 @@ class ControladorEventosUI:
                 
             # Conectar
             accion.triggered.connect(metodo)
-            print(f"[ControladorEventosUI] ✅ {accion_name} -> {metodo_name} conectado")
+            logger.info(f"[ControladorEventosUI] {accion_name} -> {metodo_name} conectado")
             
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error conectando {accion_name}: {e}")
+            logger.error(f"[ControladorEventosUI] Error conectando {accion_name}: {e}")
 
     def _setup_abrir_carpeta(self):
         """Configurar botón especial de abrir carpeta"""
@@ -517,9 +517,9 @@ class ControladorEventosUI:
                     pass
                     
                 self.main_window.Abrir_carpeta.clicked.connect(abrir_carpeta_wrapper)
-                print("[ControladorEventosUI] OK Abrir_carpeta conectado")
+                logger.info("[ControladorEventosUI] OK Abrir_carpeta conectado")
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error conectando Abrir_carpeta: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error conectando Abrir_carpeta: {e}")
 
     # === FUNCIONES EXCEL ===
     
@@ -535,7 +535,7 @@ class ControladorEventosUI:
                         pass
                     boton.clicked.connect(self.on_pb_imp_exp_excel_clicked)
         except Exception as e:
-            print(f"[Excel] ERROR conectando botón: {e}")
+            logger.info(f"[Excel] ERROR conectando botón: {e}")
     
     def conectar_boton_actuacion_mail(self):
         """Conectar el botón crear_actuacion_mail"""
@@ -549,7 +549,7 @@ class ControladorEventosUI:
                         pass
                     boton.clicked.connect(self.on_crear_actuacion_mail_clicked)
         except Exception as e:
-            print(f"[ActuacionMail] ERROR conectando botón: {e}")
+            logger.info(f"[ActuacionMail] ERROR conectando botón: {e}")
 
     def on_pb_imp_exp_excel_clicked(self):
         """Disparador del botón Importar/Exportar Excel"""
@@ -619,7 +619,7 @@ class ControladorEventosUI:
             return empresas
             
         except Exception as e:
-            print(f"[Excel] Error en obtener_empresas_actuales: {e}")
+            logger.info(f"[Excel] Error en obtener_empresas_actuales: {e}")
             return []
 
     def aplicar_empresas_importadas(self, empresas_importadas):
@@ -646,7 +646,7 @@ class ControladorEventosUI:
                     )
             
         except Exception as e:
-            print(f"[Excel] Error aplicando empresas: {e}")
+            logger.info(f"[Excel] Error aplicando empresas: {e}")
             raise
 
     
@@ -666,10 +666,10 @@ class ControladorEventosUI:
                 tabla.setItem(fila, 2, QTableWidgetItem(empresa.get('email', '')))
                 tabla.setItem(fila, 3, QTableWidgetItem(empresa.get('contacto', '')))
             
-            print(f"[Excel] Tabla actualizada con {len(empresas)} empresas")
+            logger.info(f"[Excel] Tabla actualizada con {len(empresas)} empresas")
             
         except Exception as e:
-            print(f"[Excel] Error actualizando tabla: {e}")
+            logger.info(f"[Excel] Error actualizando tabla: {e}")
                 
     def _setup_campos_especificos(self):
         """Configurar campos que disparan cálculos específicos"""
@@ -727,7 +727,7 @@ class ControladorEventosUI:
                 widget.dateChanged.connect(self._on_ano_actual_changed)
 
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en campos específicos: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error en campos específicos: {e}")
 
     def _on_precio_adjudicacion_changed(self):
         """Evento: precioAdjudicacion cambió - CON CÁLCULOS Y AUTO-GUARDADO"""
@@ -747,7 +747,7 @@ class ControladorEventosUI:
                 self._guardar_cambios_pendientes()
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en precio_adjudicacion_changed: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error en precio_adjudicacion_changed: {e}")
 
     def _on_ano_actual_changed(self, fecha):
         """Evento: anoactual cambió - actualizar anosiguinte"""
@@ -777,7 +777,7 @@ class ControladorEventosUI:
                     pass
                 tabla.itemChanged.connect(self._on_tw_empresas_changed)
                 tabla.itemSelectionChanged.connect(self._on_tw_empresas_selection_changed)
-                print("[ControladorEventosUI] ✅ TwEmpresas conectado (cambios + selección)")
+                logger.info("[ControladorEventosUI] ✅ TwEmpresas conectado (cambios + selección)")
             
             # TwOfertas
             if hasattr(self.main_window, 'TwOfertas'):
@@ -787,10 +787,10 @@ class ControladorEventosUI:
                 except:
                     pass
                 tabla.itemChanged.connect(self._on_tw_ofertas_changed)
-                print("[ControladorEventosUI] ✅ TwOfertas conectado")
+                logger.info("[ControladorEventosUI] ✅ TwOfertas conectado")
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error en tablas específicas: {e}")
+            logger.error(f"[ControladorEventosUI] Error en tablas específicas: {e}")
     
     def configurar_eventos_liquidacion(self, window):
         """Configura los eventos para disparar cálculo de liquidación"""
@@ -818,7 +818,7 @@ class ControladorEventosUI:
                     widget.textChanged.connect(lambda: self.controlador_calculos.calcular_liquidacion(window))
 
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error conectando eventos de liquidación: {e}")
+            logger.error(f"[ControladorEventosUI] Error conectando eventos de liquidación: {e}")
     
     def setup_justificacion_inicial(self):
         """Configurar justificación inicial con valores actuales"""
@@ -826,9 +826,9 @@ class ControladorEventosUI:
             if self.controlador_calculos:
                 self.controlador_calculos.actualizar_justificacion_limites(self.main_window)
             else:
-                print("[ControladorEventosUI] ⚠️ Controlador de cálculos no disponible para justificación inicial")
+                logger.info("[ControladorEventosUI] ⚠️ Controlador de cálculos no disponible para justificación inicial")
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error configurando justificación inicial: {e}")
+            logger.error(f"[ControladorEventosUI] Error configurando justificación inicial: {e}")
     
     def _setup_eventos_generales(self):
         """Configurar eventos generales (tabs, botones, etc)"""
@@ -840,13 +840,13 @@ class ControladorEventosUI:
                 except:
                     pass
                 self.main_window.tabWidget.currentChanged.connect(self._on_tab_changed)
-                print("[ControladorEventosUI] ✅ tabWidget conectado")
+                logger.info("[ControladorEventosUI] ✅ tabWidget conectado")
             
             # Resto de widgets
             self._setup_widgets_generales()
             
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error en eventos generales: {e}")
+            logger.error(f"[ControladorEventosUI] Error en eventos generales: {e}")
 
     def _setup_widgets_generales(self):
         """Configurar widgets con eventos de foco"""
@@ -890,7 +890,7 @@ class ControladorEventosUI:
                     widget.editingFinished.connect(lambda w=widget, n=nombre: self._on_focus_lost(n, w))
             
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en widgets generales: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error en widgets generales: {e}")
 
     # =================== CALLBACKS ESPECÍFICOS ===================
     
@@ -912,7 +912,7 @@ class ControladorEventosUI:
                 self._guardar_cambios_pendientes()
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en _on_base_presupuesto_changed: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error en _on_base_presupuesto_changed: {e}")
 
     def _on_cert_base_changed(self):
         """Evento: certBase cambió - CON CÁLCULOS Y AUTO-GUARDADO"""
@@ -931,7 +931,7 @@ class ControladorEventosUI:
                 self._guardar_cambios_pendientes()
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en _on_cert_base_changed: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error en _on_cert_base_changed: {e}")
     
     def _on_tw_empresas_changed(self, item):
         """Evento: TwEmpresas cambió - CON GUARDADO AUTOMÁTICO"""
@@ -943,7 +943,7 @@ class ControladorEventosUI:
             columna = item.column()
             valor = item.text()
             
-            print(f"[ControladorEventosUI] TwEmpresas[{fila},{columna}] = '{valor}'")
+            logger.info(f"[ControladorEventosUI] TwEmpresas[{fila},{columna}] = '{valor}'")
             
             # 🔄 SINCRONIZAR SIEMPRE QUE CAMBIE CUALQUIER COLUMNA DE EMPRESAS
             # Esto asegura que los nombres en la tabla de ofertas estén actualizados
@@ -956,7 +956,7 @@ class ControladorEventosUI:
             self._guardar_tabla_empresas_en_json()
             
         except Exception as e:
-            print(f"[ControladorEventosUI] Error en _on_tw_empresas_changed: {e}")
+            logger.info(f"[ControladorEventosUI] Error en _on_tw_empresas_changed: {e}")
 
     def _on_tw_empresas_selection_changed(self):
         """Evento: Selección en TwEmpresas cambió - sincronizar con TwOfertas"""
@@ -975,14 +975,14 @@ class ControladorEventosUI:
             
             if filas_seleccionadas:
                 fila_seleccionada = filas_seleccionadas[0].row()
-                print(f"[ControladorEventosUI] 🏢 Empresa seleccionada fila: {fila_seleccionada}")
+                logger.info(f"[ControladorEventosUI] Empresa seleccionada fila: {fila_seleccionada}")
                 
                 # Obtener nombre de la empresa seleccionada
                 nombre_item = tabla_empresas.item(fila_seleccionada, 0)
                 nombre_empresa = nombre_item.text().strip() if nombre_item else ""
                 
                 if nombre_empresa:
-                    print(f"[ControladorEventosUI] 🔍 Buscando oferta para: '{nombre_empresa}'")
+                    logger.debug(f"[ControladorEventosUI] Buscando oferta para: '{nombre_empresa}'")
                     
                     # Buscar la empresa correspondiente en la tabla de ofertas
                     for row in range(tabla_ofertas.rowCount()):
@@ -992,15 +992,15 @@ class ControladorEventosUI:
                             tabla_ofertas.selectRow(row)
                             # Hacer foco en la celda de la oferta (columna 1) para facilitar edición
                             tabla_ofertas.setCurrentCell(row, 1)
-                            print(f"[ControladorEventosUI] ✅ Oferta seleccionada fila {row}, enfocada para edición")
+                            logger.info(f"[ControladorEventosUI] Oferta seleccionada fila {row}, enfocada para edición")
                             return
                     
                     # Si no se encuentra, limpiar selección
                     tabla_ofertas.clearSelection()
-                    print(f"[ControladorEventosUI] ⚠️ No se encontró oferta para '{nombre_empresa}'")
+                    logger.warning(f"[ControladorEventosUI] No se encontró oferta para '{nombre_empresa}'")
                     
         except Exception as e:
-            print(f"[ControladorEventosUI] ❌ Error en _on_tw_empresas_selection_changed: {e}")
+            logger.error(f"[ControladorEventosUI] Error en _on_tw_empresas_selection_changed: {e}")
 
     def _guardar_tabla_empresas_en_json(self):
         """Guardar tabla de empresas - OPTIMIZADO"""
@@ -1035,7 +1035,7 @@ class ControladorEventosUI:
             self._cambios_pendientes['empresas'] = empresas_data
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] Error guardando empresas: {e}")
+            logger.info(f"[ControladorEventosUI] Error guardando empresas: {e}")
     
     def _on_tw_ofertas_changed(self, item):
         """Evento: TwOfertas cambió"""
@@ -1047,7 +1047,7 @@ class ControladorEventosUI:
             columna = item.column()
             valor = item.text()
             
-            print(f"[ControladorEventosUI] TwOfertas[{fila},{columna}] = '{valor}'")
+            logger.info(f"[ControladorEventosUI] TwOfertas[{fila},{columna}] = '{valor}'")
 
             if columna == 1:
                 resultado = self.controlador_calculos.calcular_ofertas_completo(self.main_window)
@@ -1055,7 +1055,7 @@ class ControladorEventosUI:
                 if hasattr(self.main_window, 'controlador_autosave'):
                     self.main_window.controlador_autosave.guardar_tabla_ofertas_en_json()
         except Exception as e:
-            print(f"[ControladorEventosUI] Error en _on_tw_ofertas_changed: {e}")
+            logger.info(f"[ControladorEventosUI] Error en _on_tw_ofertas_changed: {e}")
 
     def _on_tab_changed(self, index):
         """Evento: Tab cambió"""
@@ -1067,11 +1067,11 @@ class ControladorEventosUI:
                 tab_name = self.main_window.tabWidget.tabText(index)
                 widget_name = self.main_window.tabWidget.widget(index).objectName() if self.main_window.tabWidget.widget(index) else None
                 
-                print(f"[ControladorEventosUI] Cambio a tab {index}: '{tab_name}' ({widget_name})")
+                logger.info(f"[ControladorEventosUI] Cambio a tab {index}: '{tab_name}' ({widget_name})")
                 
                 self._ejecutar_funcion_tab(index, tab_name, widget_name)
         except Exception as e:
-            print(f"[ControladorEventosUI] Error en _on_tab_changed: {e}")
+            logger.info(f"[ControladorEventosUI] Error en _on_tab_changed: {e}")
 
     def _ejecutar_funcion_tab(self, index, tab_name, widget_name):
         """Ejecuta la función específica según el tab seleccionado"""
@@ -1079,12 +1079,12 @@ class ControladorEventosUI:
             if index == 6 or widget_name == 'Resumen':  # Tab Resumen
                 if (hasattr(self.main_window, 'integrador_resumen') and 
                     self.main_window.integrador_resumen):
-                    print("[ControladorEventosUI] Reconectando botones del resumen...")
+                    logger.info("[ControladorEventosUI] Reconectando botones del resumen...")
                     self.main_window.integrador_resumen.reconectar_botones_si_es_necesario()
-                    print("[ControladorEventosUI] Botones del resumen reconectados")
+                    logger.info("[ControladorEventosUI] Botones del resumen reconectados")
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] Error ejecutando función de tab: {e}")
+            logger.info(f"[ControladorEventosUI] Error ejecutando función de tab: {e}")
 
     def _on_focus_lost(self, nombre, widget):
         """Evento: Widget perdió el foco - GUARDAR CAMBIOS"""
@@ -1102,7 +1102,7 @@ class ControladorEventosUI:
             self._guardar_cambios_pendientes()
             
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en _on_focus_lost: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error en _on_focus_lost: {e}")
     
     def _on_radiobutton_changed(self):
         """Evento: RadioButton cambió"""
@@ -1112,7 +1112,7 @@ class ControladorEventosUI:
         try:
             self.controlador_calculos.actualizar_justificacion_limites(self.main_window)
         except Exception as e:
-            print(f"[ControladorEventosUI] Error en _on_radiobutton_changed: {e}")
+            logger.info(f"[ControladorEventosUI] Error en _on_radiobutton_changed: {e}")
 
 
 
@@ -1134,53 +1134,53 @@ class ControladorEventosUI:
                     self._guardar_cambios_pendientes()
                     
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en _on_fecha_contrato_changed: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error en _on_fecha_contrato_changed: {e}")
 
 
 
     def _on_num_empresas_presentadas_changed(self):
         """Evento: numEmpresasPresentadas cambió - AUTO-GUARDADO"""
-        print(f"[CAMBIO_CONTRATO] 🔥 _on_num_empresas_presentadas_changed EJECUTADO - cargando_datos={self.cargando_datos}")
+        logger.info(f"[CAMBIO_CONTRATO] 🔥 _on_num_empresas_presentadas_changed EJECUTADO - cargando_datos={self.cargando_datos}")
         
         if self.cargando_datos:
-            print(f"[CAMBIO_CONTRATO] ⏸️ SKIP - cargando datos")
+            logger.info(f"[CAMBIO_CONTRATO] ⏸️ SKIP - cargando datos")
             return
         
         try:
             if hasattr(self.main_window, 'numEmpresasPresentadas'):
                 widget = self.main_window.numEmpresasPresentadas
                 valor = widget.text() if hasattr(widget, 'text') else str(widget.value() if hasattr(widget, 'value') else '')
-                print(f"[CAMBIO_CONTRATO] 🏢 numEmpresasPresentadas = '{valor}' - GUARDANDO")
+                logger.info(f"[CAMBIO_CONTRATO] numEmpresasPresentadas = '{valor}' - GUARDANDO")
                 self._guardar_campo_en_json('numEmpresasPresentadas', valor)
             else:
-                print(f"[CAMBIO_CONTRATO] ❌ Widget numEmpresasPresentadas no encontrado")
+                logger.error(f"[CAMBIO_CONTRATO] Widget numEmpresasPresentadas no encontrado")
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en _on_num_empresas_presentadas_changed: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error en _on_num_empresas_presentadas_changed: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
 
     def _on_num_empresas_solicitadas_changed(self):
         """Evento: numEmpresasSolicitadas cambió - AUTO-GUARDADO"""
-        print(f"[CAMBIO_CONTRATO] 🔥 _on_num_empresas_solicitadas_changed EJECUTADO - cargando_datos={self.cargando_datos}")
+        logger.info(f"[CAMBIO_CONTRATO] 🔥 _on_num_empresas_solicitadas_changed EJECUTADO - cargando_datos={self.cargando_datos}")
         
         if self.cargando_datos:
-            print(f"[CAMBIO_CONTRATO] ⏸️ SKIP - cargando datos")
+            logger.info(f"[CAMBIO_CONTRATO] ⏸️ SKIP - cargando datos")
             return
         
         try:
             if hasattr(self.main_window, 'numEmpresasSolicitadas'):
                 widget = self.main_window.numEmpresasSolicitadas
                 valor = widget.text() if hasattr(widget, 'text') else str(widget.value() if hasattr(widget, 'value') else '')
-                print(f"[CAMBIO_CONTRATO] 🏢 numEmpresasSolicitadas = '{valor}' - GUARDANDO")
+                logger.info(f"[CAMBIO_CONTRATO] numEmpresasSolicitadas = '{valor}' - GUARDANDO")
                 self._guardar_campo_en_json('numEmpresasSolicitadas', valor)
             else:
-                print(f"[CAMBIO_CONTRATO] ❌ Widget numEmpresasSolicitadas no encontrado")
+                logger.error(f"[CAMBIO_CONTRATO] Widget numEmpresasSolicitadas no encontrado")
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] ERROR Error en _on_num_empresas_solicitadas_changed: {e}")
+            logger.info(f"[ControladorEventosUI] ERROR Error en _on_num_empresas_solicitadas_changed: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
 
     def _on_combo_changed(self, nuevo_contrato: str):
         """Evento: ComboBox de contratos cambió"""
@@ -1188,7 +1188,7 @@ class ControladorEventosUI:
             if self.cargando_datos:
                 return
                 
-            print(f"[ControladorEventosUI] Cambio de contrato a: {nuevo_contrato}")
+            logger.info(f"[ControladorEventosUI] Cambio de contrato a: {nuevo_contrato}")
             
             # Ejecutar función original de crear carpeta
             if hasattr(self.main_window, '_crear_carpeta_con_controlador_archivos'):
@@ -1202,24 +1202,24 @@ class ControladorEventosUI:
                 QTimer.singleShot(500, lambda: self._actualizar_cronograma_on_combo_change(nuevo_contrato))
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] Error en cambio de ComboBox: {e}")
+            logger.info(f"[ControladorEventosUI] Error en cambio de ComboBox: {e}")
     
     def _actualizar_cronograma_on_combo_change(self, nombre_contrato: str):
         """Actualizar el cronograma cuando cambia el contrato seleccionado"""
         try:
-            print(f"[ControladorEventosUI] Actualizando cronograma para contrato: {nombre_contrato}")
+            logger.info(f"[ControladorEventosUI] Actualizando cronograma para contrato: {nombre_contrato}")
             
             if (hasattr(self.main_window, 'integrador_resumen') and 
                 self.main_window.integrador_resumen and
                 hasattr(self.main_window.integrador_resumen, '_actualizar_cronograma_visual')):
                 
                 self.main_window.integrador_resumen._actualizar_cronograma_visual(nombre_contrato)
-                print("[ControladorEventosUI] Cronograma actualizado tras cambio de contrato")
+                logger.info("[ControladorEventosUI] Cronograma actualizado tras cambio de contrato")
             else:
-                print("[ControladorEventosUI] Integrador de resumen no disponible para actualizar cronograma")
+                logger.info("[ControladorEventosUI] Integrador de resumen no disponible para actualizar cronograma")
                 
         except Exception as e:
-            print(f"[ControladorEventosUI] Error actualizando cronograma en cambio de contrato: {e}")
+            logger.info(f"[ControladorEventosUI] Error actualizando cronograma en cambio de contrato: {e}")
 
     def _ejecutar_cambio_expediente(self):
         """Ejecutar cambio de expediente con indicación visual de resultado"""
@@ -1238,10 +1238,10 @@ class ControladorEventosUI:
                         "✓ Carpeta renombrada\n"
                         "✓ Datos actualizados"
                     )
-                    print("[ControladorEventosUI] Cambio de expediente ejecutado exitosamente")
+                    logger.info("[ControladorEventosUI] Cambio de expediente ejecutado exitosamente")
                 else:
                     # No mostrar mensaje adicional porque ya se mostró el error específico
-                    print("[ControladorEventosUI] Cambio de expediente cancelado o falló")
+                    logger.info("[ControladorEventosUI] Cambio de expediente cancelado o falló")
                 
             else:
                 QMessageBox.warning(
@@ -1249,7 +1249,7 @@ class ControladorEventosUI:
                     "Error - Cambio de Expediente",
                     "No se encontró el gestor de archivos o la función de cambio de expediente."
                 )
-                print("[ControladorEventosUI] Error: gestor_archivos_unificado o función no encontrada")
+                logger.info("[ControladorEventosUI] Error: gestor_archivos_unificado o función no encontrada")
                 
         except Exception as e:
             QMessageBox.critical(
@@ -1257,21 +1257,21 @@ class ControladorEventosUI:
                 "Error - Cambio de Expediente",
                 f"Error ejecutando el cambio de expediente:\n\n{str(e)}"
             )
-            print(f"[ControladorEventosUI] Error ejecutando cambio de expediente: {e}")
+            logger.info(f"[ControladorEventosUI] Error ejecutando cambio de expediente: {e}")
     
     def _ejecutar_editar_firmantes(self):
         """Ejecutar editor de firmantes - delega a main_window"""
         try:
             if self.main_window and hasattr(self.main_window, 'abrir_editor_firmantes'):
                 self.main_window.abrir_editor_firmantes()
-                print("[ControladorEventosUI] Editor de firmantes ejecutado")
+                logger.info("[ControladorEventosUI] Editor de firmantes ejecutado")
             else:
                 QMessageBox.warning(
                     self.main_window,
                     "Error - Editor de Firmantes",
                     "No se pudo abrir el editor de firmantes."
                 )
-                print("[ControladorEventosUI] Error: main_window o función no encontrada")
+                logger.info("[ControladorEventosUI] Error: main_window o función no encontrada")
                 
         except Exception as e:
             QMessageBox.critical(
@@ -1279,19 +1279,19 @@ class ControladorEventosUI:
                 "Error - Editor de Firmantes",
                 f"Error abriendo el editor de firmantes:\n\n{str(e)}"
             )
-            print(f"[ControladorEventosUI] Error ejecutando editor de firmantes: {e}")
+            logger.info(f"[ControladorEventosUI] Error ejecutando editor de firmantes: {e}")
 
     # =================== MÉTODOS DE CONTROL ===================
     
     def pausar_eventos(self):
         """Pausar eventos"""
         self.cargando_datos = True
-        print("[ControladorEventosUI] Pausado")
+        logger.info("[ControladorEventosUI] Pausado")
     
     def reanudar_eventos(self):
         """Reanudar eventos"""
         self.cargando_datos = False
-        print("[ControladorEventosUI] Reanudado")
+        logger.info("[ControladorEventosUI] Reanudado")
     
     def esta_pausado(self) -> bool:
         """Verificar si está pausado"""
@@ -1330,15 +1330,15 @@ class ControladorEventosUI:
                     except Exception:
                         pass
             
-            print("[ControladorEventosUI] Eventos de pérdida de foco configurados")
+            logger.info("[ControladorEventosUI] Eventos de pérdida de foco configurados")
             
         except Exception as e:
-            print(f"[ControladorEventosUI] Error configurando eventos de pérdida de foco: {e}")
+            logger.info(f"[ControladorEventosUI] Error configurando eventos de pérdida de foco: {e}")
 
     def verificar_conexiones_botones(self):
         """Método de diagnóstico para verificar que los botones estén conectados"""
-        print("\n[ControladorEventosUI] VERIFICANDO CONEXIONES DE BOTONES:")
-        print("=" * 60)
+        logger.debug("\n[ControladorEventosUI] VERIFICANDO CONEXIONES DE BOTONES:")
+        logger.debug("=" * 60)
         
         botones_criticos = ['cerrar_app', 'minimizar_app']
         acciones_navegacion = ['actionCambiar_tipo', 'actionCrear_Proyecto', 'actionBorrar_Proyecto']
@@ -1348,56 +1348,56 @@ class ControladorEventosUI:
         total_verificados = 0
         
         # Verificar botones críticos
-        print("BOTONES CRÍTICOS:")
+        logger.debug("BOTONES CRÍTICOS:")
         for boton_name in botones_criticos:
             total_verificados += 1
             if hasattr(self.main_window, boton_name):
                 boton = getattr(self.main_window, boton_name)
                 if boton and hasattr(boton, 'clicked'):
-                    print(f"  {boton_name}: ENCONTRADO y CONECTADO")
+                    logger.debug(f"  {boton_name}: ENCONTRADO y CONECTADO")
                     total_encontrados += 1
                 else:
-                    print(f"  {boton_name}: ENCONTRADO pero SIN CLICKED")
+                    logger.debug(f"  {boton_name}: ENCONTRADO pero SIN CLICKED")
             else:
-                print(f"  {boton_name}: NO ENCONTRADO")
+                logger.debug(f"  {boton_name}: NO ENCONTRADO")
         
         # Verificar botones de navegación
-        print("\nBOTONES DE NAVEGACIÓN:")
+        logger.debug("\nBOTONES DE NAVEGACIÓN:")
         for boton_name in botones_navegacion:
             total_verificados += 1
             if hasattr(self.main_window, boton_name):
                 boton = getattr(self.main_window, boton_name)
                 if boton and hasattr(boton, 'clicked'):
-                    print(f"  {boton_name}: ENCONTRADO y CONECTADO")
+                    logger.debug(f"  {boton_name}: ENCONTRADO y CONECTADO")
                     total_encontrados += 1
                 else:
-                    print(f"  {boton_name}: ENCONTRADO pero SIN CLICKED")
+                    logger.debug(f"  {boton_name}: ENCONTRADO pero SIN CLICKED")
             else:
-                print(f"  {boton_name}: NO ENCONTRADO")
+                logger.debug(f"  {boton_name}: NO ENCONTRADO")
         
         # Verificar botones de documentos
-        print("\nBOTONES DE DOCUMENTOS:")
+        logger.debug("\nBOTONES DE DOCUMENTOS:")
         for boton_name in botones_documentos:
             total_verificados += 1
             if hasattr(self.main_window, boton_name):
                 boton = getattr(self.main_window, boton_name)
                 if boton and hasattr(boton, 'clicked'):
-                    print(f"  {boton_name}: ENCONTRADO y CONECTADO")
+                    logger.debug(f"  {boton_name}: ENCONTRADO y CONECTADO")
                     total_encontrados += 1
                 else:
-                    print(f"  {boton_name}: ENCONTRADO pero SIN CLICKED")
+                    logger.debug(f"  {boton_name}: ENCONTRADO pero SIN CLICKED")
             else:
-                print(f"  {boton_name}: NO ENCONTRADO")
+                logger.debug(f"  {boton_name}: NO ENCONTRADO")
         
         # Resumen
-        print(f"\nRESUMEN: {total_encontrados}/{total_verificados} botones verificados correctamente")
-        print("=" * 60)
+        logger.debug(f"\nRESUMEN: {total_encontrados}/{total_verificados} botones verificados correctamente")
+        logger.debug("=" * 60)
         
         return total_encontrados, total_verificados
     
     def verificar_campos_criticos_tras_carga(self):
         """Verificar campos críticos después de cargar un contrato"""
-        print(f"[CAMBIO_CONTRATO] 🔍 VERIFICANDO CAMPOS CRÍTICOS TRAS CARGA:")
+        logger.debug(f"[CAMBIO_CONTRATO] VERIFICANDO CAMPOS CRÍTICOS TRAS CARGA:")
         self.verificar_carga_campo('plazoEjecucion')
         self.verificar_carga_campo('numEmpresasPresentadas')
         self.verificar_carga_campo('numEmpresasSolicitadas')
@@ -1441,7 +1441,7 @@ class ControladorEventosUI:
                     # DESBLOQUEAR SEÑALES DE LA TABLA
                     tabla.blockSignals(False)
                            
-                    print(f"[ControladorEventosUI] Cargadas {len(empresas)} empresas")
+                    logger.info(f"[ControladorEventosUI] Cargadas {len(empresas)} empresas")
                 else:
                     # LIMPIAR TABLA SI NO HAY EMPRESAS
                     tabla = self.main_window.TwEmpresas
@@ -1450,7 +1450,7 @@ class ControladorEventosUI:
                     tabla.blockSignals(False)
             
         except Exception as e:
-            print(f"[ControladorEventosUI] Error cargando empresas: {e}")
+            logger.info(f"[ControladorEventosUI] Error cargando empresas: {e}")
         finally:
             # Reactivar eventos
             self.cargando_datos = False
@@ -1464,7 +1464,7 @@ class ControladorEventosUI:
         self.conectar_boton_actuacion_mail()
         # SISTEMA DE GUARDADO POR FOCO
         self._cambios_pendientes = {}
-        print("[ControladorEventosUI] [INIT] Inicializado - Solo Eventos")
+        logger.info("[ControladorEventosUI] [INIT] Inicializado - Solo Eventos")
 
     def _guardar_campo_en_json(self, nombre_campo: str, valor: str):
         """Acumular campo para guardado por foco"""
@@ -1506,5 +1506,5 @@ class ControladorEventosUI:
             self._cambios_pendientes.clear()
                 
         except Exception as e:
-            print(f"[CAMBIO_CONTRATO] ERROR Error guardando: {e}")
+            logger.info(f"[CAMBIO_CONTRATO] ERROR Error guardando: {e}")
     

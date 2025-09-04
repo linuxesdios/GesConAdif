@@ -1,3 +1,7 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
 """
 Controlador para gestión de tablas de la interfaz de usuario
 Maneja las tablas de empresas, ofertas y sus interacciones
@@ -40,7 +44,7 @@ class ControladorTablas(QObject):
             tabla: Widget de tabla para empresas
         """
         try:
-            print("[DEBUG] 📊 Configurando tabla de empresas...")
+            logger.info("[DEBUG] 📊 Configurando tabla de empresas...")
             
             self.tabla_empresas = tabla
             
@@ -75,10 +79,10 @@ class ControladorTablas(QObject):
             tabla.itemChanged.connect(self._on_empresa_item_changed)
             tabla.itemSelectionChanged.connect(self._on_empresa_selection_changed)
             
-            print("[SUCCESS] ✅ Tabla de empresas configurada")
+            logger.info("[SUCCESS] ✅ Tabla de empresas configurada")
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error configurando tabla empresas: {e}")
+            logger.error(f"[ERROR] Error configurando tabla empresas: {e}")
     
     def setup_tabla_ofertas(self, tabla: QTableWidget):
         """
@@ -88,7 +92,7 @@ class ControladorTablas(QObject):
             tabla: Widget de tabla para ofertas
         """
         try:
-            print("[DEBUG] 📊 Configurando tabla de ofertas...")
+            logger.info("[DEBUG] 📊 Configurando tabla de ofertas...")
             
             self.tabla_ofertas = tabla
             
@@ -111,10 +115,10 @@ class ControladorTablas(QObject):
             # Conectar señales
             tabla.itemChanged.connect(self._on_oferta_item_changed)
             
-            print("[SUCCESS] ✅ Tabla de ofertas configurada")
+            logger.info("[SUCCESS] ✅ Tabla de ofertas configurada")
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error configurando tabla ofertas: {e}")
+            logger.error(f"[ERROR] Error configurando tabla ofertas: {e}")
     
     def agregar_fila(self, tabla: QTableWidget):
         """
@@ -135,11 +139,11 @@ class ControladorTablas(QObject):
                 if self.tabla_ofertas and self.sincronizacion_activa:
                     self.sincronizar_tablas()
             
-            print(f"[DEBUG] ➕ Fila agregada. Total: {row_count + 1}")
+            logger.info(f"[DEBUG] ➕ Fila agregada. Total: {row_count + 1}")
             self.datos_modificados.emit()
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error agregando fila: {e}")
+            logger.error(f"[ERROR] Error agregando fila: {e}")
     
     def quitar_fila(self, tabla: QTableWidget):
         """
@@ -162,13 +166,13 @@ class ControladorTablas(QObject):
                     if self.tabla_ofertas and self.sincronizacion_activa:
                         self.sincronizar_tablas()
                 
-                print(f"[DEBUG] 🗑️ Fila eliminada. Total: {row_count - 1}")
+                logger.info(f"[DEBUG] 🗑️ Fila eliminada. Total: {row_count - 1}")
                 self.datos_modificados.emit()
             else:
-                print("[WARNING] ⚠️ No se puede eliminar la última fila")
+                logger.info("[WARNING] ⚠️ No se puede eliminar la última fila")
                 
         except Exception as e:
-            print(f"[ERROR] ❌ Error eliminando fila: {e}")
+            logger.error(f"[ERROR] Error eliminando fila: {e}")
     
     def agregar_fila_con_datos(self, tabla: QTableWidget, datos: List[str]):
         """
@@ -196,11 +200,11 @@ class ControladorTablas(QObject):
                 if self.tabla_ofertas and self.sincronizacion_activa:
                     self.sincronizar_tablas()
             
-            #print(f"[DEBUG] ➕ Fila con datos agregada: {datos}")
+            #logger.info(f"[DEBUG] ➕ Fila con datos agregada: {datos}")
             self.datos_modificados.emit()
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error agregando fila con datos: {e}")
+            logger.error(f"[ERROR] Error agregando fila con datos: {e}")
     
     def eliminar_filas_vacias(self, tabla: QTableWidget):
         """
@@ -228,7 +232,7 @@ class ControladorTablas(QObject):
                 tabla.removeRow(fila)
             
             if filas_a_eliminar:
-                print(f"[DEBUG] 🧹 {len(filas_a_eliminar)} filas vacías eliminadas")
+                logger.info(f"[DEBUG] 🧹 {len(filas_a_eliminar)} filas vacías eliminadas")
                 
                 # Actualizar etiquetas si es tabla de empresas
                 if tabla == self.tabla_empresas:
@@ -242,7 +246,7 @@ class ControladorTablas(QObject):
                 self.datos_modificados.emit()
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error eliminando filas vacías: {e}")
+            logger.error(f"[ERROR] Error eliminando filas vacías: {e}")
     
     def sincronizar_tablas(self):
         """Sincroniza la tabla de ofertas con la de empresas"""
@@ -269,10 +273,10 @@ class ControladorTablas(QObject):
                     oferta_item = QTableWidgetItem("")
                     self.tabla_ofertas.setItem(i, 1, oferta_item)
             
-           # print(f"[DEBUG] 🔄 Tablas sincronizadas: {len(empresas)} empresas")
+           # logger.info(f"[DEBUG] Tablas sincronizadas: {len(empresas)} empresas")
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error sincronizando tablas: {e}")
+            logger.error(f"[ERROR] Error sincronizando tablas: {e}")
     
     def obtener_empresas(self) -> List[Empresa]:
         """
@@ -315,11 +319,11 @@ class ControladorTablas(QObject):
                     
                     empresas.append(empresa)
             
-           # print(f"[DEBUG] 📊 {len(empresas)} empresas obtenidas")
+           # logger.info(f"[DEBUG] {len(empresas)} empresas obtenidas")
             return empresas
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error obteniendo empresas: {e}")
+            logger.error(f"[ERROR] Error obteniendo empresas: {e}")
             return []
     
     def limpiar_tablas(self):
@@ -327,7 +331,7 @@ class ControladorTablas(QObject):
         Limpia completamente ambas tablas (empresas y ofertas)
         """
         try:
-            print("[DEBUG] 🧹 Limpiando tablas...")
+            logger.info("[DEBUG] 🧹 Limpiando tablas...")
             
             # Desactivar sincronización temporal
             self.sincronizacion_activa = False
@@ -341,7 +345,7 @@ class ControladorTablas(QObject):
                 
                 # Actualizar etiquetas
                 self.tabla_empresas.setVerticalHeaderLabels([f'Emp{i+1}' for i in range(5)])
-                print("[DEBUG] ✅ Tabla empresas limpiada")
+                logger.info("[DEBUG] ✅ Tabla empresas limpiada")
             
             # Limpiar tabla de ofertas
             if self.tabla_ofertas:
@@ -352,14 +356,14 @@ class ControladorTablas(QObject):
                 
                 # Actualizar etiquetas
                 self.tabla_ofertas.setVerticalHeaderLabels([f'Emp{i+1}' for i in range(5)])
-                print("[DEBUG] ✅ Tabla ofertas limpiada")
+                logger.info("[DEBUG] ✅ Tabla ofertas limpiada")
             
             # Reactivar sincronización
             self.sincronizacion_activa = True
-            print("[SUCCESS] ✅ Tablas limpiadas")
+            logger.info("[SUCCESS] ✅ Tablas limpiadas")
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error limpiando tablas: {e}")
+            logger.error(f"[ERROR] Error limpiando tablas: {e}")
             # Reactivar sincronización en caso de error
             self.sincronizacion_activa = True
 
@@ -402,11 +406,11 @@ class ControladorTablas(QObject):
                     )
                     ofertas.append(oferta)
             
-            print(f"[DEBUG] 💰 {len(ofertas)} ofertas obtenidas")
+            logger.info(f"[DEBUG] 💰 {len(ofertas)} ofertas obtenidas")
             return ofertas
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error obteniendo ofertas: {e}")
+            logger.error(f"[ERROR] Error obteniendo ofertas: {e}")
             return []
     
     def cargar_empresas(self, empresas: List[Empresa]):
@@ -447,11 +451,11 @@ class ControladorTablas(QObject):
                         oferta_formatted = formatear_numero_espanol(empresa.oferta)
                         self.tabla_ofertas.setItem(i, 1, QTableWidgetItem(oferta_formatted))
             
-            print(f"[SUCCESS] ✅ {len(empresas)} empresas cargadas")
+            logger.info(f"[SUCCESS] {len(empresas)} empresas cargadas")
             self.datos_modificados.emit()
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error cargando empresas: {e}")
+            logger.error(f"[ERROR] Error cargando empresas: {e}")
             self.sincronizacion_activa = True
     
     def cargar_ofertas(self, ofertas: List[Oferta]):
@@ -471,11 +475,11 @@ class ControladorTablas(QObject):
                         oferta_formatted = formatear_numero_espanol(oferta.importe)
                         self.tabla_ofertas.setItem(i, 1, QTableWidgetItem(oferta_formatted))
             
-            print(f"[SUCCESS] ✅ {len(ofertas)} ofertas cargadas")
+            logger.info(f"[SUCCESS] {len(ofertas)} ofertas cargadas")
             self.datos_modificados.emit()
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error cargando ofertas: {e}")
+            logger.error(f"[ERROR] Error cargando ofertas: {e}")
     
     
     
@@ -511,45 +515,45 @@ class ControladorTablas(QObject):
             
             # Guardar en JSON usando el controlador
             self.main_window.controlador_json.guardar_empresas_en_json(contrato, empresas_data)
-            print(f"[AUTOSAVE] ✅ Datos de {len(empresas_data)} empresas guardados automáticamente")
+            logger.info(f"[AUTOSAVE] Datos de {len(empresas_data)} empresas guardados automáticamente")
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error guardando tablas automáticamente: {e}")
+            logger.error(f"[ERROR] Error guardando tablas automáticamente: {e}")
     
     def _ejecutar_calculos_completos_si_disponible(self):
         """Ejecutar cálculos completos si el controlador está disponible"""
-        print("[ControladorTablas] 🔄 Ejecutando cálculos automáticos...")
+        logger.info("[ControladorTablas] 🔄 Ejecutando cálculos automáticos...")
         try:
             if not self.main_window:
-                print("[ControladorTablas] ❌ main_window no disponible")
+                logger.info("[ControladorTablas] ❌ main_window no disponible")
                 return
                 
             if not hasattr(self.main_window, 'controlador_calculos'):
-                print("[ControladorTablas] ❌ controlador_calculos no disponible")
+                logger.info("[ControladorTablas] ❌ controlador_calculos no disponible")
                 return
                 
             # Ejecutar cálculo de ofertas completo para recalcular adjudicación
             if hasattr(self.main_window.controlador_calculos, 'calcular_ofertas_completo'):
-                print("[ControladorTablas] 🚀 Ejecutando calcular_ofertas_completo...")
+                logger.info("[ControladorTablas] 🚀 Ejecutando calcular_ofertas_completo...")
                 self.main_window.controlador_calculos.calcular_ofertas_completo(self.main_window)
-                print("[ControladorTablas] ✅ Cálculos de adjudicación ejecutados automáticamente")
+                logger.info("[ControladorTablas] ✅ Cálculos de adjudicación ejecutados automáticamente")
                 
                 # Verificar que se rellenaron los campos
                 if hasattr(self.main_window, 'empresaAdjudicada'):
                     empresa_actual = self.main_window.empresaAdjudicada.text()
-                    print(f"[ControladorTablas] 📋 Empresa adjudicada actual: '{empresa_actual}'")
+                    logger.info(f"[ControladorTablas] 📋 Empresa adjudicada actual: '{empresa_actual}'")
                 
                 if hasattr(self.main_window, 'contratistaCIF'):
                     cif_actual = self.main_window.contratistaCIF.text()
-                    print(f"[ControladorTablas] 🆔 CIF adjudicada actual: '{cif_actual}'")
+                    logger.info(f"[ControladorTablas] 🆔 CIF adjudicada actual: '{cif_actual}'")
                     
             else:
-                print("[ControladorTablas] ⚠️ Método calcular_ofertas_completo no disponible")
+                logger.info("[ControladorTablas] ⚠️ Método calcular_ofertas_completo no disponible")
                 
         except Exception as e:
-            print(f"[ControladorTablas] ❌ Error ejecutando cálculos automáticos: {e}")
+            logger.error(f"[ControladorTablas] Error ejecutando cálculos automáticos: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def _on_empresa_item_changed(self, item):
         """Maneja cambios en items de la tabla de empresas"""
@@ -591,7 +595,7 @@ class ControladorTablas(QObject):
             self.datos_modificados.emit()
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error en cambio de empresa: {e}")
+            logger.error(f"[ERROR] Error en cambio de empresa: {e}")
     
     def _on_empresa_selection_changed(self):
         """Maneja cambios de selección en tabla de empresas"""
@@ -603,7 +607,7 @@ class ControladorTablas(QObject):
                     self.empresa_seleccionada.emit(fila)
                     
         except Exception as e:
-            print(f"[ERROR] ❌ Error en selección de empresa: {e}")
+            logger.error(f"[ERROR] Error en selección de empresa: {e}")
     
     def _on_oferta_item_changed(self, item):
         """Maneja cambios en items de la tabla de ofertas"""
@@ -648,7 +652,7 @@ class ControladorTablas(QObject):
             self.datos_modificados.emit()
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error en cambio de oferta: {e}")
+            logger.error(f"[ERROR] Error en cambio de oferta: {e}")
     
     def validar_datos_tablas(self) -> tuple[bool, List[str]]:
         """
@@ -731,7 +735,7 @@ class ControladorTablas(QObject):
             return estadisticas
             
         except Exception as e:
-            print(f"[ERROR] ❌ Error obteniendo estadísticas: {e}")
+            logger.error(f"[ERROR] Error obteniendo estadísticas: {e}")
             return {}
     
     

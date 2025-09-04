@@ -1,0 +1,31 @@
+{
+  "firmantes": {
+    "jefe_proyecto": {
+      "nombre": "Nombre del Jefe de Proyecto",
+      "cargo": "Jefe de Proyecto"
+    }
+  },
+  "obras": [
+    {
+      "nombre": "OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES",
+      "expediente": "EXP-2024-001",
+      "tipo": "obras",
+      "datos_contrato": {
+        "basePresupuesto": 26029.89,
+        "precioAdjudicacion": 100.0,
+        "plazoEjecucion": 30,
+        "fechaContrato": "2024-01-01"
+      },
+      "empresas": [],
+      "liquidacion": {}
+    },
+    {
+      "nombre": "2332",
+      "expediente": "EXP-2024-002",
+      "tipo": "mantenimiento",
+      "datos_contrato": {},
+      "empresas": [],
+      "liquidacion": {}
+    }
+  ]
+}

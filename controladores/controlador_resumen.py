@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import logging
+
+logger = logging.getLogger(__name__)
 """
 CONTROLADOR DE RESUMEN UNIFICADO PARA ADIF
 
@@ -105,12 +108,12 @@ class TrackerDocumentos:
                             )
                             self.documentos[contrato].append(doc)
                         except (KeyError, ValueError) as e:
-                            print(f"Error cargando documento: {e}")
+                            logger.error(f"Error cargando documento: {e}")
                             continue
             else:
                 self.documentos = {}
         except Exception as e:
-            print(f"Error cargando historial: {e}")
+            logger.error(f"Error cargando historial: {e}")
             self.documentos = {}
     
     def guardar_historial(self):
@@ -138,7 +141,7 @@ class TrackerDocumentos:
                 json.dump(data, f, ensure_ascii=False, indent=2)
             return True
         except Exception as e:
-            print(f"Error guardando historial: {e}")
+            logger.error(f"Error guardando historial: {e}")
             return False
     
     def registrar_documento_iniciado(self, contrato: str, tipo, nombre: str, plantilla: str = "") -> str:
@@ -362,15 +365,15 @@ class IntegradorResumen:
                 contrato_data = self.main_window.controlador_json.leer_contrato_completo(nombre_contrato)
                 if contrato_data and 'nombreCarpeta' in contrato_data:
                     nombre_carpeta = contrato_data['nombreCarpeta']
-                    print(f"[IntegradorResumen] 📁 Nombre de carpeta desde JSON: {nombre_carpeta}")
+                    logger.info(f"[IntegradorResumen] 📁 Nombre de carpeta desde JSON: {nombre_carpeta}")
                     return nombre_carpeta
             
             # Fallback: usar nombre del contrato si no hay nombreCarpeta en JSON
-            print(f"[IntegradorResumen] ⚠️ Usando nombre de contrato como fallback: {nombre_contrato}")
+            logger.warning(f"[IntegradorResumen] Usando nombre de contrato como fallback: {nombre_contrato}")
             return nombre_contrato
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error obteniendo nombre carpeta: {e}")
+            logger.error(f"[IntegradorResumen] Error obteniendo nombre carpeta: {e}")
             return nombre_contrato  # Fallback seguro
     
     def integrar_en_aplicacion(self) -> bool:
@@ -385,7 +388,7 @@ class IntegradorResumen:
             return True
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error integrando: {e}")
+            logger.error(f"[IntegradorResumen] Error integrando: {e}")
             return False
     
     def _encontrar_tab_widget(self):
@@ -410,7 +413,7 @@ class IntegradorResumen:
 
             
         except Exception as e:
-            print(f"[IntegradorResumen] ⚠️ Error conectando señales: {e}")
+            logger.warning(f"[IntegradorResumen] Error conectando señales: {e}")
     
     def _conectar_botones_ui(self):
         """Conectar botones específicos del tab Resumen y agregar cronograma"""
@@ -449,7 +452,7 @@ class IntegradorResumen:
                 btn_generar.clicked.connect(self._on_generar_fichero_resumen)
 
             else:
-                print("[IntegradorResumen] ❌ No se encontró btn_generar_fichero_resumen")
+                logger.info("[IntegradorResumen] ❌ No se encontró btn_generar_fichero_resumen")
             
             if btn_actualizar:
                 # Desconectar cualquier conexión previa
@@ -461,12 +464,12 @@ class IntegradorResumen:
                 btn_actualizar.clicked.connect(self._on_actualizar_resumen)
 
             else:
-                print("[IntegradorResumen] ❌ No se encontró btn_actualizar_resumen")
+                logger.info("[IntegradorResumen] ❌ No se encontró btn_actualizar_resumen")
             
             # Guardar referencia al área de texto
                 
         except Exception as e:
-            print(f"[IntegradorResumen] ⚠️ Error conectando botones UI: {e}")
+            logger.warning(f"[IntegradorResumen] Error conectando botones UI: {e}")
     
     def reconectar_botones_si_es_necesario(self):
         """Método público para reconectar botones si es necesario"""
@@ -474,7 +477,7 @@ class IntegradorResumen:
         try:
             self._conectar_botones_ui()
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error reconectando botones: {e}")
+            logger.error(f"[IntegradorResumen] Error reconectando botones: {e}")
     
     def test_botones_resumen(self):
         """Método de prueba para verificar que los botones funcionan"""
@@ -482,13 +485,13 @@ class IntegradorResumen:
         try:
             self._on_actualizar_resumen()
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Test botón actualizar: ERROR - {e}")
+            logger.error(f"[IntegradorResumen] Test botón actualizar: ERROR - {e}")
         
         # Test botón generar  
         try:
             self._on_generar_fichero_resumen()
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Test botón generar: ERROR - {e}")
+            logger.error(f"[IntegradorResumen] Test botón generar: ERROR - {e}")
     
     def test_tabla_seguimiento(self):
         """Método específico para probar la tabla de seguimiento"""
@@ -513,12 +516,12 @@ class IntegradorResumen:
                 tabla_seguimiento.update()
             else:
                 all_tables = self.main_window.findChildren(QTableWidget)
-                print(f"[IntegradorResumen] ❌ Tabla NO encontrada. Disponibles: {[t.objectName() for t in all_tables]}")
+                logger.error(f"[IntegradorResumen] Tabla NO encontrada. Disponibles: {[t.objectName() for t in all_tables]}")
                 
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error en test tabla: {e}")
+            logger.error(f"[IntegradorResumen] Error en test tabla: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def _on_anchor_clicked(self, url):
         """Manejar clics en enlaces (especialmente para PDFs)"""
@@ -529,7 +532,7 @@ class IntegradorResumen:
             import platform
             
             url_str = url.toString()
-            print(f"[IntegradorResumen] 🔗 Enlace clickeado: {url_str}")
+            logger.info(f"[IntegradorResumen] 🔗 Enlace clickeado: {url_str}")
             
             # Extraer ruta del archivo si es un enlace file://
             if url_str.startswith('file:///'):
@@ -538,7 +541,7 @@ class IntegradorResumen:
                 if platform.system() == "Windows":
                     file_path = file_path.replace('/', os.sep)
                 
-                print(f"[IntegradorResumen] 📄 Abriendo archivo: {file_path}")
+                logger.debug(f"[IntegradorResumen] Abriendo archivo: {file_path}")
                 
                 if os.path.exists(file_path):
                     # Abrir archivo con aplicación por defecto del sistema
@@ -550,9 +553,9 @@ class IntegradorResumen:
                         else:  # Linux
                             subprocess.Popen(["xdg-open", file_path])
                         
-                        print(f"[IntegradorResumen] ✅ Archivo abierto exitosamente: {os.path.basename(file_path)}")
+                        logger.info(f"[IntegradorResumen] Archivo abierto exitosamente: {os.path.basename(file_path)}")
                     except Exception as e:
-                        print(f"[IntegradorResumen] ❌ Error abriendo archivo: {e}")
+                        logger.error(f"[IntegradorResumen] Error abriendo archivo: {e}")
                         # Mostrar mensaje de error al usuario
                         from PyQt5.QtWidgets import QMessageBox
                         QMessageBox.warning(
@@ -561,7 +564,7 @@ class IntegradorResumen:
                             f"No se pudo abrir el archivo:\n{e}"
                         )
                 else:
-                    print(f"[IntegradorResumen] ❌ Archivo no encontrado: {file_path}")
+                    logger.error(f"[IntegradorResumen] Archivo no encontrado: {file_path}")
                     from PyQt5.QtWidgets import QMessageBox
                     QMessageBox.warning(
                         self.main_window, 
@@ -570,10 +573,10 @@ class IntegradorResumen:
                     )
             else:
                 # Para otros tipos de enlaces, usar comportamiento por defecto
-                print(f"[IntegradorResumen] 🌐 Enlace externo: {url_str}")
+                logger.info(f"[IntegradorResumen] 🌐 Enlace externo: {url_str}")
                 
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error manejando enlace: {e}")
+            logger.error(f"[IntegradorResumen] Error manejando enlace: {e}")
     
     def _agregar_cronograma_visual(self):
         """Configurar el cronograma visual que ya existe en el UI"""
@@ -582,7 +585,7 @@ class IntegradorResumen:
             cronograma_view = self.main_window.findChild(QGraphicsView, "cronograma_fases_timeline")
             
             if not cronograma_view:
-                print("[IntegradorResumen] ⚠️ No se encontró el QGraphicsView cronograma_fases_timeline en el UI")
+                logger.info("[IntegradorResumen] ⚠️ No se encontró el QGraphicsView cronograma_fases_timeline en el UI")
                 return
             
             # Configurar propiedades adicionales del QGraphicsView
@@ -592,7 +595,7 @@ class IntegradorResumen:
 
                 
         except Exception as e:
-            print(f"[IntegradorResumen] ⚠️ Error configurando cronograma visual: {e}")
+            logger.warning(f"[IntegradorResumen] Error configurando cronograma visual: {e}")
     
     def _actualizar_cronograma_visual(self, nombre_contrato: str):
         """Actualizar el cronograma visual existente en el UI"""
@@ -601,7 +604,7 @@ class IntegradorResumen:
             cronograma_view = self.main_window.findChild(QGraphicsView, "cronograma_fases_timeline")
             
             if not cronograma_view:
-                print("[IntegradorResumen] ⚠️ No se encontró el QGraphicsView cronograma_fases_timeline en el UI")
+                logger.info("[IntegradorResumen] ⚠️ No se encontró el QGraphicsView cronograma_fases_timeline en el UI")
                 return
             
             # Limpiar la escena actual
@@ -632,7 +635,7 @@ class IntegradorResumen:
                 texto.setPos(20, 20)
                 
         except Exception as e:
-            print(f"[IntegradorResumen] ⚠️ Error actualizando cronograma visual: {e}")
+            logger.warning(f"[IntegradorResumen] Error actualizando cronograma visual: {e}")
     
     def _dibujar_timeline_firmas(self, scene: QGraphicsScene, datos_firmas: dict, firmantes_unicos: list):
         """Dibujar timeline usando datos de firmas (igual que la tabla de seguimiento)"""
@@ -731,60 +734,60 @@ class IntegradorResumen:
 
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error dibujando timeline de firmas: {e}")
+            logger.error(f"[IntegradorResumen] Error dibujando timeline de firmas: {e}")
     
     def _on_generar_fichero_resumen(self):
         """Generar documento Word con resumen del contrato"""
-        print("[IntegradorResumen] 📄 ===== GENERANDO DOCUMENTO WORD =====")
+        logger.info("[IntegradorResumen] 📄 ===== GENERANDO DOCUMENTO WORD =====")
         
         try:
             # 1. Verificar contrato seleccionado
-            print("[IntegradorResumen] 🔍 Verificando contrato seleccionado...")
+            logger.info("[IntegradorResumen] 🔍 Verificando contrato seleccionado...")
             nombre_contrato = ""
             
             if hasattr(self.main_window, 'comboBox'):
                 nombre_contrato = self.main_window.comboBox.currentText()
-                print(f"[IntegradorResumen] 📋 Contrato: '{nombre_contrato}'")
+                logger.info(f"[IntegradorResumen] 📋 Contrato: '{nombre_contrato}'")
             else:
-                print("[IntegradorResumen] ❌ ComboBox no encontrado")
+                logger.info("[IntegradorResumen] ❌ ComboBox no encontrado")
                 self._mostrar_mensaje_error("Error: No se encontró el selector de contratos")
                 return
             
             if not nombre_contrato or nombre_contrato == "Seleccionar contrato...":
-                print("[IntegradorResumen] ⚠️ No hay contrato válido")
+                logger.info("[IntegradorResumen] ⚠️ No hay contrato válido")
                 self._mostrar_mensaje_error("No hay contrato seleccionado.\n\nPor favor, selecciona un contrato en el ComboBox principal.")
                 return
             
             # 2. Sincronizar fechas antes de generar (si está disponible)
-            print("[IntegradorResumen] 🔄 Sincronizando datos...")
+            logger.info("[IntegradorResumen] 🔄 Sincronizando datos...")
             if hasattr(self.main_window, 'controlador_fases'):
                 try:
                     self.main_window.controlador_fases.reparar_sincronizacion_fases(nombre_contrato)
                     self.main_window.controlador_fases.sincronizar_todas_fechas_a_json(nombre_contrato)
-                    print("[IntegradorResumen] ✅ Fechas sincronizadas")
+                    logger.info("[IntegradorResumen] ✅ Fechas sincronizadas")
                 except Exception as e:
-                    print(f"[IntegradorResumen] ⚠️ Error sincronizando fechas: {e}")
+                    logger.warning(f"[IntegradorResumen] Error sincronizando fechas: {e}")
             
             # 3. Obtener datos del contrato
-            print("[IntegradorResumen] 📊 Obteniendo datos del contrato...")
+            logger.info("[IntegradorResumen] 📊 Obteniendo datos del contrato...")
             datos_contrato = self._obtener_datos_contrato_completos(nombre_contrato)
             
             if not datos_contrato:
-                print("[IntegradorResumen] ❌ No se pudieron obtener datos")
+                logger.info("[IntegradorResumen] ❌ No se pudieron obtener datos")
                 self._mostrar_mensaje_error("No se pudieron obtener los datos del contrato.\n\nVerifica que el contrato esté guardado correctamente.")
                 return
             
-            print(f"[IntegradorResumen] ✅ Datos obtenidos: {len(datos_contrato)} campos")
+            logger.info(f"[IntegradorResumen] Datos obtenidos: {len(datos_contrato)} campos")
             
             # 4. Actualizar estado del botón
             self._actualizar_estado_boton_generar("📝 Generando documento...")
             
             # 5. Generar fichero Word
-            print("[IntegradorResumen] 📝 Generando documento Word...")
+            logger.info("[IntegradorResumen] 📝 Generando documento Word...")
             ruta_archivo = self.generar_fichero_resumen(nombre_contrato, datos_contrato)
             
             if ruta_archivo:
-                print(f"[IntegradorResumen] ✅ Documento generado: {ruta_archivo}")
+                logger.info(f"[IntegradorResumen] Documento generado: {ruta_archivo}")
                 
                 # 6. Mostrar resultado exitoso
                 self._mostrar_mensaje_exito(f"✅ Documento Word generado exitosamente!\n\nArchivo: {ruta_archivo}\n\nEl documento se abrirá automáticamente.")
@@ -802,27 +805,27 @@ class IntegradorResumen:
                     else:  # Linux
                         subprocess.Popen(["xdg-open", ruta_archivo])
                     
-                    print("[IntegradorResumen] 📂 Archivo abierto automáticamente")
+                    logger.info("[IntegradorResumen] 📂 Archivo abierto automáticamente")
                 except Exception as e:
-                    print(f"[IntegradorResumen] ⚠️ Error abriendo archivo: {e}")
+                    logger.warning(f"[IntegradorResumen] Error abriendo archivo: {e}")
                 
             else:
-                print("[IntegradorResumen] ❌ Error: No se generó archivo")
+                logger.info("[IntegradorResumen] ❌ Error: No se generó archivo")
                 self._mostrar_mensaje_error("Error generando documento.\n\nNo se pudo crear el archivo Word.")
             
             # 8. Restaurar estado del botón
             self._actualizar_estado_boton_generar("📄 Generar Resumen Word")
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ ERROR GENERANDO DOCUMENTO: {e}")
+            logger.error(f"[IntegradorResumen] ERROR GENERANDO DOCUMENTO: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             
             # Restaurar botón y mostrar error
             self._actualizar_estado_boton_generar("📄 Generar Resumen Word")
             self._mostrar_mensaje_error(f"Error generando documento Word:\n\n{e}")
             
-        print("[IntegradorResumen] 📄 Proceso de generación completado")
+        logger.info("[IntegradorResumen] 📄 Proceso de generación completado")
     
     def _on_actualizar_resumen(self):
         """Actualizar resumen del contrato seleccionado"""
@@ -844,7 +847,7 @@ class IntegradorResumen:
                     self.main_window.controlador_fases.reparar_sincronizacion_fases(nombre_contrato)
                     self.main_window.controlador_fases.sincronizar_todas_fechas_a_json(nombre_contrato)
                 except Exception as e:
-                    print(f"[IntegradorResumen] ⚠️ Error sincronizando fechas: {e}")
+                    logger.warning(f"[IntegradorResumen] Error sincronizando fechas: {e}")
             
             # 4. Obtener datos del contrato
             datos_contrato = self._obtener_datos_contrato_completos(nombre_contrato)
@@ -859,9 +862,9 @@ class IntegradorResumen:
                 # Después del test, ejecutar escaneo normal
                 self._escanear_y_actualizar_tabla_firmas(nombre_contrato)
             except Exception as e:
-                print(f"[IntegradorResumen] ⚠️ Error escaneando firmas: {e}")
+                logger.warning(f"[IntegradorResumen] Error escaneando firmas: {e}")
                 import traceback
-                traceback.print_exc()
+                logger.exception("Error completo:")
             
             # 6. Generar resumen HTML con fases
             html_resumen = self._generar_resumen_con_fases(nombre_contrato, datos_contrato)
@@ -874,12 +877,12 @@ class IntegradorResumen:
             try:
                 self._actualizar_cronograma_visual(nombre_contrato)
             except Exception as e:
-                print(f"[IntegradorResumen] ⚠️ Error actualizando cronograma: {e}")
+                logger.warning(f"[IntegradorResumen] Error actualizando cronograma: {e}")
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ ERROR ACTUALIZANDO RESUMEN: {e}")
+            logger.error(f"[IntegradorResumen] ERROR ACTUALIZANDO RESUMEN: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             
     
     def _generar_resumen_basico(self, nombre_contrato: str, datos_contrato: dict) -> str:
@@ -912,22 +915,22 @@ class IntegradorResumen:
     def _debug_fases_completo(self, nombre_contrato: str):
         """Debug completo: mostrar todos los DateEdit y datos del JSON"""
         try:
-            print("=" * 80)
-            print("🔧 DEBUG COMPLETO DE FASES")
-            print("=" * 80)
-            print(f"📋 Contrato: {nombre_contrato}")
-            print()
+            logger.debug("=" * 80)
+            logger.debug("🔧 DEBUG COMPLETO DE FASES")
+            logger.debug("=" * 80)
+            logger.info("📋 Contrato: {nombre_contrato}")
+            logger.debug("")
             
             # 1. VERIFICAR SI HAY CONTROLADOR DE FASES
             if not hasattr(self.main_window, 'controlador_fases'):
-                print("❌ No hay controlador de fases disponible")
+                logger.error("❌ No hay controlador de fases disponible")
                 return
                 
             controlador_fases = self.main_window.controlador_fases
             
             # 2. LEER DATOS DEL JSON
-            print("📄 DATOS DEL JSON:")
-            print("-" * 40)
+            logger.info("📄 DATOS DEL JSON:")
+            logger.debug("-" * 40)
             datos_contrato = controlador_fases._obtener_datos_contrato(nombre_contrato)
             
             if datos_contrato and "fases_documentos" in datos_contrato:
@@ -935,15 +938,15 @@ class IntegradorResumen:
                 for fase, datos in fases_json.items():
                     generado = datos.get("generado") or "null"
                     firmado = datos.get("firmado") or "null"
-                    print(f"  {fase:15} → generado: {str(generado):12} | firmado: {str(firmado)}")
+                    logger.info(f"  {fase:15} → generado: {str(generado):12} | firmado: {str(firmado)}")
             else:
-                print("  ⚠️ No se encontró 'fases_documentos' en el JSON")
+                logger.info("  ⚠️ No se encontró 'fases_documentos' en el JSON")
             
-            print()
+            logger.debug("")
             
             # 3. LEER VALORES DE TODOS LOS DATEEDIT
-            print("🎛️ VALORES DE LOS DATEEDIT:")
-            print("-" * 40)
+            logger.info("🎛️ VALORES DE LOS DATEEDIT:")
+            logger.debug("-" * 40)
             
             from PyQt5.QtWidgets import QDateEdit
             
@@ -958,16 +961,16 @@ class IntegradorResumen:
                 fir_widget = self.main_window.findChild(QDateEdit, fir_field)
                 fir_valor = fir_widget.date().toString("yyyy-MM-dd") if fir_widget else "NOT_FOUND"
                 
-                print(f"  {fase.value:15} → UI Gen: {gen_valor:12} | UI Fir: {fir_valor}")
+                logger.info(f"  {fase.value:15} → UI Gen: {gen_valor:12} | UI Fir: {fir_valor}")
             
-            print()
-            print("✅ Debug completo finalizado")
-            print("=" * 80)
+            logger.debug("")
+            logger.info("✅ Debug completo finalizado")
+            logger.debug("=" * 80)
             
         except Exception as e:
-            print(f"❌ Error en debug de fases: {e}")
+            logger.error("❌ Error en debug de fases: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     
     def _generar_resumen_con_fases(self, nombre_contrato: str, datos_contrato: dict) -> str:
@@ -1124,7 +1127,7 @@ class IntegradorResumen:
             return html
             
         except Exception as e:
-            print(f"[IntegradorResumen] Error generando resumen con fases: {e}")
+            logger.info(f"[IntegradorResumen] Error generando resumen con fases: {e}")
     
     
     def _dibujar_timeline_fases(self, scene: QGraphicsScene, datos_fases: dict):
@@ -1212,7 +1215,7 @@ class IntegradorResumen:
             scene.setSceneRect(0, 0, x_start + 500, y_pos + 20)
             
         except Exception as e:
-            print(f"[IntegradorResumen] Error dibujando timeline: {e}")
+            logger.info(f"[IntegradorResumen] Error dibujando timeline: {e}")
     
     def _generar_cronograma_fases(self, nombre_contrato: str) -> str:
         """Generar cronograma visual de las fases del proyecto - versión HTML de respaldo"""
@@ -1395,7 +1398,7 @@ class IntegradorResumen:
             return html
             
         except Exception as e:
-            print(f"[IntegradorResumen] Error generando cronograma: {e}")
+            logger.info(f"[IntegradorResumen] Error generando cronograma: {e}")
             return f"""
             <div style="background: #FFEBEE; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 <h3 style="color: #D32F2F; margin-top: 0;">Error en Cronograma</h3>
@@ -1418,7 +1421,7 @@ class IntegradorResumen:
             from PyQt5.QtWidgets import QMessageBox
             QMessageBox.information(self.main_window, "✅ Éxito", mensaje)
         except:
-            print(f"[IntegradorResumen] ✅ {mensaje}")
+            logger.info(f"[IntegradorResumen] {mensaje}")
     
     def _mostrar_mensaje_error(self, mensaje: str):
         """Mostrar mensaje de error"""
@@ -1426,7 +1429,7 @@ class IntegradorResumen:
             from PyQt5.QtWidgets import QMessageBox
             QMessageBox.warning(self.main_window, "❌ Error", mensaje)
         except:
-            print(f"[IntegradorResumen] ❌ {mensaje}")
+            logger.error(f"[IntegradorResumen] {mensaje}")
     
     def _obtener_datos_contrato_completos(self, nombre_contrato: str) -> dict:
         """Obtener datos completos del contrato desde la estructura JSON real"""
@@ -1467,7 +1470,7 @@ class IntegradorResumen:
             return {}
             
         except Exception as e:
-            print(f"[IntegradorResumen] Error obteniendo datos del contrato: {e}")
+            logger.info(f"[IntegradorResumen] Error obteniendo datos del contrato: {e}")
             return {}
     
     def _mapear_datos_a_formato_estandar(self, datos_originales: dict) -> dict:
@@ -1512,7 +1515,7 @@ class IntegradorResumen:
             return mapeo_campos
             
         except Exception as e:
-            print(f"[IntegradorResumen] Error mapeando datos: {e}")
+            logger.info(f"[IntegradorResumen] Error mapeando datos: {e}")
             return datos_originales
     
     def _convertir_a_numero(self, valor) -> float:
@@ -1552,7 +1555,7 @@ class IntegradorResumen:
                 raise Exception("Controlador de documentos no disponible")
         except Exception as e:
             error_msg = f"Error generando fichero: {e}"
-            print(f"[IntegradorResumen] ❌ {error_msg}")
+            logger.error(f"[IntegradorResumen] {error_msg}")
             raise Exception(error_msg)
     
     # =================== FUNCIONES DE ESCANEO DE FIRMAS PDF ===================
@@ -1560,27 +1563,27 @@ class IntegradorResumen:
     def _escanear_y_actualizar_tabla_firmas(self, nombre_contrato: str):
         """Escanear firmas digitales en PDFs y actualizar la tabla de seguimiento"""
         try:
-            print(f"[IntegradorResumen] 🔍 Iniciando escaneo de firmas para: {nombre_contrato}")
+            logger.debug(f"[IntegradorResumen] Iniciando escaneo de firmas para: {nombre_contrato}")
             
             # 1. Obtener ruta base de obras
             if hasattr(self.main_window, 'controlador_routes'):
-                print(f"[IntegradorResumen] ✅ Usando controlador_routes para obtener ruta obras")
+                logger.info(f"[IntegradorResumen] Usando controlador_routes para obtener ruta obras")
                 obras_path = self.main_window.controlador_routes.get_ruta_carpeta_obras()
-                print(f"[IntegradorResumen] 📂 Ruta obras: {obras_path}")
+                logger.info(f"[IntegradorResumen] 📂 Ruta obras: {obras_path}")
             else:
-                print(f"[IntegradorResumen] ⚠️ Fallback: controlador_routes no disponible")
+                logger.warning(f"[IntegradorResumen] Fallback: controlador_routes no disponible")
                 # Fallback usando ruta relativa
                 current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 obras_path = os.path.join(current_dir, "obras")
-                print(f"[IntegradorResumen] 📂 Ruta obras (fallback): {obras_path}")
+                logger.info(f"[IntegradorResumen] 📂 Ruta obras (fallback): {obras_path}")
             
             # 2. Obtener ruta de la carpeta 02-documentacion-finales
             carpeta_documentos = self._obtener_carpeta_documentacion_finales(nombre_contrato)
             if not carpeta_documentos or not os.path.exists(carpeta_documentos):
-                print(f"[IntegradorResumen] ⚠️ No se encontró carpeta 02-documentacion-finales para {nombre_contrato}")
+                logger.warning(f"[IntegradorResumen] No se encontró carpeta 02-documentacion-finales para {nombre_contrato}")
                 return
             
-            print(f"[IntegradorResumen] 📂 Escaneando carpeta: {carpeta_documentos}")
+            logger.info(f"[IntegradorResumen] 📂 Escaneando carpeta: {carpeta_documentos}")
             
             # 3. Mapear archivos PDF a fases
             mapeo_fases = self._crear_mapeo_archivos_pdf_fases()
@@ -1591,7 +1594,7 @@ class IntegradorResumen:
             
             # Buscar archivos PDF en 02-documentacion-finales
             archivos_pdf_encontrados = [f for f in os.listdir(carpeta_documentos) if f.lower().endswith('.pdf')]
-            print(f"[IntegradorResumen] 📄 Archivos PDF encontrados en 02-documentacion-finales: {archivos_pdf_encontrados}")
+            logger.debug(f"[IntegradorResumen] Archivos PDF encontrados en 02-documentacion-finales: {archivos_pdf_encontrados}")
             
             # Buscar documento de CREACION en 01-proyecto (excepción especial)
             nombre_carpeta_real = self._obtener_nombre_carpeta_actual(nombre_contrato)
@@ -1599,13 +1602,13 @@ class IntegradorResumen:
             if os.path.exists(carpeta_proyecto):
                 archivos_proyecto = [f for f in os.listdir(carpeta_proyecto) if f.lower().endswith('.pdf') and 'proyecto' in f.lower()]
                 if archivos_proyecto:
-                    print(f"[IntegradorResumen] 📄 Archivos proyecto encontrados en 01-proyecto: {archivos_proyecto}")
+                    logger.debug(f"[IntegradorResumen] Archivos proyecto encontrados en 01-proyecto: {archivos_proyecto}")
                     # Añadir a la lista con ruta especial para procesamiento posterior
                     for archivo in archivos_proyecto:
                         archivos_pdf_encontrados.append(f"01-proyecto/{archivo}")
             
             for archivo_pdf in archivos_pdf_encontrados:
-                print(f"[IntegradorResumen] 🔍 Analizando archivo: {archivo_pdf}")
+                logger.debug(f"[IntegradorResumen] Analizando archivo: {archivo_pdf}")
                 
                 # Manejar rutas especiales para documentos de 01-proyecto
                 if archivo_pdf.startswith("01-proyecto/"):
@@ -1617,17 +1620,17 @@ class IntegradorResumen:
                     ruta_pdf = os.path.join(carpeta_documentos, archivo_pdf)
                     fase = self._determinar_fase_por_archivo(archivo_pdf, mapeo_fases)
                 
-                print(f"[IntegradorResumen] 📋 Archivo {archivo_pdf} -> Fase determinada: {fase}")
+                logger.info(f"[IntegradorResumen] 📋 Archivo {archivo_pdf} -> Fase determinada: {fase}")
                 
                 if fase:
-                    print(f"[IntegradorResumen] 📄 Procesando {archivo_pdf} -> Fase: {fase}")
+                    logger.debug(f"[IntegradorResumen] Procesando {archivo_pdf} -> Fase: {fase}")
                     
                     # Extraer firmas usando la función existente
                     firmas = self._extraer_firmas_pdf(ruta_pdf)
-                    print(f"[IntegradorResumen] 🔍 Firmas extraídas de {archivo_pdf}: {len(firmas) if firmas else 0}")
+                    logger.debug(f"[IntegradorResumen] Firmas extraídas de {archivo_pdf}: {len(firmas) if firmas else 0}")
                     
                     if firmas:
-                        print(f"[IntegradorResumen] 📝 Firmas encontradas: {firmas}")
+                        logger.info(f"[IntegradorResumen] 📝 Firmas encontradas: {firmas}")
                         datos_firmas[fase] = {
                             'archivo': nombre_archivo_real,
                             'fecha_creacion': self._obtener_fecha_creacion_archivo(ruta_pdf),
@@ -1637,7 +1640,7 @@ class IntegradorResumen:
                         # Recopilar todas las firmas para ordenamiento cronológico
                         todas_firmas.extend(firmas)
                         
-                        print(f"[IntegradorResumen] ✅ Encontradas {len(firmas)} firmas en {archivo_pdf}")
+                        logger.info(f"[IntegradorResumen] Encontradas {len(firmas)} firmas en {archivo_pdf}")
                     else:
                         # Agregar fase sin firmas pero con documento
                         datos_firmas[fase] = {
@@ -1645,9 +1648,9 @@ class IntegradorResumen:
                             'fecha_creacion': self._obtener_fecha_creacion_archivo(ruta_pdf),
                             'firmas': []  # Lista vacía para documentos sin firmas
                         }
-                        print(f"[IntegradorResumen] 📄 Documento sin firmas agregado: {archivo_pdf} -> Fase: {fase}")
+                        logger.debug(f"[IntegradorResumen] Documento sin firmas agregado: {archivo_pdf} -> Fase: {fase}")
                 else:
-                    print(f"[IntegradorResumen] ⚠️ No se pudo determinar fase para {archivo_pdf}")
+                    logger.warning(f"[IntegradorResumen] No se pudo determinar fase para {archivo_pdf}")
             
             # Ordenar firmantes cronológicamente por fecha de primera firma
             firmantes_con_fechas = {}
@@ -1661,9 +1664,9 @@ class IntegradorResumen:
             firmantes_ordenados = sorted(firmantes_con_fechas.items(), key=lambda x: x[1])
             firmantes_unicos = [firmante for firmante, fecha in firmantes_ordenados]
             
-            print(f"[IntegradorResumen] 📊 Resumen final: {len(datos_firmas)} fases con firmas, {len(firmantes_unicos)} firmantes únicos")
-            print(f"[IntegradorResumen] 📊 Datos de firmas: {datos_firmas}")
-            print(f"[IntegradorResumen] 📊 Firmantes únicos: {firmantes_unicos}")
+            logger.info(f"[IntegradorResumen] Resumen final: {len(datos_firmas)} fases con firmas, {len(firmantes_unicos)} firmantes únicos")
+            logger.info(f"[IntegradorResumen] Datos de firmas: {datos_firmas}")
+            logger.info(f"[IntegradorResumen] Firmantes únicos: {firmantes_unicos}")
             
             # Guardar en cache para uso posterior (generación de documentos)
             self._datos_firmas_cache = datos_firmas
@@ -1672,42 +1675,42 @@ class IntegradorResumen:
             # 5. Actualizar tabla de seguimiento
             self._actualizar_tabla_seguimiento(datos_firmas, firmantes_unicos, nombre_contrato)
             
-            print(f"[IntegradorResumen] ✅ Escaneo completado. {len(datos_firmas)} fases con firmas encontradas")
+            logger.info(f"[IntegradorResumen] Escaneo completado. {len(datos_firmas)} fases con firmas encontradas")
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error en escaneo de firmas: {e}")
+            logger.error(f"[IntegradorResumen] Error en escaneo de firmas: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def _obtener_carpeta_documentacion_finales(self, nombre_contrato: str) -> str:
         """Obtener la ruta de la carpeta 02-documentacion-finales para un contrato"""
         try:
             # Obtener ruta base de obras
             if hasattr(self.main_window, 'controlador_routes'):
-                print(f"[IntegradorResumen] ✅ Usando controlador_routes para obtener ruta obras")
+                logger.info(f"[IntegradorResumen] Usando controlador_routes para obtener ruta obras")
                 obras_path = self.main_window.controlador_routes.get_ruta_carpeta_obras()
-                print(f"[IntegradorResumen] 📂 Ruta obras: {obras_path}")
+                logger.info(f"[IntegradorResumen] 📂 Ruta obras: {obras_path}")
             else:
-                print(f"[IntegradorResumen] ⚠️ Fallback: controlador_routes no disponible")
+                logger.warning(f"[IntegradorResumen] Fallback: controlador_routes no disponible")
                 # Fallback usando ruta relativa
                 current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 obras_path = os.path.join(current_dir, "obras")
-                print(f"[IntegradorResumen] 📂 Ruta obras (fallback): {obras_path}")
+                logger.info(f"[IntegradorResumen] 📂 Ruta obras (fallback): {obras_path}")
             
             # Construcción directa de la ruta: obras/nombre_carpeta_real/02-documentacion-finales
             nombre_carpeta_real = self._obtener_nombre_carpeta_actual(nombre_contrato)
             documentacion_path = os.path.join(obras_path, nombre_carpeta_real, "02-documentacion-finales")
             
             if os.path.exists(documentacion_path):
-                print(f"[IntegradorResumen] ✅ Carpeta documentación encontrada: {documentacion_path}")
+                logger.info(f"[IntegradorResumen] Carpeta documentación encontrada: {documentacion_path}")
                 return documentacion_path
             else:
-                print(f"[IntegradorResumen] ⚠️ No se encontró carpeta 02-documentacion-finales para {nombre_contrato}")
-                print(f"[IntegradorResumen] 📂 Ruta esperada: {documentacion_path}")
+                logger.warning(f"[IntegradorResumen] No se encontró carpeta 02-documentacion-finales para {nombre_contrato}")
+                logger.info(f"[IntegradorResumen] 📂 Ruta esperada: {documentacion_path}")
                 return ""
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error obteniendo carpeta documentación: {e}")
+            logger.error(f"[IntegradorResumen] Error obteniendo carpeta documentación: {e}")
             return ""
     
     def _obtener_carpeta_proyecto(self, nombre_contrato: str) -> str:
@@ -1715,30 +1718,30 @@ class IntegradorResumen:
         try:
             # Obtener ruta base de obras
             if hasattr(self.main_window, 'controlador_routes'):
-                print(f"[IntegradorResumen] ✅ Usando controlador_routes para obtener ruta obras")
+                logger.info(f"[IntegradorResumen] Usando controlador_routes para obtener ruta obras")
                 obras_path = self.main_window.controlador_routes.get_ruta_carpeta_obras()
-                print(f"[IntegradorResumen] 📂 Ruta obras: {obras_path}")
+                logger.info(f"[IntegradorResumen] 📂 Ruta obras: {obras_path}")
             else:
-                print(f"[IntegradorResumen] ⚠️ Fallback: controlador_routes no disponible")
+                logger.warning(f"[IntegradorResumen] Fallback: controlador_routes no disponible")
                 # Fallback usando ruta relativa
                 current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 obras_path = os.path.join(current_dir, "obras")
-                print(f"[IntegradorResumen] 📂 Ruta obras (fallback): {obras_path}")
+                logger.info(f"[IntegradorResumen] 📂 Ruta obras (fallback): {obras_path}")
             
             # Construcción directa de la ruta: obras/nombre_carpeta_real/01-proyecto
             nombre_carpeta_real = self._obtener_nombre_carpeta_actual(nombre_contrato)
             proyecto_path = os.path.join(obras_path, nombre_carpeta_real, "01-proyecto")
             
             if os.path.exists(proyecto_path):
-                print(f"[IntegradorResumen] ✅ Carpeta proyecto encontrada: {proyecto_path}")
+                logger.info(f"[IntegradorResumen] Carpeta proyecto encontrada: {proyecto_path}")
                 return proyecto_path
             else:
-                print(f"[IntegradorResumen] ⚠️ No se encontró carpeta 01-proyecto para {nombre_contrato}")
-                print(f"[IntegradorResumen] 📂 Ruta esperada: {proyecto_path}")
+                logger.warning(f"[IntegradorResumen] No se encontró carpeta 01-proyecto para {nombre_contrato}")
+                logger.info(f"[IntegradorResumen] 📂 Ruta esperada: {proyecto_path}")
                 return ""
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error obteniendo carpeta proyecto: {e}")
+            logger.error(f"[IntegradorResumen] Error obteniendo carpeta proyecto: {e}")
             return ""
     
     def _obtener_fecha_documento_creacion(self, nombre_contrato: str, fase: str) -> str:
@@ -1785,7 +1788,7 @@ class IntegradorResumen:
             return fecha_formateada
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error obteniendo fecha documento creación: {e}")
+            logger.error(f"[IntegradorResumen] Error obteniendo fecha documento creación: {e}")
             return ""
 
     def _obtener_fecha_documento_generado(self, nombre_contrato: str, fase: str) -> str:
@@ -1851,7 +1854,7 @@ class IntegradorResumen:
             return f"{nombre_archivo}\n{fecha_formateada}"
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error obteniendo fecha documento generado: {e}")
+            logger.error(f"[IntegradorResumen] Error obteniendo fecha documento generado: {e}")
             return ""
     
     def _crear_mapeo_archivos_pdf_fases(self) -> dict:
@@ -1872,48 +1875,48 @@ class IntegradorResumen:
     def _determinar_fase_por_archivo(self, nombre_archivo: str, mapeo_fases: dict) -> str:
         """Determinar la fase basándose en el nombre del archivo"""
         nombre_lower = nombre_archivo.lower()
-        print(f"[IntegradorResumen] 🔍 Determinando fase para archivo: '{nombre_archivo}' -> '{nombre_lower}'")
+        logger.debug(f"[IntegradorResumen] Determinando fase para archivo: '{nombre_archivo}' -> '{nombre_lower}'")
         
         for fase, palabras_clave in mapeo_fases.items():
             for palabra in palabras_clave:
                 if palabra in nombre_lower:
-                    print(f"[IntegradorResumen] ✅ Coincidencia encontrada: '{palabra}' en '{nombre_lower}' -> Fase: {fase}")
+                    logger.info(f"[IntegradorResumen] Coincidencia encontrada: '{palabra}' en '{nombre_lower}' -> Fase: {fase}")
                     return fase
         
-        print(f"[IntegradorResumen] ⚠️ No se encontró fase para archivo: {nombre_archivo}")
+        logger.warning(f"[IntegradorResumen] No se encontró fase para archivo: {nombre_archivo}")
         return None
     
     def _extraer_firmas_pdf(self, ruta_pdf: str) -> list:
         """Extraer firmas digitales de un PDF usando la función existente"""
         try:
-            print(f"[IntegradorResumen] 🔍 Intentando extraer firmas de: {ruta_pdf}")
+            logger.debug(f"[IntegradorResumen] Intentando extraer firmas de: {ruta_pdf}")
             
             # Verificar que el archivo existe
             if not os.path.exists(ruta_pdf):
-                print(f"[IntegradorResumen] ❌ Archivo no existe: {ruta_pdf}")
+                logger.error(f"[IntegradorResumen] Archivo no existe: {ruta_pdf}")
                 return []
             
-            print(f"[IntegradorResumen] ✅ Archivo existe, tamaño: {os.path.getsize(ruta_pdf)} bytes")
+            logger.info(f"[IntegradorResumen] Archivo existe, tamaño: {os.path.getsize(ruta_pdf)} bytes")
             
             # Importar y usar la función existente de firmas.py
             import sys
             current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             sys.path.insert(0, current_dir)
             
-            print(f"[IntegradorResumen] 📂 Buscando firmas.py en: {current_dir}")
+            logger.info(f"[IntegradorResumen] 📂 Buscando firmas.py en: {current_dir}")
             
             from firmas import obtener_firmas_pdf
-            print(f"[IntegradorResumen] ✅ Función obtener_firmas_pdf importada correctamente")
+            logger.info(f"[IntegradorResumen] Función obtener_firmas_pdf importada correctamente")
             
             firmas = obtener_firmas_pdf(ruta_pdf)
-            print(f"[IntegradorResumen] 🔍 Resultado de obtener_firmas_pdf: {firmas}")
+            logger.debug(f"[IntegradorResumen] Resultado de obtener_firmas_pdf: {firmas}")
             
             return firmas
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error extrayendo firmas de {ruta_pdf}: {e}")
+            logger.error(f"[IntegradorResumen] Error extrayendo firmas de {ruta_pdf}: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return []
     
     def _obtener_fecha_creacion_archivo(self, ruta_archivo: str) -> str:
@@ -1935,30 +1938,30 @@ class IntegradorResumen:
                 else:
                     nombre_contrato = "proyecto"  # Fallback
             
-            print(f"[IntegradorResumen] 🔍 Buscando tabla Tabla_seguimiento en {type(self.main_window)}")
-            print(f"[IntegradorResumen] 📊 Datos recibidos - {len(datos_firmas)} fases, {len(firmantes_unicos)} firmantes")
+            logger.debug(f"[IntegradorResumen] Buscando tabla Tabla_seguimiento en {type(self.main_window)}")
+            logger.info(f"[IntegradorResumen] Datos recibidos - {len(datos_firmas)} fases, {len(firmantes_unicos)} firmantes")
             
             # Buscar la tabla en la interfaz
             tabla_seguimiento = self.main_window.findChild(QTableWidget, 'Tabla_seguimiento')
             
-            print(f"[IntegradorResumen] 🔍 Tabla encontrada: {tabla_seguimiento is not None}")
+            logger.debug(f"[IntegradorResumen] Tabla encontrada: {tabla_seguimiento is not None}")
             if tabla_seguimiento:
-                print(f"[IntegradorResumen] 📊 Tabla actual - Filas: {tabla_seguimiento.rowCount()}, Columnas: {tabla_seguimiento.columnCount()}")
+                logger.info(f"[IntegradorResumen] Tabla actual - Filas: {tabla_seguimiento.rowCount()}, Columnas: {tabla_seguimiento.columnCount()}")
             
             if not tabla_seguimiento:
-                print("[IntegradorResumen] ⚠️ No se encontró QTableWidget 'Tabla_seguimiento'")
+                logger.info("[IntegradorResumen] ⚠️ No se encontró QTableWidget 'Tabla_seguimiento'")
                 # Buscar todas las tablas disponibles para debug
                 all_tables = self.main_window.findChildren(QTableWidget)
-                print(f"[IntegradorResumen] 🔍 Tablas disponibles: {[t.objectName() for t in all_tables]}")
+                logger.debug(f"[IntegradorResumen] Tablas disponibles: {[t.objectName() for t in all_tables]}")
                 return
             
             # Si no hay datos reales, mostrar información sobre el estado
             if not datos_firmas:
-                print(f"[IntegradorResumen] ⚠️ No se encontraron datos de firmas - mostrando tabla vacía")
+                logger.warning(f"[IntegradorResumen] No se encontraron datos de firmas - mostrando tabla vacía")
                 self._mostrar_tabla_sin_firmas(tabla_seguimiento)
                 return
             
-            print(f"[IntegradorResumen] 📊 Actualizando tabla con {len(datos_firmas)} fases y {len(firmantes_unicos)} firmantes")
+            logger.info(f"[IntegradorResumen] Actualizando tabla con {len(datos_firmas)} fases y {len(firmantes_unicos)} firmantes")
             
             # Configurar columnas: Fase, Fecha Creación, Documento Generado, + una columna por cada firmante
             total_columnas = 3 + len(firmantes_unicos)  # Fase + Fecha + Documento Generado + firmantes
@@ -2088,23 +2091,23 @@ class IntegradorResumen:
                 pass
             # Conectar nueva función de clic
             tabla_seguimiento.cellClicked.connect(lambda row, col: self._on_tabla_seguimiento_clicked(row, col, nombre_contrato, datos_firmas))
-            print("[IntegradorResumen] ✅ Evento de clic en tabla conectado")
+            logger.info("[IntegradorResumen] ✅ Evento de clic en tabla conectado")
             
             # Forzar actualización de la interfaz
             tabla_seguimiento.update()
             tabla_seguimiento.repaint()
             
             # Verificar que los datos se guardaron
-            print(f"[IntegradorResumen] 📊 Tabla después del update - Filas: {tabla_seguimiento.rowCount()}, Columnas: {tabla_seguimiento.columnCount()}")
-            print("[IntegradorResumen] ✅ Tabla de seguimiento actualizada correctamente")
+            logger.info(f"[IntegradorResumen] Tabla después del update - Filas: {tabla_seguimiento.rowCount()}, Columnas: {tabla_seguimiento.columnCount()}")
+            logger.info("[IntegradorResumen] ✅ Tabla de seguimiento actualizada correctamente")
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error actualizando tabla seguimiento: {e}")
+            logger.error(f"[IntegradorResumen] Error actualizando tabla seguimiento: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             
             # Método fallback: intentar actualización simple
-            print("[IntegradorResumen] 🔄 Intentando método fallback...")
+            logger.info("[IntegradorResumen] 🔄 Intentando método fallback...")
             self._actualizar_tabla_seguimiento_fallback(datos_firmas, firmantes_unicos, nombre_contrato)
     
     def _actualizar_tabla_seguimiento_fallback(self, datos_firmas: dict, firmantes_unicos: list, nombre_contrato: str = None):
@@ -2117,23 +2120,23 @@ class IntegradorResumen:
                 else:
                     nombre_contrato = "proyecto"  # Fallback
                     
-            print("[IntegradorResumen] 🔄 Método fallback para actualización tabla...")
+            logger.info("[IntegradorResumen] 🔄 Método fallback para actualización tabla...")
             
             # Buscar tabla con método alternativo
             tabla = None
             if hasattr(self.main_window, 'Tabla_seguimiento'):
                 tabla = self.main_window.Tabla_seguimiento
-                print("[IntegradorResumen] ✅ Tabla encontrada por atributo directo")
+                logger.info("[IntegradorResumen] ✅ Tabla encontrada por atributo directo")
             else:
                 # Buscar en todos los widgets
                 for widget in self.main_window.findChildren(QTableWidget):
                     if widget.objectName() == 'Tabla_seguimiento':
                         tabla = widget
-                        print("[IntegradorResumen] ✅ Tabla encontrada por búsqueda")
+                        logger.info("[IntegradorResumen] ✅ Tabla encontrada por búsqueda")
                         break
             
             if not tabla:
-                print("[IntegradorResumen] ❌ Tabla no encontrada en fallback")
+                logger.info("[IntegradorResumen] ❌ Tabla no encontrada en fallback")
                 return
             
             # Configuración más simple
@@ -2226,20 +2229,20 @@ class IntegradorResumen:
                     pass
                 # Conectar nueva función de clic
                 tabla.cellClicked.connect(lambda row, col: self._on_tabla_seguimiento_clicked(row, col, nombre_contrato, datos_firmas))
-                print("[IntegradorResumen] ✅ Evento de clic conectado (fallback)")
+                logger.info("[IntegradorResumen] ✅ Evento de clic conectado (fallback)")
                 
-                print("[IntegradorResumen] ✅ Tabla actualizada con método fallback")
+                logger.info("[IntegradorResumen] ✅ Tabla actualizada con método fallback")
                 
             except Exception as e2:
-                print(f"[IntegradorResumen] ❌ Error en configuración fallback: {e2}")
+                logger.error(f"[IntegradorResumen] Error en configuración fallback: {e2}")
                 
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error en método fallback: {e}")
+            logger.error(f"[IntegradorResumen] Error en método fallback: {e}")
     
     def _mostrar_tabla_sin_firmas(self, tabla: QTableWidget):
         """Mostrar tabla con información de estado cuando no hay firmas"""
         try:
-            print("[IntegradorResumen] 📊 Configurando tabla para mostrar estado sin firmas")
+            logger.info("[IntegradorResumen] 📊 Configurando tabla para mostrar estado sin firmas")
             
             # Configuración básica
             tabla.clear()
@@ -2263,10 +2266,10 @@ class IntegradorResumen:
                         item.setBackground(QColor(255, 255, 200))  # Amarillo claro
             
             tabla.resizeColumnsToContents()
-            print("[IntegradorResumen] ✅ Tabla configurada para estado sin firmas")
+            logger.info("[IntegradorResumen] ✅ Tabla configurada para estado sin firmas")
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error configurando tabla sin firmas: {e}")
+            logger.error(f"[IntegradorResumen] Error configurando tabla sin firmas: {e}")
     
     def _on_tabla_seguimiento_clicked(self, row: int, col: int, nombre_contrato: str, datos_firmas: Dict):
         """Manejador de clic en tabla de seguimiento - abre el PDF correspondiente"""
@@ -2276,22 +2279,22 @@ class IntegradorResumen:
                     'REPLANTEO', 'ACTUACION', 'RECEPCION', 'FINALIZACION']
             
             if row >= len(fases):
-                print(f"[IntegradorResumen] ❌ Fila inválida: {row}")
+                logger.error(f"[IntegradorResumen] Fila inválida: {row}")
                 return
                 
             fase_clickeada = fases[row]
-            print(f"[IntegradorResumen] 📋 Clic en fila {row}, fase: {fase_clickeada}")
+            logger.info(f"[IntegradorResumen] 📋 Clic en fila {row}, fase: {fase_clickeada}")
             
             # Verificar si hay datos para esta fase
             if fase_clickeada not in datos_firmas:
-                print(f"[IntegradorResumen] ⚠️ No hay datos para la fase: {fase_clickeada}")
+                logger.warning(f"[IntegradorResumen] No hay datos para la fase: {fase_clickeada}")
                 return
                 
             info_fase = datos_firmas[fase_clickeada]
             nombre_archivo = info_fase.get('archivo')
             
             if not nombre_archivo:
-                print(f"[IntegradorResumen] ⚠️ No hay archivo asociado a la fase: {fase_clickeada}")
+                logger.warning(f"[IntegradorResumen] No hay archivo asociado a la fase: {fase_clickeada}")
                 return
             
             # Determinar la carpeta correcta según la fase
@@ -2303,18 +2306,18 @@ class IntegradorResumen:
                 carpeta_docs = self._obtener_carpeta_documentacion_finales(nombre_contrato)
             
             if not carpeta_docs or not os.path.exists(carpeta_docs):
-                print(f"[IntegradorResumen] ❌ No se encontró carpeta de documentos: {carpeta_docs}")
+                logger.error(f"[IntegradorResumen] No se encontró carpeta de documentos: {carpeta_docs}")
                 return
                 
             # Construir ruta completa del archivo
             ruta_pdf = os.path.join(carpeta_docs, nombre_archivo)
             
             if not os.path.exists(ruta_pdf):
-                print(f"[IntegradorResumen] ❌ Archivo no existe: {ruta_pdf}")
+                logger.error(f"[IntegradorResumen] Archivo no existe: {ruta_pdf}")
                 return
             
             # Abrir el PDF
-            print(f"[IntegradorResumen] 📂 Abriendo PDF: {ruta_pdf}")
+            logger.info(f"[IntegradorResumen] 📂 Abriendo PDF: {ruta_pdf}")
             
             import subprocess
             import platform
@@ -2326,127 +2329,127 @@ class IntegradorResumen:
             else:  # Linux
                 subprocess.call(['xdg-open', ruta_pdf])
                 
-            print(f"[IntegradorResumen] ✅ PDF abierto exitosamente: {nombre_archivo}")
+            logger.info(f"[IntegradorResumen] PDF abierto exitosamente: {nombre_archivo}")
             
         except Exception as e:
-            print(f"[IntegradorResumen] ❌ Error abriendo PDF: {e}")
+            logger.error(f"[IntegradorResumen] Error abriendo PDF: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def test_escaneo_pdf_completo(self, nombre_contrato: str = None):
         """Test completo y detallado del escaneo de PDFs y extracción de firmas"""
-        print("=" * 80)
-        print("🔍 INICIANDO TEST COMPLETO DE ESCANEO PDF Y FIRMAS")
-        print("=" * 80)
+        logger.debug("=" * 80)
+        logger.debug("🔍 INICIANDO TEST COMPLETO DE ESCANEO PDF Y FIRMAS")
+        logger.debug("=" * 80)
         
         try:
             # 1. Determinar contrato a usar
             if not nombre_contrato:
                 if hasattr(self.main_window, 'comboBox'):
                     nombre_contrato = self.main_window.comboBox.currentText()
-                    print(f"📋 Contrato desde ComboBox: '{nombre_contrato}'")
+                    logger.info("📋 Contrato desde ComboBox: '{nombre_contrato}'")
                 
                 if not nombre_contrato or nombre_contrato == "Seleccionar contrato...":
                     nombre_contrato = "MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS"
-                    print(f"📋 Usando contrato por defecto: '{nombre_contrato}'")
+                    logger.info("📋 Usando contrato por defecto: '{nombre_contrato}'")
             
-            print(f"🎯 CONTRATO OBJETIVO: {nombre_contrato}")
-            print("-" * 80)
+            logger.info(f"🎯 CONTRATO OBJETIVO: {nombre_contrato}")
+            logger.debug("-" * 80)
             
             # 2. Buscar carpeta de documentación
-            print("📂 PASO 1: Buscando carpeta de documentación...")
+            logger.info("📂 PASO 1: Buscando carpeta de documentación...")
             carpeta_documentos = self._obtener_carpeta_documentacion_finales(nombre_contrato)
-            print(f"📂 Carpeta encontrada: {carpeta_documentos}")
+            logger.info(f"📂 Carpeta encontrada: {carpeta_documentos}")
             
             if not carpeta_documentos or not os.path.exists(carpeta_documentos):
-                print("❌ ERROR: No se encontró la carpeta de documentación")
+                logger.error("❌ ERROR: No se encontró la carpeta de documentación")
                 return
             
             # 3. Listar todos los archivos en la carpeta
-            print("-" * 80)
-            print("📄 PASO 2: Listando archivos en la carpeta...")
+            logger.debug("-" * 80)
+            logger.info("📄 PASO 2: Listando archivos en la carpeta...")
             try:
                 todos_archivos = os.listdir(carpeta_documentos)
-                print(f"📄 Total de archivos encontrados: {len(todos_archivos)}")
+                logger.info("📄 Total de archivos encontrados: {len(todos_archivos)}")
                 for i, archivo in enumerate(todos_archivos, 1):
                     ruta_completa = os.path.join(carpeta_documentos, archivo)
                     tamaño = os.path.getsize(ruta_completa) if os.path.isfile(ruta_completa) else 0
                     tipo = "📄" if archivo.lower().endswith('.pdf') else "📝"
-                    print(f"  {i}. {tipo} {archivo} ({tamaño} bytes)")
+                    logger.info(f"  {i}. {tipo} {archivo} ({tamaño} bytes)")
                 
                 # Filtrar solo PDFs
                 archivos_pdf = [f for f in todos_archivos if f.lower().endswith('.pdf')]
-                print(f"🔴 PDFs encontrados: {len(archivos_pdf)}")
+                logger.info(f"🔴 PDFs encontrados: {len(archivos_pdf)}")
                 for pdf in archivos_pdf:
-                    print(f"  • {pdf}")
+                    logger.info(f"  • {pdf}")
                     
             except Exception as e:
-                print(f"❌ Error listando archivos: {e}")
+                logger.error("❌ Error listando archivos: {e}")
                 return
             
             # 4. Probar mapeo de fases
-            print("-" * 80)
-            print("🗂️ PASO 3: Probando mapeo de archivos a fases...")
+            logger.debug("-" * 80)
+            logger.info("🗂️ PASO 3: Probando mapeo de archivos a fases...")
             mapeo_fases = self._crear_mapeo_archivos_pdf_fases()
-            print("🗂️ Mapeo de fases configurado:")
+            logger.info("🗂️ Mapeo de fases configurado:")
             for fase, palabras in mapeo_fases.items():
-                print(f"  {fase}: {palabras}")
+                logger.info(f"  {fase}: {palabras}")
             
             # 5. Analizar cada PDF individualmente
-            print("-" * 80)
-            print("🔍 PASO 4: Análisis individual de cada PDF...")
+            logger.debug("-" * 80)
+            logger.debug("🔍 PASO 4: Análisis individual de cada PDF...")
             
             for i, archivo_pdf in enumerate(archivos_pdf, 1):
-                print(f"\n📄 ANALIZANDO PDF {i}/{len(archivos_pdf)}: {archivo_pdf}")
-                print("-" * 40)
+                logger.info(f"\n📄 ANALIZANDO PDF {i}/{len(archivos_pdf)}: {archivo_pdf}")
+                logger.debug("-" * 40)
                 
                 ruta_pdf = os.path.join(carpeta_documentos, archivo_pdf)
                 
                 # 4a. Verificar archivo
                 if os.path.exists(ruta_pdf):
                     tamaño = os.path.getsize(ruta_pdf)
-                    print(f"  ✅ Archivo existe: {tamaño} bytes")
+                    logger.info(f"  ✅ Archivo existe: {tamaño} bytes")
                 else:
-                    print(f"  ❌ Archivo no existe!")
+                    logger.info(f"  ❌ Archivo no existe!")
                     continue
                 
                 # 4b. Determinar fase
                 fase = self._determinar_fase_por_archivo(archivo_pdf, mapeo_fases)
-                print(f"  🗂️ Fase determinada: {fase if fase else 'NINGUNA'}")
+                logger.info(f"  🗂️ Fase determinada: {fase if fase else 'NINGUNA'}")
                 
                 # 4c. Intentar extraer firmas
-                print(f"  🔍 Intentando extraer firmas...")
+                logger.info(f"  🔍 Intentando extraer firmas...")
                 try:
                     firmas = self._extraer_firmas_pdf(ruta_pdf)
                     if firmas:
-                        print(f"  ✅ Firmas encontradas: {len(firmas)}")
+                        logger.info(f"  ✅ Firmas encontradas: {len(firmas)}")
                         for j, firma in enumerate(firmas, 1):
-                            print(f"    {j}. Firmante: {firma.get('firmante', 'Desconocido')}")
-                            print(f"       Fecha: {firma.get('fecha', 'Sin fecha')}")
+                            logger.info(f"    {j}. Firmante: {firma.get('firmante', 'Desconocido')}")
+                            logger.info(f"       Fecha: {firma.get('fecha', 'Sin fecha')}")
                             if 'dni' in firma:
-                                print(f"       DNI: {firma['dni']}")
+                                logger.info(f"       DNI: {firma['dni']}")
                     else:
-                        print(f"  ⚠️ No se encontraron firmas")
+                        logger.info(f"  ⚠️ No se encontraron firmas")
                         
                 except Exception as e:
-                    print(f"  ❌ Error extrayendo firmas: {e}")
+                    logger.info(f"  ❌ Error extrayendo firmas: {e}")
             
             # 6. Resumen final
-            print("\n" + "=" * 80)
-            print("📊 RESUMEN FINAL DEL TEST")
-            print("=" * 80)
-            print(f"📂 Carpeta analizada: {carpeta_documentos}")
-            print(f"📄 Total archivos: {len(todos_archivos)}")
-            print(f"🔴 PDFs encontrados: {len(archivos_pdf)}")
-            print("📋 Archivos PDF:")
+            logger.debug("\n" + "=" * 80)
+            logger.info("📊 RESUMEN FINAL DEL TEST")
+            logger.debug("=" * 80)
+            logger.info(f"📂 Carpeta analizada: {carpeta_documentos}")
+            logger.info("📄 Total archivos: {len(todos_archivos)}")
+            logger.info(f"🔴 PDFs encontrados: {len(archivos_pdf)}")
+            logger.info("📋 Archivos PDF:")
             for pdf in archivos_pdf:
-                print(f"  • {pdf}")
-            print("=" * 80)
+                logger.info(f"  • {pdf}")
+            logger.debug("=" * 80)
                 
         except Exception as e:
-            print(f"❌ ERROR GENERAL EN TEST: {e}")
+            logger.error("❌ ERROR GENERAL EN TEST: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
 
 
 # =================== FUNCIÓN PRINCIPAL DE INTEGRACIÓN ===================
@@ -2466,34 +2469,34 @@ def integrar_resumen_completo(main_window):
         integrador = IntegradorResumen(main_window)
         
         if integrador.integrar_en_aplicacion():
-            print("🎉 RESUMEN INTEGRADO EXITOSAMENTE")
-            print("   ✅ Historial de documentos activado") 
-            print("   ✅ Tab 'Resumen' agregado a la interfaz")
-            print("   ✅ Actualización automática configurada")
+            logger.info("🎉 RESUMEN INTEGRADO EXITOSAMENTE")
+            logger.info("   ✅ Historial de documentos activado") 
+            logger.info("   ✅ Tab 'Resumen' agregado a la interfaz")
+            logger.info("   ✅ Actualización automática configurada")
             return integrador
         else:
-            print("❌ Error integrando el resumen")
+            logger.error("❌ Error integrando el resumen")
             return None
             
     except Exception as e:
-        print(f"❌ Error crítico integrando resumen: {e}")
+        logger.error("❌ Error crítico integrando resumen: {e}")
         return None
 
 
 if __name__ == "__main__":
-    print("=" * 60)
-    print("🚀 INTEGRADOR DE RESUMEN COMPLETO")
-    print("=" * 60)
-    print()
-    print("📋 INCLUYE:")
-    print("   📄 Historial completo de documentos") 
-    print("   📊 Métricas en tiempo real")
-    print("   🔄 Actualización automática")
-    print()
-    print("📝 PARA USAR:")
-    print("   from controladores.controlador_resumen import integrar_resumen_completo")
-    print("   integrador = integrar_resumen_completo(self)")
-    print()
-    print("   # Para notificar documentos generados:")
-    print("   integrador.notificar_documento_generado('acta_inicio', 'Acta de Inicio', '/ruta/archivo.pdf')")
-    print("=" * 60)
+    logger.debug("=" * 60)
+    logger.info("🚀 INTEGRADOR DE RESUMEN COMPLETO")
+    logger.debug("=" * 60)
+    logger.debug("")
+    logger.info("📋 INCLUYE:")
+    logger.info("   📄 Historial completo de documentos") 
+    logger.info("   📊 Métricas en tiempo real")
+    logger.info("   🔄 Actualización automática")
+    logger.debug("")
+    logger.info("📝 PARA USAR:")
+    logger.info("   from controladores.controlador_resumen import integrar_resumen_completo")
+    logger.info("   integrador = integrar_resumen_completo(self)")
+    logger.debug("")
+    logger.info("   # Para notificar documentos generados:")
+    logger.info("   integrador.notificar_documento_generado('acta_inicio', 'Acta de Inicio', '/ruta/archivo.pdf')")
+    logger.debug("=" * 60)

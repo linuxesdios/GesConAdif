@@ -138,32 +138,32 @@ class ContractManagerQt5(QObject):
         try:
             if self.label_tipo:
                 texto_anterior = self.label_tipo.text()
-                print(f"[CONTRACT_MANAGER] 🏷️ Label Tipo ANTES: '{texto_anterior}'")
+                logger.info(f"[CONTRACT_MANAGER] 🏷️ Label Tipo ANTES: '{texto_anterior}'")
                 
                 self.label_tipo.setText(f"{tipo}")
                 self.label_tipo.update()
                 
                 texto_nuevo = self.label_tipo.text()
-                print(f"[CONTRACT_MANAGER] 🏷️ Label Tipo DESPUÉS: '{texto_nuevo}'")
+                logger.info(f"[CONTRACT_MANAGER] 🏷️ Label Tipo DESPUÉS: '{texto_nuevo}'")
                 
                 if texto_nuevo == tipo:
-                    print(f"[CONTRACT_MANAGER] ✅ Label Tipo actualizado correctamente")
+                    logger.info(f"[CONTRACT_MANAGER] Label Tipo actualizado correctamente")
                 else:
-                    print(f"[CONTRACT_MANAGER] ❌ Label Tipo NO se actualizó correctamente")
+                    logger.error(f"[CONTRACT_MANAGER] Label Tipo NO se actualizó correctamente")
             else:
-                print(f"[CONTRACT_MANAGER] ❌ label_tipo es None")
+                logger.error(f"[CONTRACT_MANAGER] label_tipo es None")
             
             if self.label_expediente:
                 self.label_expediente.setText(f"{expediente}")
                 self.label_expediente.update()
-                print(f"[CONTRACT_MANAGER] ✅ Label Expediente actualizado")
+                logger.info(f"[CONTRACT_MANAGER] Label Expediente actualizado")
             else:
-                print(f"[CONTRACT_MANAGER] ⚠️ label_expediente es None")
+                logger.warning(f"[CONTRACT_MANAGER] label_expediente es None")
             
         except Exception as e:
-            print(f"[CONTRACT_MANAGER] ❌ Error al actualizar labels: {e}")
+            logger.error(f"[CONTRACT_MANAGER] Error al actualizar labels: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
 
     def _update_combo_box(self):
         """Actualizar contenido del ComboBox"""
@@ -179,9 +179,9 @@ class ContractManagerQt5(QObject):
             self.combo_box.blockSignals(False)
             
         except Exception as e:
-            print(f"[ContractManager] ERROR al actualizar contenido del ComboBox: {e}")
+            logger.info(f"[ContractManager] ERROR al actualizar contenido del ComboBox: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
         finally:
             self.combo_box.blockSignals(False)
     
@@ -198,7 +198,7 @@ class ContractManagerQt5(QObject):
                 # CAMBIO MÍNIMO: usar el método correcto
                 return self.gestor_json.buscar_contrato_por_nombre(self.current_contract)
             except Exception as e:
-                print(f"[ContractManager] ❌ Error cargando datos: {e}")
+                logger.error(f"[ContractManager] Error cargando datos: {e}")
                 return None
         return None
     
@@ -239,15 +239,15 @@ class ContractManagerQt5(QObject):
                 self.combo_box.blockSignals(True)
                 
                 if not self.gestor_json:
-                    print(f"[ContractManager] No hay gestor JSON disponible")
+                    logger.info(f"[ContractManager] No hay gestor JSON disponible")
                     self._load_empty_contracts()
                     self._update_combo_box()
                     return
                 
-                print(f"[ContractManager] Iniciando carga de contratos...")
+                logger.info(f"[ContractManager] Iniciando carga de contratos...")
                 
                 # Forzar recarga de datos del archivo
-                print(f"[ContractManager] Recargando datos del JSON...")
+                logger.info(f"[ContractManager] Recargando datos del JSON...")
                 self.gestor_json.recargar_datos()
                 
                 # Obtener nombres de obras
@@ -274,15 +274,15 @@ class ContractManagerQt5(QObject):
 
 
                 else:
-                    print(f"[ContractManager] No se encontraron contratos")
+                    logger.info(f"[ContractManager] No se encontraron contratos")
                     self._load_empty_contracts()
                 
                 self._update_combo_box()
                 
             except Exception as e:
-                print(f"[ContractManager] Error cargando contratos: {e}")
+                logger.info(f"[ContractManager] Error cargando contratos: {e}")
                 import traceback
-                traceback.print_exc()
+                logger.exception("Error completo:")
                 self._load_empty_contracts()
                 self._update_combo_box()
             finally:
@@ -364,7 +364,7 @@ class ContractManagerQt5(QObject):
                     if main_window and hasattr(main_window, '_actualizar_pestanas_por_tipo'):
                         tipo_normalizado = self._validate_contract_type(tipo_actuacion)
                         main_window._actualizar_pestanas_por_tipo(tipo_normalizado.lower())
-                        print(f"[ContractManager] 🏷️ Pestañas actualizadas para tipo: {tipo_normalizado.lower()}")
+                        logger.info(f"[ContractManager] 🏷️ Pestañas actualizadas para tipo: {tipo_normalizado.lower()}")
                     
                     # 🆕 FORZAR RECARGA DE EMPRESAS DESDE JSON
                     if (main_window and 
@@ -372,7 +372,7 @@ class ContractManagerQt5(QObject):
                         main_window.controlador_eventos_ui and
                         hasattr(main_window.controlador_eventos_ui, 'cargar_empresas_desde_json')):
                         main_window.controlador_eventos_ui.cargar_empresas_desde_json(nombre_completo)
-                        print(f"[ContractManager] 🏢 Empresas recargadas para: {nombre_completo}")
+                        logger.info(f"[ContractManager] Empresas recargadas para: {nombre_completo}")
                     
                     # 🆕 ACTUALIZAR CAMPOS Y TABLAS CON CONTROLADOR_AUTOSAVE
                     if (main_window and 
@@ -407,17 +407,17 @@ class ContractManagerQt5(QObject):
             # Obtener main window para acceder al gestor
             main_window = self._get_main_window()
             if not main_window:
-                print(f"[ContractManager] ❌ No se pudo obtener main window")
+                logger.error(f"[ContractManager] No se pudo obtener main window")
                 return
             
             # Verificar si tiene gestor de archivos unificado
             if not hasattr(main_window, 'gestor_archivos_unificado'):
-                print(f"[ContractManager] ❌ Main window no tiene gestor_archivos_unificado")
+                logger.error(f"[ContractManager] Main window no tiene gestor_archivos_unificado")
                 return
             
             gestor = main_window.gestor_archivos_unificado
             if not gestor:
-                print(f"[ContractManager] ❌ Gestor de archivos es None")
+                logger.error(f"[ContractManager] Gestor de archivos es None")
                 return
             
             # Verificar/crear carpeta
@@ -433,7 +433,7 @@ class ContractManagerQt5(QObject):
                 pass  # Carpeta ya existía
                 
         except Exception as e:
-            print(f"[ContractManager] ❌ Error verificando estructura: {e}")
+            logger.error(f"[ContractManager] Error verificando estructura: {e}")
 
     # ===== NUEVA FUNCIÓN A AÑADIR =====
     def _mostrar_notificacion_estructura_creada(self, carpeta_path, contract_data):
@@ -462,7 +462,7 @@ class ContractManagerQt5(QObject):
             )
             
         except Exception as e:
-            print(f"[ContractManager] ❌ Error mostrando notificación: {e}")
+            logger.error(f"[ContractManager] Error mostrando notificación: {e}")
     
 
 
@@ -480,7 +480,7 @@ class ContractManagerQt5(QObject):
             if main_window and hasattr(main_window, 'on_contract_cleared'):
                 main_window.on_contract_cleared()
         except Exception as e:
-            print(f"[ContractManager] ❌ Error emitiendo señal de limpieza: {e}")
+            logger.error(f"[ContractManager] Error emitiendo señal de limpieza: {e}")
     def _get_main_window(self):
         """Obtener referencia a la ventana principal - VERSIÓN ROBUSTA"""
         try:
@@ -505,11 +505,11 @@ class ContractManagerQt5(QObject):
                 if hasattr(widget, 'tabWidget') and hasattr(widget, 'controlador_autosave'):
                     return widget
             
-            print("[ContractManager] ⚠️ No se encontró ventana principal con tabWidget")
+            logger.info("[ContractManager] ⚠️ No se encontró ventana principal con tabWidget")
             return None
             
         except Exception as e:
-            print(f"[ContractManager] ❌ Error buscando ventana principal: {e}")
+            logger.error(f"[ContractManager] Error buscando ventana principal: {e}")
             return None
 
     def _mostrar_tab_widget(self):
@@ -518,16 +518,16 @@ class ContractManagerQt5(QObject):
             main_window = self._get_main_window()
             
             if not main_window:
-                print("[ContractManager] ❌ No se pudo encontrar ventana principal")
+                logger.info("[ContractManager] ❌ No se pudo encontrar ventana principal")
                 return
                 
             if not hasattr(main_window, 'tabWidget'):
-                print("[ContractManager] ❌ Ventana principal no tiene tabWidget")
+                logger.info("[ContractManager] ❌ Ventana principal no tiene tabWidget")
                 return
             
             tab_widget = main_window.tabWidget
             if not tab_widget:
-                print("[ContractManager] ❌ tabWidget es None")
+                logger.info("[ContractManager] ❌ tabWidget es None")
                 return
             
             # Mostrar tabWidget
@@ -536,13 +536,13 @@ class ContractManagerQt5(QObject):
             for i in range(tab_widget.count()):
                 if "Inicio" in tab_widget.tabText(i):
                     tab_widget.setCurrentIndex(i)
-                    print(f"[ContractManager] Pestaña 'Inicio' abierta automáticamente")
+                    logger.info(f"[ContractManager] Pestaña 'Inicio' abierta automáticamente")
                     break   
                 
         except Exception as e:
-            print(f"[ContractManager] ❌ Error mostrando tabWidget: {e}")
+            logger.error(f"[ContractManager] Error mostrando tabWidget: {e}")
 
-            traceback.print_exc()
+            logger.exception("Error completo:")
     def obtener_nombre_contrato_actual(self) -> str:
         """Obtener nombre del contrato actualmente seleccionado"""
         try:
@@ -550,7 +550,7 @@ class ContractManagerQt5(QObject):
                 return self.current_contract
             return ""
         except Exception as e:
-            print(f"[ControladorSelector] ❌ Error obteniendo nombre contrato: {e}")
+            logger.error(f"[ControladorSelector] Error obteniendo nombre contrato: {e}")
             return ""
     def _ocultar_tab_widget(self):
         """Ocultar tabWidget cuando no hay obra seleccionada - VERSIÓN ROBUSTA"""
@@ -558,25 +558,25 @@ class ContractManagerQt5(QObject):
             main_window = self._get_main_window()
             
             if not main_window:
-                print("[ContractManager] ❌ No se pudo encontrar ventana principal")
+                logger.info("[ContractManager] ❌ No se pudo encontrar ventana principal")
                 return
                 
             if not hasattr(main_window, 'tabWidget'):
-                print("[ContractManager] ❌ Ventana principal no tiene tabWidget")
+                logger.info("[ContractManager] ❌ Ventana principal no tiene tabWidget")
                 return
             
             tab_widget = main_window.tabWidget
             if not tab_widget:
-                print("[ContractManager] ❌ tabWidget es None")
+                logger.info("[ContractManager] ❌ tabWidget es None")
                 return
             
             # Ocultar tabWidget
             tab_widget.setVisible(False)
             
         except Exception as e:
-            print(f"[ContractManager] ❌ Error ocultando tabWidget: {e}")
+            logger.error(f"[ContractManager] Error ocultando tabWidget: {e}")
 
-            traceback.print_exc()
+            logger.exception("Error completo:")
 
     def _guardar_campo_con_foco_actual(self, main_window):
         """Guardar solo el campo que tiene el foco actualmente"""
@@ -626,7 +626,7 @@ class ContractManagerQt5(QObject):
                     pass  # Guardado exitoso
                 
         except Exception as e:
-            print(f"[ContractManager] ❌ Error guardando campo con foco: {e}")
+            logger.error(f"[ContractManager] Error guardando campo con foco: {e}")
 
 
 
@@ -635,7 +635,7 @@ def setup_contract_manager(main_window) -> ContractManagerQt5:
     REEMPLAZAR SOLO ESTA FUNCIÓN en Controlador_selector.py
     """
     try:
-        print("[ContractManager] 🔧 Setup contract manager...")
+        logger.info("[ContractManager] 🔧 Setup contract manager...")
         
         # Buscar combo box
         combo_box = None
@@ -648,7 +648,7 @@ def setup_contract_manager(main_window) -> ContractManagerQt5:
                 combo_box = combos[0]
         
         if not combo_box:
-            print("[ContractManager] ❌ No ComboBox encontrado")
+            logger.info("[ContractManager] ❌ No ComboBox encontrado")
             return None
         
         # Buscar labels
@@ -656,7 +656,7 @@ def setup_contract_manager(main_window) -> ContractManagerQt5:
         label_expediente = getattr(main_window, 'expediente', None)
         
         if not label_tipo:
-            print("[ContractManager] ❌ No label 'Tipo' encontrado")
+            logger.info("[ContractManager] ❌ No label 'Tipo' encontrado")
             return None
         
         # Crear ContractManager
@@ -669,10 +669,10 @@ def setup_contract_manager(main_window) -> ContractManagerQt5:
         if hasattr(main_window, 'on_contract_type_changed'):
             contract_manager.contract_type_changed.connect(main_window.on_contract_type_changed)
         
-        print("[ContractManager] ✅ Contract manager configurado")
+        logger.info("[ContractManager] ✅ Contract manager configurado")
         return contract_manager
         
     except Exception as e:
-        print(f"[ContractManager] ❌ Error: {e}")
+        logger.error(f"[ContractManager] Error: {e}")
         return None
     

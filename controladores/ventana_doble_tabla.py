@@ -747,7 +747,7 @@ def obtener_empresas_actuales(self):
     except Exception as e:
         logger.error(f"Excepción en obtener_empresas_actuales: {e}")
         import traceback
-        traceback.print_exc()
+        logger.exception("Error completo:")
         return []
 def aplicar_empresas_importadas(main_window, empresas_importadas):
     """Aplica empresas importadas al sistema"""

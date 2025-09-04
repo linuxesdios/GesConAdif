@@ -1,0 +1,21 @@
+{
+    "version": "1.1",
+    "fecha_creacion": "2025-09-04T17:52:24.330212",
+    "facturas": [],
+    "configuracion": {
+        "categorias": [
+            "Agua",
+            "Vegetal",
+            "Limpieza",
+            "Actuaciones mantenimiento",
+            "Otras"
+        ],
+        "estados": [
+            "Emitida",
+            "Tramitada",
+            "Pagada",
+            "Con deficiencias"
+        ],
+        "ultimo_id": 0
+    }
+}

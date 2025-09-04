@@ -1,26 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python:*)",
-      "Bash(grep:*)",
-      "Bash(dir:*)",
-      "Bash(find:*)",
-      "Bash(C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe h:/generador_actas/main_py.py)",
-      "Bash(C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe test_guardado_campos.py)",
-      "Bash(C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe test_simple.py)",
-      "Bash(C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe test_fix_autosave.py)",
-      "Bash(C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe test_fix_simple.py)",
-      "Bash(C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe verificar_guardado.py)",
-      "Bash(C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe test_nombre_carpeta.py)",
-      "Bash(C:Users2839876EntornoPythonAdifEntornoPythonScriptspython.exe main_py.py)",
-      "Bash(pip install:*)",
-      "Bash(C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe main_py.py)",
-      "Bash(\"C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe\" test_json_isolation.py)",
-      "Bash(C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe -m pytest tests/controladores/test_controlador_facturas_directas.py -v --tb=short)",
-      "Bash(\"C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe\" -m pytest tests/controladores/test_controlador_facturas_directas.py::TestControladorFacturasDirectas::test_init_controlador -v)",
-      "Bash(\"C:/Users/2839876/EntornoPythonAdif/EntornoPython/Scripts/python.exe\" main_py.py)",
-      "Bash(\"C:\\Users\\pablo\\entorno\\Scripts\\python.exe\" main_py.py)",
-      "Bash(pytest:*)"
+      "Bash(del convert_remaining_prints.py)"
     ],
     "deny": [],
     "ask": [],

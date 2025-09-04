@@ -92,7 +92,7 @@ class ControladorCalculos:
         except Exception as e:
             logger.error(f"Error IVA base: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False
         finally:
             self._calculando = False
@@ -170,7 +170,7 @@ class ControladorCalculos:
         except Exception as e:
             logger.error(f"Error IVA adjudicación: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False
         finally:
             self._calculando = False
@@ -315,7 +315,7 @@ class ControladorCalculos:
         except Exception as e:
             logger.error(f"Error liquidación: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False
 
     # =================== SISTEMA DE GUARDADO OPTIMIZADO POR LOTES ===================
@@ -485,7 +485,7 @@ class ControladorCalculos:
             
             # 6. Obtener nombre empresa con menor oferta Y GUARDAR
             empresa = self._obtener_nombre_empresa_menor_oferta(tabla)
-            print(f"[ControladorCalculos] 🏢 Empresa adjudicada RECALCULADA: '{empresa}'")
+            logger.info(f"Empresa adjudicada recalculada: '{empresa}'")
             
             # SIEMPRE actualizar el campo empresaAdjudicada (incluso si está vacía)
             if hasattr(window, 'empresaAdjudicada'):
@@ -530,9 +530,9 @@ class ControladorCalculos:
             return True
             
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error ofertas: {e}")
+            logger.error(f"Error ofertas: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False
         finally:
             self._calculando = False
@@ -582,7 +582,7 @@ class ControladorCalculos:
             return True
             
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error actualizando justificación: {e}")
+            logger.error(f"Error actualizando justificación: {e}")
             return False
 
     # =================== SINCRONIZACIÓN EMPRESAS ===================
@@ -608,7 +608,7 @@ class ControladorCalculos:
             self._sincronizar_tabla_ofertas_directo(tabla_ofertas, empresas_nombres)
 
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error sincronizando empresas unificadas: {e}")
+            logger.error(f"Error sincronizando empresas unificadas: {e}")
 
     def _sincronizar_tabla_ofertas_directo(self, tabla_ofertas, empresas_nombres):
         """NUEVA: Sincronizar tabla ofertas directamente desde nombres de empresas"""
@@ -642,10 +642,10 @@ class ControladorCalculos:
             # Reactivar señales
             tabla_ofertas.blockSignals(False)
             
-            print(f"[ControladorCalculos] ✅ Tabla ofertas sincronizada: {len(empresas_nombres)} empresas")
+            logger.info(f"Tabla ofertas sincronizada: {len(empresas_nombres)} empresas")
 
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error sincronizando tabla ofertas directo: {e}")
+            logger.error(f"Error sincronizando tabla ofertas directo: {e}")
             if tabla_ofertas:
                 tabla_ofertas.blockSignals(False)
 
@@ -675,7 +675,7 @@ class ControladorCalculos:
             tabla_ofertas.blockSignals(False)
 
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error sincronizando tabla ofertas: {e}")
+            logger.error(f"Error sincronizando tabla ofertas: {e}")
             if tabla_ofertas:
                 tabla_ofertas.blockSignals(False)
     def validar_datos_empresas(self, window, fila, valor):
@@ -684,12 +684,12 @@ class ControladorCalculos:
             
             from helpers_py import es_numero_valido
             es_valido = es_numero_valido(valor)
-            print(f"[ControladorCalculos] ✓ Valor válido: {es_valido}")
+            logger.debug(f"Valor válido: {es_valido}")
             
             return es_valido
             
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error validación: {e}")
+            logger.error(f"Error validación: {e}")
             return False
 
     # =================== UTILIDADES =================== 
@@ -742,29 +742,29 @@ class ControladorCalculos:
                         if valor > 0:
                             precios.append(valor)
                         else:
-                            print(f"[ControladorCalculos] ⚠️ Valor <= 0: {valor}")
+                            logger.warning(f"Valor <= 0: {valor}")
                     except ValueError as e:
-                        print(f"[ControladorCalculos] ❌ No se pudo convertir: '{texto_original}' - {e}")
+                        logger.error(f"No se pudo convertir: '{texto_original}' - {e}")
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error procesando tabla: {e}")
+            logger.error(f"Error procesando tabla: {e}")
         
         if precios:
             precio_minimo = min(precios)
-            print(f"[ControladorCalculos] 🏆 Precio mínimo encontrado: {precio_minimo} (de {len(precios)} ofertas válidas)")
+            logger.info(f"Precio mínimo encontrado: {precio_minimo} (de {len(precios)} ofertas válidas)")
             return precio_minimo
         else:
-            print("[ControladorCalculos] ❌ No se encontraron ofertas válidas")
+            logger.warning("No se encontraron ofertas válidas")
             return 0.0
 
     def _obtener_nombre_empresa_menor_oferta(self, tabla):
         """Obtener nombre de empresa con menor oferta"""
         try:
-            print(f"[ControladorCalculos] 🔍 DEBUG: Analizando tabla de ofertas...")
-            print(f"[ControladorCalculos] 📊 Número de filas en tabla: {tabla.rowCount()}")
+            logger.debug("Analizando tabla de ofertas...")
+            logger.debug(f"Número de filas en tabla: {tabla.rowCount()}")
             
             # Si la tabla está vacía, devolver cadena vacía
             if tabla.rowCount() == 0:
-                print("[ControladorCalculos] 📭 Tabla de ofertas vacía - devolviendo empresa vacía")
+                logger.info("Tabla de ofertas vacía - devolviendo empresa vacía")
                 return ""
             
             menor_valor = float('inf')
@@ -775,53 +775,53 @@ class ControladorCalculos:
                 item_oferta = tabla.item(fila, 1)  # Segunda columna
                 item_nombre = tabla.item(fila, 0)   # Primera columna
                 
-                print(f"[ControladorCalculos] 📋 Fila {fila}:")
-                print(f"  - item_nombre existe: {item_nombre is not None}")
-                print(f"  - item_oferta existe: {item_oferta is not None}")
+                logger.debug(f"Fila {fila}:")
+                logger.debug(f"  - item_nombre existe: {item_nombre is not None}")
+                logger.debug(f"  - item_oferta existe: {item_oferta is not None}")
                 
                 if item_nombre:
                     nombre_texto = item_nombre.text()
-                    print(f"  - Nombre: '{nombre_texto}'")
+                    logger.debug(f"  - Nombre: '{nombre_texto}'")
                 
                 if item_oferta:
                     oferta_texto = item_oferta.text()
-                    print(f"  - Oferta texto: '{oferta_texto}'")
+                    logger.debug(f"  - Oferta texto: '{oferta_texto}'")
                 
                 if item_oferta and item_nombre:
                     valor_texto = item_oferta.text().strip()
                     
                     # Saltar celdas vacías
                     if not valor_texto:
-                        print(f"  - ⚠️ Oferta vacía, saltando...")
+                        logger.debug("  - Oferta vacía, saltando...")
                         continue
                     
                     # Convertir formato español a float
                     try:
                         valor = self._convertir_texto_a_numero(valor_texto)
-                        print(f"  - Valor convertido: {valor}")
+                        logger.debug(f"  - Valor convertido: {valor}")
                         if valor > 0 and valor < menor_valor:
                             menor_valor = valor
                             nombre_empresa = item_nombre.text()
                             ofertas_validas += 1
-                            print(f"  - ✅ Nueva menor oferta: {nombre_empresa} con {valor}")
+                            logger.debug(f"  - Nueva menor oferta: {nombre_empresa} con {valor}")
                     except ValueError as e:
-                        print(f"  - ❌ Error convirtiendo '{valor_texto}': {e}")
+                        logger.error(f"  - Error convirtiendo '{valor_texto}': {e}")
             
-            print(f"[ControladorCalculos] 📊 Resumen: {ofertas_validas} ofertas válidas encontradas")
-            print(f"[ControladorCalculos] 🏆 Menor valor: {menor_valor}")
-            print(f"[ControladorCalculos] 🏢 Empresa ganadora: '{nombre_empresa}'")
+            logger.info(f"Resumen: {ofertas_validas} ofertas válidas encontradas")
+            logger.info(f"Menor valor: {menor_valor}")
+            logger.info(f"Empresa ganadora: '{nombre_empresa}'")
             
             # Si no hay ofertas válidas, devolver cadena vacía
             if ofertas_validas == 0:
-                print("[ControladorCalculos] 📭 No se encontraron ofertas válidas - devolviendo empresa vacía")
+                logger.info("No se encontraron ofertas válidas - devolviendo empresa vacía")
                 return ""
             
             return nombre_empresa
             
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error en _obtener_nombre_empresa_menor_oferta: {e}")
+            logger.error(f"Error en _obtener_nombre_empresa_menor_oferta: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return ""
 
     def _convertir_texto_a_numero(self, texto):
@@ -836,28 +836,28 @@ class ControladorCalculos:
         if '.' in texto and ',' in texto:
             # Formato español: 33.000,00 -> punto = miles, coma = decimales
             texto_limpio = texto.replace('.', '').replace(',', '.')
-            print(f"[ControladorCalculos] 🔄 Formato español detectado: '{texto}' -> '{texto_limpio}'")
+            logger.debug(f"Formato español detectado: '{texto}' -> '{texto_limpio}'")
             return float(texto_limpio)
         elif ',' in texto and texto.count(',') == 1:
             # Solo coma: podría ser decimal español (33000,00)
             texto_limpio = texto.replace(',', '.')
-            print(f"[ControladorCalculos] 🔄 Decimal español detectado: '{texto}' -> '{texto_limpio}'")
+            logger.debug(f"Decimal español detectado: '{texto}' -> '{texto_limpio}'")
             return float(texto_limpio)
         elif '.' in texto:
             # Solo punto: podría ser decimal inglés (33000.00) o miles español (33.000)
             partes = texto.split('.')
             if len(partes) == 2 and len(partes[1]) <= 2:
                 # Probablemente decimal inglés
-                print(f"[ControladorCalculos] 🔄 Decimal inglés detectado: '{texto}'")
+                logger.debug(f"Decimal inglés detectado: '{texto}'")
                 return float(texto)
             else:
                 # Probablemente miles español (quitar puntos)
                 texto_limpio = texto.replace('.', '')
-                print(f"[ControladorCalculos] 🔄 Miles español detectado: '{texto}' -> '{texto_limpio}'")
+                logger.debug(f"Miles español detectado: '{texto}' -> '{texto_limpio}'")
                 return float(texto_limpio)
         else:
             # Solo números sin separadores
-            print(f"[ControladorCalculos] 🔄 Número simple detectado: '{texto}'")
+            logger.debug(f"Número simple detectado: '{texto}'")
             return float(texto)
 
     def _verificar_ofertas_duplicadas(self, tabla):
@@ -914,10 +914,10 @@ class ControladorCalculos:
                 widget.blockSignals(False)
                 
             else:
-                print(f"[ControladorCalculos] ⚠️ No se puede establecer valor en widget tipo: {type(widget)}")
+                logger.warning(f"No se puede establecer valor en widget tipo: {type(widget)}")
                 
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error estableciendo valor en widget: {e}")    
+            logger.error(f"Error estableciendo valor en widget: {e}")    
 
     def _obtener_valor_widget(self, widget):
         """Obtener valor del widget según su tipo - SOLO PARA CÁLCULOS NUMÉRICOS"""
@@ -961,7 +961,7 @@ class ControladorCalculos:
                 return 0.0
                 
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error obteniendo valor de widget: {e}")
+            logger.error(f"Error obteniendo valor de widget: {e}")
             return 0.0
     
     # =================== MÉTODOS BÁSICOS REQUERIDOS POR LOS TESTS ===================
@@ -1001,12 +1001,12 @@ class ControladorCalculos:
     def pausar_calculos(self):
         """Pausar cálculos temporalmente"""
         self._calculando = True
-        print("[ControladorCalculos] ⏸️ Cálculos pausados")
+        logger.info("Cálculos pausados")
 
     def reanudar_calculos(self):
         """Reanudar cálculos"""
         self._calculando = False
-        print("[ControladorCalculos] ▶️ Cálculos reanudados")
+        logger.info("Cálculos reanudados")
 
     def esta_calculando(self):
         """Verificar si está calculando"""
@@ -1028,7 +1028,7 @@ class ControladorCalculos:
                 precio_adjudicacion = self._obtener_valor_widget(window.precioAdjudicacion)
             
             if precio_adjudicacion <= 0:
-                print("[ControladorCalculos] ⏸️ Precio adjudicación <= 0, no calculando anualidades")
+                logger.info("Precio adjudicación <= 0, no calculando anualidades")
                 return False
             
             # Obtener plazo de ejecución
@@ -1037,7 +1037,7 @@ class ControladorCalculos:
                 plazo_meses = self._obtener_valor_widget(window.plazoEjecucion)
             
             if plazo_meses <= 0:
-                print("[ControladorCalculos] ⏸️ Plazo ejecución <= 0, no calculando anualidades")
+                logger.info("Plazo ejecución <= 0, no calculando anualidades")
                 return False
             
             # Obtener mes de fecha contrato
@@ -1049,10 +1049,10 @@ class ControladorCalculos:
                 except:
                     mes_inicio = 1
             
-            print(f"[ControladorCalculos] 🧮 Calculando anualidades:")
-            print(f"  - Precio adjudicación: {precio_adjudicacion:.2f}")
-            print(f"  - Plazo ejecución: {plazo_meses} meses")
-            print(f"  - Mes inicio: {mes_inicio}")
+            logger.info("Calculando anualidades:")
+            logger.info(f"  - Precio adjudicación: {precio_adjudicacion:.2f}")
+            logger.info(f"  - Plazo ejecución: {plazo_meses} meses")
+            logger.info(f"  - Mes inicio: {mes_inicio}")
             
             # Calcular valor mensual
             valor_mensual = precio_adjudicacion / plazo_meses
@@ -1077,12 +1077,12 @@ class ControladorCalculos:
             total_anualidad1 = base_anualidad1 * 1.21
             total_anualidad2 = base_anualidad2 * 1.21
             
-            print(f"[ControladorCalculos] 🧮 Resultado anualidades:")
-            print(f"  - Meses Anualidad 1: {meses_anualidad1}")
-            print(f"  - Meses Anualidad 2: {meses_anualidad2}")
-            print(f"  - Base Anualidad 1: {base_anualidad1:.2f}")
-            print(f"  - Base Anualidad 2: {base_anualidad2:.2f}")
-            print(f"  - Total verificación: {base_anualidad1 + base_anualidad2:.2f}")
+            logger.info("Resultado anualidades:")
+            logger.info(f"  - Meses Anualidad 1: {meses_anualidad1}")
+            logger.info(f"  - Meses Anualidad 2: {meses_anualidad2}")
+            logger.info(f"  - Base Anualidad 1: {base_anualidad1:.2f}")
+            logger.info(f"  - Base Anualidad 2: {base_anualidad2:.2f}")
+            logger.info(f"  - Total verificación: {base_anualidad1 + base_anualidad2:.2f}")
             
             # Establecer valores en los widgets y guardar
             if hasattr(window, 'BaseAnualidad1'):
@@ -1112,13 +1112,13 @@ class ControladorCalculos:
             # Guardar lote completo
             self._guardar_lote_completo(window)
             
-            print("[ControladorCalculos] ✅ Cálculo de anualidades completado exitosamente")
+            logger.info("Cálculo de anualidades completado exitosamente")
             return True
             
         except Exception as e:
-            print(f"[ControladorCalculos] ❌ Error calculando anualidades: {e}")
+            logger.error(f"Error calculando anualidades: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False
         finally:
             self._calculando = False

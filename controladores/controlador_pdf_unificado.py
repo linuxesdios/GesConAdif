@@ -359,7 +359,7 @@ class _PDFControllerOptimized(QObject):
             
         except Exception as e:
             QMessageBox.warning(self._mw, "Error", f"Error cargando PDF:\n{e}")
-            print(f"[PDF] ❌ Error cargando PDF: {e}")
+            logger.error(f"[PDF] Error cargando PDF: {e}")
             return False
 
     
@@ -421,7 +421,7 @@ class _PDFControllerOptimized(QObject):
                     else:
                         pass
                 except Exception as e:
-                    print(f"[PDF] ❌ Error copiando PDF a carpeta del proyecto: {e}")
+                    logger.error(f"[PDF] Error copiando PDF a carpeta del proyecto: {e}")
                     # Continuar con la ruta original si falla la copia
             else:
                 pass
@@ -463,7 +463,7 @@ class _PDFControllerOptimized(QObject):
                 custom_scroll.show()
                 
         except Exception as e:
-            print(f"[PDF] ❌ Error configurando scroll area: {e}")
+            logger.error(f"[PDF] Error configurando scroll area: {e}")
 
     def render_page(self):
         """Renderizar página(s) - con soporte dual"""
@@ -498,7 +498,7 @@ class _PDFControllerOptimized(QObject):
                 self.pdf_label_right.setText("Fin del documento")
                 
         except Exception as e:
-            print(f"[PDF] ❌ Error renderizando: {e}")
+            logger.error(f"[PDF] Error renderizando: {e}")
 
     def next_page(self):
         """Página siguiente - saltar 2 páginas"""
@@ -628,13 +628,13 @@ class _PDFControllerOptimized(QObject):
             # Obtener datos del contrato desde JSON
 
             if not hasattr(self._mw, 'controlador_json') or not self._mw.controlador_json:
-                print("[PDF] ❌ Controlador JSON no disponible")
+                logger.info("[PDF] ❌ Controlador JSON no disponible")
                 return
                 
 
             datos_contrato = self._mw.controlador_json.leer_contrato_completo(self._contract_name)
             if not datos_contrato:
-                print(f"[PDF] ❌ No se encontraron datos para el contrato: {self._contract_name}")
+                logger.error(f"[PDF] No se encontraron datos para el contrato: {self._contract_name}")
                 return
             
 
@@ -656,7 +656,7 @@ class _PDFControllerOptimized(QObject):
 
             
             if not pdf_path:
-                print(f"[PDF] ❌ No hay PDF guardado para el contrato: {self._contract_name}")
+                logger.error(f"[PDF] No hay PDF guardado para el contrato: {self._contract_name}")
                 return
             
             # Verificar que el archivo existe - manejar rutas relativas
@@ -669,7 +669,7 @@ class _PDFControllerOptimized(QObject):
                 pdf_path = pdf_path_absoluta
             
             if not os.path.exists(pdf_path):
-                print(f"[PDF] ❌ El archivo PDF no existe: {pdf_path}")
+                logger.error(f"[PDF] El archivo PDF no existe: {pdf_path}")
                 return
             
 
@@ -682,12 +682,12 @@ class _PDFControllerOptimized(QObject):
                 self._configurar_fecha_inicio_automatica(pdf_path)
                 
             else:
-                print(f"[PDF] ❌ Error cargando PDF desde contrato")
+                logger.error(f"[PDF] Error cargando PDF desde contrato")
                 
         except Exception as e:
-            print(f"[PDF] ❌ Error cargando PDF desde contrato: {e}")
+            logger.error(f"[PDF] Error cargando PDF desde contrato: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def _configurar_fecha_inicio_automatica(self, pdf_path: str):
         """Configurar fecha de inicio basada en la fecha de creación del PDF"""
@@ -728,7 +728,7 @@ class _PDFControllerOptimized(QObject):
                     continue
                     
         except Exception as e:
-            print(f"[PDF] ❌ Error configurando fecha automática: {e}")
+            logger.error(f"[PDF] Error configurando fecha automática: {e}")
     
     def _guardar_fecha_en_json(self, nombre_campo: str, fecha_str: str):
         """Guardar fecha automática en JSON"""
@@ -742,7 +742,7 @@ class _PDFControllerOptimized(QObject):
 
                 
         except Exception as e:
-            print(f"[PDF] ❌ Error guardando fecha en JSON: {e}")
+            logger.error(f"[PDF] Error guardando fecha en JSON: {e}")
 
     def _save_pdf_to_json(self, pdf_path: str):
         """Guardar PDF en JSON y marcar fase de Creación Proyecto como generada"""
@@ -785,7 +785,7 @@ class _PDFControllerOptimized(QObject):
             self._registrar_fecha_creacion_en_fases(pdf_path)
             
         except Exception as e:
-            print(f"[PDF] ❌ Error guardando PDF en JSON: {e}")
+            logger.error(f"[PDF] Error guardando PDF en JSON: {e}")
     
     def _marcar_fase_creacion_proyecto(self):
         """Marcar la fase de Creación Proyecto como generada cuando se selecciona un PDF"""
@@ -817,7 +817,7 @@ class _PDFControllerOptimized(QObject):
                 QTimer.singleShot(200, lambda: self._actualizar_cronograma_tras_pdf())
                 
         except Exception as e:
-            print(f"[PDF] ❌ Error marcando fase de creación: {e}")
+            logger.error(f"[PDF] Error marcando fase de creación: {e}")
     
     def _registrar_fecha_creacion_en_fases(self, pdf_path: str):
         """Registrar fecha de creación en fases_documentos.creacion.generado"""
@@ -839,13 +839,13 @@ class _PDFControllerOptimized(QObject):
             
             # Verificar que el controlador JSON esté disponible
             if not hasattr(self._mw, 'controlador_json') or not self._mw.controlador_json:
-                print("[PDF] ❌ Controlador JSON no disponible para registrar fecha en fases")
+                logger.info("[PDF] ❌ Controlador JSON no disponible para registrar fecha en fases")
                 return
             
             # Leer datos actuales del contrato
             datos_contrato = self._mw.controlador_json.leer_contrato_completo(self._contract_name)
             if not datos_contrato:
-                print(f"[PDF] ❌ No se encontraron datos del contrato para registrar fecha: {self._contract_name}")
+                logger.error(f"[PDF] No se encontraron datos del contrato para registrar fecha: {self._contract_name}")
                 return
             
             # Asegurar que existe la estructura fases_documentos
@@ -869,9 +869,9 @@ class _PDFControllerOptimized(QObject):
 
             
         except Exception as e:
-            print(f"[PDF] ❌ Error registrando fecha de creación en fases: {e}")
+            logger.error(f"[PDF] Error registrando fecha de creación en fases: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def _actualizar_cronograma_tras_pdf(self):
         """Actualizar cronograma después de marcar la fase de creación"""
@@ -884,7 +884,7 @@ class _PDFControllerOptimized(QObject):
 
                 
         except Exception as e:
-            print(f"[PDF] ❌ Error actualizando cronograma tras PDF: {e}")
+            logger.error(f"[PDF] Error actualizando cronograma tras PDF: {e}")
     def get_project_folder_path(self) -> str:
         """Obtener la ruta de la carpeta del proyecto actual"""
         if not self._contract_name:
@@ -978,23 +978,43 @@ def convertir_docx_a_pdf_simple(docx_path: str) -> bool:
     """Conversión usando docx2pdf"""
     try:
         if not os.path.exists(docx_path):
-            print(f"[PDF] ERROR: Archivo no existe: {docx_path}")
+            logger.info(f"[PDF] ERROR: Archivo no existe: {docx_path}")
             return False
             
         from docx2pdf import convert
         pdf_path = docx_path.replace('.docx', '.pdf')
         
-        print(f"[PDF] Generando PDF: {os.path.basename(pdf_path)}")
+        logger.info(f"[PDF] Generando PDF: {os.path.basename(pdf_path)}")
         
         # Crear popup con progress bar
         from PyQt5.QtWidgets import QProgressDialog, QApplication
         from PyQt5.QtCore import Qt, QTimer
         import time
+        import sys
         
         progress = QProgressDialog("Generando PDF...", "Cancelar", 0, 100)
         progress.setWindowTitle("Generando PDF")
         progress.setWindowModality(Qt.WindowModal)
         progress.setMinimumDuration(0)
+        
+        # Solo agregar icono en versión compilada (EXE)
+        logger.info(f"[PDF] Detectando entorno: sys.frozen = {getattr(sys, 'frozen', False)}")
+        if getattr(sys, 'frozen', False):  # Detectar PyInstaller
+            logger.info(f"[PDF] Versión EXE detectada - Configurando icono ADIF")
+            try:
+                from PyQt5.QtGui import QIcon
+                icono_path = "_internal/images/icono.ico"
+                logger.info(f"[PDF] Buscando icono en: {icono_path}")
+                if os.path.exists(icono_path):
+                    progress.setWindowIcon(QIcon(icono_path))
+                    logger.info(f"[PDF] Icono ADIF aplicado exitosamente: {icono_path}")
+                else:
+                    logger.error(f"[PDF] Archivo de icono no encontrado: {icono_path}")
+            except Exception as e:
+                logger.error(f"[PDF] Error cargando icono ADIF: {e}")
+        else:
+            logger.info(f"[PDF] Versión desarrollo - Sin icono en popup")
+        
         progress.show()
         
         # Simular progreso mientras se genera el PDF
@@ -1015,15 +1035,16 @@ def convertir_docx_a_pdf_simple(docx_path: str) -> bool:
         
         exists = os.path.exists(pdf_path)
         if exists:
-            print(f"[PDF] ✓ PDF generado correctamente: {pdf_path}")
+            logger.info(f"[PDF] ✓ PDF generado correctamente: {pdf_path}")
         else:
-            print(f"[PDF] ERROR: No se pudo generar el PDF")
+            logger.info(f"[PDF] ERROR: No se pudo generar el PDF")
             
         return exists
         
     except Exception as e:
-        print(f"[PDF] ERROR: {e}")
+        logger.info(f"[PDF] ERROR: {e}")
         return False
+
 
 def mostrar_dialogo_pdf(parent=None, nombre_documento="documento", docx_path=None) -> bool:
     """Función principal simplificada"""
@@ -1043,10 +1064,10 @@ def mostrar_dialogo_pdf(parent=None, nombre_documento="documento", docx_path=Non
                     import subprocess
                     import os
                     try:
-                        print(f"[PDF] Abriendo PDF automáticamente: {pdf_path}")
+                        logger.info(f"[PDF] Abriendo PDF automáticamente: {pdf_path}")
                         subprocess.run([pdf_path], shell=True, check=True)
                     except Exception as e:
-                        print(f"[PDF] Error abriendo PDF: {e}")
+                        logger.info(f"[PDF] Error abriendo PDF: {e}")
                         # Si falla abrir el PDF, abrir la carpeta
                         carpeta = os.path.dirname(docx_path)
                         subprocess.run(f'explorer "{carpeta}"', shell=True)

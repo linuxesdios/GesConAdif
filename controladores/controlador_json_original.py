@@ -133,12 +133,12 @@ class GestorContratosJSON:
         # 🆕 DEBUG: Mostrar nombres disponibles
         for i, obra in enumerate(obras):
             nombre_obra = obra.get("nombreObra", "N/A")
-            print(f"[GestorContratosJSON] 📋 Obra[{i}]: '{nombre_obra}'")
+            logger.info(f"[GestorContratosJSON] 📋 Obra[{i}]: '{nombre_obra}'")
         
         # 1. Búsqueda exacta
         for obra in obras:
             if obra.get("nombreObra") == nombre_contrato:
-                print(f"[GestorContratosJSON] ✅ Coincidencia exacta encontrada: '{nombre_contrato}'")
+                logger.info(f"[GestorContratosJSON] Coincidencia exacta encontrada: '{nombre_contrato}'")
                 return obra
         
         # 2. Búsqueda parcial para nombres truncados
@@ -156,7 +156,7 @@ class GestorContratosJSON:
                 if nombre_contrato in nombre_obra or nombre_obra in nombre_contrato:
                     return obra
         
-        print(f"[GestorContratosJSON] ❌ Contrato no encontrado: '{nombre_contrato}'")
+        logger.error(f"[GestorContratosJSON] Contrato no encontrado: '{nombre_contrato}'")
         return None
 
     def buscar_contrato_por_expediente(self, numero_expediente: str) -> Optional[Dict[str, Any]]:
@@ -170,7 +170,7 @@ class GestorContratosJSON:
             if obra.get("numeroExpediente") == numero_expediente:
                 return obra
         
-        print(f"[GestorContratosJSON] ❌ Expediente no encontrado: '{numero_expediente}'")
+        logger.error(f"[GestorContratosJSON] Expediente no encontrado: '{numero_expediente}'")
         return None
 
     def buscar_contrato_inteligente(self, identificador: str) -> Optional[Dict[str, Any]]:
@@ -183,7 +183,7 @@ class GestorContratosJSON:
         # 🆕 PASO 1: Buscar SIEMPRE por nombre primero
         resultado_nombre = self.buscar_contrato_por_nombre(identificador)
         if resultado_nombre:
-            print(f"[GestorContratosJSON] ✅ Contrato encontrado por nombre: '{identificador}'")
+            logger.info(f"[GestorContratosJSON] Contrato encontrado por nombre: '{identificador}'")
             return resultado_nombre
         
         # 🆕 PASO 2: Solo si no se encuentra por nombre, buscar por expediente
@@ -191,13 +191,13 @@ class GestorContratosJSON:
         patron_expediente = re.compile(r'^\d{1,5}[\/\.\-\d]+$')
         
         if patron_expediente.match(identificador):
-            print(f"[GestorContratosJSON] 🔍 Buscando por expediente: '{identificador}'")
+            logger.debug(f"[GestorContratosJSON] Buscando por expediente: '{identificador}'")
             resultado_expediente = self.buscar_contrato_por_expediente(identificador)
             if resultado_expediente:
-                print(f"[GestorContratosJSON] ✅ Contrato encontrado por expediente: '{identificador}'")
+                logger.info(f"[GestorContratosJSON] Contrato encontrado por expediente: '{identificador}'")
                 return resultado_expediente
         
-        print(f"[GestorContratosJSON] ❌ No encontrado ni por nombre ni por expediente: '{identificador}'")
+        logger.error(f"[GestorContratosJSON] No encontrado ni por nombre ni por expediente: '{identificador}'")
         return None
     
     
@@ -206,12 +206,12 @@ class GestorContratosJSON:
         try:
             nombre_obra = datos_contrato.get("nombreObra", "").strip()
             if not nombre_obra:
-                print("[GestorContratosJSON] ❌ Nombre de obra requerido")
+                logger.info("[GestorContratosJSON] ❌ Nombre de obra requerido")
                 return False
             
             # Verificar que no existe
             if self.buscar_contrato_por_nombre(nombre_obra):
-                print(f"[GestorContratosJSON] ❌ Ya existe contrato: {nombre_obra}")
+                logger.error(f"[GestorContratosJSON] Ya existe contrato: {nombre_obra}")
                 return False
             
             # Preparar datos con estructura básica
@@ -227,7 +227,7 @@ class GestorContratosJSON:
             
             # Guardar
             if self.guardar_datos():
-                print(f"[GestorContratosJSON] ✅ Contrato creado: {nombre_obra}")
+                logger.info(f"[GestorContratosJSON] Contrato creado: {nombre_obra}")
                 return True
             else:
                 # Revertir si falla el guardado
@@ -235,7 +235,7 @@ class GestorContratosJSON:
                 return False
                 
         except Exception as e:
-            print(f"[GestorContratosJSON] ❌ Error creando contrato: {e}")
+            logger.error(f"[GestorContratosJSON] Error creando contrato: {e}")
             return False
 
     def actualizar_contrato(self, nombre_contrato: str, datos_actualizados: Dict[str, Any]) -> bool:
@@ -255,16 +255,16 @@ class GestorContratosJSON:
                     
                     # Guardar
                     if self.guardar_datos():
-                        print(f"[GestorContratosJSON] ✅ Contrato actualizado: {nombre_contrato}")
+                        logger.info(f"[GestorContratosJSON] Contrato actualizado: {nombre_contrato}")
                         return True
                     else:
                         return False
             
-            print(f"[GestorContratosJSON] ❌ No se encontró contrato para actualizar: {nombre_contrato}")
+            logger.error(f"[GestorContratosJSON] No se encontró contrato para actualizar: {nombre_contrato}")
             return False
             
         except Exception as e:
-            print(f"[GestorContratosJSON] ❌ Error actualizando contrato: {e}")
+            logger.error(f"[GestorContratosJSON] Error actualizando contrato: {e}")
             return False
 
     
@@ -286,7 +286,7 @@ class GestorContratosJSON:
             return resultado
             
         except Exception as e:
-            print(f"[GestorContratosJSON] ❌ Error listando contratos: {e}")
+            logger.error(f"[GestorContratosJSON] Error listando contratos: {e}")
             return []
 
     def obtener_estadisticas(self) -> Dict[str, Any]:
@@ -309,7 +309,7 @@ class GestorContratosJSON:
             return estadisticas
             
         except Exception as e:
-            print(f"[GestorContratosJSON] ❌ Error obteniendo estadísticas: {e}")
+            logger.error(f"[GestorContratosJSON] Error obteniendo estadísticas: {e}")
             return {}
 
     def obtener_todos_nombres_obras(self) -> List[str]:
@@ -323,7 +323,7 @@ class GestorContratosJSON:
                     nombres.append(nombre)
             return nombres
         except Exception as e:
-            print(f"[GestorContratosJSON] ❌ Error obteniendo nombres: {e}")
+            logger.error(f"[GestorContratosJSON] Error obteniendo nombres: {e}")
             return []
 
     def obtener_contrato_por_nombre(self, nombre_contrato: str) -> Dict[str, Any]:
@@ -366,7 +366,7 @@ class GestorContratosJSON:
         """Eliminar contrato del JSON - MÉTODO CORRECTO PARA GestorContratosJSON"""
         try:
             if not nombre_contrato:
-                print(f"[GestorContratosJSON] ❌ Nombre de contrato requerido")
+                logger.error(f"[GestorContratosJSON] Nombre de contrato requerido")
                 return False
             
             obras = self.datos.get("obras", [])
@@ -379,19 +379,19 @@ class GestorContratosJSON:
                     
                     # Guardar cambios
                     if self.guardar_datos():
-                        print(f"[GestorContratosJSON] ✅ Contrato eliminado: {nombre_contrato}")
+                        logger.info(f"[GestorContratosJSON] Contrato eliminado: {nombre_contrato}")
                         return True
                     else:
                         # Revertir si falla el guardado
                         obras.insert(i, obra)
-                        print(f"[GestorContratosJSON] ❌ Error guardando después de eliminar")
+                        logger.error(f"[GestorContratosJSON] Error guardando después de eliminar")
                         return False
             
-            print(f"[GestorContratosJSON] ❌ No se encontró contrato para eliminar: {nombre_contrato}")
+            logger.error(f"[GestorContratosJSON] No se encontró contrato para eliminar: {nombre_contrato}")
             return False
             
         except Exception as e:
-            print(f"[GestorContratosJSON] ❌ Error eliminando contrato: {e}")
+            logger.error(f"[GestorContratosJSON] Error eliminando contrato: {e}")
             return False
 
 class ControladorJson:
@@ -410,11 +410,11 @@ class ControladorJson:
                 rutas = ControladorRutas()
                 ruta_bd = rutas.get_ruta_base_datos()
                 
-                print(f"[ControladorJson] ✅ Usando ruta centralizada: {ruta_bd}")
+                logger.info(f"[ControladorJson] Usando ruta centralizada: {ruta_bd}")
                 return GestorContratosJSON(ruta_bd)
                 
             except ImportError:
-                print(f"[ControladorJson] ⚠️ ControladorRutas no disponible, usando búsqueda manual")
+                logger.warning(f"[ControladorJson] ControladorRutas no disponible, usando búsqueda manual")
             
             # 🔧 FALLBACK: Búsqueda manual en ubicaciones conocidas
             current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -431,16 +431,16 @@ class ControladorJson:
             for ruta in posibles_rutas:
                 ruta_absoluta = os.path.abspath(ruta)
                 if os.path.exists(ruta_absoluta):
-                    print(f"[ControladorJson] ✅ BaseDatos.json encontrado: {ruta_absoluta}")
+                    logger.info(f"[ControladorJson] BaseDatos.json encontrado: {ruta_absoluta}")
                     return GestorContratosJSON(ruta_absoluta)
             
             # Si no existe, usar la ubicación _internal para crear
             ruta_crear = os.path.abspath(posibles_rutas[3])  # _internal/BaseDatos/BaseDatos.json
-            print(f"[ControladorJson] 📁 Creando BaseDatos.json en: {ruta_crear}")
+            logger.info(f"[ControladorJson] 📁 Creando BaseDatos.json en: {ruta_crear}")
             return GestorContratosJSON(ruta_crear)
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error inicializando gestor: {e}")
+            logger.error(f"[ControladorJson] Error inicializando gestor: {e}")
             return None
 
     def esta_disponible(self) -> bool:
@@ -469,7 +469,7 @@ class ControladorJson:
                 return contrato.get(nombre_campo)
             return None
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error leyendo campo '{nombre_campo}': {e}")
+            logger.error(f"[ControladorJson] Error leyendo campo '{nombre_campo}': {e}")
             return None
 
     def leer_lista_contratos(self) -> List[Dict[str, str]]:
@@ -511,7 +511,7 @@ class ControladorJson:
             # Buscar contrato actual
             contrato_actual = self.gestor.buscar_contrato_inteligente(nombre_contrato)
             if not contrato_actual:
-                print(f"[ControladorJson] ❌ No se encontró contrato: {nombre_contrato}")
+                logger.error(f"[ControladorJson] No se encontró contrato: {nombre_contrato}")
                 return False
             
             # Actualizar campo
@@ -519,7 +519,7 @@ class ControladorJson:
             return self.gestor.actualizar_contrato(nombre_contrato, datos_actualizados)
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error guardando campo '{nombre_campo}': {e}")
+            logger.error(f"[ControladorJson] Error guardando campo '{nombre_campo}': {e}")
             return False
 
     def guardar_texto_largo_en_json(self, nombre_contrato: str, nombre_campo: str, texto: str) -> bool:
@@ -545,7 +545,7 @@ class ControladorJson:
             return self.gestor.actualizar_contrato(nombre_contrato, datos_empresas)
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error guardando empresas unificadas: {e}")
+            logger.error(f"[ControladorJson] Error guardando empresas unificadas: {e}")
             return False
 
     def guardar_empresas_en_json(self, nombre_contrato: str, empresas_data: List[Dict[str, str]]) -> bool:
@@ -554,7 +554,7 @@ class ControladorJson:
 
     def guardar_ofertas_en_json(self, nombre_contrato: str, ofertas_data: List[Dict[str, str]]) -> bool:
         """MODIFICADA: Las ofertas se guardan junto con empresas"""
-        print("[ControladorJson] ℹ️ Las ofertas se guardan automáticamente con empresas unificadas")
+        logger.info("[ControladorJson] ℹ️ Las ofertas se guardan automáticamente con empresas unificadas")
         return True  # No hacer nada, ya se guardan unificadas
     
     def guardar_contrato_completo(self, nombre_contrato: str, datos_completos: Dict[str, Any]) -> bool:
@@ -570,16 +570,16 @@ class ControladorJson:
         """Crear nuevo contrato"""
         
         if not self.gestor:
-            print(f"[ControladorJson] ❌ Gestor no disponible")
+            logger.error(f"[ControladorJson] Gestor no disponible")
             return False
         
         try:
             resultado = self.gestor.crear_contrato(datos_contrato)
             return resultado
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error en crear_contrato_nuevo: {e}")
+            logger.error(f"[ControladorJson] Error en crear_contrato_nuevo: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False
 
     
@@ -695,7 +695,7 @@ class ControladorJson:
             return True
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error creando backup: {e}")
+            logger.error(f"[ControladorJson] Error creando backup: {e}")
             return False
 
     def clonar_contrato(self, nombre_origen, nuevo_nombre, opciones=None):
@@ -742,7 +742,7 @@ class ControladorJson:
                             self._limpiar_campos_no_clonados(opciones)
                     
                     except Exception as e:
-                        print(f"[ControladorJson] ⚠️ Error recargando después de clonar: {e}")
+                        logger.warning(f"[ControladorJson] Error recargando después de clonar: {e}")
                 
                 # Mostrar resumen de lo que se clonó
                 if opciones:
@@ -758,7 +758,7 @@ class ControladorJson:
                 return False
                 
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error clonando contrato: {e}")
+            logger.error(f"[ControladorJson] Error clonando contrato: {e}")
             QMessageBox.critical(None, "Error", f"Error clonando contrato: {e}")
             return False
     
@@ -956,7 +956,7 @@ class ControladorJson:
             if not self.main_window:
                 return
                 
-            print(f"[ControladorJson] 🧹 Limpiando campos no clonados...")
+            logger.info(f"[ControladorJson] 🧹 Limpiando campos no clonados...")
             
             # Campos que siempre deben limpiarse si no se seleccionaron específicamente
             campos_a_limpiar = {}
@@ -1006,14 +1006,14 @@ class ControladorJson:
                             widget.setPlainText(str(valor_vacio))
                         elif hasattr(widget, 'setValue'):
                             widget.setValue(valor_vacio)
-                        print(f"[ControladorJson] ✅ Limpiado: {widget_name}")
+                        logger.info(f"[ControladorJson] Limpiado: {widget_name}")
                     except Exception as e:
-                        print(f"[ControladorJson] ⚠️ Error limpiando {widget_name}: {e}")
+                        logger.warning(f"[ControladorJson] Error limpiando {widget_name}: {e}")
             
-            print(f"[ControladorJson] 🧹 Limpieza completada: {len(campos_a_limpiar)} campos")
+            logger.info(f"[ControladorJson] 🧹 Limpieza completada: {len(campos_a_limpiar)} campos")
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error limpiando campos: {e}")
+            logger.error(f"[ControladorJson] Error limpiando campos: {e}")
     
     def restaurar_backup(self, archivo_backup: str) -> bool:
         """Restaurar desde archivo de backup"""
@@ -1035,7 +1035,7 @@ class ControladorJson:
             return True
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error restaurando backup: {e}")
+            logger.error(f"[ControladorJson] Error restaurando backup: {e}")
             return False
 
     def exportar_contrato(self, nombre_contrato: str, archivo_destino: str) -> bool:
@@ -1057,7 +1057,7 @@ class ControladorJson:
             return True
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error exportando contrato: {e}")
+            logger.error(f"[ControladorJson] Error exportando contrato: {e}")
             return False
 
     def importar_contrato(self, archivo_origen: str) -> bool:
@@ -1077,12 +1077,12 @@ class ControladorJson:
             
             nombre_contrato = contrato.get("nombreObra")
             if not nombre_contrato:
-                print("[ControladorJson] ❌ Contrato sin nombreObra")
+                logger.info("[ControladorJson] ❌ Contrato sin nombreObra")
                 return False
             
             # Verificar si ya existe
             if self.leer_contrato_completo(nombre_contrato):
-                print(f"[ControladorJson] ❌ Ya existe contrato: {nombre_contrato}")
+                logger.error(f"[ControladorJson] Ya existe contrato: {nombre_contrato}")
                 return False
             
             # Crear contrato
@@ -1092,7 +1092,7 @@ class ControladorJson:
                 return False
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error importando contrato: {e}")
+            logger.error(f"[ControladorJson] Error importando contrato: {e}")
             return False
 
     def limpiar_datos_vacios(self) -> int:
@@ -1122,12 +1122,12 @@ class ControladorJson:
             
             if campos_limpiados > 0:
                 self.gestor.guardar_datos()
-                print(f"[ControladorJson] 🧹 Limpiados {campos_limpiados} campos vacíos")
+                logger.info(f"[ControladorJson] 🧹 Limpiados {campos_limpiados} campos vacíos")
             
             return campos_limpiados
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error limpiando datos: {e}")
+            logger.error(f"[ControladorJson] Error limpiando datos: {e}")
             return 0
 
     def optimizar_json(self) -> bool:  
@@ -1169,13 +1169,13 @@ class ControladorJson:
             if optimizaciones > 0:
                 resultado = self.gestor.guardar_datos()
                 if resultado:
-                    print(f"[ControladorJson] ⚡ JSON optimizado: {optimizaciones} campos")
+                    logger.info(f"[ControladorJson] ⚡ JSON optimizado: {optimizaciones} campos")
                 return resultado
             
             return True
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error optimizando JSON: {e}")
+            logger.error(f"[ControladorJson] Error optimizando JSON: {e}")
             return False
 
     def obtener_ruta_archivo(self) -> str:
@@ -1194,7 +1194,7 @@ class ControladorJson:
             return False
             
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error cambiando archivo JSON: {e}")
+            logger.error(f"[ControladorJson] Error cambiando archivo JSON: {e}")
             return False
 
     # Método debug eliminado - innecesario en producción
@@ -1207,7 +1207,7 @@ class ControladorJson:
             with open(archivo_path, "r", encoding="utf-8") as f:
                 return json.load(f)
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error cargando JSON simple: {e}")
+            logger.error(f"[ControladorJson] Error cargando JSON simple: {e}")
             return {}
 
     def guardar_json_simple(self, datos: Dict[str, Any], archivo_path: str) -> bool:
@@ -1217,7 +1217,7 @@ class ControladorJson:
                 json.dump(datos, f, ensure_ascii=False, indent=2)
             return True
         except Exception as e:
-            print(f"[ControladorJson] ❌ Error guardando JSON simple: {e}")
+            logger.error(f"[ControladorJson] Error guardando JSON simple: {e}")
             return False
 
     def borrar_contrato_con_carpetas(self, nombre_contrato: Optional[str]) -> tuple[bool, str]:
@@ -1234,12 +1234,12 @@ class ControladorJson:
                 
                 if os.path.exists(carpeta_obras):
                     shutil.rmtree(carpeta_obras)
-                    print(f"[ControladorJson] 🗂️ Carpeta eliminada: {carpeta_obras}")
+                    logger.info(f"[ControladorJson] 🗂️ Carpeta eliminada: {carpeta_obras}")
                 else:
-                    print(f"[ControladorJson] ℹ️ No existe carpeta para: {nombre_contrato}")
+                    logger.info(f"[ControladorJson] No existe carpeta para: {nombre_contrato}")
                     
             except Exception as e:
-                print(f"[ControladorJson] ⚠️ Error eliminando carpeta: {e}")
+                logger.warning(f"[ControladorJson] Error eliminando carpeta: {e}")
                 # Continuar con la eliminación del JSON aunque falle la carpeta
             
             # Eliminar del JSON
@@ -1263,19 +1263,19 @@ class ControladorJson:
                             else:
                                 self.main_window.comboBox.setCurrentIndex(0)  # "Seleccionar contrato..."
                     else:
-                        print(f"[ControladorJson] ⚠️ ContractManager no disponible para recargar")
+                        logger.warning(f"[ControladorJson] ContractManager no disponible para recargar")
                 
                 except Exception as e:
-                    print(f"[ControladorJson] ⚠️ Error recargando después de eliminar: {e}")
+                    logger.warning(f"[ControladorJson] Error recargando después de eliminar: {e}")
                     # No falla la eliminación por esto
             else:
-                print(f"[ControladorJson] ⚠️ main_window no disponible para recargar")
+                logger.warning(f"[ControladorJson] main_window no disponible para recargar")
             
             return True, f"Contrato '{nombre_contrato}' eliminado correctamente"
         
         except Exception as e:
             mensaje_error = f"Error eliminando contrato: {e}"
-            print(f"[ControladorJson] ❌ {mensaje_error}")
+            logger.error(f"[ControladorJson] {mensaje_error}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False, mensaje_error

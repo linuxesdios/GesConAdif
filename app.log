@@ -8083,3 +8083,413 @@
 2025-09-04 16:30:51,735 - controladores.controlador_json - INFO - Se guardó en campo empresas: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
 2025-09-04 16:30:51,735 - controladores.controlador_json - INFO - Empresas guardadas: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES → 1 empresas
 2025-09-04 16:30:51,735 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Empresas guardadas exitosamente
+2025-09-04 16:47:35,782 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 16:47:35,903 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 16:47:35,903 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] [!] Gestor unificado no disponible
+2025-09-04 16:47:35,930 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Tracker de documentos configurado
+2025-09-04 16:47:35,934 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 16:47:35,944 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controlador de facturas directas inicializado
+2025-09-04 16:47:37,282 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 16:47:37,283 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 16:47:37,283 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 16:47:37,319 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI
+2025-09-04 16:47:37,329 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 16:47:37,335 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Iniciando configuración auto-guardado completo
+2025-09-04 16:47:37,345 - controladores.controlador_autosave - INFO - ⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado
+2025-09-04 16:47:37,346 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Configurando auto-guardado de tablas
+2025-09-04 16:47:37,346 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwEmpresas configurada para auto-guardado
+2025-09-04 16:47:37,347 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwOfertas configurada para auto-guardado
+2025-09-04 16:47:37,348 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Configuración auto-guardado completo terminada
+2025-09-04 16:47:37,362 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 16:47:37,365 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 16:47:37,366 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 16:47:37,405 - controladores.controlador_eventos_ui - INFO - Controlador de cálculos conectado
+2025-09-04 16:47:37,440 - controladores.controlador_eventos_ui - INFO - Setup de eventos completado exitosamente
+2025-09-04 16:47:37,459 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Inicializado con 11 fases configuradas
+2025-09-04 16:47:37,492 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ 0 campos de firmado conectados
+2025-09-04 16:47:38,443 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-04 16:47:42,259 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 16:47:42,259 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: No hay contrato actual
+2025-09-04 17:07:24,770 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:07:24,891 - controladores.controlador_json - INFO - Inicializado con archivo: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:07:24,891 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] [!] Gestor unificado no disponible
+2025-09-04 17:07:24,892 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Tracker de documentos configurado
+2025-09-04 17:07:24,892 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:07:24,894 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controlador de facturas directas inicializado
+2025-09-04 17:07:25,782 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:07:25,783 - controladores.controlador_json - INFO - Inicializado con archivo: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:07:25,783 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:07:25,790 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI
+2025-09-04 17:07:25,792 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:07:25,794 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Iniciando configuración auto-guardado completo
+2025-09-04 17:07:25,799 - controladores.controlador_autosave - INFO - ⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado
+2025-09-04 17:07:25,800 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Configurando auto-guardado de tablas
+2025-09-04 17:07:25,800 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwEmpresas configurada para auto-guardado
+2025-09-04 17:07:25,800 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwOfertas configurada para auto-guardado
+2025-09-04 17:07:25,800 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Configuración auto-guardado completo terminada
+2025-09-04 17:07:25,805 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:07:25,806 - controladores.controlador_json - INFO - Inicializado con archivo: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:07:25,806 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:07:25,822 - controladores.controlador_eventos_ui - INFO - Controlador de cálculos conectado
+2025-09-04 17:07:25,830 - controladores.controlador_eventos_ui - INFO - Setup de eventos completado exitosamente
+2025-09-04 17:07:25,833 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Inicializado con 11 fases configuradas
+2025-09-04 17:07:25,853 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ 0 campos de firmado conectados
+2025-09-04 17:07:26,831 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-04 17:08:22,346 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:08:22,449 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:08:22,450 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] [!] Gestor unificado no disponible
+2025-09-04 17:08:22,451 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Tracker de documentos configurado
+2025-09-04 17:08:22,452 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:08:22,453 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controlador de facturas directas inicializado
+2025-09-04 17:08:23,458 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:08:23,461 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:08:23,462 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:08:23,487 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI
+2025-09-04 17:08:23,496 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:08:23,503 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Iniciando configuración auto-guardado completo
+2025-09-04 17:08:23,509 - controladores.controlador_autosave - INFO - ⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado
+2025-09-04 17:08:23,510 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Configurando auto-guardado de tablas
+2025-09-04 17:08:23,510 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwEmpresas configurada para auto-guardado
+2025-09-04 17:08:23,511 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwOfertas configurada para auto-guardado
+2025-09-04 17:08:23,511 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Configuración auto-guardado completo terminada
+2025-09-04 17:08:23,518 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:08:23,520 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:08:23,520 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:08:23,537 - controladores.controlador_eventos_ui - INFO - Controlador de cálculos conectado
+2025-09-04 17:08:23,545 - controladores.controlador_eventos_ui - INFO - Setup de eventos completado exitosamente
+2025-09-04 17:08:23,549 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Inicializado con 11 fases configuradas
+2025-09-04 17:08:23,569 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ 0 campos de firmado conectados
+2025-09-04 17:08:24,545 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-04 17:09:56,512 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:09:56,616 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:09:56,617 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] [!] Gestor unificado no disponible
+2025-09-04 17:09:56,617 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Tracker de documentos configurado
+2025-09-04 17:09:56,618 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:09:56,619 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controlador de facturas directas inicializado
+2025-09-04 17:09:57,415 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:09:57,416 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:09:57,416 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:09:57,425 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI
+2025-09-04 17:09:57,429 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:09:57,432 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Iniciando configuración auto-guardado completo
+2025-09-04 17:09:57,436 - controladores.controlador_autosave - INFO - ⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado
+2025-09-04 17:09:57,436 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Configurando auto-guardado de tablas
+2025-09-04 17:09:57,436 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwEmpresas configurada para auto-guardado
+2025-09-04 17:09:57,437 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwOfertas configurada para auto-guardado
+2025-09-04 17:09:57,437 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Configuración auto-guardado completo terminada
+2025-09-04 17:09:57,447 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:09:57,449 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:09:57,450 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:09:57,474 - controladores.controlador_eventos_ui - INFO - Controlador de cálculos conectado
+2025-09-04 17:09:57,484 - controladores.controlador_eventos_ui - INFO - Setup de eventos completado exitosamente
+2025-09-04 17:09:57,488 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Inicializado con 11 fases configuradas
+2025-09-04 17:09:57,505 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ 0 campos de firmado conectados
+2025-09-04 17:09:58,485 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-04 17:09:59,884 - controladores.Controlador_selector - INFO - 🎯 SELECTOR: Usuario seleccionó contrato: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:09:59,884 - controladores.Controlador_selector - INFO - 📊 SELECTOR: Contrato actual antes del cambio: 'None'
+2025-09-04 17:09:59,885 - controladores.Controlador_selector - INFO - 🗂️ SELECTOR: Contratos disponibles en mapping: ['OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES', 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.', 'Mantenimiento correctivo Preventivo en Algodor Y Aranjuez', 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO']
+2025-09-04 17:09:59,885 - controladores.Controlador_selector - INFO - 🔍 SELECTOR: Datos encontrados para 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES': True
+2025-09-04 17:09:59,885 - controladores.Controlador_selector - INFO - 📋 SELECTOR: Nombre completo del contrato: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:09:59,886 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Datos JSON recargados exitosamente para: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:09:59,887 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Tipo de actuación: 'obras'
+2025-09-04 17:09:59,887 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Número de expediente: 'rwfrfr'
+2025-09-04 17:09:59,888 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Contrato establecido como actual: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:09:59,889 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:09:59,900 - controladores.controlador_autosave - INFO - 🔒 DIAGNÓSTICO: cargando_datos = TRUE - auto-guardado PAUSADO
+2025-09-04 17:09:59,910 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] 🔄 Cargando widgets para: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:09:59,931 - controladores.controlador_calculos - INFO - Iniciando cálculo de liquidación completa...
+2025-09-04 17:09:59,957 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:09:59,970 - controladores.controlador_autosave - INFO - 🔓 DIAGNÓSTICO: cargando_datos = FALSE - auto-guardado ACTIVADO
+2025-09-04 17:10:00,005 - controladores.Controlador_selector - INFO - 🔄 SELECTOR: Llamando a controlador_autosave.actualizar() para: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,005 - controladores.controlador_autosave - INFO - 🔒 DIAGNÓSTICO: cargando_datos = TRUE - auto-guardado PAUSADO
+2025-09-04 17:10:00,006 - controladores.controlador_autosave - INFO - ✅ AUTOSAVE: Justificación de límites actualizada para: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:00,006 - controladores.controlador_autosave - INFO - ✅ Evento directo configurado para TwEmpresas
+2025-09-04 17:10:00,009 - controladores.controlador_autosave - INFO - Cargando campo fechaInforme: 2000-01-01
+2025-09-04 17:10:00,009 - controladores.controlador_autosave - INFO - Cargando campo fechaProyecto: 2025-09-02
+2025-09-04 17:10:00,009 - controladores.controlador_autosave - INFO - Cargando campo fechaReplanteo: 2000-01-01
+2025-09-04 17:10:00,009 - controladores.controlador_autosave - INFO - Cargando campo fechaLegalFin: 2000-01-01
+2025-09-04 17:10:00,010 - controladores.controlador_autosave - INFO - Cargando campo fechaFinal: 2000-01-01
+2025-09-04 17:10:00,010 - controladores.controlador_autosave - INFO - Cargando campo fechaRecepcion1: 2000-01-01
+2025-09-04 17:10:00,010 - controladores.controlador_autosave - INFO - Cargando campo page_spinbox: 1
+2025-09-04 17:10:00,010 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacion: 454.00
+2025-09-04 17:10:00,010 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacionIva: 95.34
+2025-09-04 17:10:00,010 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacionTotal: 549.34
+2025-09-04 17:10:00,011 - controladores.controlador_autosave - INFO - Cargando campo empresaAdjudicada: sss
+2025-09-04 17:10:00,011 - controladores.controlador_autosave - INFO - Cargando campo contratistaCIF: sss
+2025-09-04 17:10:00,011 - controladores.controlador_autosave - INFO - Cargando campo numEmpresasPresentadas: 1
+2025-09-04 17:10:00,011 - controladores.controlador_autosave - INFO - Cargando campo numEmpresasSolicitadas: 1
+2025-09-04 17:10:00,011 - controladores.controlador_autosave - INFO - Cargando campo numeroExpediente: rwfrfr
+2025-09-04 17:10:00,011 - controladores.controlador_autosave - INFO - Cargando campo fechaAdjudicacion: 2025-09-02
+2025-09-04 17:10:00,011 - controladores.controlador_autosave - INFO - Cargando campo licitacion15: 681.00
+2025-09-04 17:10:00,012 - controladores.controlador_autosave - INFO - Cargando campo licitacion07: 317.80
+2025-09-04 17:10:00,012 - controladores.controlador_autosave - INFO - Cargando campo diaDeApertura: 2000-01-01
+2025-09-04 17:10:00,012 - controladores.controlador_autosave - INFO - Cargando campo adicionalBaseLiquidacion: 758.00
+2025-09-04 17:10:00,012 - controladores.controlador_autosave - INFO - Cargando campo adicionalIvaLiquidacion: 159.18
+2025-09-04 17:10:00,012 - controladores.controlador_autosave - INFO - Cargando campo adicionalTotalLiquidacion_2: 0.0
+2025-09-04 17:10:00,012 - controladores.controlador_autosave - INFO - Cargando campo saldoBaseLiquidacion: -758.00
+2025-09-04 17:10:00,012 - controladores.controlador_autosave - INFO - Cargando campo saldoIvaLiquidacion: -159.18
+2025-09-04 17:10:00,012 - controladores.controlador_autosave - INFO - Cargando campo adicionalTotalLiquidacion: 917.18
+2025-09-04 17:10:00,012 - controladores.controlador_autosave - INFO - Cargando campo empresaBaseAFavor: 0.00
+2025-09-04 17:10:00,013 - controladores.controlador_autosave - INFO - Cargando campo empresaIvaAFavor: 0.00
+2025-09-04 17:10:00,013 - controladores.controlador_autosave - INFO - Cargando campo empresaTotalAFavor: 0.00
+2025-09-04 17:10:00,013 - controladores.controlador_autosave - INFO - Cargando campo liquidacionAFavorAdifBase: 758.00
+2025-09-04 17:10:00,013 - controladores.controlador_autosave - INFO - Cargando campo adifIvaAFavor: 159.18
+2025-09-04 17:10:00,013 - controladores.controlador_autosave - INFO - Cargando campo adifTotalAFavor: 917.18
+2025-09-04 17:10:00,013 - controladores.controlador_autosave - INFO - Cargando campo certBase: 1212.0
+2025-09-04 17:10:00,013 - controladores.controlador_autosave - INFO - Cargando campo certIva: 254.52
+2025-09-04 17:10:00,014 - controladores.controlador_autosave - INFO - Cargando campo certTotal: 1466.52
+2025-09-04 17:10:00,014 - controladores.controlador_autosave - INFO - Cargando campo fechaRecepcion: 2025-09-02
+2025-09-04 17:10:00,014 - controladores.controlador_autosave - INFO - Cargando campo anoactual: 2026-09-04
+2025-09-04 17:10:00,014 - controladores.controlador_autosave - INFO - Cargando campo BaseAnualidad1: 454.00
+2025-09-04 17:10:00,015 - controladores.controlador_autosave - INFO - Cargando campo IvaAnualidad1: 95.34
+2025-09-04 17:10:00,015 - controladores.controlador_autosave - INFO - Cargando campo TotalAnualidad1: 549.34
+2025-09-04 17:10:00,015 - controladores.controlador_autosave - INFO - Cargando campo anosiguinte: 2026-09-04
+2025-09-04 17:10:00,015 - controladores.controlador_autosave - INFO - Cargando campo BaseAnualidad2: 0.00
+2025-09-04 17:10:00,015 - controladores.controlador_autosave - INFO - Cargando campo IvaAnualidad2: 0.00
+2025-09-04 17:10:00,016 - controladores.controlador_autosave - INFO - Cargando campo TotalAnualidad2: 0.00
+2025-09-04 17:10:00,016 - controladores.controlador_autosave - INFO - Cargando campo CIf_Contrato: dssfd
+2025-09-04 17:10:00,016 - controladores.controlador_autosave - INFO - Cargando campo Lugar_Contrato: dfdffd
+2025-09-04 17:10:00,016 - controladores.controlador_autosave - INFO - Cargando campo fechaContrato: 2025-01-24
+2025-09-04 17:10:00,016 - controladores.controlador_autosave - INFO - Cargando campo Contrato_Por_Empresa: dfvsfds
+2025-09-04 17:10:00,016 - controladores.controlador_autosave - INFO - Cargando campo Contrato_Por_Adif: ffsv
+2025-09-04 17:10:00,017 - controladores.controlador_autosave - INFO - Cargando campo objeto: eeree
+2025-09-04 17:10:00,017 - controladores.controlador_autosave - INFO - Cargando campo justificacion: Se necesita la contratación de estas obras por ser indispensable para asegurar la habitabilidad  y estabilidad de los inmuebles.
+2025-09-04 17:10:00,018 - controladores.controlador_autosave - INFO - Cargando campo insuficiencia: La necesidad surge de las propias labores de gestión de esta Gerencia y cubre las necesidades de los inmuebles, no necesitándose por tanto más contratos semejantes en el mismo.
+2025-09-04 17:10:00,018 - controladores.controlador_autosave - INFO - Cargando campo justificacionLimites: El contrato es por importe de 1,212.00 euros.
+2025-09-04 17:10:00,019 - controladores.controlador_autosave - INFO - Cargando campo regimenPagos: Pago por actuacion
+2025-09-04 17:10:00,019 - controladores.controlador_autosave - INFO - Cargando campo OrganoSolicitaOfertas: DEPARTAMENTO DE ADMINISTRACIÓN DE LA GERENCIA DE PATRIMONIO Y URBANISMO CENTRO
+2025-09-04 17:10:00,019 - controladores.controlador_autosave - INFO - Cargando campo organoContratacion: saas
+2025-09-04 17:10:00,019 - controladores.controlador_autosave - INFO - Cargando campo organoContratacion2: DG de Negocio y Operaciones Comerciales
+2025-09-04 17:10:00,019 - controladores.controlador_autosave - INFO - Cargando campo nombreObra: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:00,019 - controladores.controlador_autosave - INFO - Cargando campo plazoEjecucion: 12
+2025-09-04 17:10:00,019 - controladores.controlador_autosave - INFO - Cargando campo basePresupuesto: 1212.0
+2025-09-04 17:10:00,020 - controladores.controlador_autosave - INFO - Cargando campo ivaPresupuestoBase: 254.52
+2025-09-04 17:10:00,020 - controladores.controlador_autosave - INFO - Cargando campo totalPresupuestoBase: 1466.52
+2025-09-04 17:10:00,020 - controladores.controlador_autosave - INFO - Cargando campo comboBox: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:00,020 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 0
+2025-09-04 17:10:00,020 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 1
+2025-09-04 17:10:00,021 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 1 filas
+2025-09-04 17:10:00,021 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:10:00,021 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-04 17:10:00,021 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 1
+2025-09-04 17:10:00,022 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 1
+2025-09-04 17:10:00,022 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 1 filas
+2025-09-04 17:10:00,022 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:10:00,022 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-04 17:10:00,022 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 2
+2025-09-04 17:10:00,023 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 1
+2025-09-04 17:10:00,023 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 1 filas
+2025-09-04 17:10:00,023 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:10:00,023 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-04 17:10:00,024 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 3
+2025-09-04 17:10:00,024 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 1
+2025-09-04 17:10:00,024 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 1 filas
+2025-09-04 17:10:00,025 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:10:00,025 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-04 17:10:00,025 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: empresas_data, elementos: 1
+2025-09-04 17:10:00,025 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 1 filas
+2025-09-04 17:10:00,025 - controladores.controlador_autosave - INFO - 🔓 DIAGNÓSTICO: cargando_datos = FALSE - auto-guardado ACTIVADO
+2025-09-04 17:10:00,026 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Campos y tablas actualizados para: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,026 - controladores.Controlador_selector - INFO - 🎉 SELECTOR: Selección completada exitosamente - Contrato cargado: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,026 - controladores.Controlador_selector - INFO - 🏁 SELECTOR: Fin del procesamiento - Estado final: current_contract = 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,027 - controladores.Controlador_selector - INFO - 🎯 SELECTOR: Usuario seleccionó contrato: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,027 - controladores.Controlador_selector - INFO - 📊 SELECTOR: Contrato actual antes del cambio: 'None'
+2025-09-04 17:10:00,027 - controladores.Controlador_selector - INFO - 🗂️ SELECTOR: Contratos disponibles en mapping: ['OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES', 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.', 'Mantenimiento correctivo Preventivo en Algodor Y Aranjuez', 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO']
+2025-09-04 17:10:00,027 - controladores.Controlador_selector - INFO - 🔍 SELECTOR: Datos encontrados para 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES': True
+2025-09-04 17:10:00,027 - controladores.Controlador_selector - INFO - 📋 SELECTOR: Nombre completo del contrato: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,036 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Datos JSON recargados exitosamente para: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,036 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Tipo de actuación: 'obras'
+2025-09-04 17:10:00,037 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Número de expediente: 'rwfrfr'
+2025-09-04 17:10:00,038 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Contrato establecido como actual: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,038 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:10:00,040 - controladores.controlador_autosave - INFO - 🔒 DIAGNÓSTICO: cargando_datos = TRUE - auto-guardado PAUSADO
+2025-09-04 17:10:00,047 - controladores.controlador_calculos - INFO - Iniciando cálculo de liquidación completa...
+2025-09-04 17:10:00,051 - controladores.controlador_json - INFO - Escritura realizada en: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:10:00,051 - controladores.controlador_json - INFO - Se guardó en campo justificacionLimites: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:00,051 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] 🔄 Cargando widgets para: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:00,062 - controladores.controlador_calculos - INFO - Iniciando cálculo de liquidación completa...
+2025-09-04 17:10:00,071 - controladores.controlador_json - INFO - Escritura realizada en: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:10:00,072 - controladores.controlador_json - INFO - Se guardó en campo certIva: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:00,134 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:10:00,145 - controladores.controlador_autosave - INFO - 🔓 DIAGNÓSTICO: cargando_datos = FALSE - auto-guardado ACTIVADO
+2025-09-04 17:10:00,201 - controladores.Controlador_selector - INFO - 🔄 SELECTOR: Llamando a controlador_autosave.actualizar() para: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,201 - controladores.controlador_autosave - INFO - 🔒 DIAGNÓSTICO: cargando_datos = TRUE - auto-guardado PAUSADO
+2025-09-04 17:10:00,203 - controladores.controlador_autosave - INFO - ✅ AUTOSAVE: Justificación de límites actualizada para: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:00,203 - controladores.controlador_autosave - INFO - ✅ Evento directo configurado para TwEmpresas
+2025-09-04 17:10:00,205 - controladores.controlador_autosave - INFO - Cargando campo fechaInforme: 2000-01-01
+2025-09-04 17:10:00,205 - controladores.controlador_autosave - INFO - Cargando campo fechaProyecto: 2025-09-02
+2025-09-04 17:10:00,205 - controladores.controlador_autosave - INFO - Cargando campo fechaReplanteo: 2000-01-01
+2025-09-04 17:10:00,205 - controladores.controlador_autosave - INFO - Cargando campo fechaLegalFin: 2000-01-01
+2025-09-04 17:10:00,206 - controladores.controlador_autosave - INFO - Cargando campo fechaFinal: 2000-01-01
+2025-09-04 17:10:00,206 - controladores.controlador_autosave - INFO - Cargando campo fechaRecepcion1: 2000-01-01
+2025-09-04 17:10:00,206 - controladores.controlador_autosave - INFO - Cargando campo page_spinbox: 1
+2025-09-04 17:10:00,206 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacion: 454.00
+2025-09-04 17:10:00,206 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacionIva: 95.34
+2025-09-04 17:10:00,206 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacionTotal: 549.34
+2025-09-04 17:10:00,206 - controladores.controlador_autosave - INFO - Cargando campo empresaAdjudicada: sss
+2025-09-04 17:10:00,207 - controladores.controlador_autosave - INFO - Cargando campo contratistaCIF: sss
+2025-09-04 17:10:00,207 - controladores.controlador_autosave - INFO - Cargando campo numEmpresasPresentadas: 1
+2025-09-04 17:10:00,207 - controladores.controlador_autosave - INFO - Cargando campo numEmpresasSolicitadas: 1
+2025-09-04 17:10:00,207 - controladores.controlador_autosave - INFO - Cargando campo numeroExpediente: rwfrfr
+2025-09-04 17:10:00,207 - controladores.controlador_autosave - INFO - Cargando campo fechaAdjudicacion: 2025-09-02
+2025-09-04 17:10:00,208 - controladores.controlador_autosave - INFO - Cargando campo licitacion15: 681.00
+2025-09-04 17:10:00,208 - controladores.controlador_autosave - INFO - Cargando campo licitacion07: 317.80
+2025-09-04 17:10:00,208 - controladores.controlador_autosave - INFO - Cargando campo diaDeApertura: 2000-01-01
+2025-09-04 17:10:00,208 - controladores.controlador_autosave - INFO - Cargando campo adicionalBaseLiquidacion: 758.00
+2025-09-04 17:10:00,208 - controladores.controlador_autosave - INFO - Cargando campo adicionalIvaLiquidacion: 159.18
+2025-09-04 17:10:00,208 - controladores.controlador_autosave - INFO - Cargando campo adicionalTotalLiquidacion_2: 0.0
+2025-09-04 17:10:00,209 - controladores.controlador_autosave - INFO - Cargando campo saldoBaseLiquidacion: -758.00
+2025-09-04 17:10:00,209 - controladores.controlador_autosave - INFO - Cargando campo saldoIvaLiquidacion: -159.18
+2025-09-04 17:10:00,209 - controladores.controlador_autosave - INFO - Cargando campo adicionalTotalLiquidacion: 917.18
+2025-09-04 17:10:00,209 - controladores.controlador_autosave - INFO - Cargando campo empresaBaseAFavor: 0.00
+2025-09-04 17:10:00,209 - controladores.controlador_autosave - INFO - Cargando campo empresaIvaAFavor: 0.00
+2025-09-04 17:10:00,209 - controladores.controlador_autosave - INFO - Cargando campo empresaTotalAFavor: 0.00
+2025-09-04 17:10:00,209 - controladores.controlador_autosave - INFO - Cargando campo liquidacionAFavorAdifBase: 758.00
+2025-09-04 17:10:00,209 - controladores.controlador_autosave - INFO - Cargando campo adifIvaAFavor: 159.18
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo adifTotalAFavor: 917.18
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo certBase: 1212.0
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo certIva: 254.52
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo certTotal: 1466.52
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo fechaRecepcion: 2025-09-02
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo anoactual: 2026-09-04
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo BaseAnualidad1: 454.00
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo IvaAnualidad1: 95.34
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo TotalAnualidad1: 549.34
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo anosiguinte: 2026-09-04
+2025-09-04 17:10:00,210 - controladores.controlador_autosave - INFO - Cargando campo BaseAnualidad2: 0.00
+2025-09-04 17:10:00,211 - controladores.controlador_autosave - INFO - Cargando campo IvaAnualidad2: 0.00
+2025-09-04 17:10:00,211 - controladores.controlador_autosave - INFO - Cargando campo TotalAnualidad2: 0.00
+2025-09-04 17:10:00,211 - controladores.controlador_autosave - INFO - Cargando campo CIf_Contrato: dssfd
+2025-09-04 17:10:00,211 - controladores.controlador_autosave - INFO - Cargando campo Lugar_Contrato: dfdffd
+2025-09-04 17:10:00,211 - controladores.controlador_autosave - INFO - Cargando campo fechaContrato: 2025-01-24
+2025-09-04 17:10:00,211 - controladores.controlador_autosave - INFO - Cargando campo Contrato_Por_Empresa: dfvsfds
+2025-09-04 17:10:00,211 - controladores.controlador_autosave - INFO - Cargando campo Contrato_Por_Adif: ffsv
+2025-09-04 17:10:00,211 - controladores.controlador_autosave - INFO - Cargando campo objeto: eeree
+2025-09-04 17:10:00,211 - controladores.controlador_autosave - INFO - Cargando campo justificacion: Se necesita la contratación de estas obras por ser indispensable para asegurar la habitabilidad  y estabilidad de los inmuebles.
+2025-09-04 17:10:00,212 - controladores.controlador_autosave - INFO - Cargando campo insuficiencia: La necesidad surge de las propias labores de gestión de esta Gerencia y cubre las necesidades de los inmuebles, no necesitándose por tanto más contratos semejantes en el mismo.
+2025-09-04 17:10:00,212 - controladores.controlador_autosave - INFO - Cargando campo justificacionLimites: El contrato es por importe de 1,212.00 euros.
+2025-09-04 17:10:00,213 - controladores.controlador_autosave - INFO - Cargando campo regimenPagos: Pago por actuacion
+2025-09-04 17:10:00,213 - controladores.controlador_autosave - INFO - Cargando campo OrganoSolicitaOfertas: DEPARTAMENTO DE ADMINISTRACIÓN DE LA GERENCIA DE PATRIMONIO Y URBANISMO CENTRO
+2025-09-04 17:10:00,213 - controladores.controlador_autosave - INFO - Cargando campo organoContratacion: saas
+2025-09-04 17:10:00,213 - controladores.controlador_autosave - INFO - Cargando campo organoContratacion2: DG de Negocio y Operaciones Comerciales
+2025-09-04 17:10:00,213 - controladores.controlador_autosave - INFO - Cargando campo nombreObra: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:00,213 - controladores.controlador_autosave - INFO - Cargando campo plazoEjecucion: 12
+2025-09-04 17:10:00,214 - controladores.controlador_autosave - INFO - Cargando campo basePresupuesto: 1212.0
+2025-09-04 17:10:00,214 - controladores.controlador_autosave - INFO - Cargando campo ivaPresupuestoBase: 254.52
+2025-09-04 17:10:00,214 - controladores.controlador_autosave - INFO - Cargando campo totalPresupuestoBase: 1466.52
+2025-09-04 17:10:00,214 - controladores.controlador_autosave - INFO - Cargando campo comboBox: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:00,214 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 0
+2025-09-04 17:10:00,214 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 1
+2025-09-04 17:10:00,215 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 1 filas
+2025-09-04 17:10:00,215 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:10:00,215 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-04 17:10:00,215 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 1
+2025-09-04 17:10:00,215 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 1
+2025-09-04 17:10:00,215 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 1 filas
+2025-09-04 17:10:00,216 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:10:00,216 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-04 17:10:00,216 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 2
+2025-09-04 17:10:00,217 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 1
+2025-09-04 17:10:00,217 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 1 filas
+2025-09-04 17:10:00,217 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:10:00,218 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-04 17:10:00,218 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 3
+2025-09-04 17:10:00,218 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 1
+2025-09-04 17:10:00,218 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 1 filas
+2025-09-04 17:10:00,218 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:10:00,218 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-04 17:10:00,218 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: empresas_data, elementos: 1
+2025-09-04 17:10:00,219 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 1 filas
+2025-09-04 17:10:00,219 - controladores.controlador_autosave - INFO - 🔓 DIAGNÓSTICO: cargando_datos = FALSE - auto-guardado ACTIVADO
+2025-09-04 17:10:00,219 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Campos y tablas actualizados para: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,219 - controladores.Controlador_selector - INFO - 🎉 SELECTOR: Selección completada exitosamente - Contrato cargado: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,219 - controladores.Controlador_selector - INFO - 🏁 SELECTOR: Fin del procesamiento - Estado final: current_contract = 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:00,220 - controladores.controlador_fases_documentos - WARNING - [ControladorFases] ⚠️ No se encontraron datos para OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:03,501 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:10:03,502 - controladores.controlador_autosave - INFO - 📊 DIAGNÓSTICO: Guardando empresas para contrato: 'OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES'
+2025-09-04 17:10:03,502 - controladores.controlador_autosave - INFO - 📊 DIAGNÓSTICO: Extraídas 1 empresas de la tabla
+2025-09-04 17:10:03,504 - controladores.controlador_json - INFO - Escritura realizada en: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:10:03,504 - controladores.controlador_json - INFO - Se guardó en campo empresas: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-04 17:10:03,505 - controladores.controlador_json - INFO - Empresas guardadas: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES → 1 empresas
+2025-09-04 17:10:03,505 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Empresas guardadas exitosamente
+2025-09-04 17:32:02,336 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:32:02,730 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:32:02,732 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] [!] Gestor unificado no disponible
+2025-09-04 17:32:02,735 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Tracker de documentos configurado
+2025-09-04 17:32:02,736 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:32:02,743 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controlador de facturas directas inicializado
+2025-09-04 17:32:04,122 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:32:04,123 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:32:04,124 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:32:04,142 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI
+2025-09-04 17:32:04,148 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:32:04,152 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Iniciando configuración auto-guardado completo
+2025-09-04 17:32:04,158 - controladores.controlador_autosave - INFO - ⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado
+2025-09-04 17:32:04,159 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Configurando auto-guardado de tablas
+2025-09-04 17:32:04,160 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwEmpresas configurada para auto-guardado
+2025-09-04 17:32:04,160 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwOfertas configurada para auto-guardado
+2025-09-04 17:32:04,160 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Configuración auto-guardado completo terminada
+2025-09-04 17:32:04,166 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:32:04,167 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:32:04,167 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:32:04,193 - controladores.controlador_eventos_ui - INFO - Controlador de cálculos conectado
+2025-09-04 17:32:04,236 - controladores.controlador_eventos_ui - INFO - Setup de eventos completado exitosamente
+2025-09-04 17:32:04,244 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Inicializado con 11 fases configuradas
+2025-09-04 17:32:04,266 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ 0 campos de firmado conectados
+2025-09-04 17:32:05,239 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-04 17:32:13,222 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:32:13,222 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: No hay contrato actual
+2025-09-04 17:33:05,590 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:33:05,787 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:33:05,787 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] [!] Gestor unificado no disponible
+2025-09-04 17:33:05,788 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Tracker de documentos configurado
+2025-09-04 17:33:05,789 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:33:05,790 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controlador de facturas directas inicializado
+2025-09-04 17:33:07,309 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:33:07,310 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:33:07,311 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:33:07,333 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI
+2025-09-04 17:33:07,339 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:33:07,342 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Iniciando configuración auto-guardado completo
+2025-09-04 17:33:07,347 - controladores.controlador_autosave - INFO - ⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado
+2025-09-04 17:33:07,348 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Configurando auto-guardado de tablas
+2025-09-04 17:33:07,349 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwEmpresas configurada para auto-guardado
+2025-09-04 17:33:07,349 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwOfertas configurada para auto-guardado
+2025-09-04 17:33:07,350 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Configuración auto-guardado completo terminada
+2025-09-04 17:33:07,359 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:33:07,359 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:33:07,360 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:33:07,379 - controladores.controlador_eventos_ui - INFO - Controlador de cálculos conectado
+2025-09-04 17:33:07,389 - controladores.controlador_eventos_ui - INFO - Setup de eventos completado exitosamente
+2025-09-04 17:33:07,393 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Inicializado con 11 fases configuradas
+2025-09-04 17:33:07,415 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ 0 campos de firmado conectados
+2025-09-04 17:33:08,390 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-04 17:33:09,971 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:33:09,972 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: No hay contrato actual
+2025-09-04 17:34:18,178 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:34:18,282 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:34:18,283 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] [!] Gestor unificado no disponible
+2025-09-04 17:34:18,283 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Tracker de documentos configurado
+2025-09-04 17:34:18,284 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:34:18,285 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controlador de facturas directas inicializado
+2025-09-04 17:34:19,390 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:34:19,391 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:34:19,391 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:34:19,399 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI
+2025-09-04 17:34:19,401 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 17:34:19,402 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Iniciando configuración auto-guardado completo
+2025-09-04 17:34:19,405 - controladores.controlador_autosave - INFO - ⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado
+2025-09-04 17:34:19,405 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Configurando auto-guardado de tablas
+2025-09-04 17:34:19,406 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwEmpresas configurada para auto-guardado
+2025-09-04 17:34:19,406 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwOfertas configurada para auto-guardado
+2025-09-04 17:34:19,406 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Configuración auto-guardado completo terminada
+2025-09-04 17:34:19,412 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:34:19,413 - controladores.controlador_json - INFO - Inicializado con archivo: f:\GesConAdif\basedatos\BaseDatos.json
+2025-09-04 17:34:19,413 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 17:34:19,431 - controladores.controlador_eventos_ui - INFO - Controlador de cálculos conectado
+2025-09-04 17:34:19,442 - controladores.controlador_eventos_ui - INFO - Setup de eventos completado exitosamente
+2025-09-04 17:34:19,446 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Inicializado con 11 fases configuradas
+2025-09-04 17:34:19,466 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ 0 campos de firmado conectados
+2025-09-04 17:34:20,444 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-04 17:34:21,170 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-04 17:34:21,171 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: No hay contrato actual
