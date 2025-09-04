@@ -1,0 +1,307 @@
+2025-09-04 09:35:58,370 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:35:59,714 - controladores.controlador_json - INFO - Inicializado con archivo: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:35:59,717 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] [!] Gestor unificado no disponible
+2025-09-04 09:35:59,783 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Tracker de documentos configurado
+2025-09-04 09:35:59,786 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:35:59,805 - controladores.controlador_facturas_directas - INFO - Carpeta PDFs creada: F:\GesConAdif\dist\generador_actas\pdfactura directa
+2025-09-04 09:35:59,808 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controlador de facturas directas inicializado
+2025-09-04 09:36:04,127 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:04,130 - controladores.controlador_json - INFO - Inicializado con archivo: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:04,131 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 09:36:04,197 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI
+2025-09-04 09:36:04,215 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:36:04,258 - controladores.controlador_autosave - INFO - ⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado
+2025-09-04 09:36:04,316 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:04,323 - controladores.controlador_json - INFO - Inicializado con archivo: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:04,324 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-04 09:36:04,475 - controladores.controlador_eventos_ui - INFO - Controlador de cálculos conectado
+2025-09-04 09:36:04,538 - controladores.controlador_eventos_ui - INFO - Setup de eventos completado exitosamente
+2025-09-04 09:36:04,563 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Inicializado con 11 fases configuradas
+2025-09-04 09:36:04,756 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ 0 campos de firmado conectados
+2025-09-04 09:36:05,676 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-04 09:36:07,886 - controladores.Controlador_selector - INFO - 🎯 SELECTOR: Usuario seleccionó contrato: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:07,887 - controladores.Controlador_selector - INFO - 📊 SELECTOR: Contrato actual antes del cambio: 'None'
+2025-09-04 09:36:07,887 - controladores.Controlador_selector - INFO - 🗂️ SELECTOR: Contratos disponibles en mapping: ['OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES', 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.', 'Mantenimiento correctivo Preventivo en Algodor Y Aranjuez', 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO']
+2025-09-04 09:36:07,887 - controladores.Controlador_selector - INFO - 🔍 SELECTOR: Datos encontrados para 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO': True
+2025-09-04 09:36:07,888 - controladores.Controlador_selector - INFO - 📋 SELECTOR: Nombre completo del contrato: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:07,889 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Datos JSON recargados exitosamente para: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:07,889 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Tipo de actuación: 'Mantenimiento'
+2025-09-04 09:36:07,889 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Número de expediente: 'Sin expediente'
+2025-09-04 09:36:07,890 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Contrato establecido como actual: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:07,906 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:36:46,458 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] 🔄 Cargando widgets para: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:46,533 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:36:46,547 - controladores.Controlador_selector - INFO - 🔄 SELECTOR: Llamando a controlador_autosave.actualizar() para: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,548 - controladores.controlador_autosave - INFO - ✅ AUTOSAVE: Justificación de límites actualizada para: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:46,551 - controladores.controlador_autosave - INFO - Cargando campo fechaInforme: 2025-09-01
+2025-09-04 09:36:46,551 - controladores.controlador_autosave - INFO - Cargando campo fechaProyecto: 2025-09-01
+2025-09-04 09:36:46,551 - controladores.controlador_autosave - INFO - Cargando campo fechaReplanteo: 2025-09-01
+2025-09-04 09:36:46,552 - controladores.controlador_autosave - INFO - Cargando campo fechaLegalFin: 2025-09-01
+2025-09-04 09:36:46,552 - controladores.controlador_autosave - INFO - Cargando campo fechaFinal: 2025-09-01
+2025-09-04 09:36:46,552 - controladores.controlador_autosave - INFO - Cargando campo fechaRecepcion1: 2025-09-01
+2025-09-04 09:36:46,552 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacion: 0.0
+2025-09-04 09:36:46,552 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacionIva: 959.07
+2025-09-04 09:36:46,552 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacionTotal: 5526.07
+2025-09-04 09:36:46,552 - controladores.controlador_autosave - INFO - Cargando campo empresaAdjudicada: Grupo Abeto Servicios Integrados S.A
+2025-09-04 09:36:46,552 - controladores.controlador_autosave - INFO - Cargando campo contratistaCIF: A78260544
+2025-09-04 09:36:46,552 - controladores.controlador_autosave - INFO - Cargando campo fechaAdjudicacion: 2025-09-01
+2025-09-04 09:36:46,552 - controladores.controlador_autosave - INFO - Cargando campo licitacion15: 6850.50
+2025-09-04 09:36:46,553 - controladores.controlador_autosave - INFO - Cargando campo licitacion07: 3196.90
+2025-09-04 09:36:46,553 - controladores.controlador_autosave - INFO - Cargando campo diaDeApertura: 2025-09-01
+2025-09-04 09:36:46,553 - controladores.controlador_autosave - INFO - Cargando campo certBase: 0.0
+2025-09-04 09:36:46,553 - controladores.controlador_autosave - INFO - Cargando campo fechaRecepcion: 2025-09-01
+2025-09-04 09:36:46,553 - controladores.controlador_autosave - INFO - Cargando campo BaseAnualidad1: 1522.33
+2025-09-04 09:36:46,553 - controladores.controlador_autosave - INFO - Cargando campo IvaAnualidad1: 319.69
+2025-09-04 09:36:46,553 - controladores.controlador_autosave - INFO - Cargando campo TotalAnualidad1: 1842.02
+2025-09-04 09:36:46,553 - controladores.controlador_autosave - INFO - Cargando campo BaseAnualidad2: 3044.67
+2025-09-04 09:36:46,554 - controladores.controlador_autosave - INFO - Cargando campo IvaAnualidad2: 639.38
+2025-09-04 09:36:46,554 - controladores.controlador_autosave - INFO - Cargando campo TotalAnualidad2: 3684.05
+2025-09-04 09:36:46,554 - controladores.controlador_autosave - INFO - Cargando campo fechaContrato: 2025-09-03
+2025-09-04 09:36:46,554 - controladores.controlador_autosave - INFO - Cargando campo justificacion: Se necesita la contratación de este servicio por ser las zonas que gestiona la Gerencia de Área Centro de acceso publico , donde se acumula suciedad y desperdicios.
+2025-09-04 09:36:46,554 - controladores.controlador_autosave - INFO - Cargando campo insuficiencia: La necesidad surge de las propias labores de gestión de esta Gerencia y cubre las necesidades de los inmuebles, no necesitándose por tanto más contratos semejantes en el mismo.
+2025-09-04 09:36:46,556 - controladores.controlador_autosave - INFO - Cargando campo justificacionLimites: El contrato es por importe de 0.00 euros.
+2025-09-04 09:36:46,557 - controladores.controlador_autosave - INFO - Cargando campo regimenPagos: mucho
+2025-09-04 09:36:46,558 - controladores.controlador_autosave - INFO - Cargando campo OrganoSolicitaOfertas: fernandez
+2025-09-04 09:36:46,558 - controladores.controlador_autosave - INFO - Cargando campo organoContratacion: pablo
+2025-09-04 09:36:46,558 - controladores.controlador_autosave - INFO - Cargando campo organoContratacion2: martin
+2025-09-04 09:36:46,558 - controladores.controlador_autosave - INFO - Cargando campo nombreObra: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:46,558 - controladores.controlador_autosave - INFO - Cargando campo plazoEjecucion: 9
+2025-09-04 09:36:46,558 - controladores.controlador_autosave - INFO - Cargando campo basePresupuesto: 36000.0
+2025-09-04 09:36:46,558 - controladores.controlador_autosave - INFO - Cargando campo ivaPresupuestoBase: 7560.00
+2025-09-04 09:36:46,559 - controladores.controlador_autosave - INFO - Cargando campo totalPresupuestoBase: 43560.00
+2025-09-04 09:36:46,559 - controladores.controlador_autosave - INFO - Cargando campo comboBox: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:46,567 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 4567.00, licitacion15 6850.50, licitacion07 3196.90
+2025-09-04 09:36:46,567 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 6850.50
+2025-09-04 09:36:46,567 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 3196.90
+2025-09-04 09:36:46,571 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:36:46,571 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 4567.00, licitacion15 6850.50, licitacion07 3196.90
+2025-09-04 09:36:46,571 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 6850.50
+2025-09-04 09:36:46,571 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 3196.90
+2025-09-04 09:36:46,574 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:36:46,576 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 4567.00, licitacion15 6850.50, licitacion07 3196.90
+2025-09-04 09:36:46,577 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 6850.50
+2025-09-04 09:36:46,577 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 3196.90
+2025-09-04 09:36:46,581 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:36:46,581 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 4567.00, licitacion15 6850.50, licitacion07 3196.90
+2025-09-04 09:36:46,581 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 6850.50
+2025-09-04 09:36:46,581 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 3196.90
+2025-09-04 09:36:46,586 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:36:46,587 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 4567.00, licitacion15 6850.50, licitacion07 3196.90
+2025-09-04 09:36:46,588 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 6850.50
+2025-09-04 09:36:46,588 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 3196.90
+2025-09-04 09:36:46,593 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:36:46,594 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Campos y tablas actualizados para: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,594 - controladores.Controlador_selector - INFO - 🎉 SELECTOR: Selección completada exitosamente - Contrato cargado: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,594 - controladores.Controlador_selector - INFO - 🏁 SELECTOR: Fin del procesamiento - Estado final: current_contract = 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,594 - controladores.Controlador_selector - INFO - 🎯 SELECTOR: Usuario seleccionó contrato: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,594 - controladores.Controlador_selector - INFO - 📊 SELECTOR: Contrato actual antes del cambio: 'None'
+2025-09-04 09:36:46,595 - controladores.Controlador_selector - INFO - 🗂️ SELECTOR: Contratos disponibles en mapping: ['OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES', 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.', 'Mantenimiento correctivo Preventivo en Algodor Y Aranjuez', 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO']
+2025-09-04 09:36:46,595 - controladores.Controlador_selector - INFO - 🔍 SELECTOR: Datos encontrados para 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO': True
+2025-09-04 09:36:46,596 - controladores.Controlador_selector - INFO - 📋 SELECTOR: Nombre completo del contrato: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,597 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Datos JSON recargados exitosamente para: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,597 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Tipo de actuación: 'Mantenimiento'
+2025-09-04 09:36:46,597 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Número de expediente: 'Sin expediente'
+2025-09-04 09:36:46,599 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Contrato establecido como actual: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,600 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:36:46,615 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:46,615 - controladores.controlador_json - INFO - Se guardó en campo justificacionLimites: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:46,615 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] 🔄 Cargando widgets para: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:46,637 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:46,637 - controladores.controlador_json - INFO - Se guardó en campo fechaContrato: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:46,664 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:36:46,760 - controladores.Controlador_selector - INFO - 🔄 SELECTOR: Llamando a controlador_autosave.actualizar() para: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,762 - controladores.controlador_autosave - INFO - ✅ AUTOSAVE: Justificación de límites actualizada para: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:46,766 - controladores.controlador_autosave - INFO - Cargando campo fechaInforme: 2025-09-01
+2025-09-04 09:36:46,767 - controladores.controlador_autosave - INFO - Cargando campo fechaProyecto: 2025-09-01
+2025-09-04 09:36:46,767 - controladores.controlador_autosave - INFO - Cargando campo fechaReplanteo: 2025-09-01
+2025-09-04 09:36:46,768 - controladores.controlador_autosave - INFO - Cargando campo fechaLegalFin: 2025-09-01
+2025-09-04 09:36:46,769 - controladores.controlador_autosave - INFO - Cargando campo fechaFinal: 2025-09-01
+2025-09-04 09:36:46,770 - controladores.controlador_autosave - INFO - Cargando campo fechaRecepcion1: 2025-09-01
+2025-09-04 09:36:46,770 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacion: 4567.00
+2025-09-04 09:36:46,771 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacionIva: 959.07
+2025-09-04 09:36:46,772 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacionTotal: 5526.07
+2025-09-04 09:36:46,772 - controladores.controlador_autosave - INFO - Cargando campo empresaAdjudicada: Grupo Abeto Servicios Integrados S.A
+2025-09-04 09:36:46,773 - controladores.controlador_autosave - INFO - Cargando campo contratistaCIF: A78260544
+2025-09-04 09:36:46,773 - controladores.controlador_autosave - INFO - Cargando campo numEmpresasPresentadas: 1
+2025-09-04 09:36:46,774 - controladores.controlador_autosave - INFO - Cargando campo numEmpresasSolicitadas: 5
+2025-09-04 09:36:46,774 - controladores.controlador_autosave - INFO - Cargando campo fechaAdjudicacion: 2025-09-01
+2025-09-04 09:36:46,775 - controladores.controlador_autosave - INFO - Cargando campo licitacion15: 6850.50
+2025-09-04 09:36:46,775 - controladores.controlador_autosave - INFO - Cargando campo licitacion07: 3196.90
+2025-09-04 09:36:46,775 - controladores.controlador_autosave - INFO - Cargando campo diaDeApertura: 2025-09-01
+2025-09-04 09:36:46,776 - controladores.controlador_autosave - INFO - Cargando campo certBase: 0.0
+2025-09-04 09:36:46,776 - controladores.controlador_autosave - INFO - Cargando campo fechaRecepcion: 2025-09-01
+2025-09-04 09:36:46,776 - controladores.controlador_autosave - INFO - Cargando campo BaseAnualidad1: 1522.33
+2025-09-04 09:36:46,776 - controladores.controlador_autosave - INFO - Cargando campo IvaAnualidad1: 319.69
+2025-09-04 09:36:46,777 - controladores.controlador_autosave - INFO - Cargando campo TotalAnualidad1: 1842.02
+2025-09-04 09:36:46,777 - controladores.controlador_autosave - INFO - Cargando campo BaseAnualidad2: 3044.67
+2025-09-04 09:36:46,777 - controladores.controlador_autosave - INFO - Cargando campo IvaAnualidad2: 639.38
+2025-09-04 09:36:46,777 - controladores.controlador_autosave - INFO - Cargando campo TotalAnualidad2: 3684.05
+2025-09-04 09:36:46,778 - controladores.controlador_autosave - INFO - Cargando campo fechaContrato: 2025-09-03
+2025-09-04 09:36:46,778 - controladores.controlador_autosave - INFO - Cargando campo justificacion: Se necesita la contratación de este servicio por ser las zonas que gestiona la Gerencia de Área Centro de acceso publico , donde se acumula suciedad y desperdicios.
+2025-09-04 09:36:46,779 - controladores.controlador_autosave - INFO - Cargando campo insuficiencia: La necesidad surge de las propias labores de gestión de esta Gerencia y cubre las necesidades de los inmuebles, no necesitándose por tanto más contratos semejantes en el mismo.
+2025-09-04 09:36:46,781 - controladores.controlador_autosave - INFO - Cargando campo justificacionLimites: El contrato es por importe de 36,000.00 euros.
+2025-09-04 09:36:46,781 - controladores.controlador_autosave - INFO - Cargando campo regimenPagos: mucho
+2025-09-04 09:36:46,781 - controladores.controlador_autosave - INFO - Cargando campo OrganoSolicitaOfertas: fernandez
+2025-09-04 09:36:46,781 - controladores.controlador_autosave - INFO - Cargando campo organoContratacion: pablo
+2025-09-04 09:36:46,782 - controladores.controlador_autosave - INFO - Cargando campo organoContratacion2: martin
+2025-09-04 09:36:46,782 - controladores.controlador_autosave - INFO - Cargando campo nombreObra: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:46,782 - controladores.controlador_autosave - INFO - Cargando campo plazoEjecucion: 9
+2025-09-04 09:36:46,782 - controladores.controlador_autosave - INFO - Cargando campo basePresupuesto: 36000.0
+2025-09-04 09:36:46,782 - controladores.controlador_autosave - INFO - Cargando campo ivaPresupuestoBase: 7560.00
+2025-09-04 09:36:46,783 - controladores.controlador_autosave - INFO - Cargando campo totalPresupuestoBase: 43560.00
+2025-09-04 09:36:46,783 - controladores.controlador_autosave - INFO - Cargando campo comboBox: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:46,795 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 4567.00, licitacion15 6850.50, licitacion07 3196.90
+2025-09-04 09:36:46,795 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 6850.50
+2025-09-04 09:36:46,796 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 3196.90
+2025-09-04 09:36:46,798 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:36:46,800 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 4567.00, licitacion15 6850.50, licitacion07 3196.90
+2025-09-04 09:36:46,800 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 6850.50
+2025-09-04 09:36:46,800 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 3196.90
+2025-09-04 09:36:46,802 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:36:46,803 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 4567.00, licitacion15 6850.50, licitacion07 3196.90
+2025-09-04 09:36:46,803 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 6850.50
+2025-09-04 09:36:46,803 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 3196.90
+2025-09-04 09:36:46,806 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:36:46,808 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 4567.00, licitacion15 6850.50, licitacion07 3196.90
+2025-09-04 09:36:46,808 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 6850.50
+2025-09-04 09:36:46,808 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 3196.90
+2025-09-04 09:36:46,811 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:36:46,811 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 4567.00, licitacion15 6850.50, licitacion07 3196.90
+2025-09-04 09:36:46,812 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 6850.50
+2025-09-04 09:36:46,813 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 3196.90
+2025-09-04 09:36:46,822 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:36:46,822 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Campos y tablas actualizados para: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,822 - controladores.Controlador_selector - INFO - 🎉 SELECTOR: Selección completada exitosamente - Contrato cargado: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,823 - controladores.Controlador_selector - INFO - 🏁 SELECTOR: Fin del procesamiento - Estado final: current_contract = 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:46,823 - controladores.controlador_fases_documentos - WARNING - [ControladorFases] ⚠️ No se encontraron datos para LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:54,616 - controladores.controlador_json - INFO - Creando contrato con carpetas...
+2025-09-04 09:36:54,616 - controladores.controlador_json - INFO - Creando nuevo contrato: ewwewe
+2025-09-04 09:36:54,617 - controladores.controlador_json - INFO - Nombre 'ewwewe' disponible para crear
+2025-09-04 09:36:54,618 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:54,619 - controladores.controlador_json - INFO - Contrato creado exitosamente: ewwewe
+2025-09-04 09:36:54,625 - controladores.controlador_json - INFO - Carpetas creadas en: F:\GesConAdif\dist\generador_actas\obras\ewwewe
+2025-09-04 09:36:54,637 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:54,637 - controladores.controlador_json - INFO - Se guardó en campo justificacionLimites: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:54,648 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:54,649 - controladores.controlador_json - INFO - Se guardó en campo empresas: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:36:54,650 - controladores.controlador_json - INFO - Empresas guardadas: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO → 5 empresas
+2025-09-04 09:36:54,650 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] 🔄 Cargando widgets para: Sin nombre
+2025-09-04 09:36:54,718 - controladores.Controlador_selector - INFO - 🎯 SELECTOR: Usuario seleccionó contrato: 'ewwewe'
+2025-09-04 09:36:54,718 - controladores.Controlador_selector - INFO - 📊 SELECTOR: Contrato actual antes del cambio: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:54,719 - controladores.Controlador_selector - INFO - 🗂️ SELECTOR: Contratos disponibles en mapping: ['OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES', 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.', 'Mantenimiento correctivo Preventivo en Algodor Y Aranjuez', 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO']
+2025-09-04 09:36:54,722 - controladores.Controlador_selector - INFO - 🔍 SELECTOR: Datos encontrados para 'ewwewe': False
+2025-09-04 09:36:54,723 - controladores.Controlador_selector - ERROR - ❌ SELECTOR: No se encontró información para el contrato 'ewwewe'
+2025-09-04 09:36:54,730 - controladores.Controlador_selector - INFO - 🏁 SELECTOR: Fin del procesamiento - Estado final: current_contract = 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:54,731 - controladores.Controlador_selector - INFO - 🎯 SELECTOR: Usuario seleccionó contrato: 'ewwewe'
+2025-09-04 09:36:54,732 - controladores.Controlador_selector - INFO - 📊 SELECTOR: Contrato actual antes del cambio: 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO'
+2025-09-04 09:36:54,734 - controladores.Controlador_selector - INFO - 🗂️ SELECTOR: Contratos disponibles en mapping: ['OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES', 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.', 'Mantenimiento correctivo Preventivo en Algodor Y Aranjuez', 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO', 'ewwewe']
+2025-09-04 09:36:54,735 - controladores.Controlador_selector - INFO - 🔍 SELECTOR: Datos encontrados para 'ewwewe': True
+2025-09-04 09:36:54,736 - controladores.Controlador_selector - INFO - 📋 SELECTOR: Nombre completo del contrato: 'ewwewe'
+2025-09-04 09:36:54,741 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Datos JSON recargados exitosamente para: 'ewwewe'
+2025-09-04 09:36:54,742 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Tipo de actuación: 'serv_mantenimiento'
+2025-09-04 09:36:54,744 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Número de expediente: 'Sin expediente'
+2025-09-04 09:36:54,750 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Contrato establecido como actual: 'ewwewe'
+2025-09-04 09:36:54,753 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:36:54,767 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] 🔄 Cargando widgets para: ewwewe
+2025-09-04 09:36:54,792 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:36:54,829 - controladores.Controlador_selector - WARNING - [ContractManager] ⚠️ Tipo no válido: serv_mantenimiento, usando 'Servicios' por defecto
+2025-09-04 09:36:54,829 - controladores.Controlador_selector - INFO - 🔄 SELECTOR: Llamando a controlador_autosave.actualizar() para: 'ewwewe'
+2025-09-04 09:36:54,830 - controladores.controlador_autosave - INFO - ✅ AUTOSAVE: Justificación de límites actualizada para: ewwewe
+2025-09-04 09:36:54,832 - controladores.controlador_autosave - INFO - Cargando campo justificacionLimites: El contrato de la obra es por importe de 0 euros.
+2025-09-04 09:36:54,832 - controladores.controlador_autosave - INFO - Cargando campo nombreObra: ewwewe
+2025-09-04 09:36:54,832 - controladores.controlador_autosave - INFO - Cargando campo plazoEjecucion: 30
+2025-09-04 09:36:54,832 - controladores.controlador_autosave - INFO - Cargando campo basePresupuesto: 0
+2025-09-04 09:36:54,832 - controladores.controlador_autosave - INFO - Cargando campo ivaPresupuestoBase: 0.0
+2025-09-04 09:36:54,832 - controladores.controlador_autosave - INFO - Cargando campo totalPresupuestoBase: 0.0
+2025-09-04 09:36:54,833 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Campos y tablas actualizados para: 'ewwewe'
+2025-09-04 09:36:54,833 - controladores.Controlador_selector - INFO - 🎉 SELECTOR: Selección completada exitosamente - Contrato cargado: 'ewwewe'
+2025-09-04 09:36:54,833 - controladores.Controlador_selector - INFO - 🏁 SELECTOR: Fin del procesamiento - Estado final: current_contract = 'ewwewe'
+2025-09-04 09:36:54,833 - controladores.controlador_fases_documentos - WARNING - [ControladorFases] ⚠️ No se encontraron datos para ewwewe
+2025-09-04 09:36:54,841 - controladores.controlador_autosave - INFO - ✅ AUTOSAVE: Justificación de límites actualizada para: ewwewe
+2025-09-04 09:36:54,844 - controladores.controlador_autosave - INFO - Cargando campo justificacionLimites: El contrato de la obra es por importe de 0 euros.
+2025-09-04 09:36:54,845 - controladores.controlador_autosave - INFO - Cargando campo nombreObra: ewwewe
+2025-09-04 09:36:54,845 - controladores.controlador_autosave - INFO - Cargando campo plazoEjecucion: 30
+2025-09-04 09:36:54,846 - controladores.controlador_autosave - INFO - Cargando campo basePresupuesto: 0
+2025-09-04 09:36:54,846 - controladores.controlador_autosave - INFO - Cargando campo ivaPresupuestoBase: 0.0
+2025-09-04 09:36:54,846 - controladores.controlador_autosave - INFO - Cargando campo totalPresupuestoBase: 0.0
+2025-09-04 09:36:59,022 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:59,023 - controladores.controlador_json - INFO - Se guardó en campo justificacionLimites: ewwewe
+2025-09-04 09:36:59,071 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:36:59,072 - controladores.controlador_json - INFO - Se guardó en campo organoContratacion: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:37:00,240 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:00,242 - controladores.controlador_json - INFO - Se guardó en campo organoContratacion2: ewwewe
+2025-09-04 09:37:00,280 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:00,281 - controladores.controlador_json - INFO - Se guardó en campo organoContratacion2: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:37:01,786 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:01,788 - controladores.controlador_json - INFO - Se guardó en campo OrganoSolicitaOfertas: ewwewe
+2025-09-04 09:37:01,822 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:01,823 - controladores.controlador_json - INFO - Se guardó en campo OrganoSolicitaOfertas: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:37:03,051 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:03,053 - controladores.controlador_json - INFO - Se guardó en campo objeto: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:37:04,348 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:04,351 - controladores.controlador_json - INFO - Se guardó en campo justificacion: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:37:05,969 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:05,969 - controladores.controlador_json - INFO - Se guardó en campo insuficiencia: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:37:07,094 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:07,095 - controladores.controlador_json - INFO - Se guardó en campo regimenPagos: ewwewe
+2025-09-04 09:37:07,131 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:07,132 - controladores.controlador_json - INFO - Se guardó en campo regimenPagos: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:37:19,229 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:19,231 - controladores.controlador_json - INFO - Se guardó en campo ivaPresupuestoBase: ewwewe
+2025-09-04 09:37:19,278 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:19,278 - controladores.controlador_json - INFO - Se guardó en campo empresas: ewwewe
+2025-09-04 09:37:19,279 - controladores.controlador_json - INFO - Empresas guardadas: ewwewe → 1 empresas
+2025-09-04 09:37:19,290 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:19,291 - controladores.controlador_json - INFO - Se guardó en campo basePresupuesto: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:37:42,731 - controladores.controlador_calculos - INFO - Auto-calculando licitaciones desde ofertas: precio mínimo 3434.00, licitacion15 5151.00, licitacion07 2403.80
+2025-09-04 09:37:42,733 - controladores.controlador_calculos - INFO - licitacion15 auto-establecido: 5151.00
+2025-09-04 09:37:42,735 - controladores.controlador_calculos - INFO - licitacion07 auto-establecido: 2403.80
+2025-09-04 09:37:42,740 - controladores.controlador_autosave - ERROR - Error guardando ofertas en empresas: 'ControladorAutoGuardado' object has no attribute '_obtener_nombre_contrato_actual'
+2025-09-04 09:37:46,591 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:46,592 - controladores.controlador_json - INFO - Se guardó en campo numEmpresasPresentadas: ewwewe
+2025-09-04 09:37:48,066 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:48,068 - controladores.controlador_json - INFO - Se guardó en campo BaseAnualidad1: ewwewe
+2025-09-04 09:37:48,219 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:48,220 - controladores.controlador_json - INFO - Se guardó en campo BaseAnualidad1: ewwewe
+2025-09-04 09:37:48,376 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:48,376 - controladores.controlador_json - INFO - Se guardó en campo BaseAnualidad1: ewwewe
+2025-09-04 09:37:48,562 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:48,562 - controladores.controlador_json - INFO - Se guardó en campo BaseAnualidad1: ewwewe
+2025-09-04 09:37:48,740 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:48,741 - controladores.controlador_json - INFO - Se guardó en campo BaseAnualidad1: ewwewe
+2025-09-04 09:37:48,907 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:48,911 - controladores.controlador_json - INFO - Se guardó en campo BaseAnualidad1: ewwewe
+2025-09-04 09:37:49,082 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:49,083 - controladores.controlador_json - INFO - Se guardó en campo BaseAnualidad1: ewwewe
+2025-09-04 09:37:49,265 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:49,267 - controladores.controlador_json - INFO - Se guardó en campo BaseAnualidad1: ewwewe
+2025-09-04 09:37:49,454 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:49,455 - controladores.controlador_json - INFO - Se guardó en campo BaseAnualidad1: ewwewe
+2025-09-04 09:37:56,616 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:37:56,617 - controladores.controlador_json - INFO - Se guardó en campo fechaContrato: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:38:33,851 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] ⚠️ Generación cancelada por validación
+2025-09-04 09:39:06,354 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:39:06,356 - controladores.controlador_json - INFO - Se guardó en campo objeto: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:39:08,402 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:39:08,403 - controladores.controlador_json - INFO - Se guardó en campo justificacion: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:39:10,069 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:39:10,070 - controladores.controlador_json - INFO - Se guardó en campo insuficiencia: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:39:11,824 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:39:11,826 - controladores.controlador_json - INFO - Se guardó en campo regimenPagos: ewwewe
+2025-09-04 09:39:11,834 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\dist\generador_actas\_internal\BaseDatos.json
+2025-09-04 09:39:11,835 - controladores.controlador_json - INFO - Se guardó en campo regimenPagos: LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO
+2025-09-04 09:39:15,194 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] ⚠️ Generación cancelada por validación
+2025-09-04 09:39:29,595 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Validación pasada, generando documento
+2025-09-04 09:39:29,910 - controladores.controlador_documentos - INFO - [ControladorDocumentos] 🎯 Actualizando fase durante generación: acta_inicio
+2025-09-04 09:39:29,910 - controladores.controlador_fases_documentos - INFO - [ControladorFases] 📥 Recibiendo notificación: acta_inicio para contrato: ewwewe
+2025-09-04 09:39:29,911 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Fase encontrada: inicio
+2025-09-04 09:39:29,911 - controladores.controlador_fases_documentos - INFO - [ControladorFases] 💾 Marcando documento como generado: 2025-09-04
+2025-09-04 09:39:29,916 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Documento acta_inicio marcado como generado en fase inicio
+2025-09-04 09:39:29,917 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Fase actualizada durante generación: acta_inicio
+2025-09-04 09:39:29,918 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:39:29,921 - controladores.controlador_documentos - INFO - [ControladorDocumentos] 📄 Usando plantilla: plantilla_acta_inicio_servicio.docx
+2025-09-04 09:39:29,923 - controladores.controlador_routes - INFO - Inicializado
+2025-09-04 09:39:31,377 - controladores.controlador_documentos - WARNING - [ControladorDocumentos] ⚠️ Usuario eligió continuar con 3 campos vacíos
+2025-09-04 09:39:31,733 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Archivo generado: F:\GesConAdif\dist\generador_actas\obras\ewwewe\04-documentos-sin-firmar\Acta_Inicio.docx
+2025-09-04 09:39:48,635 - controladores.controlador_documentos - INFO - [ControladorDocumentos] 📄 Generando PDF automáticamente para: F:\GesConAdif\dist\generador_actas\obras\ewwewe\04-documentos-sin-firmar\Acta_Inicio.docx
+2025-09-04 09:40:01,975 - controladores.controlador_documentos - INFO - [ControladorDocumentos] 📄 Abriendo PDF automáticamente: F:\GesConAdif\dist\generador_actas\obras\ewwewe\04-documentos-sin-firmar\Acta_Inicio.pdf
