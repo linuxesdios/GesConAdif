@@ -150,7 +150,7 @@ def compilar_con_mejoras(python_exe):
     """Compila con configuración mejorada"""
     print(f"\n🚀 Compilando con mejoras usando: {python_exe}")
     
-    main_file = "main_py_optimized.py" if os.path.exists("main_py_optimized.py") else "main_py.py"
+    main_file = "main_py_optimized.py"  # USAR SIEMPRE LA VERSIÓN OPTIMIZADA PARA EXE
     
     # Buscar icono
     icono_encontrado = None
@@ -175,7 +175,7 @@ def compilar_con_mejoras(python_exe):
         "--add-data=controladores;controladores",
         "--add-data=ui;ui", 
         "--add-data=plantillas;plantillas",
-        "--add-data=images;images",
+        "--add-data=images;images",  # Incluye adif.png e icono.ico
         "--add-data=firmas.py;.",
         
         # LIBRERÍAS ESENCIALES + CONTROLADORES FALTANTES
@@ -344,9 +344,7 @@ def reorganizar_estructura_mejorada(backups):
     # 4. CREAR SCRIPT DE VALIDACIÓN
     crear_script_validacion(dist_dir)
     
-    # 5. COMPILAR TAMBIÉN VERSIÓN CON CONSOLA
-    print("\n🖥️ Compilando versión con consola...")
-    crear_version_consola()
+    # 5. NO COMPILAR VERSIÓN CONSOLA - Solo EXE normal
     
     return True
 
@@ -390,7 +388,9 @@ def validar_entorno():
         "_internal/BaseDatos.json",      # Base de datos principal
         "_internal/ui",                  # Carpeta UI (crítica)
         "_internal/plantillas",          # Plantillas de documentos
-        "_internal/controladores"        # Controladores
+        "_internal/controladores",       # Controladores
+        "_internal/images/adif.png",     # Logo ADIF para splash screen
+        "_internal/images/icono.ico"     # Icono de aplicación
     ]
     
     archivos_opcionales = [
@@ -561,7 +561,7 @@ def crear_validador_exe(script_path, internal_dir):
 def crear_version_consola():
     """Crea versión con consola para debug"""
     python_exe = activar_entorno_virtual()
-    main_file = "main_py_optimized.py" if os.path.exists("main_py_optimized.py") else "main_py.py"
+    main_file = "main_py_optimized.py"  # USAR SIEMPRE LA VERSIÓN OPTIMIZADA PARA EXE
     
     comando = [
         python_exe, "-m", "PyInstaller",
@@ -601,7 +601,6 @@ def verificar_estructura_final_mejorada():
     dist_dir = "dist/generador_actas"
     checks = {
         "generador_actas.exe": f"{dist_dir}/generador_actas.exe",
-        "generador_actas_console.exe": f"{dist_dir}/generador_actas_console.exe", 
         "_internal/": f"{dist_dir}/_internal",
         "BaseDatos.json": f"{dist_dir}/_internal/BaseDatos.json",
         "facturas_directas.json": f"{dist_dir}/_internal/facturas_directas.json",

@@ -480,7 +480,7 @@ class GestorJsonUnificado:
         except Exception as e:
             logger.error(f"Error en crear_contrato_nuevo: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False
     
     def crear_contrato_con_carpetas(self, datos_contrato: dict) -> tuple:
@@ -541,7 +541,7 @@ class GestorJsonUnificado:
         except Exception as e:
             logger.error(f"Error en crear_contrato_con_carpetas: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False, f"Error creando contrato: {e}"
     
     def clonar_contrato(self, nombre_origen, nuevo_nombre, opciones=None):

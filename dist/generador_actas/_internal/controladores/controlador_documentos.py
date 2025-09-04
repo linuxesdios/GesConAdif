@@ -16,8 +16,6 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 from PyQt5.QtWidgets import QMessageBox
 
-logger = logging.getLogger(__name__)
-
 from helpers_py import (
     resource_path, limpiar_nombre_archivo, formatear_numero_espanol
 )
@@ -234,7 +232,7 @@ class ControladorDocumentos:
         except Exception as e:
             logger.error(f"[ControladorDocumentos] ❌ Error actualizando fase durante generación: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def _notificar_documento_generado(self, documento_id: str, ruta_archivo: str):
         """Notificar al controlador de fases que se generó un documento"""
@@ -262,7 +260,7 @@ class ControladorDocumentos:
         except Exception as e:
             logger.error(f"[ControladorDocumentos] ⚠️ Error notificando fases: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def _detectar_tipo_documento(self, documento_id: str, ruta_archivo: str) -> str:
         """Detectar el tipo de documento basado en ID o ruta"""
@@ -517,7 +515,7 @@ class ControladorDocumentos:
         except Exception as e:
             logger.error(f"[ControladorDocumentos] ❌ Error en generar_acta_inicio: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             self._mostrar_error(f"Error inesperado generando Acta de Inicio: {str(e)}")
 
     def generar_cartas_invitacion(self, datos_contrato=None, empresas_lista=None):
@@ -625,7 +623,7 @@ class ControladorDocumentos:
         except Exception as e:
             logger.error(f"[ControladorDocumentos] ❌ Error en generar_contrato: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             self._mostrar_error(f"Error inesperado generando Contrato: {str(e)}")
 
     # =================== MÉTODOS AUXILIARES PARA GENERACIÓN ===================
@@ -685,7 +683,7 @@ class ControladorDocumentos:
             
             logger.error(f"[ControladorDocumentos] ❌ Excepción: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False
 
     def _generar_documento_con_sustitucion(self, tipo_funcion: str, contract_data: Dict[str, Any], nombre_archivo: str) -> bool:
@@ -830,7 +828,7 @@ class ControladorDocumentos:
         except Exception as e:
             logger.critical(f"[ControladorDocumentos] ❌ Error crítico procesando documento: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             
             error_msg = f"Error procesando documento:\n{str(e)}\n\nVerifica que:\n"
             error_msg += "• La plantilla no esté abierta en Word\n"
@@ -842,10 +840,10 @@ class ControladorDocumentos:
     def _obtener_empresas_lista(self, contract_data: Dict[str, Any]) -> List[Dict]:
         """Obtener lista de empresas del contrato"""
         try:
-           # print(f"[DEBUG] CONTRACT_DATA EMPRESAS: {contract_data.get('empresas', {})}")
+           # logger.info(f"[DEBUG] CONTRACT_DATA EMPRESAS: {contract_data.get('empresas', {})}")
             
             empresas = contract_data.get('empresas', {})
-           # print(f"[DEBUG] Tipo de empresas: {type(empresas)}")
+           # logger.info(f"[DEBUG] Tipo de empresas: {type(empresas)}")
             if isinstance(empresas, dict):
                 empresas_lista = empresas.get('empresa', [])
             elif isinstance(empresas, list):
@@ -853,7 +851,7 @@ class ControladorDocumentos:
             else:
                 empresas_lista = []
                 
-           # print(f"[DEBUG] EMPRESAS LISTA FINAL ({len(empresas_lista)}): {empresas_lista}")
+           # logger.info(f"[DEBUG] EMPRESAS LISTA FINAL ({len(empresas_lista)}): {empresas_lista}")
             return empresas_lista
             
         except Exception as e:
@@ -899,21 +897,21 @@ class ControladorDocumentos:
         """Verificar qué campos están vacíos o no existen - VERSION MEJORADA"""
         campos_vacios = []
         
-        #print(f"[DEBUG] 🔍 VERIFICANDO CAMPOS VACÍOS")
-        #print(f"[DEBUG] Variables en plantilla: {len(variables_plantilla)}")
-        #print(f"[DEBUG] Datos disponibles: {len(datos_disponibles)}")
+        #logger.debug(f"[DEBUG] VERIFICANDO CAMPOS VACÍOS")
+        #logger.info(f"[DEBUG] Variables en plantilla: {len(variables_plantilla)}")
+        #logger.info(f"[DEBUG] Datos disponibles: {len(datos_disponibles)}")
         
         for variable in variables_plantilla:
             # Ignorar marcadores especiales de tabla
             if variable.startswith('tabla-') or variable == 'tablaAnualidades':
                 continue
             
-            #print(f"[DEBUG] 🔎 Verificando variable: '{variable}'")
+            #logger.info(f"[DEBUG] 🔎 Verificando variable: '{variable}'")
             
             # Verificar si el campo no existe
             if variable not in datos_disponibles:
                 campos_vacios.append(f"{variable} (no existe)")
-                #print(f"[DEBUG] ❌ '{variable}' NO EXISTE en datos")
+                #logger.error(f"[DEBUG] '{variable}' NO EXISTE en datos")
             else:
                 # Verificar si está vacío
                 valor = datos_disponibles[variable]
@@ -923,11 +921,11 @@ class ControladorDocumentos:
                 
                 if valor in valores_vacios or str(valor).strip() == "":
                     campos_vacios.append(f"{variable} (vacío: '{valor}')")
-                    #print(f"[DEBUG] ⚠️ '{variable}' ESTÁ VACÍO: '{valor}'")
+                    #logger.warning(f"[DEBUG] '{variable}' ESTÁ VACÍO: '{valor}'")
                 else:
-                    #print(f"[DEBUG] ✅ '{variable}' TIENE VALOR: '{str(valor)[:30]}{'...' if len(str(valor)) > 30 else ''}'")
+                    #logger.info(f"[DEBUG] '{variable}' TIENE VALOR: '{str(valor)[:30]}{'...' if len(str(valor)) > 30 else ''}'")
                     pass
-        #print(f"[DEBUG] 📊 RESULTADO: {len(campos_vacios)} campos vacíos de {len(variables_plantilla)} variables")
+        #logger.info(f"[DEBUG] RESULTADO: {len(campos_vacios)} campos vacíos de {len(variables_plantilla)} variables")
         
 
         
@@ -994,10 +992,10 @@ class ControladorDocumentos:
                 if campo not in campos_firmantes:
                     datos_filtrados[campo] = valor
                 #else:
-                    #print(f"[DEBUG] 🚫 Firmante individual IGNORADO: {campo} = '{valor}' (será reemplazado por global)")
+                    #logger.info(f"[DEBUG] 🚫 Firmante individual IGNORADO: {campo} = '{valor}' (será reemplazado por global)")
             
-            #print(f"[DEBUG] 📊 PREPARANDO DATOS PARA SUSTITUCIÓN")
-            #print(f"[DEBUG] 📋 Datos filtrados (sin firmantes individuales): {len(datos_filtrados)} campos")
+            #logger.info(f"[DEBUG] PREPARANDO DATOS PARA SUSTITUCIÓN")
+            #logger.info(f"[DEBUG] 📋 Datos filtrados (sin firmantes individuales): {len(datos_filtrados)} campos")
             
             # Inicializar datos finales
             datos_finales = datos_filtrados.copy()
@@ -1020,15 +1018,15 @@ class ControladorDocumentos:
                             data = json.load(f)
                         
                         firmantes_globales = data.get('firmantes', {})
-                        #print(f"[DEBUG] 👥 Firmantes globales encontrados: {len(firmantes_globales)}")
+                        #logger.info(f"[DEBUG] 👥 Firmantes globales encontrados: {len(firmantes_globales)}")
                         
                         # Agregar cada firmante global
                         for campo_firmante, valor_firmante in firmantes_globales.items():
                             if valor_firmante and valor_firmante.strip():
                                 datos_finales[campo_firmante] = valor_firmante
-                                #print(f"[DEBUG] ✅ Firmante GLOBAL agregado: {campo_firmante} = '{valor_firmante}'")
+                                #logger.info(f"[DEBUG] Firmante GLOBAL agregado: {campo_firmante} = '{valor_firmante}'")
                             #else:
-                                #print(f"[DEBUG] 🔳 Firmante GLOBAL vacío: {campo_firmante} = '{valor_firmante}'")
+                                #logger.info(f"[DEBUG] 🔳 Firmante GLOBAL vacío: {campo_firmante} = '{valor_firmante}'")
                     
                 except Exception as e:
                     logger.error(f"[DEBUG] ❌ Error cargando firmantes globales: {e}")
@@ -1039,7 +1037,7 @@ class ControladorDocumentos:
                 if campo in datos_finales:
                     try:
                         valor_original = datos_finales[campo]
-                        #print(f"[DEBUG] 🔧 {campo} ORIGINAL: '{valor_original}' (tipo: {type(valor_original)})")
+                        #logger.info(f"[DEBUG] 🔧 {campo} ORIGINAL: '{valor_original}' (tipo: {type(valor_original)})")
                         
                         # Convertir a entero puro
                         if valor_original is not None and str(valor_original).strip():
@@ -1063,8 +1061,8 @@ class ControladorDocumentos:
                             if campo == 'plazoEjecucion':
                                 datos_finales['plazoEjecucionTexto'] = resultado
                             
-                            #print(f"[DEBUG] 🔧 {campo} DEFINITIVO: '{resultado}' (con caracteres invisibles)")
-                            #print(f"[DEBUG] 🔧 Longitud: {len(resultado)} caracteres")
+                            #logger.info(f"[DEBUG] 🔧 {campo} DEFINITIVO: '{resultado}' (con caracteres invisibles)")
+                            #logger.info(f"[DEBUG] 🔧 Longitud: {len(resultado)} caracteres")
                         else:
                             datos_finales[campo] = "0\u200B"  # Incluso el 0 con caracteres invisibles
                             if campo == 'plazoEjecucion':
@@ -1086,20 +1084,20 @@ class ControladorDocumentos:
                         if valor is not None and str(valor).strip():
                             decimal = float(str(valor).replace(',', '.'))
                             datos_finales[campo] = f"{decimal:.2f}"
-                            #print(f"[DEBUG] 💰 {campo} formateado como: '{datos_finales[campo]}'")
+                            #logger.info(f"[DEBUG] 💰 {campo} formateado como: '{datos_finales[campo]}'")
                     except (ValueError, TypeError):
                         datos_finales[campo] = "0.00"
             
-            #print(f"[DEBUG] 📊 RESUMEN FINAL:")
-            #print(f"[DEBUG] Total campos preparados: {len(datos_finales)}")
-            #print(f"[DEBUG] 🔧 Enteros con caracteres invisibles para forzar texto")
+            #logger.info(f"[DEBUG] RESUMEN FINAL:")
+            #logger.info(f"[DEBUG] Total campos preparados: {len(datos_finales)}")
+            #logger.info(f"[DEBUG] 🔧 Enteros con caracteres invisibles para forzar texto")
             
             return datos_finales
             
         except Exception as e:
             logger.error(f"[ControladorDocumentos] ❌ Error preparando datos: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return contract_data  # Devolver datos originales en caso de error
 
     # =================== MÉTODOS DE CARPETAS Y ARCHIVOS ===================
@@ -1307,7 +1305,7 @@ class ControladorDocumentos:
         except Exception as e:
             logger.error(f"[ControladorDocumentos] ❌ Error inesperado en diálogo PDF: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
 
     def _mostrar_resultado_cartas(self, cartas_generadas, contract_data, tipo_carta):
         """Mostrar resultado de la generación de cartas"""
@@ -1425,7 +1423,7 @@ class ControladorDocumentos:
         except Exception as e:
             logger.error(f"[DEBUG] ERROR EN MARCADORES: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     def obtener_empresas_para_docx(self, contract_data):
         """NUEVA: Obtener empresas en formato para documentos DOCX"""
         try:
@@ -1599,7 +1597,7 @@ class ControladorDocumentos:
                 else:
                     dato['orden'] = "-"
             
-            # 4. MOSTRAR TABLA POR PRINT (PARA DEBUG)
+            # 4. MOSTRAR TABLA POR LOG (PARA DEBUG)
             logger.debug(f"\n[DEBUG] 📋 TABLA FINAL:")
             logger.debug(f"{'Nombre':<40} {'¿Presenta?':<12} {'Importe':<15} {'Orden':<10}")
             logger.debug("-" * 80)
@@ -1668,7 +1666,7 @@ class ControladorDocumentos:
         except Exception as e:
             logger.error(f"[DEBUG] ❌ ERROR: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             paragraph.text = paragraph.text.replace('@tabla-ofertas@', '[Error procesando tabla]')
             return []
 
@@ -1761,7 +1759,7 @@ TOTAL\t\t{total_sin_iva} €\t\t{total_iva} €\t\t{total_con_iva} €
         except Exception as e:
             logger.error(f"[DEBUG] ❌ ERROR en tabla anualidades: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             paragraph.text = paragraph.text.replace('@tablaAnualidades@', '[Error procesando tabla anualidades]')
 
     def _obtener_valor_widget_directo(self, widget_name: str, default: str = '') -> str:
@@ -2071,7 +2069,7 @@ TOTAL\t\t{total_sin_iva} €\t\t{total_iva} €\t\t{total_con_iva} €
                 return
             
             contract_data = self._obtener_datos_contrato_actual()
-            #print(f"[DEBUG] contract_data keys: {list(contract_data.keys()) if contract_data else 'None'}")
+            #logger.info(f"[DEBUG] contract_data keys: {list(contract_data.keys()) if contract_data else 'None'}")
             if not contract_data:
                 logger.debug("[DEBUG] No se pudieron obtener los datos del contrato")
                 return self._mostrar_error("No se pudieron obtener los datos del contrato")
@@ -2278,7 +2276,7 @@ TOTAL\t\t{total_sin_iva} €\t\t{total_iva} €\t\t{total_con_iva} €
             'fechaLegalFin', 'fechaProyecto', 'fechaInforme', 'diaDeApertura'
         ]
         es_fecha = any(campo_fecha.lower() in nombre_campo.lower() for campo_fecha in campos_fecha)
-        #print(f"[DEBUG] Campo '{nombre_campo}' es fecha: {es_fecha}")
+        #logger.info(f"[DEBUG] Campo '{nombre_campo}' es fecha: {es_fecha}")
         return es_fecha
 
     def _validar_fecha_rango(self, valor_fecha):

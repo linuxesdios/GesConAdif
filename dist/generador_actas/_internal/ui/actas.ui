@@ -4762,7 +4762,7 @@ QGraphicsView:focus {
   </action>
   <action name="actioncuadroi_general">
    <property name="text">
-    <string>cuadro general</string>
+    <string>Cuadro general</string>
    </property>
   </action>
   <action name="actionSobre_auttor">

@@ -3,6 +3,7 @@ import sys, os
 from typing import Dict, List, Any, Optional
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import QSpinBox, QWidget  # Import específico para QSpinBox y QWidget
 from PyQt5 import uic
@@ -10,7 +11,8 @@ from modelos_py import Proyecto, DatosContrato, TipoContrato, Constantes
 from helpers_py import setup_ui_with_new_structure, abrir_archivo
 
 
-# PRECARGAR TODOS LOS CONTROLADORES PARA EXE
+# PRECARGAR PARA EXE - CRÍTICO PARA PYINSTALLER
+# En EXE todos los módulos están empaquetados, mejor precargar sincronizado
 from .controlador_json import ControladorJson
 from .controlador_tablas import ControladorTablas
 from .controlador_actuaciones_facturas import ControladorActuacionesFacturas
@@ -52,16 +54,27 @@ class ControladorGrafica(QMainWindow):
         self.drag_position = None
         self.is_dragging = False
         
-        self._init_controllers()
+        # Lazy loading - inicializar controladores como None
+        self._controlador_json = None
+        self._controlador_tablas = None
+        self._controlador_documentos = None
+        self._controlador_autosave = None
+        self._controlador_calculos = None
+        self._controlador_eventos_ui = None
+        self._gestor_archivos_unificado = None
+        self._controlador_routes = None
+        self._controlador_actuaciones_facturas = None
+        self._controlador_facturas_directas = None
+        
         if archivo_proyecto:
             self.proyecto_actual = archivo_proyecto
         self._setup_ui_fast()
-        self._setup_contract_manager()
-        self._configurar_gestor_archivos_en_controladores()
-        self._setup_pdf_viewer()
-        self.arreglar_botones_ahora()
-        self._setup_resumen_integrado()
-        self._load_data()
+        
+        # Para EXE: Inicializar controladores optimizados
+        self._init_controllers_for_exe()
+        
+        # Threading: Ejecutar operaciones pesadas en segundo plano
+        self._init_background_operations()
         
     def _setup_ui_fast(self):
         try:
@@ -70,8 +83,9 @@ class ControladorGrafica(QMainWindow):
                 uic.loadUi(ui_file, self)
                 self._setup_connections()
                 self._configure_tables()
-                # Configurar componentes avanzados de UI incluyendo sincronización
-                self._setup_componentes_ui()
+                # Configurar icono de ventana inmediatamente
+                self._configurar_icono_ventana()
+                # Mover componentes UI pesados a background
             else:
                 self.create_emergency_ui()
         except Exception as e:
@@ -168,31 +182,178 @@ class ControladorGrafica(QMainWindow):
         except Exception as e:
             # logger.info(f"[ControladorGrafica] Error en _load_data: {e}")
             pass
-    def _init_controllers(self):
-        try:
-            self.controlador_json = ControladorJson(main_window=self)
-            self.controlador_tablas = ControladorTablas(main_window=self)
-            self.controlador_documentos = ControladorDocumentos(self)
-            self.controlador_autosave = ControladorAutoGuardado(self)
-            self.controlador_calculos = ControladorCalculos()
-            self.controlador_eventos_ui = ControladorEventosUI(self)
-            self.gestor_archivos_unificado = GestorArchivos(self)
-            # Inicializar controlador de rutas
-            self.controlador_routes = ControladorRutas()
-            # Inicializar como None, se creará después de cargar la UI
-            self.controlador_actuaciones_facturas = None
-            
-            # Inicializar controlador de facturas directas
+    # =================== EXE OPTIMIZED INITIALIZATION ===================
+    
+    def _init_controllers_for_exe(self):
+        """Inicialización optimizada de controladores para EXE compilado"""
+        import sys
+        
+        # Detectar si estamos en EXE
+        es_exe = hasattr(sys, '_MEIPASS')
+        
+        if es_exe:
+            # En EXE: Inicialización directa para máxima velocidad
+            logger.info("🚀 EXE detectado - Inicializando controladores optimizados")
+            self._controlador_json = ControladorJson(main_window=self)
+            self._controlador_tablas = ControladorTablas(main_window=self)
+            self._controlador_documentos = ControladorDocumentos(self)
+            self._controlador_autosave = ControladorAutoGuardado(self)
+            self._controlador_calculos = ControladorCalculos()
+            self._controlador_eventos_ui = ControladorEventosUI(self)
+            self._gestor_archivos_unificado = GestorArchivos(self)
+            self._controlador_actuaciones_facturas = ControladorActuacionesFacturas(self)
+            logger.info("✅ Controladores EXE inicializados")
+        else:
+            # En desarrollo: mantener lazy loading para velocidad de desarrollo
+            logger.debug("🔧 Modo desarrollo - Manteniendo lazy loading")
+    
+    @property  
+    def controlador_json(self):
+        if self._controlador_json is None:
+            self._controlador_json = ControladorJson(main_window=self)
+            logger.debug("Dev Lazy: ControladorJson inicializado")
+        return self._controlador_json
+    
+    @property
+    def controlador_tablas(self):
+        if self._controlador_tablas is None:
+            self._controlador_tablas = ControladorTablas(main_window=self)
+            logger.debug("Dev Lazy: ControladorTablas inicializado")
+        return self._controlador_tablas
+    
+    @property
+    def controlador_documentos(self):
+        if self._controlador_documentos is None:
+            self._controlador_documentos = ControladorDocumentos(self)
+            logger.debug("Dev Lazy: ControladorDocumentos inicializado")
+        return self._controlador_documentos
+    
+    @property
+    def controlador_autosave(self):
+        if self._controlador_autosave is None:
+            self._controlador_autosave = ControladorAutoGuardado(self)
+            logger.debug("Dev Lazy: ControladorAutoGuardado inicializado")
+        return self._controlador_autosave
+    
+    @property
+    def controlador_calculos(self):
+        if self._controlador_calculos is None:
+            self._controlador_calculos = ControladorCalculos()
+            logger.debug("Dev Lazy: ControladorCalculos inicializado")
+        return self._controlador_calculos
+    
+    @property
+    def controlador_eventos_ui(self):
+        if self._controlador_eventos_ui is None:
+            self._controlador_eventos_ui = ControladorEventosUI(self)
+            logger.debug("Dev Lazy: ControladorEventosUI inicializado")
+        return self._controlador_eventos_ui
+    
+    @property
+    def gestor_archivos_unificado(self):
+        if self._gestor_archivos_unificado is None:
+            self._gestor_archivos_unificado = GestorArchivos(self)
+            logger.debug("EXE Lazy: GestorArchivos inicializado")
+        return self._gestor_archivos_unificado
+    
+    @property
+    def controlador_routes(self):
+        if self._controlador_routes is None:
+            from controladores.controlador_routes import ControladorRutas
+            self._controlador_routes = ControladorRutas()
+            logger.debug("EXE Lazy: ControladorRutas inicializado")
+        return self._controlador_routes
+    
+    @property
+    def controlador_actuaciones_facturas(self):
+        if self._controlador_actuaciones_facturas is None:
+            self._controlador_actuaciones_facturas = ControladorActuacionesFacturas(self)
+            logger.debug("Dev Lazy: ControladorActuacionesFacturas inicializado")
+        return self._controlador_actuaciones_facturas
+    
+    @property
+    def controlador_facturas_directas(self):
+        if self._controlador_facturas_directas is None:
             try:
                 from .controlador_facturas_directas import ControladorFacturasDirectas
-                self.controlador_facturas_directas = ControladorFacturasDirectas(self)
-                logger.info("[ControladorGrafica] ✅ Controlador de facturas directas inicializado")
+                self._controlador_facturas_directas = ControladorFacturasDirectas(self)
+                logger.debug("EXE Lazy: ControladorFacturasDirectas inicializado")
             except Exception as e:
-                logger.warning(f"[ControladorGrafica] ⚠️ Error inicializando controlador facturas directas: {e}")
-                self.controlador_facturas_directas = None
+                logger.warning(f"Error inicializando controlador facturas directas: {e}")
+                self._controlador_facturas_directas = None
+        return self._controlador_facturas_directas
+    
+    # =================== THREADING OPERATIONS ===================
+    
+    def _init_background_operations(self):
+        """Inicializar operaciones pesadas en segundo plano usando QTimer"""
+        try:
+            # EXE: Detectar si estamos en modo compilado para ajustar timing
+            import sys
+            es_exe = hasattr(sys, '_MEIPASS')
+            
+            if es_exe:
+                # EXE: Timing agresivo para máxima velocidad percibida
+                base_delay = 20
+                logger.info("🚀 EXE: Activando timing agresivo para máximo rendimiento")
+            else:
+                # Desarrollo: Timing más conservador
+                base_delay = 100
+                
+            # Ejecutar algunas operaciones inmediatamente pero de forma ligera
+            self._setup_contract_manager()
+            
+            # Operaciones pesadas en segundo plano con timing optimizado
+            if es_exe:
+                # En EXE: los controladores ya están inicializados, podemos ser más agresivos
+                QTimer.singleShot(5, lambda: self._safe_background_call(self._setup_componentes_ui))
+                QTimer.singleShot(base_delay, lambda: self._safe_background_call(self._configurar_gestor_archivos_en_controladores))
+                QTimer.singleShot(base_delay + 20, lambda: self._safe_background_call(self._setup_pdf_viewer))
+                QTimer.singleShot(base_delay + 40, lambda: self._safe_background_call(self.arreglar_botones_ahora))
+                QTimer.singleShot(base_delay + 60, lambda: self._safe_background_call(self._setup_resumen_integrado))
+                QTimer.singleShot(base_delay + 80, lambda: self._safe_background_call(self._load_data))
+            else:
+                # Desarrollo: timing conservador para debugging
+                QTimer.singleShot(10, lambda: self._safe_background_call(self._setup_componentes_ui))
+                QTimer.singleShot(base_delay, lambda: self._safe_background_call(self._configurar_gestor_archivos_en_controladores))
+                QTimer.singleShot(base_delay + 50, lambda: self._safe_background_call(self._setup_pdf_viewer))
+                QTimer.singleShot(base_delay + 100, lambda: self._safe_background_call(self.arreglar_botones_ahora))
+                QTimer.singleShot(base_delay + 150, lambda: self._safe_background_call(self._setup_resumen_integrado))
+                QTimer.singleShot(base_delay + 200, lambda: self._safe_background_call(self._load_data))
+            logger.debug(f"Background operations scheduled (EXE mode: {es_exe})")
+        except Exception as e:
+            logger.error(f"Error scheduling background operations: {e}")
+    
+    def _safe_background_call(self, func):
+        """Ejecutar función de forma segura en segundo plano"""
+        try:
+            func()
+        except Exception as e:
+            logger.warning(f"Error in background operation {func.__name__}: {e}")
+    
+    def _configurar_icono_ventana(self):
+        """Configura el icono de la ventana principal"""
+        try:
+            import sys
+            from PyQt5.QtGui import QIcon
+            
+            # Detectar ruta del icono según contexto (EXE vs desarrollo)
+            if hasattr(sys, '_MEIPASS'):
+                # Estamos en EXE - buscar en _internal
+                icono_path = os.path.join(sys._MEIPASS, 'images', 'icono.ico')
+            else:
+                # Desarrollo - buscar en directorio actual
+                icono_path = 'images/icono.ico'
+            
+            if os.path.exists(icono_path):
+                self.setWindowIcon(QIcon(icono_path))
+                logger.debug(f"Icono de ventana configurado desde: {icono_path}")
+            else:
+                logger.warning(f"Icono no encontrado en: {icono_path}")
                 
         except Exception as e:
-            QMessageBox.critical(self, "Error", str(e))
+            logger.warning(f"Error configurando icono de ventana: {e}")
+    
     def mousePressEvent(self, event):
         """Permitir arrastrar la ventana"""
         if event.button() == Qt.LeftButton:
@@ -1042,12 +1203,8 @@ class ControladorGrafica(QMainWindow):
             
             # 3. Configurar validadores y cálculos
             
-            # 4. Inicializar controlador de actuaciones/facturas
-            try:
-                self.controlador_actuaciones_facturas = ControladorActuacionesFacturas(self)
-            except Exception as e:
-                # logger.warning(f"[ControladorGrafica] Error controlador actuaciones: {e}")
-                pass
+            # 4. Controlador de actuaciones/facturas ahora es lazy-loaded
+            # Se inicializará automáticamente cuando se acceda via property
             
 
             
@@ -2463,7 +2620,27 @@ class ControladorGrafica(QMainWindow):
             QMessageBox.critical(self, "Error", f"Error mostrando información: {str(e)}")
 
     def mostrar_cuadro_general(self):
-        """Mostrar cuadro de información general del proyecto actual"""
+        """Mostrar ventana de ayuda completa del sistema"""
+        try:
+            # Importar y mostrar la ventana de ayuda
+            from .ventana_ayuda import VentanaAyuda
+            
+            # Crear y mostrar ventana de ayuda
+            ventana_ayuda = VentanaAyuda(self)
+            ventana_ayuda.show()
+            logger.info("✅ Ventana de ayuda mostrada correctamente")
+            
+        except ImportError:
+            # Fallback si no está disponible la ventana de ayuda
+            QMessageBox.information(self, "Ayuda", 
+                "Sistema de ayuda no disponible.\nConsulte la documentación del proyecto.")
+            logger.warning("⚠️ No se pudo importar VentanaAyuda")
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Error mostrando ayuda: {str(e)}")
+            logger.error(f"❌ Error en mostrar_cuadro_general: {e}")
+            
+    def mostrar_info_proyecto_actual(self):
+        """Mostrar información del proyecto actual (método separado)"""
         try:
             if not self.proyecto_actual:
                 QMessageBox.information(self, "Información", "No hay ningún proyecto cargado.")

@@ -2,6 +2,10 @@
 Diálogos para gestión de contratos y tipos
 Incluye: Crear contrato, Borrar contrato, Cambiar tipo
 """
+import logging
+
+logger = logging.getLogger(__name__)
+
 from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, 
                            QPushButton, QTextEdit, QComboBox, QCheckBox, QMessageBox,
                            QFormLayout, QGroupBox, QScrollArea, QWidget, QFrame)

@@ -236,7 +236,7 @@ class ControladorFasesDocumentos:
         except Exception as e:
             logger.error(f"[ControladorFases] ❌ Error marcando documento: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def marcar_creacion_proyecto(self, nombre_contrato: str):
         """Marcar la fase de creación del proyecto"""
@@ -400,7 +400,7 @@ class ControladorFasesDocumentos:
                     fir_widget.blockSignals(False)
                     
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error actualizando campos UI: {e}")
+            logger.error(f"[ControladorFases] Error actualizando campos UI: {e}")
     
     def _actualizar_json(self, nombre_contrato: str, fase: str, tipo: str, fecha: str):
         """Actualizar el JSON con una nueva fecha"""
@@ -408,7 +408,7 @@ class ControladorFasesDocumentos:
             # Obtener datos actuales
             datos_contrato = self._obtener_datos_contrato(nombre_contrato)
             if not datos_contrato:
-                print(f"[ControladorFases] ⚠️ No se encontró contrato: {nombre_contrato}")
+                logger.warning(f"[ControladorFases] No se encontró contrato: {nombre_contrato}")
                 return
             
             # Inicializar fases_documentos si no existe
@@ -424,26 +424,26 @@ class ControladorFasesDocumentos:
             
             # Guardar de vuelta al JSON
             self._guardar_datos_contrato(nombre_contrato, datos_contrato)
-            print(f"[ControladorFases] 💾 JSON actualizado: {fase}.{tipo} = {fecha}")
+            logger.info(f"[ControladorFases] 💾 JSON actualizado: {fase}.{tipo} = {fecha}")
             
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error actualizando JSON: {e}")
+            logger.error(f"[ControladorFases] Error actualizando JSON: {e}")
     
     def reparar_sincronizacion_fases(self, nombre_contrato: str):
         """Función de reparación para sincronizar fases faltantes de UI a JSON"""
         try:
-            print(f"[ControladorFases] 🔧 REPARANDO sincronización para {nombre_contrato}")
+            logger.info(f"[ControladorFases] 🔧 REPARANDO sincronización para {nombre_contrato}")
             
             # Obtener datos del contrato
             datos_contrato = self._obtener_datos_contrato(nombre_contrato)
             if not datos_contrato:
-                print(f"[ControladorFases] ❌ No se pudo obtener el contrato para reparar")
+                logger.error(f"[ControladorFases] No se pudo obtener el contrato para reparar")
                 return
             
             # Inicializar estructura si no existe
             if "fases_documentos" not in datos_contrato:
                 datos_contrato["fases_documentos"] = {}
-                print(f"[ControladorFases] 🆕 Creando estructura fases_documentos")
+                logger.info(f"[ControladorFases] 🆕 Creando estructura fases_documentos")
             
             # Verificar todas las fases y corregir
             if not self.main_window:
@@ -458,7 +458,7 @@ class ControladorFasesDocumentos:
                 # Inicializar fase si no existe
                 if fase.value not in datos_contrato["fases_documentos"]:
                     datos_contrato["fases_documentos"][fase.value] = {"generado": None, "firmado": None}
-                    print(f"[ControladorFases] 🆕 Creando estructura para fase {fase.value}")
+                    logger.info(f"[ControladorFases] 🆕 Creando estructura para fase {fase.value}")
                 
                 fase_data = datos_contrato["fases_documentos"][fase.value]
                 
@@ -472,7 +472,7 @@ class ControladorFasesDocumentos:
                     # Si la UI tiene una fecha válida pero JSON no
                     if fecha_gen_ui != "2000-01-01" and not fecha_gen_json:
                         fase_data["generado"] = fecha_gen_ui
-                        print(f"[ControladorFases] 🔧 REPARADO {fase.value}.generado: {fecha_gen_ui}")
+                        logger.info(f"[ControladorFases] 🔧 REPARADO {fase.value}.generado: {fecha_gen_ui}")
                         reparaciones += 1
                     # Si JSON tiene fecha pero UI no
                     elif fecha_gen_json and fecha_gen_ui == "2000-01-01":
@@ -480,7 +480,7 @@ class ControladorFasesDocumentos:
                         fecha_qt = QDate.fromString(fecha_gen_json, "yyyy-MM-dd")
                         gen_widget.setDate(fecha_qt)
                         gen_widget.blockSignals(False)
-                        print(f"[ControladorFases] 🔧 REPARADO UI {gen_field}: {fecha_gen_json}")
+                        logger.info(f"[ControladorFases] 🔧 REPARADO UI {gen_field}: {fecha_gen_json}")
                         reparaciones += 1
                 
                 # Verificar campo firmado
@@ -493,7 +493,7 @@ class ControladorFasesDocumentos:
                     # Si la UI tiene una fecha válida pero JSON no
                     if fecha_fir_ui != "2000-01-01" and not fecha_fir_json:
                         fase_data["firmado"] = fecha_fir_ui
-                        print(f"[ControladorFases] 🔧 REPARADO {fase.value}.firmado: {fecha_fir_ui}")
+                        logger.info(f"[ControladorFases] 🔧 REPARADO {fase.value}.firmado: {fecha_fir_ui}")
                         reparaciones += 1
                     # Si JSON tiene fecha pero UI no
                     elif fecha_fir_json and fecha_fir_ui == "2000-01-01":
@@ -501,20 +501,20 @@ class ControladorFasesDocumentos:
                         fecha_qt = QDate.fromString(fecha_fir_json, "yyyy-MM-dd")
                         fir_widget.setDate(fecha_qt)
                         fir_widget.blockSignals(False)
-                        print(f"[ControladorFases] 🔧 REPARADO UI {fir_field}: {fecha_fir_json}")
+                        logger.info(f"[ControladorFases] 🔧 REPARADO UI {fir_field}: {fecha_fir_json}")
                         reparaciones += 1
             
             # Guardar si hubo reparaciones
             if reparaciones > 0:
                 self._guardar_datos_contrato(nombre_contrato, datos_contrato)
-                print(f"[ControladorFases] ✅ REPARACIÓN COMPLETA: {reparaciones} correcciones")
+                logger.info(f"[ControladorFases] REPARACIÓN COMPLETA: {reparaciones} correcciones")
             else:
-                print(f"[ControladorFases] ✅ No se necesitaron reparaciones")
+                logger.info(f"[ControladorFases] No se necesitaron reparaciones")
                 
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error en reparación: {e}")
+            logger.error(f"[ControladorFases] Error en reparación: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     
     def sincronizar_todas_fechas_a_json(self, nombre_contrato: str):
         """Sincronizar todas las fechas de la UI al JSON (útil para botón actualizar)"""
@@ -525,7 +525,7 @@ class ControladorFasesDocumentos:
             from PyQt5.QtWidgets import QDateEdit
             from PyQt5.QtCore import QDate
             
-            print(f"[ControladorFases] 🔄 Sincronizando todas las fechas al JSON para {nombre_contrato}")
+            logger.info(f"[ControladorFases] Sincronizando todas las fechas al JSON para {nombre_contrato}")
             
             # Obtener datos del contrato
             datos_contrato = self._obtener_datos_contrato(nombre_contrato)
@@ -552,7 +552,7 @@ class ControladorFasesDocumentos:
                     if fecha_gen != "2000-01-01":
                         datos_contrato["fases_documentos"][fase.value]["generado"] = fecha_gen
                         campos_sincronizados += 1
-                        print(f"[ControladorFases] ✅ Sincronizado {gen_field}: {fecha_gen}")
+                        logger.info(f"[ControladorFases] Sincronizado {gen_field}: {fecha_gen}")
                 
                 # Sincronizar campo firmado
                 fir_field = config["firmado_field"]
@@ -563,14 +563,14 @@ class ControladorFasesDocumentos:
                     if fecha_fir != "2000-01-01":
                         datos_contrato["fases_documentos"][fase.value]["firmado"] = fecha_fir
                         campos_sincronizados += 1
-                        print(f"[ControladorFases] ✅ Sincronizado {fir_field}: {fecha_fir}")
+                        logger.info(f"[ControladorFases] Sincronizado {fir_field}: {fecha_fir}")
             
             # Guardar todos los cambios
             self._guardar_datos_contrato(nombre_contrato, datos_contrato)
-            print(f"[ControladorFases] 🎯 Sincronización completa: {campos_sincronizados} campos actualizados")
+            logger.info(f"[ControladorFases] 🎯 Sincronización completa: {campos_sincronizados} campos actualizados")
             
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error sincronizando fechas: {e}")
+            logger.error(f"[ControladorFases] Error sincronizando fechas: {e}")
     
     def obtener_datos_fases_para_resumen(self, nombre_contrato: str) -> Dict:
         """Obtener datos completos de las fases para el resumen (incluyendo nombres UI)"""
@@ -598,7 +598,7 @@ class ControladorFasesDocumentos:
             return datos_resumen
             
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error obteniendo datos para resumen: {e}")
+            logger.error(f"[ControladorFases] Error obteniendo datos para resumen: {e}")
             return {}
     
     def _obtener_datos_contrato(self, nombre_contrato: str) -> Optional[Dict]:
@@ -622,7 +622,7 @@ class ControladorFasesDocumentos:
             return None
             
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error obteniendo datos: {e}")
+            logger.error(f"[ControladorFases] Error obteniendo datos: {e}")
             return None
     
     def _guardar_datos_contrato(self, nombre_contrato: str, datos_contrato: Dict):
@@ -630,32 +630,32 @@ class ControladorFasesDocumentos:
         try:
             # SIEMPRE usar el gestor de contratos si está disponible
             if self.main_window and hasattr(self.main_window, 'gestor_contratos'):
-                print(f"[ControladorFases] 💾 Guardando usando gestor unificado: {nombre_contrato}")
+                logger.info(f"[ControladorFases] 💾 Guardando usando gestor unificado: {nombre_contrato}")
                 
                 # Verificar que las fases_documentos están en los datos
                 if "fases_documentos" in datos_contrato:
-                    print(f"[ControladorFases] 📋 Guardando fases_documentos: {len(datos_contrato['fases_documentos'])} fases")
+                    logger.info(f"[ControladorFases] 📋 Guardando fases_documentos: {len(datos_contrato['fases_documentos'])} fases")
                     for fase, datos_fase in datos_contrato["fases_documentos"].items():
                         if datos_fase.get("generado") or datos_fase.get("firmado"):
-                            print(f"[ControladorFases] 📝 Fase {fase}: gen={datos_fase.get('generado')}, firm={datos_fase.get('firmado')}")
+                            logger.info(f"[ControladorFases] 📝 Fase {fase}: gen={datos_fase.get('generado')}, firm={datos_fase.get('firmado')}")
                 
                 # Actualizar la copia en memoria del gestor
                 self.main_window.gestor_contratos.actualizar_obra(nombre_contrato, datos_contrato)
                 # Forzar guardado inmediato
                 self.main_window.gestor_contratos.guardar_datos()
-                print(f"[ControladorFases] ✅ Guardado exitoso via gestor unificado")
+                logger.info(f"[ControladorFases] Guardado exitoso via gestor unificado")
                 
                 # Verificar que se guardó correctamente
                 datos_verificacion = self.main_window.gestor_contratos.obtener_datos_obra(nombre_contrato)
                 if datos_verificacion and "fases_documentos" in datos_verificacion:
-                    print(f"[ControladorFases] ✅ Verificación: {len(datos_verificacion['fases_documentos'])} fases guardadas")
+                    logger.info(f"[ControladorFases] Verificación: {len(datos_verificacion['fases_documentos'])} fases guardadas")
                 else:
-                    print(f"[ControladorFases] ❌ Verificación falló: datos no encontrados")
+                    logger.error(f"[ControladorFases] Verificación falló: datos no encontrados")
                 
                 return
             
             # Fallback: escribir directamente al archivo (solo si no hay gestor)
-            print(f"[ControladorFases] ⚠️ Usando fallback - escribiendo directamente al JSON")
+            logger.warning(f"[ControladorFases] Usando fallback - escribiendo directamente al JSON")
             base_datos_path = os.path.join(os.getcwd(), "BaseDatos.json") 
             if os.path.exists(base_datos_path):
                 with open(base_datos_path, 'r', encoding='utf-8') as f:
@@ -670,12 +670,12 @@ class ControladorFasesDocumentos:
                 with open(base_datos_path, 'w', encoding='utf-8') as f:
                     json.dump(data, f, ensure_ascii=False, indent=2)
                     
-                print(f"[ControladorFases] ✅ Fallback guardado completado")
+                logger.info(f"[ControladorFases] Fallback guardado completado")
                     
         except Exception as e:
-            print(f"[ControladorFases] ❌ Error guardando datos: {e}")
+            logger.error(f"[ControladorFases] Error guardando datos: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
 
 
 # Función de integración global
@@ -703,21 +703,21 @@ def integrar_controlador_fases(main_window):
                     main_window.controlador_documentos.documento_generado.connect(
                         lambda tipo, nombre, contrato=None: controlador.marcar_documento_generado(tipo, contrato)
                     )
-                    print("[ControladorFases] ✅ Conectado con controlador de documentos")
+                    logger.info("[ControladorFases] ✅ Conectado con controlador de documentos")
             except Exception as e:
-                print(f"[ControladorFases] ⚠️ No se pudo conectar con controlador de documentos: {e}")
+                logger.warning(f"[ControladorFases] No se pudo conectar con controlador de documentos: {e}")
         
-        print("[ControladorFases] 🎉 Integrado exitosamente en la aplicación")
+        logger.info("[ControladorFases] 🎉 Integrado exitosamente en la aplicación")
         return controlador
         
     except Exception as e:
-        print(f"[ControladorFases] ❌ Error integrando: {e}")
+        logger.error(f"[ControladorFases] Error integrando: {e}")
         return None
 
 def integrar_sistema_completo_fases_resumen(main_window):
     """Integrar el sistema completo de fases y resúmenes"""
     try:
-        print("🚀 Integrando sistema completo de fases y resúmenes...")
+        logger.info("🚀 Integrando sistema completo de fases y resúmenes...")
         
         # 1. Integrar controlador de fases
         controlador_fases = integrar_controlador_fases(main_window)
@@ -726,24 +726,24 @@ def integrar_sistema_completo_fases_resumen(main_window):
         try:
             from controladores.controlador_resumen import integrar_resumen_completo
             integrador_resumen = integrar_resumen_completo(main_window)
-            print("✅ Sistema de resúmenes integrado")
+            logger.info("✅ Sistema de resúmenes integrado")
         except ImportError:
-            print("⚠️ Módulo de resumen no encontrado - continuando sin resúmenes")
+            logger.warning("⚠️ Módulo de resumen no encontrado - continuando sin resúmenes")
             integrador_resumen = None
         
         # 3. Cargar datos del contrato actual si hay uno seleccionado
         if hasattr(main_window, 'comboBox'):
             contrato_actual = main_window.comboBox.currentText()
             if contrato_actual and controlador_fases:
-                print(f"📋 Cargando datos para contrato actual: {contrato_actual}")
+                logger.info(f"📋 Cargando datos para contrato actual: {contrato_actual}")
                 controlador_fases.cargar_fases_desde_json(contrato_actual)
         
-        print("🎉 SISTEMA COMPLETO INTEGRADO EXITOSAMENTE")
-        print("   ✅ Controlador de fases activo")
-        print("   ✅ Sincronización UI ↔ JSON configurada")
-        print("   ✅ Auto-marcado de documentos activado")
+        logger.info("🎉 SISTEMA COMPLETO INTEGRADO EXITOSAMENTE")
+        logger.info("   ✅ Controlador de fases activo")
+        logger.info("   ✅ Sincronización UI ↔ JSON configurada")
+        logger.info("   ✅ Auto-marcado de documentos activado")
         if integrador_resumen:
-            print("   ✅ Sistema de resúmenes activo")
+            logger.info("   ✅ Sistema de resúmenes activo")
         
         return {
             'controlador_fases': controlador_fases,
@@ -751,23 +751,27 @@ def integrar_sistema_completo_fases_resumen(main_window):
         }
         
     except Exception as e:
-        print(f"❌ Error integrando sistema completo: {e}")
+        logger.error(f"❌ Error integrando sistema completo: {e}")
         return None
 
 
 if __name__ == "__main__":
-    print("=" * 60)
-    print("📋 CONTROLADOR DE FASES DE DOCUMENTOS")
-    print("=" * 60)
-    print()
-    print("🔄 FASES CONFIGURADAS:")
+    import logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    
+    logger.info("=" * 60)
+    logger.info("📋 CONTROLADOR DE FASES DE DOCUMENTOS")
+    logger.info("=" * 60)
+    logger.info("")
+    logger.info("🔄 FASES CONFIGURADAS:")
     for fase in FaseDocumento:
-        print(f"   {fase.value}")
-    print()
-    print("📝 PARA USAR:")
-    print("   from controladores.controlador_fases_documentos import integrar_controlador_fases")
-    print("   controlador = integrar_controlador_fases(self)")
-    print()
-    print("   # Para marcar documento generado:")
-    print("   controlador.marcar_documento_generado('acta_inicio')")
-    print("=" * 60)
+        logger.info(f"   {fase.value}")
+    logger.info("")
+    logger.info("📝 PARA USAR:")
+    logger.info("   from controladores.controlador_fases_documentos import integrar_controlador_fases")
+    logger.info("   controlador = integrar_controlador_fases(self)")
+    logger.info("")
+    logger.info("   # Para marcar documento generado:")
+    logger.info("   controlador.marcar_documento_generado('acta_inicio')")
+    logger.info("=" * 60)

@@ -10,7 +10,6 @@ from datetime import datetime
 from typing import List, Optional
 import re
 import logging
-
 logger = logging.getLogger(__name__)
 
 
@@ -345,19 +344,20 @@ def crear_backup_automatico(base_path: str = None) -> bool:
 
 if __name__ == "__main__":
     # Test del controlador de backup
-    print("=" * 60)
-    print("TESTING CONTROLADOR DE BACKUP")
-    print("=" * 60)
+    test_logger = logging.getLogger(__name__)
+    test_logger.info("=" * 60)
+    test_logger.info("TESTING CONTROLADOR DE BACKUP")
+    test_logger.info("=" * 60)
     
     controlador = ControladorBackup()
     
     # Crear backup de prueba
     success = controlador.crear_backup_inicial()
-    print(f"Backup creado: {success}")
+    test_logger.info(f"Backup creado: {success}")
     
     # Listar backups
     backups = controlador.listar_backups_disponibles()
-    print(f"Backups disponibles: {len(backups)}")
+    test_logger.info(f"Backups disponibles: {len(backups)}")
     
     for backup in backups:
-        print(f"  - {backup['nombre']} ({backup['fecha_str']}) - {backup['size_kb']:.1f} KB")
+        test_logger.info(f"  - {backup['nombre']} ({backup['fecha_str']}) - {backup['size_kb']:.1f} KB")

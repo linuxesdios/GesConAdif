@@ -28,6 +28,7 @@ class DialogoActuacion(QDialog):
     
     def __init__(self, parent=None, actuacion_data=None):
         super().__init__(parent)
+        self.logger = logging.getLogger(__name__)
         self.actuacion_data = actuacion_data
         self.archivos_pdf = []
         self.setup_ui()
@@ -685,11 +686,11 @@ class ControladorActuacionesFacturas:
             if carpeta:
                 return carpeta
             else:
-                print(f"[ActuacionesFacturas] ❌ No se pudo crear/obtener carpeta")
+                logging.error("[ActuacionesFacturas] No se pudo crear/obtener carpeta")
                 return None
                 
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error creando carpeta: {e}")
+            logging.error(f"[ActuacionesFacturas] Error creando carpeta: {e}")
             return None
             
     def _actualizar_labels_presupuesto(self):
@@ -763,7 +764,7 @@ class ControladorActuacionesFacturas:
             
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error actualizando botones: {e}")
+            logging.error(f"[ActuacionesFacturas] Error actualizando botones: {e}")
 
     
 
@@ -780,7 +781,7 @@ class ControladorActuacionesFacturas:
                 # Fallback al método básico
                 return controlador_archivos.verificar_carpeta_obra(nombre_proyecto, numero_expediente)
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error buscando carpeta: {e}")
+            logging.error(f"[ActuacionesFacturas] Error buscando carpeta: {e}")
             return False, "", "error"
     def obtener_carpeta_proyecto(self, crear_si_no_existe=False):
         """
@@ -837,18 +838,18 @@ class ControladorActuacionesFacturas:
                             if os.path.exists(carpeta_path):
                                 return carpeta_path
             
-            print("[ActuacionesFacturas] ❌ No se pudo obtener carpeta")
+            logging.error("[ActuacionesFacturas] No se pudo obtener carpeta")
             return None
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error obteniendo carpeta: {e}")
+            logging.error(f"[ActuacionesFacturas] Error obteniendo carpeta: {e}")
             return None
 
 
     # def _crear_carpeta_automatica(self, nombre_proyecto, numero_expediente, alias, nombre_carpeta):
     #     """Crear carpeta automáticamente para el proyecto"""
     #     try:
-    #         print(f"[ActuacionesFacturas] 🏗️ Creando carpeta automática...")
+    #         logger.info(f"[ActuacionesFacturas] 🏗️ Creando carpeta automática...")
             
     #         # Determinar nombre de carpeta a crear
     #         if nombre_carpeta and nombre_carpeta.strip():
@@ -910,9 +911,9 @@ class ControladorActuacionesFacturas:
     #         return carpeta_path
             
     #     except Exception as e:
-    #         print(f"[ActuacionesFacturas] ❌ Error creando carpeta automática: {e}")
+    #         logger.error(f"[ActuacionesFacturas] Error creando carpeta automática: {e}")
     #         import traceback
-    #         traceback.print_exc()
+    #         logger.exception("Error completo:")
     #         return None
 
 
@@ -953,7 +954,7 @@ class ControladorActuacionesFacturas:
     #             pass
                 
     #     except Exception as e:
-    #         print(f"[ActuacionesFacturas] ❌ Error verificando subcarpetas: {e}")
+    #         logger.error(f"[ActuacionesFacturas] Error verificando subcarpetas: {e}")
 
 
     def _actualizar_json_con_carpeta(self, datos_proyecto, ruta_carpeta):
@@ -985,7 +986,7 @@ class ControladorActuacionesFacturas:
             
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error actualizando JSON: {e}")
+            logging.error(f"[ActuacionesFacturas] Error actualizando JSON: {e}")
 
     # ===== MODIFICACIÓN 3: Mejorar mostrar_dialogo_crear_contrato =====
     def mostrar_dialogo_crear_contrato(self):
@@ -1029,15 +1030,15 @@ class ControladorActuacionesFacturas:
                                 break
                             
                 else:
-                    print(f"[ControladorGrafica] ❌ Error creando contrato: {mensaje}")
+                    logging.error(f"[ControladorGrafica] Error creando contrato: {mensaje}")
                     QMessageBox.critical(self, "Error", mensaje)
             else:
                 pass
                         
         except Exception as e:
-            print(f"[ControladorGrafica] ❌ Error creando contrato: {e}")
+            logging.error(f"[ControladorGrafica] Error creando contrato: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             QMessageBox.critical(self.main_window, "Error", f"Error inesperado: {e}")
     def _verificar_subcarpetas_estandar(self):
         """Verificar y crear subcarpetas estándar si no existen"""
@@ -1055,7 +1056,7 @@ class ControladorActuacionesFacturas:
                 if not os.path.exists(ruta_subcarpeta):
                     os.makedirs(ruta_subcarpeta)
             except Exception as e:
-                print(f"[ActuacionesFacturas] ❌ Error creando subcarpeta {subcarpeta}: {e}")
+                logging.error(f"[ActuacionesFacturas] Error creando subcarpeta {subcarpeta}: {e}")
 
     def crear_contrato_con_carpetas(self, datos_contrato):
         """
@@ -1107,7 +1108,7 @@ class ControladorActuacionesFacturas:
             return True, f"Contrato y estructura de carpetas creados correctamente en:\n{carpeta_proyecto}"
         except Exception as e:
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False, f"Error creando contrato y carpetas: {e}"
 
 
@@ -1134,7 +1135,7 @@ class ControladorActuacionesFacturas:
                 )
                 
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error mostrando diálogo: {e}")
+            logging.error(f"[ActuacionesFacturas] Error mostrando diálogo: {e}")
 
     
     def _crear_estructura_carpetas_obra(self):
@@ -1170,7 +1171,7 @@ class ControladorActuacionesFacturas:
             )
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error creando estructura: {e}")
+            logging.error(f"[ActuacionesFacturas] Error creando estructura: {e}")
             QMessageBox.critical(
                 self.main_window,
                 "Error",
@@ -1210,7 +1211,7 @@ class ControladorActuacionesFacturas:
                 QMessageBox.information(self.main_window, "Éxito", "Actuación borrada correctamente")
                 
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error borrando actuación: {e}")
+            logging.error(f"[ActuacionesFacturas] Error borrando actuación: {e}")
             QMessageBox.critical(self.main_window, "Error", f"Error borrando actuación: {e}")
     
     def borrar_factura(self):
@@ -1243,7 +1244,7 @@ class ControladorActuacionesFacturas:
                 self.actualizar_labels_presupuesto()
                 
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error borrando factura: {e}")
+            logging.error(f"[ActuacionesFacturas] Error borrando factura: {e}")
             QMessageBox.critical(self.main_window, "Error", f"Error borrando factura: {e}")
     def limpiar_proyecto_actual(self):
         """Limpiar proyecto actual y deshabilitar botones"""
@@ -1299,7 +1300,7 @@ class ControladorActuacionesFacturas:
 
                 self._mostrar_grafico_sin_datos()
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error actualizando presupuesto: {e}")
+            logging.error(f"[ActuacionesFacturas] Error actualizando presupuesto: {e}")
 
     def _obtener_presupuesto_adjudicacion(self) -> float:
         """Obtener presupuesto de adjudicación del contrato actual"""
@@ -1329,7 +1330,7 @@ class ControladorActuacionesFacturas:
             return 0.0
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error obteniendo presupuesto: {e}")
+            logging.error(f"[ActuacionesFacturas] Error obteniendo presupuesto: {e}")
             return 0.0
     def copiar_archivos_pdf(self, archivos_originales, tipo_carpeta):
         """
@@ -1350,7 +1351,7 @@ class ControladorActuacionesFacturas:
             carpeta_proyecto = self.obtener_carpeta_proyecto(crear_si_no_existe=True)
             
             if not carpeta_proyecto:
-                print(f"[ActuacionesFacturas] ❌ No se pudo obtener carpeta del proyecto")
+                logging.error(f"[ActuacionesFacturas] No se pudo obtener carpeta del proyecto")
                 return archivos_originales  # Devolver originales si no se puede copiar
             
             # Determinar carpeta destino
@@ -1393,14 +1394,14 @@ class ControladorActuacionesFacturas:
                     archivos_copiados.append(archivo_destino)
                     
                 except Exception as e:
-                    print(f"[ActuacionesFacturas] ❌ Error copiando {nombre_archivo}: {e}")
+                    logging.error(f"[ActuacionesFacturas] Error copiando {nombre_archivo}: {e}")
                     # Si no se puede copiar, usar el original
                     archivos_copiados.append(archivo_original)
             
             return archivos_copiados
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error general copiando archivos: {e}")
+            logging.error(f"[ActuacionesFacturas] Error general copiando archivos: {e}")
             # En caso de error, devolver archivos originales
             return archivos_originales
     def _actualizar_label_presupuesto_total(self, importe: float):
@@ -1540,7 +1541,7 @@ class ControladorActuacionesFacturas:
             
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error en gráfico: {e}")
+            logging.error(f"[ActuacionesFacturas] Error en gráfico: {e}")
             self._mostrar_grafico_sin_datos()
 
     def _mostrar_grafico_sin_datos(self):
@@ -1587,7 +1588,7 @@ class ControladorActuacionesFacturas:
             self.graphics_view.fitInView(scene.itemsBoundingRect(), Qt.AspectRatioMode.KeepAspectRatio)
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error gráfico vacío: {e}")
+            logging.error(f"[ActuacionesFacturas] Error gráfico vacío: {e}")
 
 
     def agregar_actuacion(self):
@@ -1772,7 +1773,7 @@ Sistema ADIF
                 QMessageBox.information(self.main_window, "Éxito", f"PDFs actualizados: {len(nuevos_pdfs)} archivos")
                 
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error cambiando PDFs factura: {e}")
+            logging.error(f"[ActuacionesFacturas] Error cambiando PDFs factura: {e}")
     
     def abrir_pdf_seleccionado(self, lista_widget, pdfs_list):
         """Abrir PDF seleccionado en la lista"""
@@ -1801,7 +1802,7 @@ Sistema ADIF
                 QMessageBox.warning(self.main_window, "Error", f"No se encontró el archivo:\n{ruta_pdf}")
                 
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error abriendo PDF: {e}")
+            logging.error(f"[ActuacionesFacturas] Error abriendo PDF: {e}")
             QMessageBox.critical(self.main_window, "Error", f"Error abriendo PDF: {e}")
     
     def guardar_en_json(self):
@@ -1821,7 +1822,7 @@ Sistema ADIF
                     datos_proyecto = gestor.cargar_datos_obra(self.proyecto_actual)
                     
                     if not datos_proyecto:
-                        print(f"[ActuacionesFacturas] ❌ No se pudieron cargar datos del proyecto: {self.proyecto_actual}")
+                        logging.error(f"[ActuacionesFacturas] No se pudieron cargar datos del proyecto: {self.proyecto_actual}")
                         return
                     
                     # Actualizar con nuevos datos
@@ -1835,16 +1836,16 @@ Sistema ADIF
                     if gestor.guardar_datos():
                         pass  # JSON guardado exitosamente
                     else:
-                        print(f"[ActuacionesFacturas] ❌ Error guardando archivo JSON")
+                        logging.error(f"[ActuacionesFacturas] Error guardando archivo JSON")
                 else:
-                    print("[ActuacionesFacturas] ❌ Gestor no disponible")
+                    logging.error("[ActuacionesFacturas] Gestor no disponible")
             else:
-                print("[ActuacionesFacturas] ❌ Controlador JSON no disponible")
+                logging.error("[ActuacionesFacturas] Controlador JSON no disponible")
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error guardando en JSON: {e}")
+            logging.error(f"[ActuacionesFacturas] Error guardando en JSON: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
     def actualizar_tabla_actuaciones(self):
         """Actualizar tabla de actuaciones con botones modernos."""
         if not self.table_actuaciones:
@@ -2053,7 +2054,7 @@ Sistema ADIF
             dialog.exec_()
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error viendo PDFs actuación: {e}")
+            logging.error(f"[ActuacionesFacturas] Error viendo PDFs actuación: {e}")
     
     def ver_pdfs_factura(self, fila: int):
         """Ver PDFs de una factura"""
@@ -2096,7 +2097,7 @@ Sistema ADIF
             dialog.exec_()
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error viendo PDFs factura: {e}")
+            logging.error(f"[ActuacionesFacturas] Error viendo PDFs factura: {e}")
     
     def cambiar_pdfs_actuacion(self, fila: int):
         """Cambiar PDFs de una actuación"""
@@ -2121,7 +2122,7 @@ Sistema ADIF
                 QMessageBox.information(self.main_window, "Éxito", f"PDFs actualizados: {len(nuevos_pdfs)} archivos")
                 
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error cambiando PDFs actuación: {e}")
+            logging.error(f"[ActuacionesFacturas] Error cambiando PDFs actuación: {e}")
     
     def cambiar_pdfs_factura_simple(self, fila: int):
         """Cambiar PDFs de una factura (versión simple, renombrada para evitar duplicidad)"""
@@ -2135,12 +2136,12 @@ Sistema ADIF
         try:
             # Verificar que la fila es válida
             if row < 0 or row >= len(self.actuaciones):
-                print(f"[ActuacionesFacturas] ⚠️ Fila inválida: {row}")
+                logging.warning(f"[ActuacionesFacturas] Fila inválida: {row}")
                 return
             
             # No permitir edición en la columna de acciones (columna 4)
             if column == 4:  # Columna de acciones
-                print("[ActuacionesFacturas] ℹ️ Doble clic en columna de acciones ignorado")
+                logging.info("[ActuacionesFacturas] Doble clic en columna de acciones ignorado")
                 return
             
 
@@ -2183,7 +2184,7 @@ Sistema ADIF
                 QMessageBox.information(self.main_window, "Éxito", "Actuación actualizada correctamente")
                 
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error editando actuación: {e}")
+            logging.error(f"[ActuacionesFacturas] Error editando actuación: {e}")
             QMessageBox.critical(self.main_window, "Error", f"Error editando actuación: {e}")
 
 
@@ -2192,12 +2193,12 @@ Sistema ADIF
         try:
             # Verificar que la fila es válida
             if row < 0 or row >= len(self.facturas):
-                print(f"[ActuacionesFacturas] ⚠️ Fila inválida: {row}")
+                logging.warning(f"[ActuacionesFacturas] Fila inválida: {row}")
                 return
             
             # No permitir edición en la columna de acciones (columna 3)
             if column == 3:  # Columna de acciones
-                print("[ActuacionesFacturas] ℹ️ Doble clic en columna de acciones ignorado")
+                logging.info("[ActuacionesFacturas] Doble clic en columna de acciones ignorado")
                 return
             
 
@@ -2256,7 +2257,7 @@ Sistema ADIF
                 QMessageBox.information(self.main_window, "Éxito", "Factura actualizada correctamente")
                 self.actualizar_labels_presupuesto()
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error editando factura: {e}")
+            logging.error(f"[ActuacionesFacturas] Error editando factura: {e}")
             QMessageBox.critical(self.main_window, "Error", f"Error editando factura: {e}")
 
 
@@ -2276,7 +2277,7 @@ Sistema ADIF
 
                         break
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error limpiando asociaciones: {e}")
+            logging.error(f"[ActuacionesFacturas] Error limpiando asociaciones: {e}")
 
     def crear_carpeta_proyecto(self):
         """Crear carpeta del proyecto actual si no existe"""
@@ -2285,11 +2286,11 @@ Sistema ADIF
             if carpeta:
                 return carpeta
             else:
-                print(f"[ActuacionesFacturas] ❌ No se pudo crear/obtener carpeta")
+                logging.error(f"[ActuacionesFacturas] No se pudo crear/obtener carpeta")
                 return None
                 
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error creando carpeta: {e}")
+            logging.error(f"[ActuacionesFacturas] Error creando carpeta: {e}")
             return None
 
     def _ejecutar_con_carpeta(self, accion_callback, nombre_accion="Acción"):
@@ -2298,21 +2299,21 @@ Sistema ADIF
         """
         try:
             if not self.proyecto_actual:
-                print(f"[ActuacionesFacturas] ⚠️ {nombre_accion}: No hay proyecto actual")
+                logging.warning(f"[ActuacionesFacturas] {nombre_accion}: No hay proyecto actual")
                 return
             
             # Obtener/crear carpeta
             carpeta = self.obtener_carpeta_proyecto(crear_si_no_existe=True)
             
             if not carpeta:
-                print(f"[ActuacionesFacturas] ❌ {nombre_accion}: No se pudo obtener carpeta")
+                logging.error(f"[ActuacionesFacturas] {nombre_accion}: No se pudo obtener carpeta")
                 return
             
             # Ejecutar acción
             accion_callback(carpeta)
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error en {nombre_accion}: {e}")
+            logging.error(f"[ActuacionesFacturas] Error en {nombre_accion}: {e}")
             return
 
     def abrir_carpeta_actuaciones(self):
@@ -2330,6 +2331,6 @@ Sistema ADIF
                 else:  # Linux
                     subprocess.Popen(['xdg-open', actuaciones_path])
             else:
-                print(f"[ActuacionesFacturas] ❌ Carpeta actuaciones no existe")
+                logging.error(f"[ActuacionesFacturas] Carpeta actuaciones no existe")
         
         self._ejecutar_con_carpeta(abrir_carpeta, "Abrir Carpeta")

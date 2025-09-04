@@ -139,6 +139,9 @@ import re,sys
 import json
 import subprocess
 import platform
+import logging
+
+logger = logging.getLogger(__name__)
 from typing import Optional, Tuple, List
 from datetime import datetime
 from PyQt5.QtWidgets import QMessageBox, QApplication
@@ -180,7 +183,7 @@ class GestorArchivos:
             return os.path.abspath(obras_dir)
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error detectando directorio obras: {e}")
+            logging.error(f"[GestorArchivos] Error detectando directorio obras: {e}")
             # Fallback a directorio actual
             fallback = os.path.join(os.getcwd(), "obras")
             os.makedirs(fallback, exist_ok=True)
@@ -193,9 +196,9 @@ class GestorArchivos:
             pass
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error en debug completo: {e}")
+            logging.error(f"[GestorArchivos] Error en debug completo: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
 
     # ========================================
     # 🔍 BÚSQUEDA DE CARPETAS EXISTENTES
@@ -265,9 +268,9 @@ class GestorArchivos:
             return None
 
         except Exception as e:
-            print(f"[GestorUnificado] ❌ Error buscando carpeta existente: {e}")
+            logging.error(f"[GestorUnificado] Error buscando carpeta existente: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return None
 
     
@@ -437,9 +440,9 @@ class GestorArchivos:
                 return False
 
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error en renombrar_carpeta_por_expediente: {e}")
+            logging.error(f"[GestorArchivos] Error en renombrar_carpeta_por_expediente: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             
             # Mostrar error general solo si hay main_window
             if self.main_window is not None:
@@ -536,9 +539,9 @@ class GestorArchivos:
                 return None, False, "error_creacion"
                 
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error en verificar_o_crear: {e}")
+            logging.error(f"[GestorArchivos] Error en verificar_o_crear: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return None, False, "error_excepcion"
     
     def _preguntar_crear_carpeta(self, contract_data):
@@ -565,7 +568,7 @@ class GestorArchivos:
             return resultado == QMessageBox.Yes
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error mostrando diálogo: {e}")
+            logging.error(f"[GestorArchivos] Error mostrando diálogo: {e}")
             return True  # En caso de error, crear por defecto
     
     def _crear_carpeta_con_estructura(self, contract_data):
@@ -587,9 +590,9 @@ class GestorArchivos:
                 return None
                 
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error creando carpeta: {e}")
+            logging.error(f"[GestorArchivos] Error creando carpeta: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return None
     
     def _crear_estructura_subcarpetas(self, carpeta_path, contract_data):
@@ -670,9 +673,9 @@ class GestorArchivos:
             return subcarpetas_creadas
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error creando estructura: {e}")
+            logging.error(f"[GestorArchivos] Error creando estructura: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return []
 
     # ========================================
@@ -686,13 +689,13 @@ class GestorArchivos:
             nombre_obra = contract_data.get('nombreObra', '').strip()
             nombre_carpeta_json = contract_data.get('nombreCarpeta', '').strip()
             
-            print(f"   Expediente: '{numero_expediente}'")
-            print(f"   Obra: '{nombre_obra}'")
-            print(f"   Carpeta JSON: '{nombre_carpeta_json}'")
+            logging.debug(f"   Expediente: '{numero_expediente}'")
+            logging.debug(f"   Obra: '{nombre_obra}'")
+            logging.debug(f"   Carpeta JSON: '{nombre_carpeta_json}'")
             
             # REGLA 0: PRIORITARIO - Usar nombreCarpeta del JSON si existe
             if nombre_carpeta_json:
-                print(f"   ✅ Usando nombreCarpeta del JSON: '{nombre_carpeta_json}'")
+                logging.info(f"   Usando nombreCarpeta del JSON: '{nombre_carpeta_json}'")
                 return nombre_carpeta_json
             
             # REGLA 1: Priorizar nombre de obra (ya que las carpetas existentes usan este formato)
@@ -715,7 +718,7 @@ class GestorArchivos:
             return fallback_name
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error generando nombre: {e}")
+            logging.error(f"[GestorArchivos] Error generando nombre: {e}")
             return f"contrato_error_{datetime.now().strftime('%Y%m%d_%H%M')}"
     def _limpiar_nombre_carpeta(self, nombre):
         """Limpiar nombre para uso como carpeta del sistema de archivos"""
@@ -794,7 +797,7 @@ class GestorArchivos:
         try:
             json_path = self._get_json_path()
             if not json_path:
-                print(f"[GestorArchivos] ⚠️ No se encontró archivo JSON para actualizar")
+                logging.warning(f"[GestorArchivos] No se encontró archivo JSON para actualizar")
                 return False
             
             # Cargar datos JSON
@@ -813,9 +816,9 @@ class GestorArchivos:
                 obra_expediente = obra.get("numeroExpediente", "")
                 obra_carpeta = obra.get("nombreCarpeta", "")
                 
-                #print(f"   [{i}] Nombre: '{obra_nombre}'")
-                #print(f"       Expediente: '{obra_expediente}'")
-                #print(f"       Carpeta actual: '{obra_carpeta}'")
+                #logger.info(f"   [{i}] Nombre: '{obra_nombre}'")
+                #logger.info(f"       Expediente: '{obra_expediente}'")
+                #logger.info(f"       Carpeta actual: '{obra_carpeta}'")
             
             # 🆕 BÚSQUEDA MEJORADA: PRIORIZAR EXPEDIENTE + NOMBRE
             for i, obra in enumerate(obras):
@@ -833,8 +836,8 @@ class GestorArchivos:
                 # CASO 1: Ambos tienen expediente - deben coincidir ambos
                 if numero_expediente and obra_expediente:
                     if coincide_nombre and coincide_expediente:
-                        print(f"   Carpeta antigua: '{obra.get('nombreCarpeta', '')}'")
-                        print(f"   Carpeta nueva: '{nombre_carpeta}'")
+                        logging.info(f"   Carpeta antigua: '{obra.get('nombreCarpeta', '')}'")
+                        logging.info(f"   Carpeta nueva: '{nombre_carpeta}'")
                         
                         obra["nombreCarpeta"] = nombre_carpeta
                         obra["fechaCreacionCarpeta"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -845,8 +848,8 @@ class GestorArchivos:
                 # CASO 2: Solo el contrato actual tiene expediente - buscar por nombre
                 elif numero_expediente and not obra_expediente:
                     if coincide_nombre:
-                        print(f"   Carpeta antigua: '{obra.get('nombreCarpeta', '')}'")
-                        print(f"   Carpeta nueva: '{nombre_carpeta}'")
+                        logging.info(f"   Carpeta antigua: '{obra.get('nombreCarpeta', '')}'")
+                        logging.info(f"   Carpeta nueva: '{nombre_carpeta}'")
                         
                         obra["nombreCarpeta"] = nombre_carpeta
                         obra["fechaCreacionCarpeta"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -862,8 +865,8 @@ class GestorArchivos:
                 # CASO 4: Ninguno tiene expediente - buscar por nombre únicamente
                 elif not numero_expediente and not obra_expediente:
                     if coincide_nombre:
-                        print(f"   Carpeta antigua: '{obra.get('nombreCarpeta', '')}'")
-                        print(f"   Carpeta nueva: '{nombre_carpeta}'")
+                        logging.info(f"   Carpeta antigua: '{obra.get('nombreCarpeta', '')}'")
+                        logging.info(f"   Carpeta nueva: '{nombre_carpeta}'")
                         
                         obra["nombreCarpeta"] = nombre_carpeta
                         obra["fechaCreacionCarpeta"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -872,8 +875,8 @@ class GestorArchivos:
                         break
             
             if not obra_encontrada:
-                print(f"[GestorArchivos] Info: No se encontró la obra en el JSON (esto es normal si es nueva)")
-                print(f"   Buscaba: nombre='{nombre_obra}'")
+                logging.info(f"[GestorArchivos] No se encontró la obra en el JSON (esto es normal si es nueva)")
+                logging.info(f"   Buscaba: nombre='{nombre_obra}'")
                 return True  # Cambiado a True para evitar el error
             
             # Guardar archivo actualizado
@@ -883,9 +886,9 @@ class GestorArchivos:
             return True
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error actualizando JSON: {e}")
+            logging.error(f"[GestorArchivos] Error actualizando JSON: {e}")
             import traceback
-            traceback.print_exc()
+            logger.exception("Error completo:")
             return False
     def _get_json_path(self):
         """Encontrar archivo JSON de datos - ACTUALIZADO PARA CARPETA basedatos"""
@@ -930,7 +933,7 @@ class GestorArchivos:
             return None
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error buscando JSON: {e}")
+            logging.error(f"[GestorArchivos] Error buscando JSON: {e}")
             return None
 
     # ========================================
@@ -977,7 +980,7 @@ class GestorArchivos:
                 self.abrir_carpeta_en_explorador(carpeta_path)
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error mostrando notificación: {e}")
+            logging.error(f"[GestorArchivos] Error mostrando notificación: {e}")
     
     def _find_main_window(self):
         """Buscar ventana principal de la aplicación"""
@@ -994,7 +997,7 @@ class GestorArchivos:
             return None
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error buscando main window: {e}")
+            logging.error(f"[GestorArchivos] Error buscando main window: {e}")
             return None
 
     # ========================================
@@ -1021,7 +1024,7 @@ class GestorArchivos:
             return True
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error abriendo carpeta: {e}")
+            logging.error(f"[GestorArchivos] Error abriendo carpeta: {e}")
             return False
     
     def abrir_carpeta_contrato(self, contract_data):
@@ -1035,7 +1038,7 @@ class GestorArchivos:
                 return False
                 
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error abriendo carpeta contrato: {e}")
+            logging.error(f"[GestorArchivos] Error abriendo carpeta contrato: {e}")
             return False
 
     # ========================================
@@ -1078,7 +1081,7 @@ class GestorArchivos:
             return list(carpetas_huerfanas)
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error listando huérfanas: {e}")
+            logging.error(f"[GestorArchivos] Error listando huérfanas: {e}")
             return []
     
     def generar_informe_carpetas(self):
@@ -1147,7 +1150,7 @@ class GestorArchivos:
             return informe
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error generando informe: {e}")
+            logging.error(f"[GestorArchivos] Error generando informe: {e}")
             return None
 
     # ========================================
@@ -1176,7 +1179,7 @@ class GestorArchivos:
             return False
             
         except Exception as e:
-            print(f"[GestorArchivos] ❌ Error en migración: {e}")
+            logging.error(f"[GestorArchivos] Error en migración: {e}")
             return False
 
     # ========================================

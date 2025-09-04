@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(del convert_remaining_prints.py)"
+      "Bash(del convert_remaining_prints.py)",
+      "Bash(del test_logging_path.py)",
+      "Bash(taskkill:*)"
     ],
     "deny": [],
     "ask": [],
