@@ -9,6 +9,7 @@ import os
 import json
 import subprocess
 import webbrowser
+import logging
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QFormLayout, 
@@ -454,8 +455,8 @@ class ControladorActuacionesFacturas:
     def setup_tables(self):
         """Configurar tablas"""
 
-        print(f"[ActuacionesFacturas] table_actuaciones: {self.table_actuaciones is not None}")
-        print(f"[ActuacionesFacturas] table_facturas: {self.table_facturas is not None}")
+        logging.debug(f"[ActuacionesFacturas] table_actuaciones: {self.table_actuaciones is not None}")
+        logging.debug(f"[ActuacionesFacturas] table_facturas: {self.table_facturas is not None}")
         
         # Configurar tabla actuaciones
         if self.table_actuaciones:
@@ -516,21 +517,21 @@ class ControladorActuacionesFacturas:
         """
         try:
             if not self.proyecto_actual:
-                print(f"[ActuacionesFacturas] ⚠️ {nombre_accion}: No hay proyecto actual")
+                logging.warning(f"[ActuacionesFacturas] {nombre_accion}: No hay proyecto actual")
                 return False
             
             # Obtener/crear carpeta
             carpeta = self.obtener_carpeta_proyecto(crear_si_no_existe=True)
             
             if not carpeta:
-                print(f"[ActuacionesFacturas] ❌ {nombre_accion}: No se pudo obtener carpeta")
+                logging.error(f"[ActuacionesFacturas] {nombre_accion}: No se pudo obtener carpeta")
                 return False
             
             # Ejecutar acción
             return accion_callback(carpeta)
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error en {nombre_accion}: {e}")
+            logging.error(f"[ActuacionesFacturas] Error en {nombre_accion}: {e}")
             return False
     
     
@@ -557,12 +558,12 @@ class ControladorActuacionesFacturas:
             
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error cargando datos: {e}")
+            logging.error(f"[ActuacionesFacturas] Error cargando datos: {e}")
     
     def _actualizar_tabla_actuaciones(self):
         """Actualizar tabla de actuaciones"""
 
-        print(f"[ActuacionesFacturas] table_actuaciones: {self.table_actuaciones is not None}")
+        logging.debug(f"[ActuacionesFacturas] table_actuaciones: {self.table_actuaciones is not None}")
 
         
         if not self.table_actuaciones:
@@ -591,7 +592,7 @@ class ControladorActuacionesFacturas:
     def _actualizar_tabla_facturas(self):
         """Actualizar tabla de facturas"""
 
-        print(f"[ActuacionesFacturas] table_facturas: {self.table_facturas is not None}")
+        logging.debug(f"[ActuacionesFacturas] table_facturas: {self.table_facturas is not None}")
 
         
         if not self.table_facturas:
@@ -640,7 +641,7 @@ class ControladorActuacionesFacturas:
                 self.label_presupuesto_disponible.setText(f"{presupuesto_disponible:.2f} €")
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error actualizando presupuesto: {e}")
+            logging.error(f"[ActuacionesFacturas] Error actualizando presupuesto: {e}")
     
     def _actualizar_graficos(self):
         """Actualizar gráficos al cargar contrato"""
@@ -671,7 +672,7 @@ class ControladorActuacionesFacturas:
             self._actualizar_grafico_quesito(presupuesto_total, total_gastado)
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error actualizando gráficos: {e}")
+            logging.error(f"[ActuacionesFacturas] Error actualizando gráficos: {e}")
     
  
     
@@ -734,7 +735,7 @@ class ControladorActuacionesFacturas:
                 self.label_presupuesto_disponible.setText(f"{disponible:.2f}€")
             
         except Exception as e:
-            print(f"[ActuacionesFacturas] ❌ Error actualizando labels presupuesto: {e}")
+            logging.error(f"[ActuacionesFacturas] Error actualizando labels presupuesto: {e}")
     # Método debug eliminado - innecesario en producción
 
     # TAMBIÉN AGREGA ESTE MÉTODO AL ContractManagerQt5 PARA VERIFICAR RÁPIDAMENTE

@@ -180,5 +180,18 @@
       "observaciones": "Generado exitosamente usando plantilla_acta_inicio_obra.docx",
       "plantilla_usada": "plantilla_acta_inicio_obra.docx"
     }
+  ],
+  "ewwewe": [
+    {
+      "id": "f8cc650a",
+      "tipo": "acta_inicio",
+      "nombre": "Acta de Inicio",
+      "ruta_archivo": "F:\\GesConAdif\\dist\\generador_actas\\obras\\ewwewe\\04-documentos-sin-firmar\\Acta_Inicio.docx",
+      "fecha_generacion": "2025-09-04T09:39:29.909328",
+      "estado": "generado",
+      "tamano_kb": 69.833984375,
+      "observaciones": "Generado exitosamente usando plantilla_acta_inicio_servicio.docx",
+      "plantilla_usada": "plantilla_acta_inicio_servicio.docx"
+    }
   ]
 }

@@ -5,6 +5,9 @@ Controlador especializado para auto-guardado en pérdida de foco
 """
 from PyQt5 import QtWidgets
 from typing import Optional
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ControladorAutoGuardado:
@@ -43,7 +46,7 @@ class ControladorAutoGuardado:
             self.configurar_auto_guardado_tablas()
             
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error configurando auto-guardado: {e}")
+            logger.error(f"Error configurando auto-guardado: {e}")
 
     def configurar_auto_guardado_campos(self):
         """Configurar auto-guardado para campos editables en pérdida de foco"""
@@ -66,10 +69,15 @@ class ControladorAutoGuardado:
                                         QtWidgets.QDoubleSpinBox, QtWidgets.QSpinBox)):
                     widget.editingFinished.connect(lambda w=widget, n=nombre: self._guardar_campo_inmediato(n, w))
                 elif isinstance(widget, QtWidgets.QComboBox):
+                    # EXCLUIR EL COMBO SELECTOR PRINCIPAL PARA EVITAR BUCLES
+                    if nombre == 'comboBox' and hasattr(self.main_window, 'comboBox'):
+                        # Este es el selector principal de contratos, NO guardarlo automáticamente
+                        logger.info(f"⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado")
+                        continue
                     widget.activated.connect(lambda _, w=widget, n=nombre: self._guardar_campo_inmediato(n, w))
             
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error configurando campos: {e}")
+            logger.error(f"Error configurando campos: {e}")
 
 
 
@@ -116,7 +124,7 @@ class ControladorAutoGuardado:
                 tabla.itemChanged.connect(lambda item: self._auto_guardar_tabla_ofertas() if not self.cargando_datos else None)
             
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error configurando tablas: {e}")
+            logger.error(f"Error configurando tablas: {e}")
 
 
     def _guardar_campo_inmediato(self, nombre_campo: str, widget) -> bool:
@@ -149,7 +157,7 @@ class ControladorAutoGuardado:
             return resultado
                 
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error guardando inmediato: {e}")
+            logger.error(f"Error guardando inmediato: {e}")
             return False
     
     def _guardar_campo_obra(self, nombre_campo: str, valor: str, widget) -> bool:
@@ -169,7 +177,7 @@ class ControladorAutoGuardado:
             return resultado
                 
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error guardando campo obra: {e}")
+            logger.error(f"Error guardando campo obra: {e}")
             return False
 
     def _auto_guardar_tabla_empresas(self):
@@ -198,7 +206,7 @@ class ControladorAutoGuardado:
                 self.ultimo_guardado[cache_key] = empresas_data
             
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error guardando empresas unificadas: {e}")
+            logger.error(f"Error guardando empresas unificadas: {e}")
 
     def _auto_guardar_tabla_ofertas(self):
         """MODIFICADA: Las ofertas se guardan junto con empresas"""
@@ -216,7 +224,7 @@ class ControladorAutoGuardado:
             return True
            
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error en guardado forzado: {e}")
+            logger.error(f"Error en guardado forzado: {e}")
             return False
         finally:
             self.guardando_en_proceso = False
@@ -287,7 +295,7 @@ class ControladorAutoGuardado:
 
             
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error extrayendo empresas unificadas: {e}")
+            logger.error(f"Error extrayendo empresas unificadas: {e}")
         
         return empresas_data
     def _extraer_datos_tabla_ofertas(self) -> list:
@@ -321,7 +329,7 @@ class ControladorAutoGuardado:
                     ofertas_data.append(fila_data)
             
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error extrayendo datos tabla ofertas: {e}")
+            logger.error(f"Error extrayendo datos tabla ofertas: {e}")
         
         return ofertas_data
 
@@ -348,13 +356,13 @@ class ControladorAutoGuardado:
                 self._auto_guardar_tabla_ofertas()
             
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error guardado forzado tablas: {e}")
+            logger.error(f"Error guardado forzado tablas: {e}")
 
     def actualizar(self, nombre_contrato: str):
         """Actualizar todos los campos y tablas desde el JSON para el contrato especificado"""
         try:
             if not self._verificar_dependencias():
-                print(f"[ControladorAutoGuardado] ❌ Dependencias no disponibles")
+                logger.error("Dependencias no disponibles")
                 return False
 
             self.iniciar_carga_datos()
@@ -362,10 +370,13 @@ class ControladorAutoGuardado:
             # Leer datos del contrato
             contract_data = self.controlador_json.leer_contrato_completo(nombre_contrato)
             if not contract_data:
-                print(f"[ControladorAutoGuardado] ❌ No se encontró el contrato: {nombre_contrato}")
+                logger.error(f"No se encontró el contrato: {nombre_contrato}")
                 self.finalizar_carga_datos()
                 return False
 
+            # AÑADIDO: Actualizar justificación de límites ANTES de cálculos
+            self._actualizar_justificacion_limites(nombre_contrato)
+            
             # Actualizar campos de texto
             self._actualizar_campos_desde_json(contract_data)
             
@@ -376,7 +387,7 @@ class ControladorAutoGuardado:
             return True
             
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error actualizando: {e}")
+            logger.error(f"Error actualizando: {e}")
             self.finalizar_carga_datos()
             return False
 
@@ -394,6 +405,7 @@ class ControladorAutoGuardado:
                 
             valor = contract_data.get(nombre, "")
             if valor:
+                logger.info(f"Cargando campo {nombre}: {valor}")
                 self._establecer_valor_widget(widget, str(valor))
 
     def _actualizar_tablas_desde_json(self, contract_data):
@@ -438,7 +450,7 @@ class ControladorAutoGuardado:
                 if index >= 0:
                     widget.setCurrentIndex(index)
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error estableciendo valor: {e}")
+            logger.error(f"Error estableciendo valor: {e}")
 
     def esta_pausado(self) -> bool:
         """Verificar si el auto-guardado está pausado"""
@@ -455,19 +467,19 @@ class ControladorAutoGuardado:
             # Obtener nombre del contrato activo
             nombre_contrato = self._obtener_nombre_contrato_actual()
             if not nombre_contrato:
-                print("[AutoGuardado] ❌ No se pudo guardar ofertas: contrato no definido")
+                logger.error("No se pudo guardar ofertas: contrato no definido")
                 return
 
             # Obtener datos actuales del contrato
             contract_data = self.controlador_json.leer_contrato_completo(nombre_contrato)
             if not contract_data:
-                print("[AutoGuardado] ❌ No se encontró el contrato")
+                logger.error("No se encontró el contrato")
                 return
 
             # Obtener empresas actuales
             empresas_actuales = contract_data.get('empresas', [])
             if not empresas_actuales:
-                print("[AutoGuardado] ❌ No hay empresas en el contrato")
+                logger.warning("No hay empresas en el contrato")
                 return
 
             # Actualizar ofertas en la estructura empresas
@@ -488,4 +500,20 @@ class ControladorAutoGuardado:
             self.controlador_json.guardar_empresas_unificadas_en_json(nombre_contrato, empresas_actuales)
 
         except Exception as e:
-            print(f"[ControladorAutoGuardado] ❌ Error guardando ofertas en empresas: {e}")
+            logger.error(f"Error guardando ofertas en empresas: {e}")
+
+    def _actualizar_justificacion_limites(self, nombre_contrato: str):
+        """Actualizar justificación de límites al seleccionar proyecto"""
+        try:
+            if (hasattr(self.main_window, 'controlador_eventos_ui') and 
+                self.main_window.controlador_eventos_ui and
+                hasattr(self.main_window.controlador_eventos_ui, 'controlador_calculos')):
+                
+                self.main_window.controlador_eventos_ui.controlador_calculos.actualizar_justificacion_limites(self.main_window)
+                logger.info(f"✅ AUTOSAVE: Justificación de límites actualizada para: {nombre_contrato}")
+                
+            else:
+                logger.warning("No se pudo acceder al controlador_calculos para actualizar justificación")
+                
+        except Exception as e:
+            logger.error(f"Error actualizando justificación de límites: {e}")

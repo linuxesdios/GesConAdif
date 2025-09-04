@@ -69,6 +69,11 @@ class ControladorAutoGuardado:
                                         QtWidgets.QDoubleSpinBox, QtWidgets.QSpinBox)):
                     widget.editingFinished.connect(lambda w=widget, n=nombre: self._guardar_campo_inmediato(n, w))
                 elif isinstance(widget, QtWidgets.QComboBox):
+                    # EXCLUIR EL COMBO SELECTOR PRINCIPAL PARA EVITAR BUCLES
+                    if nombre == 'comboBox' and hasattr(self.main_window, 'comboBox'):
+                        # Este es el selector principal de contratos, NO guardarlo automáticamente
+                        logger.info(f"⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado")
+                        continue
                     widget.activated.connect(lambda _, w=widget, n=nombre: self._guardar_campo_inmediato(n, w))
             
         except Exception as e:
@@ -369,6 +374,9 @@ class ControladorAutoGuardado:
                 self.finalizar_carga_datos()
                 return False
 
+            # AÑADIDO: Actualizar justificación de límites ANTES de cálculos
+            self._actualizar_justificacion_limites(nombre_contrato)
+            
             # Actualizar campos de texto
             self._actualizar_campos_desde_json(contract_data)
             
@@ -397,6 +405,7 @@ class ControladorAutoGuardado:
                 
             valor = contract_data.get(nombre, "")
             if valor:
+                logger.info(f"Cargando campo {nombre}: {valor}")
                 self._establecer_valor_widget(widget, str(valor))
 
     def _actualizar_tablas_desde_json(self, contract_data):
@@ -492,3 +501,19 @@ class ControladorAutoGuardado:
 
         except Exception as e:
             logger.error(f"Error guardando ofertas en empresas: {e}")
+
+    def _actualizar_justificacion_limites(self, nombre_contrato: str):
+        """Actualizar justificación de límites al seleccionar proyecto"""
+        try:
+            if (hasattr(self.main_window, 'controlador_eventos_ui') and 
+                self.main_window.controlador_eventos_ui and
+                hasattr(self.main_window.controlador_eventos_ui, 'controlador_calculos')):
+                
+                self.main_window.controlador_eventos_ui.controlador_calculos.actualizar_justificacion_limites(self.main_window)
+                logger.info(f"✅ AUTOSAVE: Justificación de límites actualizada para: {nombre_contrato}")
+                
+            else:
+                logger.warning("No se pudo acceder al controlador_calculos para actualizar justificación")
+                
+        except Exception as e:
+            logger.error(f"Error actualizando justificación de límites: {e}")

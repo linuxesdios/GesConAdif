@@ -9,6 +9,9 @@ import json
 from datetime import datetime
 from typing import List, Optional
 import re
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ControladorBackup:
@@ -32,11 +35,11 @@ class ControladorBackup:
             self._es_ejecutable = self._rutas._es_ejecutable
             self.base_path = self._rutas.get_base_path()
             
-            print(f"[ControladorBackup] ✅ Usando ControladorRutas centralizado")
+            logger.info("Usando ControladorRutas centralizado")
             
         except ImportError:
             # 🔧 FALLBACK: Lógica antigua si no se puede importar ControladorRutas
-            print(f"[ControladorBackup] ⚠️ Fallback: No se pudo importar ControladorRutas")
+            logger.warning("Fallback: No se pudo importar ControladorRutas")
             self.base_path = base_path or os.getcwd()
             
             # Detectar si estamos en un ejecutable PyInstaller
@@ -62,9 +65,9 @@ class ControladorBackup:
         self.max_backups = 5
         self.backup_pattern = r"^BaseDatos(\d{8}_\d{6})\.json$"
         
-        print(f"[ControladorBackup] [INIT] Inicializado - Ruta: {self.base_path}")
-        print(f"[ControladorBackup] [INIT] BaseDatos dir: {self.basededatos_dir}")
-        print(f"[ControladorBackup] [INIT] Es ejecutable: {self._es_ejecutable}")
+        logger.debug(f"Inicializado - Ruta: {self.base_path}")
+        logger.debug(f"BaseDatos dir: {self.basededatos_dir}")
+        logger.debug(f"Es ejecutable: {self._es_ejecutable}")
     
     def crear_backup_inicial(self) -> bool:
         """
@@ -76,14 +79,14 @@ class ControladorBackup:
         """
         try:
             if not os.path.exists(self.basedatos_path):
-                print(f"[ControladorBackup] [INFO] BaseDatos.json no existe, no se crea backup")
+                logger.info("BaseDatos.json no existe, no se crea backup")
                 return False
             
-            print(f"[ControladorBackup] [START] Iniciando sistema de backup automático")
+            logger.info("Iniciando sistema de backup automático")
             
             # 1. Obtener lista de backups existentes
             backups_existentes = self._obtener_backups_existentes()
-            print(f"[ControladorBackup] [INFO] Backups existentes: {len(backups_existentes)}")
+            logger.debug(f"Backups existentes: {len(backups_existentes)}")
             
             # 2. Si hay 5 o más backups, eliminar los más antiguos
             if len(backups_existentes) >= self.max_backups:
@@ -104,7 +107,7 @@ class ControladorBackup:
                 size_backup = os.path.getsize(nuevo_backup_path)
                 
                 if size_original == size_backup:
-                    print(f"[ControladorBackup] [SUCCESS] Backup creado: {nuevo_backup} ({size_backup} bytes)")
+                    logger.info(f"Backup creado: {nuevo_backup} ({size_backup} bytes)")
                     
                     # 6. Mostrar estado actual de backups
                     backups_actuales = self._obtener_backups_existentes()
@@ -112,14 +115,14 @@ class ControladorBackup:
                     
                     return True
                 else:
-                    print(f"[ControladorBackup] [ERROR] Tamaños diferentes - Original: {size_original}, Backup: {size_backup}")
+                    logger.error(f"Tamaños diferentes - Original: {size_original}, Backup: {size_backup}")
                     return False
             else:
-                print(f"[ControladorBackup] [ERROR] No se pudo crear el backup: {nuevo_backup}")
+                logger.error(f"No se pudo crear el backup: {nuevo_backup}")
                 return False
                 
         except Exception as e:
-            print(f"[ControladorBackup] [ERROR] Error creando backup: {e}")
+            logger.error(f"Error creando backup: {e}")
             return False
     
     def _obtener_backups_existentes(self) -> List[tuple]:
@@ -143,7 +146,7 @@ class ControladorBackup:
                         path_completo = os.path.join(self.basededatos_dir, filename)
                         backups.append((filename, timestamp, path_completo))
                     except ValueError:
-                        print(f"[ControladorBackup] [WARNING] Timestamp inválido en: {filename}")
+                        logger.warning(f"Timestamp inválido en: {filename}")
                         continue
             
             # Ordenar por timestamp (más antiguo primero)
@@ -152,7 +155,7 @@ class ControladorBackup:
             return backups
             
         except Exception as e:
-            print(f"[ControladorBackup] [ERROR] Error obteniendo backups: {e}")
+            logger.error(f"Error obteniendo backups: {e}")
             return []
     
     def _eliminar_backups_antiguos(self, backups_existentes: List[tuple], cantidad_a_eliminar: int):
@@ -164,7 +167,7 @@ class ControladorBackup:
             cantidad_a_eliminar: Número de backups a eliminar
         """
         try:
-            print(f"[ControladorBackup] [CLEANUP] Eliminando {cantidad_a_eliminar} backup(s) antiguo(s)")
+            logger.info(f"Eliminando {cantidad_a_eliminar} backup(s) antiguo(s)")
             
             # Los backups ya están ordenados por fecha (más antiguo primero)
             for i in range(cantidad_a_eliminar):
@@ -174,12 +177,12 @@ class ControladorBackup:
                     if os.path.exists(path_completo):
                         os.remove(path_completo)
                         fecha_str = timestamp.strftime("%Y-%m-%d %H:%M:%S")
-                        print(f"[ControladorBackup] [DELETED] Eliminado: {nombre_archivo} (del {fecha_str})")
+                        logger.info(f"Eliminado: {nombre_archivo} (del {fecha_str})")
                     else:
-                        print(f"[ControladorBackup] [WARNING] Backup no existe: {path_completo}")
+                        logger.warning(f"Backup no existe: {path_completo}")
                         
         except Exception as e:
-            print(f"[ControladorBackup] [ERROR] Error eliminando backups antiguos: {e}")
+            logger.error(f"Error eliminando backups antiguos: {e}")
     
     def _mostrar_estado_backups(self, backups: List[tuple]):
         """
@@ -189,10 +192,10 @@ class ControladorBackup:
             backups: Lista de backups existentes
         """
         try:
-            print(f"[ControladorBackup] [STATUS] Estado actual de backups ({len(backups)}/{self.max_backups}):")
+            logger.debug(f"Estado actual de backups ({len(backups)}/{self.max_backups}):")
             
             if not backups:
-                print(f"[ControladorBackup] [STATUS] No hay backups disponibles")
+                logger.debug("No hay backups disponibles")
                 return
             
             # Mostrar backups del más reciente al más antiguo
@@ -201,10 +204,10 @@ class ControladorBackup:
             for i, (nombre_archivo, timestamp, path_completo) in enumerate(backups_recientes, 1):
                 fecha_str = timestamp.strftime("%Y-%m-%d %H:%M:%S")
                 size_kb = os.path.getsize(path_completo) / 1024 if os.path.exists(path_completo) else 0
-                print(f"[ControladorBackup] [STATUS]   {i}. {nombre_archivo} - {fecha_str} ({size_kb:.1f} KB)")
+                logger.debug(f"  {i}. {nombre_archivo} - {fecha_str} ({size_kb:.1f} KB)")
                 
         except Exception as e:
-            print(f"[ControladorBackup] [ERROR] Error mostrando estado: {e}")
+            logger.error(f"Error mostrando estado: {e}")
     
     def listar_backups_disponibles(self) -> List[dict]:
         """
@@ -235,7 +238,7 @@ class ControladorBackup:
             return backups_info
             
         except Exception as e:
-            print(f"[ControladorBackup] [ERROR] Error listando backups: {e}")
+            logger.error(f"Error listando backups: {e}")
             return []
     
     def restaurar_backup(self, nombre_backup: str) -> bool:
@@ -252,7 +255,7 @@ class ControladorBackup:
             backup_path = os.path.join(self.basededatos_dir, nombre_backup)
             
             if not os.path.exists(backup_path):
-                print(f"[ControladorBackup] [ERROR] Backup no encontrado: {nombre_backup}")
+                logger.error(f"Backup no encontrado: {nombre_backup}")
                 return False
             
             # Crear backup del archivo actual antes de restaurar
@@ -260,7 +263,7 @@ class ControladorBackup:
                 backup_previo = f"BaseDatos_antes_restauracion_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
                 backup_previo_path = os.path.join(self.basededatos_dir, backup_previo)
                 shutil.copy2(self.basedatos_path, backup_previo_path)
-                print(f"[ControladorBackup] [BACKUP] Archivo actual respaldado como: {backup_previo}")
+                logger.info(f"Archivo actual respaldado como: {backup_previo}")
             
             # Restaurar el backup seleccionado
             shutil.copy2(backup_path, self.basedatos_path)
@@ -268,14 +271,14 @@ class ControladorBackup:
             # Verificar restauración
             if os.path.exists(self.basedatos_path):
                 size_restaurado = os.path.getsize(self.basedatos_path)
-                print(f"[ControladorBackup] [SUCCESS] Backup restaurado: {nombre_backup} ({size_restaurado} bytes)")
+                logger.info(f"Backup restaurado: {nombre_backup} ({size_restaurado} bytes)")
                 return True
             else:
-                print(f"[ControladorBackup] [ERROR] No se pudo restaurar el backup")
+                logger.error("No se pudo restaurar el backup")
                 return False
                 
         except Exception as e:
-            print(f"[ControladorBackup] [ERROR] Error restaurando backup: {e}")
+            logger.error(f"Error restaurando backup: {e}")
             return False
     
     def validar_integridad_backup(self, nombre_backup: str) -> bool:
@@ -306,15 +309,15 @@ class ControladorBackup:
             expected_fields = ['firmantes', 'obras']  # Ajustar según tu estructura
             for field in expected_fields:
                 if field not in data:
-                    print(f"[ControladorBackup] [WARNING] Campo faltante en {nombre_backup}: {field}")
+                    logger.warning(f"Campo faltante en {nombre_backup}: {field}")
             
             return True
             
         except json.JSONDecodeError:
-            print(f"[ControladorBackup] [ERROR] JSON inválido en: {nombre_backup}")
+            logger.error(f"JSON inválido en: {nombre_backup}")
             return False
         except Exception as e:
-            print(f"[ControladorBackup] [ERROR] Error validando backup: {e}")
+            logger.error(f"Error validando backup: {e}")
             return False
 
 
@@ -334,7 +337,7 @@ def crear_backup_automatico(base_path: str = None) -> bool:
         controlador = ControladorBackup(base_path)
         return controlador.crear_backup_inicial()
     except Exception as e:
-        print(f"[ControladorBackup] [ERROR] Error en backup automático: {e}")
+        logger.error(f"Error en backup automático: {e}")
         return False
 
 

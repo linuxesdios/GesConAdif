@@ -12,6 +12,9 @@ from PyQt5.QtGui import QFont
 from typing import List, Dict, Optional
 import os
 import pandas as pd
+import logging
+
+logger = logging.getLogger(__name__)
 
 class VentanaDobleTabla(QDialog):
     """Ventana con doble tabla y flechas para gestionar empresas desde/hacia Excel"""
@@ -65,13 +68,13 @@ class VentanaDobleTabla(QDialog):
                 if empresa['nombre'] or empresa['nif']:
                     empresas.append(empresa)
             
-            print(f"[Excel] Leídas {len(empresas)} empresas desde {os.path.basename(archivo_excel)}")
+            logger.info(f"Leídas {len(empresas)} empresas desde {os.path.basename(archivo_excel)}")
             return empresas
             
         except Exception as e:
             QMessageBox.warning(self, "Error leyendo Excel", 
                               f"No se pudo leer el archivo Excel:\n{str(e)}")
-            print(f"[Excel] Error leyendo {archivo_excel}: {e}")
+            logger.error(f"Error leyendo {archivo_excel}: {e}")
             return []
     
     def guardar_empresas_excel(self, empresas: List[Dict], archivo_excel: str) -> bool:
@@ -90,13 +93,13 @@ class VentanaDobleTabla(QDialog):
             # Guardar en Excel
             df.to_excel(archivo_excel, index=False, engine='openpyxl')
             
-            print(f"[Excel] Guardadas {len(empresas)} empresas en {os.path.basename(archivo_excel)}")
+            logger.info(f"Guardadas {len(empresas)} empresas en {os.path.basename(archivo_excel)}")
             return True
             
         except Exception as e:
             QMessageBox.warning(self, "Error guardando Excel", 
                               f"No se pudo guardar el archivo Excel:\n{str(e)}")
-            print(f"[Excel] Error guardando {archivo_excel}: {e}")
+            logger.error(f"Error guardando {archivo_excel}: {e}")
             return False
     
     def initUI(self):
@@ -658,44 +661,44 @@ def mostrar_ventana_importar_exportar_excel(parent, empresas_aplicacion, archivo
 def obtener_empresas_actuales(self):
     """Obtiene empresas del sistema con logs de diagnóstico"""
     try:
-        print("[Excel] === INICIANDO DIAGNÓSTICO DE EMPRESAS ===")
+        logger.debug("Iniciando diagnóstico de empresas")
         empresas = []
         
         # Verificar que existe main_window
         if not self.main_window:
-            print("[Excel] ERROR: self.main_window es None")
+            logger.error("self.main_window es None")
             return []
         
-        print(f"[Excel] main_window existe: {type(self.main_window)}")
+        logger.debug(f"main_window existe: {type(self.main_window)}")
         
         # Verificar que existe TwEmpresas
         if not hasattr(self.main_window, 'TwEmpresas'):
-            print("[Excel] ERROR: main_window no tiene atributo 'TwEmpresas'")
-            print(f"[Excel] Atributos disponibles: {[attr for attr in dir(self.main_window) if not attr.startswith('_')]}")
+            logger.error("main_window no tiene atributo 'TwEmpresas'")
+            logger.debug(f"Atributos disponibles: {[attr for attr in dir(self.main_window) if not attr.startswith('_')]}")
             return []
         
-        print("[Excel] TwEmpresas encontrada")
+        logger.debug("TwEmpresas encontrada")
         tabla = self.main_window.TwEmpresas
         
         # Verificar estado de la tabla
         if not tabla:
-            print("[Excel] ERROR: TwEmpresas es None")
+            logger.error("TwEmpresas es None")
             return []
         
-        print(f"[Excel] Tipo de tabla: {type(tabla)}")
+        logger.debug(f"Tipo de tabla: {type(tabla)}")
         
         # Verificar filas y columnas
         num_filas = tabla.rowCount()
         num_columnas = tabla.columnCount()
-        print(f"[Excel] Tabla: {num_filas} filas x {num_columnas} columnas")
+        logger.debug(f"Tabla: {num_filas} filas x {num_columnas} columnas")
         
         if num_filas == 0:
-            print("[Excel] WARNING: La tabla está vacía (0 filas)")
+            logger.warning("La tabla está vacía (0 filas)")
             return []
         
         # Examinar cada fila en detalle
         for fila in range(num_filas):
-            print(f"[Excel] --- Procesando fila {fila} ---")
+            logger.debug(f"Procesando fila {fila}")
             
             # Verificar cada item de la fila
             items = []
@@ -707,20 +710,20 @@ def obtener_empresas_actuales(self):
                 else:
                     items.append(f"Col{col}: None")
             
-            print(f"[Excel] Fila {fila}: {' | '.join(items)}")
+            logger.debug(f"Fila {fila}: {' | '.join(items)}")
             
             # Obtener nombre
             nombre_item = tabla.item(fila, 0)
             if not nombre_item:
-                print(f"[Excel] Fila {fila}: nombre_item es None - SALTANDO")
+                logger.debug(f"Fila {fila}: nombre_item es None - SALTANDO")
                 continue
             
             nombre = nombre_item.text().strip()
             if not nombre:
-                print(f"[Excel] Fila {fila}: nombre está vacío - SALTANDO")
+                logger.debug(f"Fila {fila}: nombre está vacío - SALTANDO")
                 continue
             
-            print(f"[Excel] Fila {fila}: Nombre válido: '{nombre}'")
+            logger.debug(f"Fila {fila}: Nombre válido: '{nombre}'")
             
             # Crear empresa
             empresa = {
@@ -731,19 +734,18 @@ def obtener_empresas_actuales(self):
             }
             
             empresas.append(empresa)
-            print(f"[Excel] Fila {fila}: Empresa añadida: {empresa}")
+            logger.debug(f"Fila {fila}: Empresa añadida: {empresa}")
         
-        print(f"[Excel] === RESULTADO FINAL ===")
-        print(f"[Excel] Total empresas válidas encontradas: {len(empresas)}")
+        logger.info(f"Total empresas válidas encontradas: {len(empresas)}")
         
         for i, emp in enumerate(empresas):
-            print(f"[Excel] Empresa {i}: {emp['nombre']} | {emp['nif']}")
+            logger.debug(f"Empresa {i}: {emp['nombre']} | {emp['nif']}")
         
-        print(f"[Excel] === FIN DIAGNÓSTICO ===")
+        logger.debug("Fin diagnóstico")
         return empresas
         
     except Exception as e:
-        print(f"[Excel] EXCEPCIÓN en obtener_empresas_actuales: {e}")
+        logger.error(f"Excepción en obtener_empresas_actuales: {e}")
         import traceback
         traceback.print_exc()
         return []
@@ -761,7 +763,7 @@ def aplicar_empresas_importadas(main_window, empresas_importadas):
                 tabla.setItem(fila, 2, QTableWidgetItem(empresa.get('email', '')))
                 tabla.setItem(fila, 3, QTableWidgetItem(empresa.get('contacto', '')))
             
-            print(f"[Excel] Tabla actualizada con {len(empresas_importadas)} empresas")
+            logger.info(f"Tabla actualizada con {len(empresas_importadas)} empresas")
         
         # Guardar en JSON si existe el controlador
         if hasattr(main_window, 'controlador_json') and main_window.controlador_json:
@@ -775,12 +777,12 @@ def aplicar_empresas_importadas(main_window, empresas_importadas):
                     contrato_actual, empresas_importadas
                 )
                 if exito:
-                    print(f"[Excel] Empresas guardadas en JSON para: {contrato_actual}")
+                    logger.info(f"Empresas guardadas en JSON para: {contrato_actual}")
         
-        print(f"[Excel] Aplicadas {len(empresas_importadas)} empresas")
+        logger.info(f"Aplicadas {len(empresas_importadas)} empresas")
         
     except Exception as e:
-        print(f"[Excel] Error aplicando empresas: {e}")
+        logger.error(f"Error aplicando empresas: {e}")
         raise
 
 def actualizar_tabla_empresas(main_window, empresas):
@@ -801,10 +803,10 @@ def actualizar_tabla_empresas(main_window, empresas):
             tabla.setItem(fila, 2, QTableWidgetItem(empresa.get('email', '')))
             tabla.setItem(fila, 3, QTableWidgetItem(empresa.get('contacto', '')))
         
-        print(f"[Excel] Tabla actualizada con {len(empresas)} empresas")
+        logger.info(f"Tabla actualizada con {len(empresas)} empresas")
         
     except Exception as e:
-        print(f"[Excel] Error actualizando tabla: {e}")
+        logger.error(f"Error actualizando tabla: {e}")
 
 # === FUNCIÓN DE PRUEBA ===
 

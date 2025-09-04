@@ -295,7 +295,8 @@ class GestorJsonUnificado:
                     if guardar_inmediato:
                         resultado = self.guardar_datos()
                         if resultado:
-                            logger.info(f"Contrato actualizado: {nombre_contrato}")
+                            campos = list(datos_actualizados.keys())
+                            logger.info(f"Se guardó en campo {campos[0]}: {nombre_contrato}")
                         return resultado
                     else:
                         return True

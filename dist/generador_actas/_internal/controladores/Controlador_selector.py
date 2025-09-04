@@ -3,8 +3,11 @@ Gestor de contratos para PyQt5 - VERSIÓN LIMPIA SIN DUPLICACIONES
 """
 
 import json
+import logging
 import os
 from typing import Dict, Any, Optional
+
+logger = logging.getLogger(__name__)
 from PyQt5.QtWidgets import QComboBox, QLabel
 from PyQt5.QtCore import QObject, pyqtSignal
 import traceback
@@ -42,7 +45,7 @@ class ContractManagerQt5(QObject):
         if self.gestor_json:
             self.load_contracts_from_json()
         else:
-            print(f"[ContractManager] ❌ Error: No se pudo inicializar gestor JSON")
+            logger.error(f"[ContractManager] ❌ Error: No se pudo inicializar gestor JSON")
             self._load_empty_contracts()
             self._update_combo_box()
         
@@ -55,7 +58,7 @@ class ContractManagerQt5(QObject):
         """Cargar lista vacía si no hay JSON"""
         self.contracts_list = []
         self.contracts_mapping = {}
-        print(f"[ContractManager] ⚠️ Cargando lista vacía de contratos")
+        logger.warning(f"[ContractManager] ⚠️ Cargando lista vacía de contratos")
 
     def _init_json_manager(self):
         """Inicializar gestor JSON USANDO CONTROLADOR DE RUTAS CENTRALIZADO"""
@@ -64,13 +67,13 @@ class ContractManagerQt5(QObject):
             
             # USAR CONTROLADOR DE RUTAS UNIFICADO - UNA SOLA FUENTE DE VERDAD
             json_path = rutas.get_ruta_base_datos()
-            print(f"[ContractManager] Ruta unificada: {json_path}")
+            logger.info(f"[ContractManager] Ruta unificada: {json_path}")
             
             self.gestor_json = GestorContratosJSON(json_path)
-            print(f"[ContractManager] Gestor JSON inicializado correctamente")
+            logger.info(f"[ContractManager] Gestor JSON inicializado correctamente")
             
         except Exception as e:
-            print(f"[ContractManager] Error inicializando gestor JSON: {e}")
+            logger.error(f"[ContractManager] Error inicializando gestor JSON: {e}")
             self.gestor_json = None
     def _connect_signals(self):
         """Conectar señales del ComboBox"""
@@ -78,7 +81,7 @@ class ContractManagerQt5(QObject):
             self.combo_box.currentTextChanged.connect(self._on_text_changed)
             self.combo_box.currentIndexChanged.connect(self._on_index_changed)
         except Exception as e:
-            print(f"[ContractManager] ❌ Error conectando señales: {e}")
+            logger.error(f"[ContractManager] ❌ Error conectando señales: {e}")
     
     def _set_initial_state(self):
         """Establecer estado inicial de los labels"""
@@ -94,7 +97,7 @@ class ContractManagerQt5(QObject):
         if not self._updating:
             self._process_contract_selection(text)
         else:
-            print(f"[ContractManager] ⏭️ Text change ignorado: '{text}' (updating={self._updating})")
+            logger.debug(f"[ContractManager] ⏭️ Text change ignorado: '{text}' (updating={self._updating})")
 
     def _on_index_changed(self, index: int):
         """Callback para cambio de índice"""
@@ -102,7 +105,7 @@ class ContractManagerQt5(QObject):
             text = self.combo_box.itemText(index) if index < self.combo_box.count() else ""
             self._process_contract_selection(text)
         else:
-            print(f"[ContractManager] ⏭️ Index change ignorado: {index} (updating={self._updating})")
+            logger.debug(f"[ContractManager] ⏭️ Index change ignorado: {index} (updating={self._updating})")
     
     def _validate_contract_type(self, tipo: str) -> str:
         """Validar y normalizar tipo de contrato"""
@@ -122,7 +125,7 @@ class ContractManagerQt5(QObject):
         if tipo_normalizado in tipos_validos:
             return tipo_normalizado.title()
         else:
-            print(f"[ContractManager] ⚠️ Tipo no válido: {tipo}, usando 'Servicios' por defecto")
+            logger.warning(f"[ContractManager] ⚠️ Tipo no válido: {tipo}, usando 'Servicios' por defecto")
             return "Servicios"
 
     
@@ -131,7 +134,7 @@ class ContractManagerQt5(QObject):
 
     def _update_labels(self, tipo: str, expediente: str):
         """Actualizar labels con nueva información"""
-        print(f"[CONTRACT_MANAGER] 🏷️ _update_labels llamado con tipo: '{tipo}', expediente: '{expediente}'")
+        logger.debug(f"[CONTRACT_MANAGER] 🏷️ _update_labels llamado con tipo: '{tipo}', expediente: '{expediente}'")
         try:
             if self.label_tipo:
                 texto_anterior = self.label_tipo.text()
@@ -290,19 +293,27 @@ class ContractManagerQt5(QObject):
         try:
             self._updating = True
             
+            # LOGGING DETALLADO DE SELECCIÓN
+            logger.info(f"🎯 SELECTOR: Usuario seleccionó contrato: '{contract_name}'")
+            logger.info(f"📊 SELECTOR: Contrato actual antes del cambio: '{self.current_contract}'")
+            logger.info(f"🗂️ SELECTOR: Contratos disponibles en mapping: {list(self.contracts_mapping.keys())}")
+            
             # Los campos se guardan automáticamente al perder foco
             
             # Limpiar si es selección por defecto
             if not contract_name or contract_name.strip().lower().startswith("seleccionar"):
+                logger.info(f"🔄 SELECTOR: Limpiando selección (texto por defecto o vacío)")
                 self._clear_contract_info()
                 return
             
             # Obtener datos del contrato usando el mapping corregido
             contract_info = self.contracts_mapping.get(contract_name)
+            logger.info(f"🔍 SELECTOR: Datos encontrados para '{contract_name}': {contract_info is not None}")
             
             if contract_info and isinstance(contract_info, dict):
                 # Obtener nombre completo
                 nombre_completo = contract_info.get('nombre_completo', contract_name)
+                logger.info(f"📋 SELECTOR: Nombre completo del contrato: '{nombre_completo}'")
                 
                 # FORZAR RECARGA COMPLETA DEL JSON
                 contract_data = None
@@ -314,22 +325,29 @@ class ContractManagerQt5(QObject):
                         if contract_data:
                             # Actualizar el mapping con datos frescos
                             contract_info['data'] = contract_data
-                            print(f"[ContractManager] 🔄 Datos JSON recargados para: {nombre_completo}")
+                            logger.info(f"✅ SELECTOR: Datos JSON recargados exitosamente para: '{nombre_completo}'")
+                        else:
+                            logger.warning(f"⚠️ SELECTOR: No se pudieron cargar datos JSON para: '{nombre_completo}'")
                     except Exception as e:
-                        print(f"[ContractManager] ⚠️ Error recargando datos frescos: {e}")
+                        logger.error(f"❌ SELECTOR: Error recargando datos frescos: {e}")
                         contract_data = contract_info.get('data', {})
                 else:
                     contract_data = contract_info.get('data', {})
+                    logger.warning(f"⚠️ SELECTOR: No hay gestor JSON disponible, usando datos en cache")
                 
                 if contract_data:
                     tipo_actuacion = contract_data.get('tipoActuacion', 'Sin tipo')
                     numero_expediente = contract_data.get('numeroExpediente', 'Sin expediente')
+                    
+                    logger.info(f"📄 SELECTOR: Tipo de actuación: '{tipo_actuacion}'")
+                    logger.info(f"📄 SELECTOR: Número de expediente: '{numero_expediente}'")
                     
                     # Actualizar labels
                     self._update_labels(tipo_actuacion, numero_expediente)
                     
                     # Usar el nombre completo para el estado interno
                     self.current_contract = nombre_completo
+                    logger.info(f"✅ SELECTOR: Contrato establecido como actual: '{self.current_contract}'")
                     
                     # 🆕 NUEVO: Verificar y crear estructura de carpetas
                     self._verificar_y_crear_estructura_carpeta(contract_data)
@@ -360,18 +378,27 @@ class ContractManagerQt5(QObject):
                     if (main_window and 
                         hasattr(main_window, 'controlador_autosave') and 
                         main_window.controlador_autosave):
+                        logger.info(f"🔄 SELECTOR: Llamando a controlador_autosave.actualizar() para: '{nombre_completo}'")
                         main_window.controlador_autosave.actualizar(nombre_completo)
-                        print(f"[ContractManager] 🔄 Campos actualizados para: {nombre_completo}")
+                        logger.info(f"✅ SELECTOR: Campos y tablas actualizados para: '{nombre_completo}'")
+                    else:
+                        logger.warning(f"⚠️ SELECTOR: No hay controlador_autosave disponible")
+                    
+                    logger.info(f"🎉 SELECTOR: Selección completada exitosamente - Contrato cargado: '{nombre_completo}'")
                     
                 else:
+                    logger.error(f"❌ SELECTOR: No hay datos válidos para el contrato")
                     self._update_labels("Error", "Error")
             else:
+                logger.error(f"❌ SELECTOR: No se encontró información para el contrato '{contract_name}'")
                 self._update_labels("Error", "Error")
                 
         except Exception as e:
-            print(f"[ContractManager] ❌ Error procesando selección: {e}")
+            logger.error(f"❌ SELECTOR: Error procesando selección: {e}")
+            logger.error(f"❌ SELECTOR: Contrato que causó el error: '{contract_name}'")
         finally:
             self._updating = False
+            logger.info(f"🏁 SELECTOR: Fin del procesamiento - Estado final: current_contract = '{self.current_contract}'")
     # ===== NUEVA FUNCIÓN A AÑADIR =====
     def _verificar_y_crear_estructura_carpeta(self, contract_data):
         """Verificar y crear estructura de carpetas automáticamente"""

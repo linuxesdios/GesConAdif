@@ -24,8 +24,11 @@ from .controlador_archivos_unificado import GestorArchivos
 from .Controlador_selector import ContractManagerQt5
 import datetime
 from datetime import datetime
+import logging
 import time
 import traceback
+
+logger = logging.getLogger(__name__)
 
 # PRECARGAR OTROS IMPORTS CRÍTICOS
 try:
@@ -116,9 +119,9 @@ class ControladorGrafica(QMainWindow):
             if not self.controlador_actuaciones_facturas:
                 try:
                     self.controlador_actuaciones_facturas = ControladorActuacionesFacturas(self)
-                    print("[ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI")
+                    logger.info("[ControladorGrafica] ✅ ControladorActuacionesFacturas inicializado después de UI")
                 except Exception as e:
-                    print(f"[ControladorGrafica] ❌ Error inicializando actuaciones después de UI: {e}")
+                    logger.error(f"[ControladorGrafica] ❌ Error inicializando actuaciones después de UI: {e}")
                     self.controlador_actuaciones_facturas = None
                 
         except Exception as e:
@@ -183,9 +186,9 @@ class ControladorGrafica(QMainWindow):
             try:
                 from .controlador_facturas_directas import ControladorFacturasDirectas
                 self.controlador_facturas_directas = ControladorFacturasDirectas(self)
-                print("[ControladorGrafica] ✅ Controlador de facturas directas inicializado")
+                logger.info("[ControladorGrafica] ✅ Controlador de facturas directas inicializado")
             except Exception as e:
-                print(f"[ControladorGrafica] ⚠️ Error inicializando controlador facturas directas: {e}")
+                logger.warning(f"[ControladorGrafica] ⚠️ Error inicializando controlador facturas directas: {e}")
                 self.controlador_facturas_directas = None
                 
         except Exception as e:
@@ -386,7 +389,7 @@ class ControladorGrafica(QMainWindow):
             
             # LOG DE CAMBIO DE CONTRATO
             nombre_contrato = contract_data.get('nombreObra', 'Sin nombre')
-            print(f"[CAMBIO_CONTRATO] 🔄 Cargando widgets para: {nombre_contrato}")
+            logger.info(f"[CAMBIO_CONTRATO] 🔄 Cargando widgets para: {nombre_contrato}")
             
             widgets_tipos = [
                 (QLineEdit, self._cargar_lineedit),
@@ -417,7 +420,7 @@ class ControladorGrafica(QMainWindow):
     def _verificar_campos_criticos_post_carga(self, contract_data):
         """Verificar y mostrar estado de campos críticos después de la carga"""
         try:
-            print(f"[CAMBIO_CONTRATO] 🔍 VERIFICANDO CAMPOS CRÍTICOS TRAS CARGA:")
+            logger.debug(f"[CAMBIO_CONTRATO] 🔍 VERIFICANDO CAMPOS CRÍTICOS TRAS CARGA:")
             
             campos_criticos = ['plazoEjecucion', 'numEmpresasPresentadas', 'numEmpresasSolicitadas', 'basePresupuesto', 'precioAdjudicacion']
             
@@ -436,24 +439,24 @@ class ControladorGrafica(QMainWindow):
                     else:
                         valor_widget = 'N/A'
                     
-                    print(f"[CAMBIO_CONTRATO] 🔍 VERIFICACIÓN {campo}: '{valor_widget}' (tipo: {tipo_widget})")
+                    logger.debug(f"[CAMBIO_CONTRATO] 🔍 VERIFICACIÓN {campo}: '{valor_widget}' (tipo: {tipo_widget})")
                     
                     # AUTO-COMPLETAR campos vacíos
                     if campo == 'numEmpresasPresentadas' and not valor_widget:
                         valor_calculado = self._calcular_num_empresas_presentadas()
                         if valor_calculado > 0:
                             widget.setText(str(valor_calculado))
-                            print(f"[CAMBIO_CONTRATO] 📊 AUTO-COMPLETADO {campo}: '{valor_calculado}'")
+                            logger.info(f"[CAMBIO_CONTRATO] 📊 AUTO-COMPLETADO {campo}: '{valor_calculado}'")
                     
                     # Forzar actualización visual para campos críticos
                     if campo == 'basePresupuesto' and valor_widget:
-                        print(f"[CAMBIO_CONTRATO] 🔄 FORZANDO actualización visual de {campo}")
+                        logger.debug(f"[CAMBIO_CONTRATO] 🔄 FORZANDO actualización visual de {campo}")
                         widget.update()
                         widget.repaint()
-                        print(f"[CAMBIO_CONTRATO] ✅ Actualización visual completada para {campo}")
+                        logger.debug(f"[CAMBIO_CONTRATO] ✅ Actualización visual completada para {campo}")
                         
         except Exception as e:
-            print(f"[CAMBIO_CONTRATO] ❌ Error verificando campos críticos: {e}")
+            logger.error(f"[CAMBIO_CONTRATO] ❌ Error verificando campos críticos: {e}")
     
     def _obtener_empresas_lista(self, contract_data):
         """Obtener lista de empresas desde contract_data"""

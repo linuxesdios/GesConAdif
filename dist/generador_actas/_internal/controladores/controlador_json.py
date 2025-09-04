@@ -10,6 +10,9 @@ import re
 import sys
 from datetime import datetime
 from typing import Dict, Any, Optional, List
+import logging
+
+logger = logging.getLogger(__name__)
 
 # IMPORTAR EL CONTROLADOR DE RUTAS CENTRALIZADO
 try:
@@ -25,7 +28,7 @@ class GestorJsonUnificado:
         # USAR CONTROLADOR DE RUTAS CENTRALIZADO - UNA SOLA FUENTE DE VERDAD
         self.ruta_archivo = ruta_archivo or rutas.get_ruta_base_datos()
         self.datos = self._cargar_datos_iniciales()
-        print(f"[GestorJsonUnificado] Inicializado con archivo: {self.ruta_archivo}")
+        logger.info(f"Inicializado con archivo: {self.ruta_archivo}")
 
     def _buscar_archivo_base_datos(self) -> str:
         """DEPRECATED: Usar rutas.get_ruta_base_datos() en su lugar"""
@@ -43,7 +46,7 @@ class GestorJsonUnificado:
             else:
                 return self._crear_estructura_inicial()
         except (json.JSONDecodeError, Exception) as e:
-            print(f"[GestorJsonUnificado] Error cargando JSON: {e}")
+            logger.error(f"Error cargando JSON: {e}")
             return {"firmantes": {}, "obras": []}
 
     def _crear_estructura_inicial(self) -> Dict[str, Any]:
@@ -73,10 +76,10 @@ class GestorJsonUnificado:
         try:
             with open(self.ruta_archivo, "w", encoding="utf-8") as archivo:
                 json.dump(estructura_inicial, archivo, ensure_ascii=False, indent=2)
-            print(f"[JSON] ✅ Escritura inicial realizada en: {self.ruta_archivo}")
-            print(f"[GestorJsonUnificado] BaseDatos.json creado: {self.ruta_archivo}")
+            logger.info(f"Escritura inicial realizada en: {self.ruta_archivo}")
+            logger.info(f"BaseDatos.json creado: {self.ruta_archivo}")
         except Exception as e:
-            print(f"[GestorJsonUnificado] Error creando archivo inicial: {e}")
+            logger.error(f"Error creando archivo inicial: {e}")
         
         return estructura_inicial
 
@@ -96,11 +99,11 @@ class GestorJsonUnificado:
             with open(self.ruta_archivo, "w", encoding="utf-8") as archivo:
                 json.dump(self.datos, archivo, ensure_ascii=False, indent=2)
             
-            print(f"[JSON] ✅ Escritura realizada en: {self.ruta_archivo}")
+            logger.info(f"Escritura realizada en: {self.ruta_archivo}")
             pass
             return True
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR guardando datos: {e}")
+            logger.error(f"Error guardando datos: {e}")
             return False
 
     def recargar_datos(self) -> bool:
@@ -114,7 +117,7 @@ class GestorJsonUnificado:
             
             return True
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR recargando datos: {e}")
+            logger.error(f"Error recargando datos: {e}")
             return False
 
     # =================== OPERACIONES DE BÚSQUEDA ===================
@@ -236,18 +239,18 @@ class GestorJsonUnificado:
             # Buscar contrato actual
             contrato_actual = self.buscar_contrato_inteligente(nombre_contrato)
             if not contrato_actual:
-                print(f"[GestorJsonUnificado] ERROR: No se encontró contrato: {nombre_contrato}")
+                logger.error(f"No se encontró contrato: {nombre_contrato}")
                 return False
             
             # Actualizar campo
             datos_actualizados = {nombre_campo: valor}
             resultado = self.actualizar_contrato(nombre_contrato, datos_actualizados)
             if resultado:
-                print(f"[JSON] ✅ Campo guardado: {nombre_contrato} → {nombre_campo} = '{valor}'")
+                logger.debug(f"Campo guardado: {nombre_contrato} → {nombre_campo} = '{valor}'")
             return resultado
             
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR guardando campo: {e}")
+            logger.error(f"Error guardando campo: {e}")
             return False
     
     def guardar_empresas_unificadas_en_json(self, nombre_contrato: str, empresas_data: List[Dict[str, str]]) -> bool:
@@ -263,11 +266,11 @@ class GestorJsonUnificado:
             
             resultado = self.actualizar_contrato(nombre_contrato, datos_empresas)
             if resultado:
-                print(f"[JSON] ✅ Empresas guardadas: {nombre_contrato} → {len(empresas_data)} empresas")
+                logger.info(f"Empresas guardadas: {nombre_contrato} → {len(empresas_data)} empresas")
             return resultado
             
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR guardando empresas unificadas: {e}")
+            logger.error(f"Error guardando empresas unificadas: {e}")
             return False
     
     def guardar_empresas_en_json(self, nombre_contrato: str, empresas_data: List[Dict[str, str]]) -> bool:
@@ -292,7 +295,8 @@ class GestorJsonUnificado:
                     if guardar_inmediato:
                         resultado = self.guardar_datos()
                         if resultado:
-                            print(f"[JSON] ✅ Contrato actualizado: {nombre_contrato}")
+                            campos = list(datos_actualizados.keys())
+                            logger.info(f"Se guardó en campo {campos[0]}: {nombre_contrato}")
                         return resultado
                     else:
                         return True
@@ -300,7 +304,7 @@ class GestorJsonUnificado:
             return False
             
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR actualizando contrato: {e}")
+            logger.error(f"Error actualizando contrato: {e}")
             return False
 
     # =================== OPERACIONES DE LECTURA ===================
@@ -315,7 +319,7 @@ class GestorJsonUnificado:
             contrato = self.leer_contrato_completo(nombre_contrato)
             return contrato.get(nombre_campo) if contrato else None
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR leyendo campo '{nombre_campo}': {e}")
+            logger.error(f"Error leyendo campo '{nombre_campo}': {e}")
             return None
 
     # =================== OPERACIONES DE ESCRITURA ===================
@@ -324,7 +328,7 @@ class GestorJsonUnificado:
         """Guardar o actualizar un contrato"""
         try:
             if not datos_contrato.get("nombreObra"):
-                print("[GestorJsonUnificado] ERROR: nombreObra es obligatorio")
+                logger.error("nombreObra es obligatorio")
                 return False
 
             obras = self.datos.get("obras", [])
@@ -334,22 +338,22 @@ class GestorJsonUnificado:
             for i, obra in enumerate(obras):
                 if obra.get("nombreObra") == nombre_obra:
                     obras[i] = datos_contrato
-                    print(f"[GestorJsonUnificado] OK: Contrato actualizado: {nombre_obra}")
+                    logger.info(f"Contrato actualizado: {nombre_obra}")
                     resultado = self.guardar_datos()
                     if resultado:
-                        print(f"[JSON] ✅ Contrato guardado (actualización): {nombre_obra}")
+                        logger.info(f"Contrato guardado (actualización): {nombre_obra}")
                     return resultado
             
             # Si no existe, agregar nuevo
             obras.append(datos_contrato)
-            print(f"[GestorJsonUnificado] OK: Nuevo contrato agregado: {nombre_obra}")
+            logger.info(f"Nuevo contrato agregado: {nombre_obra}")
             resultado = self.guardar_datos()
             if resultado:
-                print(f"[JSON] ✅ Contrato guardado (nuevo): {nombre_obra}")
+                logger.info(f"Contrato guardado (nuevo): {nombre_obra}")
             return resultado
             
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR guardando contrato: {e}")
+            logger.error(f"Error guardando contrato: {e}")
             return False
 
     def eliminar_contrato(self, nombre_contrato: str) -> bool:
@@ -361,14 +365,14 @@ class GestorJsonUnificado:
             
             if len(obras_filtradas) < len(obras):
                 self.datos["obras"] = obras_filtradas
-                print(f"[GestorJsonUnificado] OK: Contrato eliminado: {nombre_contrato}")
+                logger.info(f"Contrato eliminado: {nombre_contrato}")
                 return self.guardar_datos()
             else:
-                print(f"[GestorJsonUnificado] ERROR: Contrato no encontrado para eliminar: {nombre_contrato}")
+                logger.error(f"Contrato no encontrado para eliminar: {nombre_contrato}")
                 return False
                 
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR eliminando contrato: {e}")
+            logger.error(f"Error eliminando contrato: {e}")
             return False
 
     # =================== OPERACIONES DE FIRMANTES ===================
@@ -383,7 +387,7 @@ class GestorJsonUnificado:
             self.datos["firmantes"] = firmantes
             return self.guardar_datos()
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR actualizando firmantes: {e}")
+            logger.error(f"Error actualizando firmantes: {e}")
             return False
 
     # =================== UTILIDADES ===================
@@ -408,22 +412,22 @@ class GestorJsonUnificado:
     def crear_contrato_nuevo(self, datos_contrato: dict) -> bool:
         """Crear nuevo contrato - método requerido por controlador_grafica"""
         try:
-            print(f"[GestorJsonUnificado] Creando nuevo contrato: {datos_contrato.get('nombreObra', 'sin_nombre')}")
+            logger.info(f"Creando nuevo contrato: {datos_contrato.get('nombreObra', 'sin_nombre')}")
             
             # Validar datos mínimos
             nombre_obra = datos_contrato.get("nombreObra", "").strip()
             if not nombre_obra:
-                print("[GestorJsonUnificado] ERROR: Nombre de obra requerido")
+                logger.error("Nombre de obra requerido")
                 return False
             
             # Verificar que no existe ya
             contrato_existente = self.buscar_contrato_inteligente(nombre_obra)
             if contrato_existente:
-                print(f"[GestorJsonUnificado] ERROR: Ya existe contrato con nombre: {nombre_obra}")
-                print(f"[GestorJsonUnificado] DEBUG: Contrato encontrado: {contrato_existente.get('nombreObra')} / {contrato_existente.get('nombre')}")
+                logger.error(f"Ya existe contrato con nombre: {nombre_obra}")
+                logger.debug(f"Contrato encontrado: {contrato_existente.get('nombreObra')} / {contrato_existente.get('nombre')}")
                 return False
             else:
-                print(f"[GestorJsonUnificado] OK: Nombre '{nombre_obra}' disponible para crear")
+                logger.info(f"Nombre '{nombre_obra}' disponible para crear")
             
             # Crear estructura del contrato SIGUIENDO EL FORMATO ORIGINAL
             nuevo_contrato = {
@@ -465,16 +469,16 @@ class GestorJsonUnificado:
             
             # Guardar los cambios
             if self.guardar_datos():
-                print(f"[GestorJsonUnificado] OK: Contrato creado exitosamente: {nombre_obra}")
+                logger.info(f"Contrato creado exitosamente: {nombre_obra}")
                 return True
             else:
                 # Revertir si falla el guardado
                 self.datos["obras"].remove(nuevo_contrato)
-                print(f"[GestorJsonUnificado] ERROR: Error guardando contrato nuevo")
+                logger.error("Error guardando contrato nuevo")
                 return False
                 
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR en crear_contrato_nuevo: {e}")
+            logger.error(f"Error en crear_contrato_nuevo: {e}")
             import traceback
             traceback.print_exc()
             return False
@@ -482,7 +486,7 @@ class GestorJsonUnificado:
     def crear_contrato_con_carpetas(self, datos_contrato: dict) -> tuple:
         """Crear contrato con carpetas - método avanzado"""
         try:
-            print(f"[GestorJsonUnificado] Creando contrato con carpetas...")
+            logger.info("Creando contrato con carpetas...")
             
             # Primero crear el contrato básico
             exito_contrato = self.crear_contrato_nuevo(datos_contrato)
@@ -526,16 +530,16 @@ class GestorJsonUnificado:
                     os.makedirs(os.path.join(ruta_proyecto, subcarpeta), exist_ok=True)
                 
                 mensaje_carpetas = f"Carpetas creadas en: {ruta_proyecto}"
-                print(f"[GestorJsonUnificado] {mensaje_carpetas}")
+                logger.info(mensaje_carpetas)
                 
             except Exception as e:
                 mensaje_carpetas = f"Advertencia: Error creando carpetas - {e}"
-                print(f"[GestorJsonUnificado] WARNING: {mensaje_carpetas}")
+                logger.warning(mensaje_carpetas)
             
             return True, f"Contrato '{nombre_obra}' creado exitosamente. {mensaje_carpetas}"
             
         except Exception as e:
-            print(f"[GestorJsonUnificado] ERROR en crear_contrato_con_carpetas: {e}")
+            logger.error(f"Error en crear_contrato_con_carpetas: {e}")
             import traceback
             traceback.print_exc()
             return False, f"Error creando contrato: {e}"
@@ -544,7 +548,7 @@ class GestorJsonUnificado:
         """Clonar un contrato existente con nuevo nombre y opciones selectivas"""
         from PyQt5.QtWidgets import QMessageBox
         
-        print(f"[GestorJsonUnificado] 🔧 DEBUG CLONAR - Origen: '{nombre_origen}', Nuevo: '{nuevo_nombre}'")
+        logger.debug(f"Clonando - Origen: '{nombre_origen}', Nuevo: '{nuevo_nombre}'")
         
         try:
             # Verificar que el contrato origen existe
@@ -566,7 +570,7 @@ class GestorJsonUnificado:
                 # Clonación selectiva según opciones
                 datos_clonados = self._clonar_selectivo(contrato_origen, nuevo_nombre, opciones)
                 
-            print(f"[GestorJsonUnificado] 🔧 DEBUG DATOS CLONADOS - nombreObra: '{datos_clonados.get('nombreObra', 'NO_ENCONTRADO')}'")
+            logger.debug(f"Datos clonados - nombreObra: '{datos_clonados.get('nombreObra', 'NO_ENCONTRADO')}'")
             
             # Crear nuevo contrato usando el método unificado
             resultado_tupla = self.crear_contrato_con_carpetas(datos_clonados)
@@ -587,14 +591,14 @@ class GestorJsonUnificado:
                 return False
                 
         except Exception as e:
-            print(f"[GestorJsonUnificado] ❌ Error clonando contrato: {e}")
+            logger.error(f"Error clonando contrato: {e}")
             QMessageBox.critical(None, "Error", f"Error clonando contrato: {e}")
             return False
     
     def _clonar_selectivo(self, contrato_origen, nuevo_nombre, opciones):
         """Realizar clonación selectiva según opciones especificadas con los nuevos nombres de campos"""
-        print(f"[GestorJsonUnificado] 🔧 DEBUG _clonar_selectivo - nuevo_nombre: '{nuevo_nombre}'")
-        print(f"[GestorJsonUnificado] 🔧 DEBUG opciones seleccionadas: {len([k for k,v in opciones.items() if v])}")
+        logger.debug(f"Clonar selectivo - nuevo_nombre: '{nuevo_nombre}'")
+        logger.debug(f"Opciones seleccionadas: {len([k for k,v in opciones.items() if v])}")
         
         # Crear estructura básica del contrato
         datos_clonados = {
@@ -609,7 +613,7 @@ class GestorJsonUnificado:
         # Clonar campos según la nueva estructura basada en GroupBox_Campo
         for campo_key, valor in opciones.items():
             if valor and not campo_key.startswith('groupbox_'):  # Ignorar checkboxes de grupo
-                print(f"[GestorJsonUnificado] 🔧 Procesando campo: {campo_key}")
+                logger.debug(f"Procesando campo: {campo_key}")
                 
                 # Extraer el nombre del campo real
                 if campo_key.startswith(('groupBox_2_', 'groupBox_3_', 'groupBox_', 
@@ -622,19 +626,19 @@ class GestorJsonUnificado:
                     else:
                         campo_real = campo_key
                         
-                    print(f"[GestorJsonUnificado] 🔧 Campo extraído: '{campo_real}'")
+                    logger.debug(f"Campo extraído: '{campo_real}'")
                     
                     # Copiar el campo si existe en el contrato origen, EXCEPTO nombreObra
                     if campo_real == 'nombreObra':
-                        print(f"[GestorJsonUnificado] ⚠️ Saltando campo 'nombreObra' para preservar nuevo nombre")
+                        logger.debug("Saltando campo 'nombreObra' para preservar nuevo nombre")
                     elif campo_real in contrato_origen:
                         datos_clonados[campo_real] = contrato_origen[campo_real]
                         campos_copiados += 1
-                        print(f"[GestorJsonUnificado] ✅ Campo copiado: '{campo_real}' = '{contrato_origen[campo_real]}'")
+                        logger.debug(f"Campo copiado: '{campo_real}' = '{contrato_origen[campo_real]}'")
                     else:
-                        print(f"[GestorJsonUnificado] ⚠️ Campo '{campo_real}' no encontrado en contrato origen")
+                        logger.warning(f"Campo '{campo_real}' no encontrado en contrato origen")
         
-        print(f"[GestorJsonUnificado] 🔧 Total campos copiados: {campos_copiados}")
+        logger.debug(f"Total campos copiados: {campos_copiados}")
         return datos_clonados
 
 
