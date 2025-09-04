@@ -905,7 +905,7 @@ class ControladorDocumentos:
         
         for variable in variables_plantilla:
             # Ignorar marcadores especiales de tabla
-            if variable.startswith('tabla-'):
+            if variable.startswith('tabla-') or variable == 'tablaAnualidades':
                 continue
             
             #print(f"[DEBUG] 🔎 Verificando variable: '{variable}'")
@@ -1673,13 +1673,13 @@ class ControladorDocumentos:
             return []
 
     def _insertar_tabla_anualidades(self, doc: Document, paragraph):
-        """Crear tabla de anualidades con años y totales financieros"""
+        """PASO 2: Agregar datos dinámicos de widgets"""
         try:
-            logger.debug(f"[DEBUG] 📊 CREANDO TABLA DE ANUALIDADES")
+            logger.debug(f"[DEBUG] 📊 PASO 2: CREANDO TABLA CON DATOS DINÁMICOS")
             
             # 1. OBTENER DATOS DE WIDGETS
-            ano_actual = self._obtener_valor_widget_directo('anoactual', '')
-            ano_siguiente = self._obtener_valor_widget_directo('anosiguinte', '')
+            ano_actual = self._obtener_valor_widget_directo('anoactual', '2025')
+            ano_siguiente = self._obtener_valor_widget_directo('anosiguinte', '2026')
             
             anualidad1_sin_iva = self._obtener_valor_widget_directo('BaseAnualidad1', '0,00')
             anualidad1_iva = self._obtener_valor_widget_directo('IvaAnualidad1', '0,00')
@@ -1689,69 +1689,74 @@ class ControladorDocumentos:
             anualidad2_iva = self._obtener_valor_widget_directo('IvaAnualidad2', '0,00')
             anualidad2_con_iva = self._obtener_valor_widget_directo('TotalAnualidad2', '0,00')
             
-            # 2. DETERMINAR FILAS A CREAR
-            # Verificar si año siguiente tiene valores significativos
-            ano_siguiente_valido = bool(ano_siguiente and str(ano_siguiente).strip())
+            logger.debug(f"[DEBUG] Datos obtenidos - Año actual: {ano_actual}, Anualidad1 sin IVA: {anualidad1_sin_iva}")
+            
+            # 2. DECIDIR SI INCLUIR SEGUNDA ANUALIDAD
             anualidad2_tiene_valor = self._tiene_valores_significativos(anualidad2_sin_iva, anualidad2_iva, anualidad2_con_iva)
+            incluir_ano_siguiente = bool(ano_siguiente and str(ano_siguiente).strip()) and anualidad2_tiene_valor
             
-            incluir_ano_siguiente = ano_siguiente_valido and anualidad2_tiene_valor
-            num_filas = 3 if incluir_ano_siguiente else 2  # header + datos + total
-            
-            logger.debug(f"[DEBUG] Año actual: {ano_actual}, Año siguiente: {ano_siguiente}")
-            logger.debug(f"[DEBUG] Anualidad2 tiene valor: {anualidad2_tiene_valor}")
+            num_filas = 3 if incluir_ano_siguiente else 2  # Header + datos + total
             logger.debug(f"[DEBUG] Incluir año siguiente: {incluir_ano_siguiente}, Filas: {num_filas}")
             
-            # 3. CREAR TABLA
+            # 3. CREAR TABLA DINÁMICA
             tabla = doc.add_table(rows=num_filas + 1, cols=4)  # +1 para header
             
-            # 4. CONFIGURAR HEADER
-            header_row = tabla.rows[0]
-            headers = ['ANUALIDAD', 'TOTAL SIN IVA', 'IMPORTE IVA', 'TOTAL CON IVA']
-            for i, header_text in enumerate(headers):
-                celda = header_row.cells[i]
-                celda.text = header_text
-                
+            # 4. HEADER
+            tabla.cell(0, 0).text = "ANUALIDAD"
+            tabla.cell(0, 1).text = "TOTAL SIN IVA"
+            tabla.cell(0, 2).text = "IMPORTE IVA"
+            tabla.cell(0, 3).text = "TOTAL CON IVA"
+            
             # 5. FILA AÑO ACTUAL
-            fila_ano_actual = tabla.rows[1]
-            fila_ano_actual.cells[0].text = str(ano_actual)
-            fila_ano_actual.cells[1].text = f"{anualidad1_sin_iva} €"
-            fila_ano_actual.cells[2].text = f"{anualidad1_iva} €"
-            fila_ano_actual.cells[3].text = f"{anualidad1_con_iva} €"
+            tabla.cell(1, 0).text = str(ano_actual)
+            tabla.cell(1, 1).text = f"{anualidad1_sin_iva} €"
+            tabla.cell(1, 2).text = f"{anualidad1_iva} €"
+            tabla.cell(1, 3).text = f"{anualidad1_con_iva} €"
             
             # 6. FILA AÑO SIGUIENTE (SI EXISTE)
-            fila_index = 2
+            fila_total_index = 2
             if incluir_ano_siguiente:
-                fila_ano_siguiente = tabla.rows[fila_index]
-                fila_ano_siguiente.cells[0].text = str(ano_siguiente)
-                fila_ano_siguiente.cells[1].text = f"{anualidad2_sin_iva} €"
-                fila_ano_siguiente.cells[2].text = f"{anualidad2_iva} €"
-                fila_ano_siguiente.cells[3].text = f"{anualidad2_con_iva} €"
-                fila_index = 3
-                
-            # 7. FILA TOTAL
-            fila_total = tabla.rows[fila_index]
-            fila_total.cells[0].text = "TOTAL"
+                tabla.cell(2, 0).text = str(ano_siguiente)
+                tabla.cell(2, 1).text = f"{anualidad2_sin_iva} €"
+                tabla.cell(2, 2).text = f"{anualidad2_iva} €"
+                tabla.cell(2, 3).text = f"{anualidad2_con_iva} €"
+                fila_total_index = 3
             
-            # Calcular totales
+            # 7. FILA TOTAL
             total_sin_iva = self._sumar_importes(anualidad1_sin_iva, anualidad2_sin_iva if incluir_ano_siguiente else '0,00')
             total_iva = self._sumar_importes(anualidad1_iva, anualidad2_iva if incluir_ano_siguiente else '0,00')
             total_con_iva = self._sumar_importes(anualidad1_con_iva, anualidad2_con_iva if incluir_ano_siguiente else '0,00')
             
-            fila_total.cells[1].text = f"{total_sin_iva} €"
-            fila_total.cells[2].text = f"{total_iva} €"
-            fila_total.cells[3].text = f"{total_con_iva} €"
+            tabla.cell(fila_total_index, 0).text = "TOTAL"
+            tabla.cell(fila_total_index, 1).text = f"{total_sin_iva} €"
+            tabla.cell(fila_total_index, 2).text = f"{total_iva} €"
+            tabla.cell(fila_total_index, 3).text = f"{total_con_iva} €"
             
-            # 8. CONFIGURAR TABLA SIN BORDES
-            self._configurar_tabla_sin_bordes(tabla)
+            # 8. CREAR TABLA CON TABULACIONES SOLO EN DATOS
+            tabla_texto = f"""
+ANUALIDAD            TOTAL SIN IVA           IMPORTE IVA             TOTAL CON IVA
+{str(ano_actual)}\t\t{anualidad1_sin_iva} €\t\t{anualidad1_iva} €\t\t{anualidad1_con_iva} €"""
             
-            # 9. INSERTAR EN DOCUMENTO
-            if hasattr(self, '_insertar_tabla_despues_de_parrafo'):
-                self._insertar_tabla_despues_de_parrafo(paragraph, tabla)
+            if incluir_ano_siguiente:
+                tabla_texto += f"""
+{str(ano_siguiente)}\t\t{anualidad2_sin_iva} €\t\t{anualidad2_iva} €\t\t{anualidad2_con_iva} €"""
             
-            # 10. LIMPIAR MARCADOR
-            paragraph.text = paragraph.text.replace('@tablaAnualidades@', '')
+            tabla_texto += f"""
+TOTAL\t\t{total_sin_iva} €\t\t{total_iva} €\t\t{total_con_iva} €
+"""
             
-            logger.debug(f"[DEBUG] ✅ Tabla anualidades insertada correctamente")
+            # 9. REEMPLAZAR MARCADOR Y APLICAR FORMATO ESPECÍFICO
+            # Limpiar párrafo y agregar texto con formato Arial 7
+            paragraph.clear()
+            run = paragraph.add_run(tabla_texto.strip())
+            
+            # Aplicar formato: Arial 7, sin negrita
+            from docx.shared import Pt
+            run.font.name = 'Arial'
+            run.font.size = Pt(7)
+            run.font.bold = False
+            
+            logger.debug(f"[DEBUG] ✅ Tabla insertada y marcador limpiado exitosamente")
             
         except Exception as e:
             logger.error(f"[DEBUG] ❌ ERROR en tabla anualidades: {e}")
@@ -2240,7 +2245,7 @@ class ControladorDocumentos:
             
             for variable in variables_plantilla:
                 # Omitir tablas especiales y campos que empiecen con tabla-
-                if (variable.startswith('tabla-') or 
+                if (variable.startswith('tabla-') or variable == 'tablaAnualidades' or
                     variable.lower() in ['tabla0', 'tabla1', 'tabla2', 'tabla3']):
                     continue
                     

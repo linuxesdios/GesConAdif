@@ -985,7 +985,33 @@ def convertir_docx_a_pdf_simple(docx_path: str) -> bool:
         pdf_path = docx_path.replace('.docx', '.pdf')
         
         print(f"[PDF] Generando PDF: {os.path.basename(pdf_path)}")
-        convert(docx_path, pdf_path)
+        
+        # Crear popup con progress bar
+        from PyQt5.QtWidgets import QProgressDialog, QApplication
+        from PyQt5.QtCore import Qt, QTimer
+        import time
+        
+        progress = QProgressDialog("Generando PDF...", "Cancelar", 0, 100)
+        progress.setWindowTitle("Generando PDF")
+        progress.setWindowModality(Qt.WindowModal)
+        progress.setMinimumDuration(0)
+        progress.show()
+        
+        # Simular progreso mientras se genera el PDF
+        for i in range(101):
+            if progress.wasCanceled():
+                break
+            progress.setValue(i)
+            QApplication.processEvents()
+            
+            # Generar PDF cuando llegue al 50%
+            if i == 50:
+                convert(docx_path, pdf_path)
+            
+            # Pequeña pausa para mostrar el progreso
+            time.sleep(0.03)
+        
+        progress.close()
         
         exists = os.path.exists(pdf_path)
         if exists:
