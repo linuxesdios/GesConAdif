@@ -1,0 +1,42 @@
+2025-09-05 00:38:26,059 - controladores.Controlador_selector - WARNING - [CONTRACT_MANAGER] label_expediente es None
+2025-09-05 00:38:27,372 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-05 00:39:22,792 - controladores.Controlador_selector - WARNING - [CONTRACT_MANAGER] label_expediente es None
+2025-09-05 00:39:22,876 - controladores.controlador_pdf_unificado - ERROR - [PDF] Error guardando PDF en JSON: 'GestorJsonUnificado' object has no attribute 'guardar_contrato_completo'
+2025-09-05 00:39:22,876 - controladores.controlador_pdf_unificado - ERROR - [PDF] Error guardando fecha en JSON: 'GestorJsonUnificado' object has no attribute 'guardar_contrato_completo'
+2025-09-05 00:39:22,877 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-05 00:39:22,891 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:39:22,891 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:39:22,891 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:39:22,891 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:39:23,047 - controladores.controlador_pdf_unificado - ERROR - [PDF] Error guardando PDF en JSON: 'GestorJsonUnificado' object has no attribute 'guardar_contrato_completo'
+2025-09-05 00:39:23,047 - controladores.controlador_pdf_unificado - ERROR - [PDF] Error guardando fecha en JSON: 'GestorJsonUnificado' object has no attribute 'guardar_contrato_completo'
+2025-09-05 00:39:23,048 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-05 00:39:23,049 - controladores.controlador_resumen - WARNING - [IntegradorResumen] No se encontraron datos de firmas - mostrando tabla vacía
+2025-09-05 00:39:23,056 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-05 00:39:23,057 - controladores.controlador_resumen - WARNING - [IntegradorResumen] No se encontraron datos de firmas - mostrando tabla vacía
+2025-09-05 00:39:23,066 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:39:23,066 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:39:23,067 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:39:23,067 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:39:23,067 - controladores.controlador_fases_documentos - WARNING - [ControladorFases] ⚠️ No se encontraron datos para OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
+2025-09-05 00:45:50,256 - controladores.Controlador_selector - WARNING - [CONTRACT_MANAGER] label_expediente es None
+2025-09-05 00:45:51,993 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-05 00:45:54,223 - controladores.Controlador_selector - WARNING - [CONTRACT_MANAGER] label_expediente es None
+2025-09-05 00:45:54,393 - controladores.controlador_pdf_unificado - ERROR - [PDF] Error guardando PDF en JSON: 'GestorJsonUnificado' object has no attribute 'guardar_contrato_completo'
+2025-09-05 00:45:54,394 - controladores.controlador_pdf_unificado - ERROR - [PDF] Error guardando fecha en JSON: 'GestorJsonUnificado' object has no attribute 'guardar_contrato_completo'
+2025-09-05 00:45:54,395 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-05 00:45:54,412 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:45:54,413 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:45:54,414 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:45:54,415 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:45:54,864 - controladores.controlador_pdf_unificado - ERROR - [PDF] Error guardando PDF en JSON: 'GestorJsonUnificado' object has no attribute 'guardar_contrato_completo'
+2025-09-05 00:45:54,865 - controladores.controlador_pdf_unificado - ERROR - [PDF] Error guardando fecha en JSON: 'GestorJsonUnificado' object has no attribute 'guardar_contrato_completo'
+2025-09-05 00:45:54,866 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-05 00:45:54,869 - controladores.controlador_resumen - WARNING - [IntegradorResumen] No se encontraron datos de firmas - mostrando tabla vacía
+2025-09-05 00:45:54,889 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-05 00:45:54,892 - controladores.controlador_resumen - WARNING - [IntegradorResumen] No se encontraron datos de firmas - mostrando tabla vacía
+2025-09-05 00:45:54,914 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:45:54,914 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:45:54,915 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:45:54,916 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 00:45:54,918 - controladores.controlador_fases_documentos - WARNING - [ControladorFases] ⚠️ No se encontraron datos para OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
