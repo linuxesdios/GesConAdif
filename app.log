@@ -1009,3 +1009,15 @@ Test logging path
 2025-09-05 00:26:59,134 - controladores.controlador_json - INFO - Se guardó en campo empresas: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES
 2025-09-05 00:26:59,134 - controladores.controlador_json - INFO - Empresas guardadas: OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES → 1 empresas
 2025-09-05 00:26:59,134 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Empresas guardadas exitosamente
+2025-09-05 13:46:09,698 - controladores.Controlador_selector - WARNING - [CONTRACT_MANAGER] label_expediente es None
+2025-09-05 13:46:10,915 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-05 13:46:11,466 - controladores.controlador_pdf_unificado - ERROR - [PDF] El archivo PDF no existe: C:/Users/pablo/Downloads/Sede Electrónica del Catastro - Consulta y certificación de Bien Inmueble.pdf
+2025-09-05 13:46:11,473 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-05 13:46:11,475 - controladores.controlador_resumen - WARNING - [IntegradorResumen] No se encontraron datos de firmas - mostrando tabla vacía
+2025-09-05 13:46:11,482 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-05 13:46:11,484 - controladores.controlador_resumen - WARNING - [IntegradorResumen] No se encontraron datos de firmas - mostrando tabla vacía
+2025-09-05 13:46:11,493 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 13:46:11,493 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 13:46:11,493 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 13:46:11,493 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-05 13:46:11,494 - controladores.controlador_fases_documentos - WARNING - [ControladorFases] ⚠️ No se encontraron datos para OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES

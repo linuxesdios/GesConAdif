@@ -112,38 +112,106 @@ def verificar_basedatos_json():
     return True
 
 def preservar_archivos_criticos():
-    """Respalda archivos críticos esenciales"""
+    """Respalda archivos críticos esenciales incluyendo carpetas del dist"""
     print("\n🛡️ Preservando archivos críticos...")
     
-    archivos_preservar = ["basedatos/BaseDatos.json"]
+    # Crear carpeta de backup local
+    backup_local_dir = "archivos_guardados_compilacion"
+    if os.path.exists(backup_local_dir):
+        shutil.rmtree(backup_local_dir)
+    os.makedirs(backup_local_dir, exist_ok=True)
+    
+    # Archivos a preservar
+    archivos_preservar = [
+        "basedatos/BaseDatos.json",
+        "BaseDatos.json",  # Por compatibilidad
+        "facturas_directas.json"
+    ]
+    
+    # Carpetas a preservar (fuentes)
     carpetas_preservar = ["obras", "plantillas"]
     
-    backups = {"archivos": {}, "carpetas": {}}
+    # Carpetas del dist a preservar (si existen)
+    carpetas_dist = [
+        "dist/generador_actas/obras",
+        "dist/generador_actas/pdfactura"
+    ]
     
-    # Respaldar archivos
+    # Archivos del dist/_internal a preservar (si existen)
+    archivos_dist_internal = [
+        "dist/generador_actas/_internal/BaseDatos.json",
+        "dist/generador_actas/_internal/facturas_directas.json"
+    ]
+    
+    backups = {
+        "archivos": {}, 
+        "carpetas": {}, 
+        "backup_local_dir": backup_local_dir,
+        "carpetas_dist": {},
+        "archivos_dist": {}
+    }
+    
+    # Respaldar archivos principales
     for archivo in archivos_preservar:
         if os.path.exists(archivo):
             backup_path = f"{archivo}.backup_compilacion"
+            backup_local_path = os.path.join(backup_local_dir, os.path.basename(archivo))
             try:
+                # Backup temporal para proceso
                 shutil.copy2(archivo, backup_path)
+                # Backup local permanente
+                shutil.copy2(archivo, backup_local_path)
                 backups["archivos"][archivo] = backup_path
-                print(f"✅ Respaldado: {archivo}")
+                print(f"✅ Respaldado: {archivo} (temporal + local)")
             except Exception as e:
                 print(f"⚠️ Error respaldando {archivo}: {e}")
     
-    # Respaldar carpetas
+    # Respaldar carpetas principales
     for carpeta in carpetas_preservar:
         if os.path.exists(carpeta):
             backup_path = f"{carpeta}_backup_temp"
+            backup_local_path = os.path.join(backup_local_dir, carpeta)
             try:
                 if os.path.exists(backup_path):
                     shutil.rmtree(backup_path)
+                # Backup temporal para proceso
                 shutil.copytree(carpeta, backup_path)
+                # Backup local permanente
+                if os.path.exists(backup_local_path):
+                    shutil.rmtree(backup_local_path)
+                shutil.copytree(carpeta, backup_local_path)
                 backups["carpetas"][carpeta] = backup_path
-                print(f"✅ Respaldado: {carpeta}/")
+                print(f"✅ Respaldado: {carpeta}/ (temporal + local)")
             except Exception as e:
                 print(f"⚠️ Error respaldando {carpeta}: {e}")
     
+    # Respaldar carpetas del dist (si existen de compilación anterior)
+    for carpeta_dist in carpetas_dist:
+        if os.path.exists(carpeta_dist):
+            carpeta_nombre = os.path.basename(carpeta_dist)
+            backup_local_path = os.path.join(backup_local_dir, f"dist_{carpeta_nombre}")
+            try:
+                if os.path.exists(backup_local_path):
+                    shutil.rmtree(backup_local_path)
+                shutil.copytree(carpeta_dist, backup_local_path)
+                backups["carpetas_dist"][carpeta_dist] = backup_local_path
+                print(f"✅ Respaldado dist: {carpeta_dist} → {backup_local_path}")
+            except Exception as e:
+                print(f"⚠️ Error respaldando {carpeta_dist}: {e}")
+    
+    # Respaldar archivos del dist/_internal (si existen de compilación anterior)
+    for archivo_dist in archivos_dist_internal:
+        if os.path.exists(archivo_dist):
+            archivo_nombre = os.path.basename(archivo_dist)
+            backup_local_path = os.path.join(backup_local_dir, f"dist_{archivo_nombre}")
+            try:
+                shutil.copy2(archivo_dist, backup_local_path)
+                backups["archivos_dist"][archivo_dist] = backup_local_path
+                print(f"✅ Respaldado dist: {archivo_dist} → {backup_local_path}")
+            except Exception as e:
+                print(f"⚠️ Error respaldando {archivo_dist}: {e}")
+    
+    print(f"✅ Backup local creado en: {backup_local_dir}")
     return backups
 
 def compilar_con_mejoras(python_exe):
@@ -248,6 +316,7 @@ def reorganizar_estructura_mejorada(backups):
     
     dist_dir = "dist/generador_actas"
     internal_dir = f"{dist_dir}/_internal"
+    backup_local_dir = backups.get("backup_local_dir", "archivos_guardados_compilacion")
     
     if not os.path.exists(dist_dir):
         print(f"❌ No se encontró directorio compilado: {dist_dir}")
@@ -259,6 +328,8 @@ def reorganizar_estructura_mejorada(backups):
     archivos_json = {
         "BaseDatos.json": [
             "basedatos/BaseDatos.json.backup_compilacion", # Desde backup (primera prioridad)
+            f"{backup_local_dir}/BaseDatos.json",           # Desde backup local
+            f"{backup_local_dir}/dist_BaseDatos.json",      # Desde backup local dist
             "basedatos/BaseDatos.json",                     # Desde directorio basedatos
             "BaseDatos.json.backup_compilacion",            # Backup en raíz (compatibilidad)
             "BaseDatos.json",                               # Desde directorio actual (compatibilidad)
@@ -266,14 +337,17 @@ def reorganizar_estructura_mejorada(backups):
             f"{internal_dir}/BaseDatos.json"                # Desde add-data (última prioridad)
         ],
         "facturas_directas.json": [
-            "basedatos/facturas_directas.json",  # Desde directorio basedatos
-            "facturas_directas.json",            # Desde directorio actual (compatibilidad)
+            "basedatos/facturas_directas.json",            # Desde directorio basedatos
+            f"{backup_local_dir}/facturas_directas.json",  # Desde backup local
+            f"{backup_local_dir}/dist_facturas_directas.json", # Desde backup local dist
+            "facturas_directas.json",                      # Desde directorio actual (compatibilidad)
             f"{dist_dir}/facturas_directas.json",
             f"{internal_dir}/facturas_directas.json"
         ],
         "historial_documentos.json": [
-            "basedatos/historial_documentos.json", # Desde directorio basedatos
-            "historial_documentos.json",           # Desde directorio actual (compatibilidad)
+            "basedatos/historial_documentos.json",         # Desde directorio basedatos
+            f"{backup_local_dir}/historial_documentos.json", # Desde backup local
+            "historial_documentos.json",                   # Desde directorio actual (compatibilidad)
             f"{dist_dir}/historial_documentos.json",
             f"{internal_dir}/historial_documentos.json"
         ]
@@ -322,7 +396,10 @@ def reorganizar_estructura_mejorada(backups):
             else:
                 print(f"⚠️ {nombre_archivo} no encontrado (archivo opcional)")
     
-    # 3. RESTAURAR CARPETAS CRÍTICAS
+    # 3. RESTAURAR CARPETAS CRÍTICAS DESDE BACKUP LOCAL
+    print("🔄 Restaurando carpetas desde backup local...")
+    
+    # Carpetas principales
     for carpeta_original, backup_path in backups["carpetas"].items():
         if backup_path and os.path.exists(backup_path):
             if carpeta_original == "obras":
@@ -336,16 +413,54 @@ def reorganizar_estructura_mejorada(backups):
             try:
                 if os.path.exists(destino):
                     shutil.rmtree(destino)
-                shutil.move(backup_path, destino)
+                shutil.copytree(backup_path, destino)  # Usar copytree en lugar de move para preservar backup
                 print(f"✅ Restaurado: {carpeta_original}/ → {destino}")
             except Exception as e:
                 print(f"⚠️ Error restaurando {carpeta_original}: {e}")
     
+    # Carpetas del dist desde backup local
+    for carpeta_original, backup_local_path in backups.get("carpetas_dist", {}).items():
+        if backup_local_path and os.path.exists(backup_local_path):
+            carpeta_nombre = os.path.basename(carpeta_original)
+            destino = f"{dist_dir}/{carpeta_nombre}"
+            
+            try:
+                if os.path.exists(destino):
+                    shutil.rmtree(destino)
+                shutil.copytree(backup_local_path, destino)
+                print(f"✅ Restaurado dist: {carpeta_nombre}/ → {destino}")
+            except Exception as e:
+                print(f"⚠️ Error restaurando {carpeta_nombre}: {e}")
+    
+    # Restaurar desde backup local si las carpetas no existían en dist anterior
+    carpetas_requeridas = ["obras", "pdfactura"]
+    for carpeta in carpetas_requeridas:
+        destino = f"{dist_dir}/{carpeta}"
+        if not os.path.exists(destino):
+            backup_local_path = os.path.join(backup_local_dir, f"dist_{carpeta}")
+            backup_local_path_alt = os.path.join(backup_local_dir, carpeta)
+            
+            # Intentar desde ambas ubicaciones posibles
+            for path_candidato in [backup_local_path, backup_local_path_alt]:
+                if os.path.exists(path_candidato):
+                    try:
+                        shutil.copytree(path_candidato, destino)
+                        print(f"✅ Restaurado desde backup local: {carpeta}/ → {destino}")
+                        break
+                    except Exception as e:
+                        print(f"⚠️ Error restaurando {carpeta} desde backup local: {e}")
+            else:
+                # Crear carpeta vacía si no se pudo restaurar
+                try:
+                    os.makedirs(destino, exist_ok=True)
+                    print(f"✅ Creada carpeta vacía: {destino}")
+                except Exception as e:
+                    print(f"⚠️ Error creando carpeta {carpeta}: {e}")
+    
     # 4. CREAR SCRIPT DE VALIDACIÓN
     crear_script_validacion(dist_dir)
     
-    # 5. NO COMPILAR VERSIÓN CONSOLA - Solo EXE normal
-    
+    print(f"✅ Backup local preservado en: {backup_local_dir}")
     return True
 
 def crear_script_validacion(dist_dir):
