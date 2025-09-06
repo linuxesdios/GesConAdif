@@ -1686,7 +1686,10 @@ class ControladorGrafica(QMainWindow):
             # Obtener fechas de firmas del proyecto actual
             eventos_firmas = self._obtener_fechas_firmas()
             
+            # Mostrar mensaje si no hay firmas ni eventos
             dialogo = DialogoCalendario(self, eventos_iniciales=eventos_firmas)
+            if len(eventos_firmas) == 0:
+                dialogo.mostrar_mensaje_sin_firmas()
             
             def manejar_fecha_seleccionada(fecha):
                 fecha_str = fecha.toString("dd/MM/yyyy")

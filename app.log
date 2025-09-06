@@ -1,0 +1,484 @@
+2025-09-06 12:12:36,618 - root - INFO - Configuración de barra de tareas Windows aplicada
+2025-09-06 12:12:36,619 - root - INFO - Icono configurado desde: images/icono.ico
+2025-09-06 12:12:37,821 - controladores.controlador_routes - INFO - Inicializado
+2025-09-06 12:12:38,512 - controladores.controlador_documentos - INFO - [ControladorDocumentos] ✅ Tracker de documentos configurado
+2025-09-06 12:12:38,512 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] [INIT] Inicializado - Solo Eventos
+2025-09-06 12:12:38,539 - controladores.controlador_json - INFO - Inicializado con archivo: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-06 12:12:38,540 - controladores.controlador_routes - INFO - Inicializado
+2025-09-06 12:12:38,544 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-06 12:12:38,545 - controladores.controlador_json - INFO - Inicializado con archivo: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-06 12:12:38,545 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-06 12:12:38,545 - controladores.Controlador_selector - INFO - [ContractManager] Iniciando carga de contratos...
+2025-09-06 12:12:38,545 - controladores.Controlador_selector - INFO - [ContractManager] Recargando datos del JSON...
+2025-09-06 12:12:38,546 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] 🏷️ Label Tipo ANTES: ''
+2025-09-06 12:12:38,546 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] 🏷️ Label Tipo DESPUÉS: '-'
+2025-09-06 12:12:38,547 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] Label Tipo actualizado correctamente
+2025-09-06 12:12:38,547 - controladores.Controlador_selector - WARNING - [CONTRACT_MANAGER] label_expediente es None
+2025-09-06 12:12:38,548 - controladores.Controlador_selector - INFO - [ContractManager] Ruta unificada: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-06 12:12:38,549 - controladores.controlador_json - INFO - Inicializado con archivo: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-06 12:12:38,549 - controladores.Controlador_selector - INFO - [ContractManager] Gestor JSON inicializado correctamente
+2025-09-06 12:12:38,549 - controladores.Controlador_selector - INFO - [ContractManager] Iniciando carga de contratos...
+2025-09-06 12:12:38,549 - controladores.Controlador_selector - INFO - [ContractManager] Recargando datos del JSON...
+2025-09-06 12:12:38,550 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] 🏷️ Label Tipo ANTES: '-'
+2025-09-06 12:12:38,550 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] 🏷️ Label Tipo DESPUÉS: '-'
+2025-09-06 12:12:38,551 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] Label Tipo actualizado correctamente
+2025-09-06 12:12:38,551 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] Label Expediente actualizado
+2025-09-06 12:12:38,569 - controladores.controlador_tablas - INFO - [DEBUG] 📊 Configurando tabla de empresas...
+2025-09-06 12:12:38,570 - controladores.controlador_tablas - INFO - [SUCCESS] ✅ Tabla de empresas configurada
+2025-09-06 12:12:38,571 - controladores.controlador_tablas - INFO - [DEBUG] 📊 Configurando tabla de ofertas...
+2025-09-06 12:12:38,571 - controladores.controlador_tablas - INFO - [SUCCESS] ✅ Tabla de ofertas configurada
+2025-09-06 12:12:38,571 - controladores.controlador_grafica - INFO - [ControladorGrafica] 🔗 Configurando sincronización TwEmpresas → TwOfertas
+2025-09-06 12:12:38,572 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Sincronización configurada correctamente
+2025-09-06 12:12:38,572 - controladores.controlador_routes - INFO - Inicializado
+2025-09-06 12:12:38,573 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Iniciando configuración auto-guardado completo
+2025-09-06 12:12:38,576 - controladores.controlador_autosave - INFO - ⚠️ AUTOSAVE: Excluyendo comboBox selector principal del auto-guardado
+2025-09-06 12:12:38,576 - controladores.controlador_autosave - INFO - 🔧 DIAGNÓSTICO: Configurando auto-guardado de tablas
+2025-09-06 12:12:38,577 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwEmpresas configurada para auto-guardado
+2025-09-06 12:12:38,577 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: TwOfertas configurada para auto-guardado
+2025-09-06 12:12:38,577 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Configuración auto-guardado completo terminada
+2025-09-06 12:12:38,583 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Eventos de pérdida de foco configurados
+2025-09-06 12:12:38,755 - controladores.controlador_grafica - INFO - [ControladorGrafica] 🔧 Arreglando botones...
+2025-09-06 12:12:38,756 - controladores.controlador_eventos_ui - INFO - Controlador de cálculos conectado
+2025-09-06 12:12:38,757 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] ✅ TwEmpresas conectado (cambios + selección)
+2025-09-06 12:12:38,758 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] ✅ TwOfertas conectado
+2025-09-06 12:12:38,759 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] ✅ tabWidget conectado
+2025-09-06 12:12:38,793 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] 🔘 Iniciando conexión de botones...
+2025-09-06 12:12:38,795 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Generar_Acta_Inicio -> comprobar_generar_acta_inicio conectado
+2025-09-06 12:12:38,797 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Generar_Cartas_inv -> comprobar_generar_cartas_invitacion conectado
+2025-09-06 12:12:38,797 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Generar_acta_adj -> comprobar_generar_acta_adjudicacion conectado
+2025-09-06 12:12:38,799 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Generar_carta_adj -> comprobar_generar_cartas_adjudicacion conectado
+2025-09-06 12:12:38,800 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Generar_acta_liq -> comprobar_generar_acta_liquidacion conectado
+2025-09-06 12:12:38,801 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Generar_replanteo -> comprobar_generar_acta_replanteo conectado
+2025-09-06 12:12:38,803 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Generar_recepcion -> comprobar_generar_acta_recepcion conectado
+2025-09-06 12:12:38,804 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Generar_Director -> comprobar_generar_nombramiento_director conectado
+2025-09-06 12:12:38,805 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Generar_Contrato -> comprobar_generar_contrato conectado
+2025-09-06 12:12:38,807 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Abrir_portafirmas -> _abrir_portafirmas conectado
+2025-09-06 12:12:38,808 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Abrir_calendario -> _abrir_calendario conectado
+2025-09-06 12:12:38,809 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] ✅ Pb_Imp_Exp_excel conectado
+2025-09-06 12:12:38,810 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Pb_add -> _agregar_empresa conectado
+2025-09-06 12:12:38,811 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Pb_remove -> _quitar_empresa conectado
+2025-09-06 12:12:38,812 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] ✅ comboBox conectado
+2025-09-06 12:12:38,813 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] ✅ btn_cambio_exp conectado
+2025-09-06 12:12:38,814 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] ✅ actionEditar_firmantes conectado
+2025-09-06 12:12:38,816 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] OK Todos los botones conectados
+2025-09-06 12:12:38,817 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] add_actuacion -> agregar_actuacion conectado
+2025-09-06 12:12:38,818 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] add_factura -> agregar_factura conectado
+2025-09-06 12:12:38,819 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] borrar_actuacion -> borrar_actuacion conectado
+2025-09-06 12:12:38,821 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] borrar_factura -> borrar_factura conectado
+2025-09-06 12:12:38,822 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] ✅ Botones de resumen y tablas configurados
+2025-09-06 12:12:38,823 - controladores.controlador_eventos_ui - INFO - Setup de eventos completado exitosamente
+2025-09-06 12:12:38,824 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controladores conectados
+2025-09-06 12:12:38,831 - controladores.controlador_grafica - INFO - [ControladorGrafica] 🔄 Integrando sistema de resumen...
+2025-09-06 12:12:38,833 - controladores.controlador_resumen - INFO - 🎉 RESUMEN INTEGRADO EXITOSAMENTE
+2025-09-06 12:12:38,834 - controladores.controlador_resumen - INFO -    ✅ Historial de documentos activado
+2025-09-06 12:12:38,835 - controladores.controlador_resumen - INFO -    ✅ Tab 'Resumen' agregado a la interfaz
+2025-09-06 12:12:38,836 - controladores.controlador_resumen - INFO -    ✅ Actualización automática configurada
+2025-09-06 12:12:38,836 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Sistema de resumen integrado exitosamente
+2025-09-06 12:12:38,844 - controladores.controlador_grafica - INFO - [ControladorGrafica] 🔄 Integrando controlador de fases...
+2025-09-06 12:12:38,844 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ Inicializado con 11 fases configuradas
+2025-09-06 12:12:38,862 - controladores.controlador_fases_documentos - INFO - [ControladorFases] ✅ 0 campos de firmado conectados
+2025-09-06 12:12:38,863 - controladores.controlador_fases_documentos - INFO - [ControladorFases] 🎉 Integrado exitosamente en la aplicación
+2025-09-06 12:12:38,863 - controladores.controlador_grafica - INFO - [ControladorGrafica] ✅ Controlador de fases integrado exitosamente
+2025-09-06 12:12:38,864 - controladores.Controlador_selector - INFO - [ContractManager] Iniciando carga de contratos...
+2025-09-06 12:12:38,864 - controladores.Controlador_selector - INFO - [ContractManager] Recargando datos del JSON...
+2025-09-06 12:12:38,865 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Cambio de contrato a: 
+2025-09-06 12:12:39,825 - controladores.controlador_eventos_ui - WARNING - plazoActuacion no encontrado
+2025-09-06 12:12:40,512 - controladores.Controlador_selector - INFO - 🎯 SELECTOR: Usuario seleccionó contrato: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.'
+2025-09-06 12:12:40,512 - controladores.Controlador_selector - INFO - 📊 SELECTOR: Contrato actual antes del cambio: 'None'
+2025-09-06 12:12:40,512 - controladores.Controlador_selector - INFO - 🗂️ SELECTOR: Contratos disponibles en mapping: ['OBRAS DE REPARACIÓN EN LAS INSTALACIONES INTERIORES', 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.', 'Mantenimiento correctivo Preventivo en Algodor Y Aranjuez', 'LIMPIEZA DE ZONAS DE ACCESO ESTACIÓNES DE NUEVOS MINISTERIOS Y P.PIO']
+2025-09-06 12:12:40,513 - controladores.Controlador_selector - INFO - 🔍 SELECTOR: Datos encontrados para 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.': True
+2025-09-06 12:12:40,513 - controladores.Controlador_selector - INFO - 📋 SELECTOR: Nombre completo del contrato: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.'
+2025-09-06 12:12:40,514 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Datos JSON recargados exitosamente para: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.'
+2025-09-06 12:12:40,514 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Tipo de actuación: 'obra_mantenimiento'
+2025-09-06 12:12:40,514 - controladores.Controlador_selector - INFO - 📄 SELECTOR: Número de expediente: 'Sin expediente'
+2025-09-06 12:12:40,515 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] 🏷️ Label Tipo ANTES: '-'
+2025-09-06 12:12:40,515 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] 🏷️ Label Tipo DESPUÉS: 'obra_mantenimiento'
+2025-09-06 12:12:40,515 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] Label Tipo actualizado correctamente
+2025-09-06 12:12:40,516 - controladores.Controlador_selector - INFO - [CONTRACT_MANAGER] Label Expediente actualizado
+2025-09-06 12:12:40,516 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Contrato establecido como actual: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.'
+2025-09-06 12:12:40,516 - controladores.controlador_routes - INFO - Inicializado
+2025-09-06 12:12:40,517 - root - INFO -    Carpeta antigua: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES'
+2025-09-06 12:12:40,517 - root - INFO -    Carpeta nueva: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES'
+2025-09-06 12:12:40,525 - controladores.controlador_autosave - INFO - 🔒 DIAGNÓSTICO: cargando_datos = TRUE - auto-guardado PAUSADO
+2025-09-06 12:12:40,537 - controladores.controlador_calculos - INFO - Precio adjudicación <= 0, no calculando anualidades
+2025-09-06 12:12:40,539 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-06 12:12:40,540 - controladores.controlador_json - INFO - Se guardó en campo justificacionLimites: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,540 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] 🔄 Cargando widgets para: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,543 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QLineEdit empresaAdjudicada: 'FCC Industria INFRAESTRUCTURAS ENERGETICAS, S.A.U.'
+2025-09-06 12:12:40,544 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QLineEdit contratistaCIF: 'A28482024'
+2025-09-06 12:12:40,544 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QLineEdit numEmpresasPresentadas: '2' (CRÍTICO)
+2025-09-06 12:12:40,544 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QLineEdit numEmpresasSolicitadas: '4' (CRÍTICO)
+2025-09-06 12:12:40,545 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QLineEdit regimenPagos: 'asasasss'
+2025-09-06 12:12:40,545 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QLineEdit OrganoSolicitaOfertas: 'eeee'
+2025-09-06 12:12:40,546 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QLineEdit organoContratacion: 'Gerencia Área de Patrimonio y Urbanismo Centro'
+2025-09-06 12:12:40,546 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QLineEdit organoContratacion2: 'DG de Negocio y Operaciones Comerciales'
+2025-09-06 12:12:40,547 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QLineEdit nombreObra: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.'
+2025-09-06 12:12:40,550 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QTextEdit objeto: 'El objeto de este contrato es la realización de la...'
+2025-09-06 12:12:40,550 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QTextEdit justificacion: 'Se necesita la contratación de estas obras por ser...'
+2025-09-06 12:12:40,551 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QTextEdit insuficiencia: 'La necesidad surge de las propias labores de gesti...'
+2025-09-06 12:12:40,552 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QTextEdit justificacionLimites: 'El contrato de la obra es por importe de 1,212.00 ...'
+2025-09-06 12:12:40,554 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox precioAdjudicacion: '200.0'
+2025-09-06 12:12:40,554 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox precioAdjudicacionIva: '42.0'
+2025-09-06 12:12:40,555 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox precioAdjudicacionTotal: '242.0'
+2025-09-06 12:12:40,555 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox licitacion15: '300.0'
+2025-09-06 12:12:40,555 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox licitacion07: '140.0'
+2025-09-06 12:12:40,556 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox adicionalBaseLiquidacion: '2222.0'
+2025-09-06 12:12:40,556 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox adicionalIvaLiquidacion: '466.62'
+2025-09-06 12:12:40,556 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox adicionalTotalLiquidacion_2: '0.0'
+2025-09-06 12:12:40,556 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox saldoBaseLiquidacion: '2222.0'
+2025-09-06 12:12:40,557 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox saldoIvaLiquidacion: '466.62'
+2025-09-06 12:12:40,557 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox adicionalTotalLiquidacion: '2688.62'
+2025-09-06 12:12:40,558 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox empresaBaseAFavor: '2222.0'
+2025-09-06 12:12:40,559 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox empresaIvaAFavor: '466.62'
+2025-09-06 12:12:40,559 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox empresaTotalAFavor: '2688.62'
+2025-09-06 12:12:40,559 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox liquidacionAFavorAdifBase: '0.0'
+2025-09-06 12:12:40,560 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox adifIvaAFavor: '0.0'
+2025-09-06 12:12:40,560 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox adifTotalAFavor: '0.0'
+2025-09-06 12:12:40,561 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox certBase: '0.0'
+2025-09-06 12:12:40,561 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox certIva: '254.52'
+2025-09-06 12:12:40,561 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox certTotal: '1466.52'
+2025-09-06 12:12:40,562 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox BaseAnualidad1: '66.67'
+2025-09-06 12:12:40,562 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox IvaAnualidad1: '14.0'
+2025-09-06 12:12:40,562 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox TotalAnualidad1: '80.67'
+2025-09-06 12:12:40,562 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox BaseAnualidad2: '133.33'
+2025-09-06 12:12:40,563 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox IvaAnualidad2: '28.0'
+2025-09-06 12:12:40,563 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox TotalAnualidad2: '161.33'
+2025-09-06 12:12:40,563 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox basePresupuesto: '1212.0'
+2025-09-06 12:12:40,563 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox ivaPresupuestoBase: '254.52'
+2025-09-06 12:12:40,564 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QDoubleSpinBox totalPresupuestoBase: '1466.52'
+2025-09-06 12:12:40,567 - controladores.controlador_grafica - INFO - [CAMBIO_CONTRATO] QSpinBox plazoEjecucion: '12' (CRÍTICO)
+2025-09-06 12:12:40,575 - controladores.controlador_calculos - INFO - Calculando anualidades:
+2025-09-06 12:12:40,575 - controladores.controlador_calculos - INFO -   - Precio adjudicación: 200.00
+2025-09-06 12:12:40,576 - controladores.controlador_calculos - INFO -   - Plazo ejecución: 12.0 meses
+2025-09-06 12:12:40,576 - controladores.controlador_calculos - INFO -   - Mes inicio: 9
+2025-09-06 12:12:40,576 - controladores.controlador_calculos - INFO - Resultado anualidades:
+2025-09-06 12:12:40,576 - controladores.controlador_calculos - INFO -   - Meses Anualidad 1: 4
+2025-09-06 12:12:40,577 - controladores.controlador_calculos - INFO -   - Meses Anualidad 2: 8.0
+2025-09-06 12:12:40,577 - controladores.controlador_calculos - INFO -   - Base Anualidad 1: 66.67
+2025-09-06 12:12:40,577 - controladores.controlador_calculos - INFO -   - Base Anualidad 2: 133.33
+2025-09-06 12:12:40,577 - controladores.controlador_calculos - INFO -   - Total verificación: 200.00
+2025-09-06 12:12:40,578 - controladores.controlador_calculos - INFO - Cálculo de anualidades completado exitosamente
+2025-09-06 12:12:40,581 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-06 12:12:40,581 - controladores.controlador_json - INFO - Se guardó en campo BaseAnualidad1: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,648 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] TwOfertas[0,0] = 'MAHERCON AVILA'
+2025-09-06 12:12:40,649 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] TwOfertas[1,0] = 'FCC Industria INFRAESTRUCTURAS ENERGETICAS, S.A.U.'
+2025-09-06 12:12:40,649 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] TwOfertas[2,0] = 'GRUPO  TESEIN , S.L.U'
+2025-09-06 12:12:40,650 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] TwOfertas[3,0] = 'PAL ELECTRICIDAD , S.L.'
+2025-09-06 12:12:40,650 - controladores.controlador_routes - INFO - Inicializado
+2025-09-06 12:12:40,662 - root - INFO -    Carpeta antigua: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES'
+2025-09-06 12:12:40,663 - root - INFO -    Carpeta nueva: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES'
+2025-09-06 12:12:40,665 - controladores.controlador_autosave - INFO - 🔓 DIAGNÓSTICO: cargando_datos = FALSE - auto-guardado ACTIVADO
+2025-09-06 12:12:40,666 - controladores.controlador_calculos - INFO - Tabla ofertas sincronizada: 4 empresas
+2025-09-06 12:12:40,681 - controladores.controlador_pdf_unificado - ERROR - [PDF] El archivo PDF no existe: E:/generador_actas/dist/generador_actas/obras/MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES/01-proyecto/PLIEGO TÉCNICO_Cubiertas_Madrid_25.pdf
+2025-09-06 12:12:40,681 - controladores.controlador_grafica - INFO - [ControladorGrafica] Actualizando resumen automáticamente para: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,682 - controladores.controlador_fases_documentos - INFO - [ControladorFases] 🔧 REPARANDO sincronización para MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,683 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-06 12:12:40,683 - controladores.controlador_fases_documentos - INFO - [ControladorFases] Sincronizando todas las fechas al JSON para MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,684 - controladores.controlador_resumen - INFO - 🎯 CONTRATO OBJETIVO: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,685 - controladores.controlador_resumen - INFO - 📂 PASO 1: Buscando carpeta de documentación...
+2025-09-06 12:12:40,686 - controladores.controlador_resumen - INFO - [IntegradorResumen] Usando controlador_routes para obtener ruta obras
+2025-09-06 12:12:40,687 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Ruta obras: F:\GesConAdif\obras
+2025-09-06 12:12:40,688 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📁 Nombre de carpeta desde JSON: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES
+2025-09-06 12:12:40,689 - controladores.controlador_resumen - INFO - [IntegradorResumen] Carpeta documentación encontrada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:40,690 - controladores.controlador_resumen - INFO - 📂 Carpeta encontrada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:40,691 - controladores.controlador_resumen - INFO - 📄 PASO 2: Listando archivos en la carpeta...
+2025-09-06 12:12:40,692 - controladores.controlador_resumen - INFO - 📄 Total de archivos encontrados: {len(todos_archivos)}
+2025-09-06 12:12:40,692 - controladores.controlador_resumen - INFO -   1. 📝 .gitkeep (0 bytes)
+2025-09-06 12:12:40,693 - controladores.controlador_resumen - INFO -   2. 📝 README.txt (691 bytes)
+2025-09-06 12:12:40,693 - controladores.controlador_resumen - INFO - 🔴 PDFs encontrados: 0
+2025-09-06 12:12:40,693 - controladores.controlador_resumen - INFO - 🗂️ PASO 3: Probando mapeo de archivos a fases...
+2025-09-06 12:12:40,693 - controladores.controlador_resumen - INFO - 🗂️ Mapeo de fases configurado:
+2025-09-06 12:12:40,694 - controladores.controlador_resumen - INFO -   CREACION: ['proyecto', 'creacion']
+2025-09-06 12:12:40,694 - controladores.controlador_resumen - INFO -   INICIO: ['inicio', 'acta_inicio', 'inicio_contrato']
+2025-09-06 12:12:40,694 - controladores.controlador_resumen - INFO -   CARTASINVITACION: ['cartas_invitacion', 'invitacion', 'carta_invitacion']
+2025-09-06 12:12:40,694 - controladores.controlador_resumen - INFO -   ADJUDICACION: ['adjudicacion', 'adjudicar']
+2025-09-06 12:12:40,695 - controladores.controlador_resumen - INFO -   CARTASADJUDICACION: ['cartas_adjudicacion', 'carta_adjudicacion']
+2025-09-06 12:12:40,695 - controladores.controlador_resumen - INFO -   CONTRATO: ['contrato']
+2025-09-06 12:12:40,695 - controladores.controlador_resumen - INFO -   REPLANTEO: ['replanteo', 'acta_replanteo']
+2025-09-06 12:12:40,695 - controladores.controlador_resumen - INFO -   ACTUACION: ['actuacion', 'actuaciones']
+2025-09-06 12:12:40,696 - controladores.controlador_resumen - INFO -   RECEPCION: ['recepcion', 'acta_recepcion']
+2025-09-06 12:12:40,696 - controladores.controlador_resumen - INFO -   FINALIZACION: ['finalizacion', 'final', 'acta_finalizacion']
+2025-09-06 12:12:40,697 - controladores.controlador_resumen - INFO - 📊 RESUMEN FINAL DEL TEST
+2025-09-06 12:12:40,697 - controladores.controlador_resumen - INFO - 📂 Carpeta analizada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:40,697 - controladores.controlador_resumen - INFO - 📄 Total archivos: {len(todos_archivos)}
+2025-09-06 12:12:40,698 - controladores.controlador_resumen - INFO - 🔴 PDFs encontrados: 0
+2025-09-06 12:12:40,698 - controladores.controlador_resumen - INFO - 📋 Archivos PDF:
+2025-09-06 12:12:40,698 - controladores.controlador_resumen - INFO - [IntegradorResumen] Usando controlador_routes para obtener ruta obras
+2025-09-06 12:12:40,698 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Ruta obras: F:\GesConAdif\obras
+2025-09-06 12:12:40,698 - controladores.controlador_resumen - INFO - [IntegradorResumen] Usando controlador_routes para obtener ruta obras
+2025-09-06 12:12:40,699 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Ruta obras: F:\GesConAdif\obras
+2025-09-06 12:12:40,699 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📁 Nombre de carpeta desde JSON: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES
+2025-09-06 12:12:40,699 - controladores.controlador_resumen - INFO - [IntegradorResumen] Carpeta documentación encontrada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:40,699 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Escaneando carpeta: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:40,699 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📁 Nombre de carpeta desde JSON: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES
+2025-09-06 12:12:40,700 - controladores.controlador_resumen - INFO - [IntegradorResumen] Resumen final: 0 fases con firmas, 0 firmantes únicos
+2025-09-06 12:12:40,700 - controladores.controlador_resumen - INFO - [IntegradorResumen] Datos de firmas: {}
+2025-09-06 12:12:40,700 - controladores.controlador_resumen - INFO - [IntegradorResumen] Firmantes únicos: []
+2025-09-06 12:12:40,700 - controladores.controlador_resumen - INFO - [IntegradorResumen] Datos recibidos - 0 fases, 0 firmantes
+2025-09-06 12:12:40,700 - controladores.controlador_resumen - INFO - [IntegradorResumen] Tabla actual - Filas: 3, Columnas: 3
+2025-09-06 12:12:40,700 - controladores.controlador_resumen - WARNING - [IntegradorResumen] No se encontraron datos de firmas - mostrando tabla vacía
+2025-09-06 12:12:40,700 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📊 Configurando tabla para mostrar estado sin firmas
+2025-09-06 12:12:40,702 - controladores.controlador_resumen - INFO - [IntegradorResumen] ✅ Tabla configurada para estado sin firmas
+2025-09-06 12:12:40,702 - controladores.controlador_resumen - INFO - [IntegradorResumen] Escaneo completado. 0 fases con firmas encontradas
+2025-09-06 12:12:40,706 - controladores.controlador_grafica - INFO - [CALLBACK] 📡 on_contract_type_changed disparado con tipo: 'obra_mantenimiento'
+2025-09-06 12:12:40,707 - controladores.controlador_grafica - INFO - [CALLBACK] ⚙️ Configurando por tipo de contrato...
+2025-09-06 12:12:40,707 - controladores.controlador_grafica - INFO - [CALLBACK] 📑 Actualizando pestañas...
+2025-09-06 12:12:40,707 - controladores.controlador_grafica - INFO - [CALLBACK] Actualizando resumen por cambio de tipo: obra_mantenimiento
+2025-09-06 12:12:40,708 - controladores.controlador_fases_documentos - INFO - [ControladorFases] 🔧 REPARANDO sincronización para MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,708 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-06 12:12:40,709 - controladores.controlador_fases_documentos - INFO - [ControladorFases] Sincronizando todas las fechas al JSON para MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,709 - controladores.controlador_resumen - INFO - 🎯 CONTRATO OBJETIVO: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,709 - controladores.controlador_resumen - INFO - 📂 PASO 1: Buscando carpeta de documentación...
+2025-09-06 12:12:40,709 - controladores.controlador_resumen - INFO - [IntegradorResumen] Usando controlador_routes para obtener ruta obras
+2025-09-06 12:12:40,710 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Ruta obras: F:\GesConAdif\obras
+2025-09-06 12:12:40,710 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📁 Nombre de carpeta desde JSON: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES
+2025-09-06 12:12:40,710 - controladores.controlador_resumen - INFO - [IntegradorResumen] Carpeta documentación encontrada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:40,711 - controladores.controlador_resumen - INFO - 📂 Carpeta encontrada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:40,711 - controladores.controlador_resumen - INFO - 📄 PASO 2: Listando archivos en la carpeta...
+2025-09-06 12:12:40,711 - controladores.controlador_resumen - INFO - 📄 Total de archivos encontrados: {len(todos_archivos)}
+2025-09-06 12:12:40,711 - controladores.controlador_resumen - INFO -   1. 📝 .gitkeep (0 bytes)
+2025-09-06 12:12:40,711 - controladores.controlador_resumen - INFO -   2. 📝 README.txt (691 bytes)
+2025-09-06 12:12:40,711 - controladores.controlador_resumen - INFO - 🔴 PDFs encontrados: 0
+2025-09-06 12:12:40,712 - controladores.controlador_resumen - INFO - 🗂️ PASO 3: Probando mapeo de archivos a fases...
+2025-09-06 12:12:40,712 - controladores.controlador_resumen - INFO - 🗂️ Mapeo de fases configurado:
+2025-09-06 12:12:40,712 - controladores.controlador_resumen - INFO -   CREACION: ['proyecto', 'creacion']
+2025-09-06 12:12:40,712 - controladores.controlador_resumen - INFO -   INICIO: ['inicio', 'acta_inicio', 'inicio_contrato']
+2025-09-06 12:12:40,712 - controladores.controlador_resumen - INFO -   CARTASINVITACION: ['cartas_invitacion', 'invitacion', 'carta_invitacion']
+2025-09-06 12:12:40,712 - controladores.controlador_resumen - INFO -   ADJUDICACION: ['adjudicacion', 'adjudicar']
+2025-09-06 12:12:40,712 - controladores.controlador_resumen - INFO -   CARTASADJUDICACION: ['cartas_adjudicacion', 'carta_adjudicacion']
+2025-09-06 12:12:40,713 - controladores.controlador_resumen - INFO -   CONTRATO: ['contrato']
+2025-09-06 12:12:40,713 - controladores.controlador_resumen - INFO -   REPLANTEO: ['replanteo', 'acta_replanteo']
+2025-09-06 12:12:40,713 - controladores.controlador_resumen - INFO -   ACTUACION: ['actuacion', 'actuaciones']
+2025-09-06 12:12:40,713 - controladores.controlador_resumen - INFO -   RECEPCION: ['recepcion', 'acta_recepcion']
+2025-09-06 12:12:40,713 - controladores.controlador_resumen - INFO -   FINALIZACION: ['finalizacion', 'final', 'acta_finalizacion']
+2025-09-06 12:12:40,713 - controladores.controlador_resumen - INFO - 📊 RESUMEN FINAL DEL TEST
+2025-09-06 12:12:40,713 - controladores.controlador_resumen - INFO - 📂 Carpeta analizada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:40,713 - controladores.controlador_resumen - INFO - 📄 Total archivos: {len(todos_archivos)}
+2025-09-06 12:12:40,713 - controladores.controlador_resumen - INFO - 🔴 PDFs encontrados: 0
+2025-09-06 12:12:40,714 - controladores.controlador_resumen - INFO - 📋 Archivos PDF:
+2025-09-06 12:12:40,714 - controladores.controlador_resumen - INFO - [IntegradorResumen] Usando controlador_routes para obtener ruta obras
+2025-09-06 12:12:40,714 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Ruta obras: F:\GesConAdif\obras
+2025-09-06 12:12:40,714 - controladores.controlador_resumen - INFO - [IntegradorResumen] Usando controlador_routes para obtener ruta obras
+2025-09-06 12:12:40,714 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Ruta obras: F:\GesConAdif\obras
+2025-09-06 12:12:40,715 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📁 Nombre de carpeta desde JSON: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES
+2025-09-06 12:12:40,715 - controladores.controlador_resumen - INFO - [IntegradorResumen] Carpeta documentación encontrada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:40,715 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Escaneando carpeta: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:40,715 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📁 Nombre de carpeta desde JSON: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES
+2025-09-06 12:12:40,715 - controladores.controlador_resumen - INFO - [IntegradorResumen] Resumen final: 0 fases con firmas, 0 firmantes únicos
+2025-09-06 12:12:40,715 - controladores.controlador_resumen - INFO - [IntegradorResumen] Datos de firmas: {}
+2025-09-06 12:12:40,716 - controladores.controlador_resumen - INFO - [IntegradorResumen] Firmantes únicos: []
+2025-09-06 12:12:40,716 - controladores.controlador_resumen - INFO - [IntegradorResumen] Datos recibidos - 0 fases, 0 firmantes
+2025-09-06 12:12:40,716 - controladores.controlador_resumen - INFO - [IntegradorResumen] Tabla actual - Filas: 11, Columnas: 4
+2025-09-06 12:12:40,716 - controladores.controlador_resumen - WARNING - [IntegradorResumen] No se encontraron datos de firmas - mostrando tabla vacía
+2025-09-06 12:12:40,716 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📊 Configurando tabla para mostrar estado sin firmas
+2025-09-06 12:12:40,718 - controladores.controlador_resumen - INFO - [IntegradorResumen] ✅ Tabla configurada para estado sin firmas
+2025-09-06 12:12:40,718 - controladores.controlador_resumen - INFO - [IntegradorResumen] Escaneo completado. 0 fases con firmas encontradas
+2025-09-06 12:12:40,719 - controladores.controlador_grafica - INFO - [CALLBACK] Callback completado exitosamente
+2025-09-06 12:12:40,719 - controladores.Controlador_selector - INFO - [ContractManager] Pestaña 'Inicio' abierta automáticamente
+2025-09-06 12:12:40,720 - controladores.Controlador_selector - WARNING - [ContractManager] ⚠️ Tipo no válido: obra_mantenimiento, usando 'Servicios' por defecto
+2025-09-06 12:12:40,720 - controladores.Controlador_selector - INFO - [ContractManager] 🏷️ Pestañas actualizadas para tipo: servicios
+2025-09-06 12:12:40,720 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Cargadas 4 empresas
+2025-09-06 12:12:40,720 - controladores.Controlador_selector - INFO - [ContractManager] Empresas recargadas para: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,720 - controladores.Controlador_selector - INFO - 🔄 SELECTOR: Llamando a controlador_autosave.actualizar() para: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.'
+2025-09-06 12:12:40,720 - controladores.controlador_autosave - INFO - 🔒 DIAGNÓSTICO: cargando_datos = TRUE - auto-guardado PAUSADO
+2025-09-06 12:12:40,721 - controladores.controlador_autosave - INFO - ✅ AUTOSAVE: Justificación de límites actualizada para: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,721 - controladores.controlador_autosave - INFO - ✅ Evento directo configurado para TwEmpresas
+2025-09-06 12:12:40,724 - controladores.controlador_autosave - INFO - Cargando campo fechaInforme: 2025-09-02
+2025-09-06 12:12:40,724 - controladores.controlador_autosave - INFO - Cargando campo fechaReplanteo: 2025-09-02
+2025-09-06 12:12:40,725 - controladores.controlador_autosave - INFO - Cargando campo fechaLegalFin: 2025-09-02
+2025-09-06 12:12:40,725 - controladores.controlador_autosave - INFO - Cargando campo fechaFinal: 2025-09-02
+2025-09-06 12:12:40,726 - controladores.controlador_autosave - INFO - Cargando campo fechaRecepcion1: 2025-09-02
+2025-09-06 12:12:40,726 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacion: 200.00
+2025-09-06 12:12:40,726 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacionIva: 42.00
+2025-09-06 12:12:40,726 - controladores.controlador_autosave - INFO - Cargando campo precioAdjudicacionTotal: 242.00
+2025-09-06 12:12:40,726 - controladores.controlador_autosave - INFO - Cargando campo empresaAdjudicada: FCC Industria INFRAESTRUCTURAS ENERGETICAS, S.A.U.
+2025-09-06 12:12:40,726 - controladores.controlador_autosave - INFO - Cargando campo contratistaCIF: A28482024
+2025-09-06 12:12:40,727 - controladores.controlador_autosave - INFO - Cargando campo numEmpresasPresentadas: 2
+2025-09-06 12:12:40,727 - controladores.controlador_autosave - INFO - Cargando campo numEmpresasSolicitadas: 4
+2025-09-06 12:12:40,727 - controladores.controlador_autosave - INFO - Cargando campo licitacion15: 300.00
+2025-09-06 12:12:40,727 - controladores.controlador_autosave - INFO - Cargando campo licitacion07: 140.00
+2025-09-06 12:12:40,727 - controladores.controlador_autosave - INFO - Cargando campo diaDeApertura: 2000-01-01
+2025-09-06 12:12:40,727 - controladores.controlador_autosave - INFO - Cargando campo adicionalBaseLiquidacion: 2222.00
+2025-09-06 12:12:40,728 - controladores.controlador_autosave - INFO - Cargando campo adicionalIvaLiquidacion: 466.62
+2025-09-06 12:12:40,728 - controladores.controlador_autosave - INFO - Cargando campo saldoBaseLiquidacion: 2222.00
+2025-09-06 12:12:40,728 - controladores.controlador_autosave - INFO - Cargando campo saldoIvaLiquidacion: 466.62
+2025-09-06 12:12:40,728 - controladores.controlador_autosave - INFO - Cargando campo adicionalTotalLiquidacion: 2688.62
+2025-09-06 12:12:40,728 - controladores.controlador_autosave - INFO - Cargando campo empresaBaseAFavor: 2222.00
+2025-09-06 12:12:40,728 - controladores.controlador_autosave - INFO - Cargando campo empresaIvaAFavor: 466.62
+2025-09-06 12:12:40,728 - controladores.controlador_autosave - INFO - Cargando campo empresaTotalAFavor: 2688.62
+2025-09-06 12:12:40,729 - controladores.controlador_autosave - INFO - Cargando campo liquidacionAFavorAdifBase: 0.00
+2025-09-06 12:12:40,729 - controladores.controlador_autosave - INFO - Cargando campo adifIvaAFavor: 0.00
+2025-09-06 12:12:40,729 - controladores.controlador_autosave - INFO - Cargando campo adifTotalAFavor: 0.00
+2025-09-06 12:12:40,729 - controladores.controlador_autosave - INFO - Cargando campo certBase: 0.0
+2025-09-06 12:12:40,729 - controladores.controlador_autosave - INFO - Cargando campo certIva: 254.52
+2025-09-06 12:12:40,729 - controladores.controlador_autosave - INFO - Cargando campo certTotal: 1466.52
+2025-09-06 12:12:40,729 - controladores.controlador_autosave - INFO - Cargando campo BaseAnualidad1: 66.67
+2025-09-06 12:12:40,729 - controladores.controlador_autosave - INFO - Cargando campo IvaAnualidad1: 14.00
+2025-09-06 12:12:40,729 - controladores.controlador_autosave - INFO - Cargando campo TotalAnualidad1: 80.67
+2025-09-06 12:12:40,729 - controladores.controlador_autosave - INFO - Cargando campo BaseAnualidad2: 133.33
+2025-09-06 12:12:40,730 - controladores.controlador_autosave - INFO - Cargando campo IvaAnualidad2: 28.00
+2025-09-06 12:12:40,730 - controladores.controlador_autosave - INFO - Cargando campo TotalAnualidad2: 161.33
+2025-09-06 12:12:40,730 - controladores.controlador_autosave - INFO - Cargando campo fechaContrato: 2025-09-03
+2025-09-06 12:12:40,730 - controladores.controlador_autosave - INFO - Cargando campo objeto: El objeto de este contrato es la realización de las obras necesarias para impedir las filtraciones de agua por la cubierta que hace inhabitable la vivienda.
+2025-09-06 12:12:40,731 - controladores.controlador_autosave - INFO - Cargando campo justificacion: Se necesita la contratación de estas obras por ser indispensable para asegurar la habitabilidad  y estabilidad de los inmuebles
+2025-09-06 12:12:40,732 - controladores.controlador_autosave - INFO - Cargando campo insuficiencia: La necesidad surge de las propias labores de gestión de esta Gerencia y cubre las necesidades de los inmuebles, no necesitándose por tanto más contratos semejantes en el mismo.
+2025-09-06 12:12:40,732 - controladores.controlador_autosave - INFO - Cargando campo justificacionLimites: El contrato es por importe de 0.00 euros.
+2025-09-06 12:12:40,732 - controladores.controlador_autosave - INFO - Cargando campo regimenPagos: asasasss
+2025-09-06 12:12:40,732 - controladores.controlador_autosave - INFO - Cargando campo OrganoSolicitaOfertas: eeee
+2025-09-06 12:12:40,732 - controladores.controlador_autosave - INFO - Cargando campo organoContratacion: Gerencia Área de Patrimonio y Urbanismo Centro
+2025-09-06 12:12:40,733 - controladores.controlador_autosave - INFO - Cargando campo organoContratacion2: DG de Negocio y Operaciones Comerciales
+2025-09-06 12:12:40,733 - controladores.controlador_autosave - INFO - Cargando campo nombreObra: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,733 - controladores.controlador_autosave - INFO - Cargando campo plazoEjecucion: 12
+2025-09-06 12:12:40,733 - controladores.controlador_autosave - INFO - Cargando campo basePresupuesto: 1212.0
+2025-09-06 12:12:40,733 - controladores.controlador_autosave - INFO - Cargando campo ivaPresupuestoBase: 254.52
+2025-09-06 12:12:40,733 - controladores.controlador_autosave - INFO - Cargando campo totalPresupuestoBase: 1466.52
+2025-09-06 12:12:40,733 - controladores.controlador_autosave - INFO - Cargando campo comboBox: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,733 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 0
+2025-09-06 12:12:40,734 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,734 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,734 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,734 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,734 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 1
+2025-09-06 12:12:40,734 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,734 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,735 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,735 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,735 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 2
+2025-09-06 12:12:40,735 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,735 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,735 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,735 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,735 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 0, col: 3
+2025-09-06 12:12:40,736 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,736 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,736 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,736 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,736 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 1, col: 0
+2025-09-06 12:12:40,736 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,736 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,737 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,737 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,737 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 1, col: 1
+2025-09-06 12:12:40,737 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,737 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,738 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,738 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,738 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 1, col: 2
+2025-09-06 12:12:40,738 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,738 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,738 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,739 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,739 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 1, col: 3
+2025-09-06 12:12:40,739 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,740 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,741 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,741 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,741 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 2, col: 0
+2025-09-06 12:12:40,741 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,741 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,742 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,742 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,742 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 2, col: 1
+2025-09-06 12:12:40,742 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,742 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,742 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,742 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,743 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 2, col: 2
+2025-09-06 12:12:40,743 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,743 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,743 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,743 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,743 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 2, col: 3
+2025-09-06 12:12:40,743 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,744 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,745 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,745 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,746 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 3, col: 0
+2025-09-06 12:12:40,746 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,746 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,746 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,747 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,747 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 3, col: 1
+2025-09-06 12:12:40,747 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,747 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,747 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,747 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,747 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 3, col: 2
+2025-09-06 12:12:40,747 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,748 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,748 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,748 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,748 - controladores.controlador_autosave - INFO - 🔥 EVENTO DIRECTO: itemChanged en tabla empresas - fila: 3, col: 3
+2025-09-06 12:12:40,748 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: tabla_empresas, elementos: 4
+2025-09-06 12:12:40,748 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,748 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:40,749 - controladores.controlador_autosave - WARNING - ⚠️ DIAGNÓSTICO: Guardado bloqueado - cargando_datos = True
+2025-09-06 12:12:40,749 - controladores.controlador_autosave - INFO - 📊 Actualizando tabla ofertas - tipo: empresas_data, elementos: 4
+2025-09-06 12:12:40,749 - controladores.controlador_autosave - INFO - ✅ Tabla ofertas actualizada - 4 filas
+2025-09-06 12:12:40,749 - controladores.controlador_autosave - INFO - 🔓 DIAGNÓSTICO: cargando_datos = FALSE - auto-guardado ACTIVADO
+2025-09-06 12:12:40,749 - controladores.Controlador_selector - INFO - ✅ SELECTOR: Campos y tablas actualizados para: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.'
+2025-09-06 12:12:40,749 - controladores.Controlador_selector - INFO - 🎉 SELECTOR: Selección completada exitosamente - Contrato cargado: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.'
+2025-09-06 12:12:40,749 - controladores.Controlador_selector - INFO - 🏁 SELECTOR: Fin del procesamiento - Estado final: current_contract = 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.'
+2025-09-06 12:12:40,749 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Cambio de contrato a: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:40,750 - controladores.controlador_fases_documentos - WARNING - [ControladorFases] ⚠️ No se encontraron datos para MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:41,251 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Actualizando cronograma para contrato: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:41,254 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Cronograma actualizado tras cambio de contrato
+2025-09-06 12:12:54,296 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Cambio a tab 6: 'Resumen' (Resumen)
+2025-09-06 12:12:54,296 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Reconectando botones del resumen...
+2025-09-06 12:12:54,312 - controladores.controlador_eventos_ui - INFO - [ControladorEventosUI] Botones del resumen reconectados
+2025-09-06 12:12:55,235 - controladores.controlador_fases_documentos - INFO - [ControladorFases] 🔧 REPARANDO sincronización para MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:55,236 - controladores.controlador_fases_documentos - ERROR - [ControladorFases] No se pudo obtener el contrato para reparar
+2025-09-06 12:12:55,237 - controladores.controlador_fases_documentos - INFO - [ControladorFases] Sincronizando todas las fechas al JSON para MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:55,237 - controladores.controlador_resumen - INFO - 🎯 CONTRATO OBJETIVO: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:55,238 - controladores.controlador_resumen - INFO - 📂 PASO 1: Buscando carpeta de documentación...
+2025-09-06 12:12:55,238 - controladores.controlador_resumen - INFO - [IntegradorResumen] Usando controlador_routes para obtener ruta obras
+2025-09-06 12:12:55,238 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Ruta obras: F:\GesConAdif\obras
+2025-09-06 12:12:55,238 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📁 Nombre de carpeta desde JSON: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES
+2025-09-06 12:12:55,239 - controladores.controlador_resumen - INFO - [IntegradorResumen] Carpeta documentación encontrada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:55,239 - controladores.controlador_resumen - INFO - 📂 Carpeta encontrada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:55,239 - controladores.controlador_resumen - INFO - 📄 PASO 2: Listando archivos en la carpeta...
+2025-09-06 12:12:55,239 - controladores.controlador_resumen - INFO - 📄 Total de archivos encontrados: {len(todos_archivos)}
+2025-09-06 12:12:55,240 - controladores.controlador_resumen - INFO -   1. 📝 .gitkeep (0 bytes)
+2025-09-06 12:12:55,240 - controladores.controlador_resumen - INFO -   2. 📝 README.txt (691 bytes)
+2025-09-06 12:12:55,240 - controladores.controlador_resumen - INFO - 🔴 PDFs encontrados: 0
+2025-09-06 12:12:55,240 - controladores.controlador_resumen - INFO - 🗂️ PASO 3: Probando mapeo de archivos a fases...
+2025-09-06 12:12:55,240 - controladores.controlador_resumen - INFO - 🗂️ Mapeo de fases configurado:
+2025-09-06 12:12:55,240 - controladores.controlador_resumen - INFO -   CREACION: ['proyecto', 'creacion']
+2025-09-06 12:12:55,240 - controladores.controlador_resumen - INFO -   INICIO: ['inicio', 'acta_inicio', 'inicio_contrato']
+2025-09-06 12:12:55,241 - controladores.controlador_resumen - INFO -   CARTASINVITACION: ['cartas_invitacion', 'invitacion', 'carta_invitacion']
+2025-09-06 12:12:55,241 - controladores.controlador_resumen - INFO -   ADJUDICACION: ['adjudicacion', 'adjudicar']
+2025-09-06 12:12:55,241 - controladores.controlador_resumen - INFO -   CARTASADJUDICACION: ['cartas_adjudicacion', 'carta_adjudicacion']
+2025-09-06 12:12:55,241 - controladores.controlador_resumen - INFO -   CONTRATO: ['contrato']
+2025-09-06 12:12:55,241 - controladores.controlador_resumen - INFO -   REPLANTEO: ['replanteo', 'acta_replanteo']
+2025-09-06 12:12:55,241 - controladores.controlador_resumen - INFO -   ACTUACION: ['actuacion', 'actuaciones']
+2025-09-06 12:12:55,241 - controladores.controlador_resumen - INFO -   RECEPCION: ['recepcion', 'acta_recepcion']
+2025-09-06 12:12:55,242 - controladores.controlador_resumen - INFO -   FINALIZACION: ['finalizacion', 'final', 'acta_finalizacion']
+2025-09-06 12:12:55,242 - controladores.controlador_resumen - INFO - 📊 RESUMEN FINAL DEL TEST
+2025-09-06 12:12:55,242 - controladores.controlador_resumen - INFO - 📂 Carpeta analizada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:55,242 - controladores.controlador_resumen - INFO - 📄 Total archivos: {len(todos_archivos)}
+2025-09-06 12:12:55,242 - controladores.controlador_resumen - INFO - 🔴 PDFs encontrados: 0
+2025-09-06 12:12:55,242 - controladores.controlador_resumen - INFO - 📋 Archivos PDF:
+2025-09-06 12:12:55,243 - controladores.controlador_resumen - INFO - [IntegradorResumen] Usando controlador_routes para obtener ruta obras
+2025-09-06 12:12:55,243 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Ruta obras: F:\GesConAdif\obras
+2025-09-06 12:12:55,243 - controladores.controlador_resumen - INFO - [IntegradorResumen] Usando controlador_routes para obtener ruta obras
+2025-09-06 12:12:55,244 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Ruta obras: F:\GesConAdif\obras
+2025-09-06 12:12:55,244 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📁 Nombre de carpeta desde JSON: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES
+2025-09-06 12:12:55,244 - controladores.controlador_resumen - INFO - [IntegradorResumen] Carpeta documentación encontrada: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:55,244 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📂 Escaneando carpeta: F:\GesConAdif\obras\MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES\02-documentacion-finales
+2025-09-06 12:12:55,244 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📁 Nombre de carpeta desde JSON: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES
+2025-09-06 12:12:55,245 - controladores.controlador_resumen - INFO - [IntegradorResumen] Resumen final: 0 fases con firmas, 0 firmantes únicos
+2025-09-06 12:12:55,245 - controladores.controlador_resumen - INFO - [IntegradorResumen] Datos de firmas: {}
+2025-09-06 12:12:55,245 - controladores.controlador_resumen - INFO - [IntegradorResumen] Firmantes únicos: []
+2025-09-06 12:12:55,245 - controladores.controlador_resumen - INFO - [IntegradorResumen] Datos recibidos - 0 fases, 0 firmantes
+2025-09-06 12:12:55,247 - controladores.controlador_resumen - INFO - [IntegradorResumen] Tabla actual - Filas: 11, Columnas: 4
+2025-09-06 12:12:55,248 - controladores.controlador_resumen - WARNING - [IntegradorResumen] No se encontraron datos de firmas - mostrando tabla vacía
+2025-09-06 12:12:55,248 - controladores.controlador_resumen - INFO - [IntegradorResumen] 📊 Configurando tabla para mostrar estado sin firmas
+2025-09-06 12:12:55,250 - controladores.controlador_resumen - INFO - [IntegradorResumen] ✅ Tabla configurada para estado sin firmas
+2025-09-06 12:12:55,250 - controladores.controlador_resumen - INFO - [IntegradorResumen] Escaneo completado. 0 fases con firmas encontradas
+2025-09-06 12:12:58,229 - controladores.controlador_autosave - INFO - 🔥 DIAGNÓSTICO: _auto_guardar_tabla_empresas() LLAMADO
+2025-09-06 12:12:58,230 - controladores.controlador_autosave - INFO - 📊 DIAGNÓSTICO: Guardando empresas para contrato: 'MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.'
+2025-09-06 12:12:58,230 - controladores.controlador_autosave - INFO - 📊 DIAGNÓSTICO: Extraídas 4 empresas de la tabla
+2025-09-06 12:12:58,232 - controladores.controlador_json - INFO - Escritura realizada en: F:\GesConAdif\basedatos\BaseDatos.json
+2025-09-06 12:12:58,232 - controladores.controlador_json - INFO - Se guardó en campo empresas: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES.
+2025-09-06 12:12:58,233 - controladores.controlador_json - INFO - Empresas guardadas: MANTENIMIENTO PREVENTIVO-CORRECTIVO DE CUBIERTAS, TERRAZAS, LIMAS Y CANALONES. → 4 empresas
+2025-09-06 12:12:58,233 - controladores.controlador_autosave - INFO - ✅ DIAGNÓSTICO: Empresas guardadas exitosamente

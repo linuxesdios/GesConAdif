@@ -1675,6 +1675,10 @@ class IntegradorResumen:
             # 5. Actualizar tabla de seguimiento
             self._actualizar_tabla_seguimiento(datos_firmas, firmantes_unicos, nombre_contrato)
             
+            # 6. Mostrar mensaje si no hay firmas registradas
+            if len(datos_firmas) == 0:
+                self._mostrar_mensaje_sin_firmas()
+            
             logger.info(f"[IntegradorResumen] Escaneo completado. {len(datos_firmas)} fases con firmas encontradas")
             
         except Exception as e:
@@ -2335,6 +2339,23 @@ class IntegradorResumen:
             logger.error(f"[IntegradorResumen] Error abriendo PDF: {e}")
             import traceback
             logger.exception("Error completo:")
+    
+    def _mostrar_mensaje_sin_firmas(self):
+        """Mostrar mensaje informativo cuando no hay firmas registradas tras actualizar"""
+        try:
+            from PyQt5.QtWidgets import QMessageBox
+            QMessageBox.information(
+                self.main_window,
+                "Sin firmas digitales",
+                "No se encontraron firmas digitales en los documentos del proyecto.\n\n"
+                "Las firmas aparecen automaticamente cuando:\n"
+                "• Se genera un documento PDF firmado digitalmente\n"
+                "• Se coloca en la carpeta '02-documentacion-finales'\n"
+                "• Se actualiza el seguimiento de firmas\n\n"
+                "Tambien puedes registrar fechas manualmente en el calendario."
+            )
+        except Exception as e:
+            logger.error(f"[ControladorResumen] Error mostrando mensaje sin firmas: {e}")
     
     def test_escaneo_pdf_completo(self, nombre_contrato: str = None):
         """Test completo y detallado del escaneo de PDFs y extracción de firmas"""

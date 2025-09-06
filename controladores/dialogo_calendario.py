@@ -574,15 +574,30 @@ class DialogoCalendario(QDialog):
         """Actualizar la lista visual de eventos"""
         self.lista_eventos.clear()
         
-        # Ordenar eventos por fecha
-        eventos_ordenados = sorted(self.eventos.items())
-        
-        for fecha_str, nombre in eventos_ordenados:
-            fecha = QDate.fromString(fecha_str, "yyyy-MM-dd")
-            if fecha.isValid():
-                texto = "{} ({})".format(nombre, fecha.toString('dd/MM/yyyy'))
-                item = QListWidgetItem(texto)
-                self.lista_eventos.addItem(item)
+        if len(self.eventos) == 0:
+            # Mostrar mensaje cuando no hay eventos
+            item_vacio = QListWidgetItem("No hay eventos registrados")
+            item_vacio.setTextAlignment(1)  # Centrado
+            # Aplicar estilo especial para el mensaje de estado vacio
+            font = item_vacio.font()
+            font.setItalic(True)
+            item_vacio.setFont(font)
+            self.lista_eventos.addItem(item_vacio)
+            
+            item_info = QListWidgetItem("Usa 'Crear Evento' para agregar")
+            item_info.setTextAlignment(1)  # Centrado
+            item_info.setFont(font)
+            self.lista_eventos.addItem(item_info)
+        else:
+            # Ordenar eventos por fecha
+            eventos_ordenados = sorted(self.eventos.items())
+            
+            for fecha_str, nombre in eventos_ordenados:
+                fecha = QDate.fromString(fecha_str, "yyyy-MM-dd")
+                if fecha.isValid():
+                    texto = "{} ({})".format(nombre, fecha.toString('dd/MM/yyyy'))
+                    item = QListWidgetItem(texto)
+                    self.lista_eventos.addItem(item)
     
     def actualizar_eventos_visuales(self):
         """Actualizar la visualizacion de eventos en el calendario"""
@@ -617,6 +632,17 @@ class DialogoCalendario(QDialog):
             vista_anual.exec_()
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Error al abrir vista anual: {str(e)}")
+    
+    def mostrar_mensaje_sin_firmas(self):
+        """Mostrar mensaje informativo cuando no hay firmas registradas"""
+        from PyQt5.QtWidgets import QMessageBox
+        QMessageBox.information(
+            self,
+            "Sin firmas registradas",
+            "No se encontraron fechas de firma en el proyecto actual.\n\n"
+            "Puedes crear eventos manualmente usando el boton 'Crear Evento' "
+            "o registrar firmas en las fases del proyecto."
+        )
     
     def get_fecha_seleccionada(self):
         return self.calendario.selectedDate()
