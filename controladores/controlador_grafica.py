@@ -1676,6 +1676,70 @@ class ControladorGrafica(QMainWindow):
     def _abrir_portafirmas(self):
         """Abrir portafirmas"""
         pass
+    
+    def _abrir_calendario(self):
+        """Abrir diálogo de calendario"""
+        try:
+            from .dialogo_calendario import DialogoCalendario
+            from PyQt5.QtCore import QDate
+            
+            # Obtener fechas de firmas del proyecto actual
+            eventos_firmas = self._obtener_fechas_firmas()
+            
+            dialogo = DialogoCalendario(self, eventos_iniciales=eventos_firmas)
+            
+            def manejar_fecha_seleccionada(fecha):
+                fecha_str = fecha.toString("dd/MM/yyyy")
+                print(f"Fecha seleccionada: {fecha_str}")
+                # Aquí puedes agregar más funcionalidad con la fecha seleccionada
+            
+            dialogo.fecha_seleccionada.connect(manejar_fecha_seleccionada)
+            dialogo.exec_()
+            
+        except Exception as e:
+            from PyQt5.QtWidgets import QMessageBox
+            QMessageBox.critical(self, "Error", f"Error al abrir calendario: {str(e)}")
+    
+    def _obtener_fechas_firmas(self):
+        """Obtener fechas de firmas del proyecto actual para el calendario"""
+        eventos_firmas = {}
+        
+        try:
+            # Verificar que tenemos un contrato seleccionado
+            if not hasattr(self, 'comboBox') or not self.comboBox.currentText():
+                return eventos_firmas
+            
+            nombre_contrato = self.comboBox.currentText()
+            
+            # Usar el gestor JSON del contract_manager
+            if hasattr(self, 'contract_manager') and self.contract_manager and hasattr(self.contract_manager, 'gestor_json'):
+                gestor = self.contract_manager.gestor_json
+                datos_contrato = gestor.get_datos_contrato(nombre_contrato)
+                
+                if datos_contrato and "fases_documentos" in datos_contrato:
+                    fases_datos = datos_contrato["fases_documentos"]
+                    
+                    # Mapeo de fases a nombres legibles
+                    nombres_fases = {
+                        "inicio": "Inicio",
+                        "adjudicacion": "Adjudicacion", 
+                        "replanteo": "Replanteo",
+                        "recepcion": "Recepcion",
+                        "finalizacion": "Finalizacion"
+                    }
+                    
+                    for fase, datos_fase in fases_datos.items():
+                        if isinstance(datos_fase, dict) and "firmado" in datos_fase:
+                            fecha_firmado = datos_fase["firmado"]
+                            if fecha_firmado and fecha_firmado != "":
+                                # La fecha ya está en formato yyyy-MM-dd
+                                nombre_fase = nombres_fases.get(fase, fase.capitalize())
+                                eventos_firmas[fecha_firmado] = f"Firma {nombre_fase}"
+                                
+        except Exception as e:
+            print(f"Error obteniendo fechas de firmas: {str(e)}")
+            
+        return eventos_firmas
 
     # =================== GESTIÓN DE TIPOS DE CONTRATO ===================
 

@@ -312,7 +312,8 @@ class ControladorEventosUI:
         botones_archivo = [
             ('Guardar', '_guardar_proyecto'),
             ('Pb_add_excel', '_abrir_excel_y_procesar'),
-            ('Abrir_portafirmas', '_abrir_portafirmas')
+            ('Abrir_portafirmas', '_abrir_portafirmas'),
+            ('Abrir_calendario', '_abrir_calendario')
         ]
         
         for boton_name, metodo_name in botones_archivo:
